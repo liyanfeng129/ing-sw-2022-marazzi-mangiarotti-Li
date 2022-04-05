@@ -2,22 +2,26 @@ package it.polimi;
 
 
 
+
 public class Island {
+
+    //private HashMap<String, int> students;
     private int[] students;
     private Island inext_island;
     private boolean mother_nature;
     private int size;
     private String tower;
-    const int RED = 0;
-    const int YELLOW = 1;
-    const int PINK = 2;
-    const int BLUE = 3;
-    const int GREEN = 4;
 
+    final static int RED = 0;
+    final static int YELLOW = 1;
+    final static int PINK = 2;
+    final static int BLUE = 3;
+    final static int GREEN = 4;
 
+    // Sarebbe fatto fuori
 
     public Island(Island inext_island) {
-
+        //this.stuTY = EnumSet.StudentType;
         this.students = new int[5];
         this.students[RED] = 0;
         this.students[YELLOW] = 0;
