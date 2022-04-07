@@ -6,12 +6,13 @@ package it.polimi;
 
 public class Island {
     private final int[] students;
-    private Island inext_island;
+   // private Island inext_island;
     private boolean mother_nature;
     private int size;
     private String tower;
 
-    public Island(Island inext_island) {
+    //public Island(Island inext_island) {
+    public Island() {
 
         this.students = new int[5];
         this.students[SType.RED.ordinal()] = 0;
@@ -20,7 +21,7 @@ public class Island {
         this.students[SType.BLUE.ordinal()] = 0;
         this.students[SType.GREEN.ordinal()] = 0;
         this.tower = null;
-        this.inext_island = inext_island;
+        //this.inext_island = inext_island;
         this.mother_nature = false;
         this.size = 1;
     }
