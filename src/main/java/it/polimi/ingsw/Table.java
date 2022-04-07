@@ -5,7 +5,7 @@ import it.polimi.Island;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-// prova
+// prova yan
 public class Table {
     private ArrayList<Island> Islands = new ArrayList<Island>();
     private int MN_position=0;
