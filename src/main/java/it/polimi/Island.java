@@ -25,12 +25,18 @@ public class Island {
         this.mother_nature = false;
         this.size = 1;
     }
-    public int[] getStutents(){
+    public int[] getStudents(){
         return this.students;
     }
 
     public void addStudent(int color){
         this.students[color]++;
+    }
+
+    public void mergeStudents(int[] students)
+    {
+        for(int i = 0; i < 5; i++)
+            this.students[i] = this.students[i] + students[i];
     }
 
     public boolean getMotherNature(){
@@ -45,5 +51,15 @@ public class Island {
 
     public String getTower() {
         return this.tower;
+    }
+
+    public void IncreasingSize(int size)
+    {
+        this.size = this.size + size;
+    }
+
+    public int getSize()
+    {
+        return this.size;
     }
 }
