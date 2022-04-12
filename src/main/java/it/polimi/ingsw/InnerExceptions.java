@@ -21,4 +21,11 @@ public class InnerExceptions {
             super(msg);
         }
     }
+
+    public static class NoMotherNatureException extends EriantysExceptions
+    {
+        public NoMotherNatureException(String msg) {
+            super(msg);
+        }
+    }
 }

@@ -5,66 +5,39 @@ import java.util.ArrayList;
 // prova yan
 public class Table {
     private ArrayList<Island> Islands = new ArrayList<Island>();
-    private int MN_position=0;
     private String[] characters;
 
     public Table(){
         for (int i=0;i<12;i++){
             Islands.add(new Island());
         }
-        Islands.get(MN_position).setMotherNature(true);
+        Islands.get(0).setMotherNature(true);
         characters = this.automaticGenerateCharacters();
     }
     public void mergeIsland() throws EriantysExceptions
     {
-        int leftAdjacent;
-        int rightAdjacent;
-
-        /*
-        * if MN_pos is in the first position, its left adjacent island would be the last one
-        * otherwise is just in its left
-        * */
-        if(MN_position == 0)
-            leftAdjacent = Islands.size() - 1;
-        else
-            leftAdjacent = MN_position - 1;
-        /*
-         * if MN_pos is in the last position, its right adjacent island would be the first one
-         * otherwise is just in its right
-         * */
-        if(MN_position == Islands.size() - 1)
-            rightAdjacent = 0;
-        else
-            rightAdjacent = MN_position + 1;
-
-        /*
-        * if one of the adjacent has the same tower as the one in the motherNatureIsland
-        * then the two islands will be merged
-        * and the adjacent will be removed
-        * */
-        if(Islands.get(leftAdjacent).getTower().equals(Islands.get(MN_position).getTower()))
+        //check leftIsland
+        if(Islands.get(getMotherNatureIndex()).getTower().equals(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getTower()))
         {
-            Islands.get(MN_position).mergeStudents(Islands.get(leftAdjacent).getStudents());
-            Islands.get(MN_position).IncreasingSize(Islands.get(leftAdjacent).getSize());
-            Islands.remove(leftAdjacent);
-        }
+            Islands.get(getMotherNatureIndex()).mergeStudents(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getStudents());
+            Islands.get(getMotherNatureIndex()).IncreasingSize(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getSize());
+            Islands.remove(getRightIslandIndex(getMotherNatureIndex()));
 
-        if(Islands.get(rightAdjacent).getTower().equals(Islands.get(MN_position).getTower()))
+        }
+        //check rightIsland
+        if(Islands.get(getMotherNatureIndex()).getTower().equals(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getTower()))
         {
-            Islands.get(MN_position).mergeStudents(Islands.get(rightAdjacent).getStudents());
-            Islands.get(MN_position).IncreasingSize(Islands.get(rightAdjacent).getSize());
-            Islands.remove(leftAdjacent);
+            Islands.get(getMotherNatureIndex()).mergeStudents(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getStudents());
+            Islands.get(getMotherNatureIndex()).IncreasingSize(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getSize());
+            Islands.remove(getLeftIslandIndex(getMotherNatureIndex()));
         }
-
-
-
-
     }
-    public void move_MN(int move){
-        if((MN_position+move)>=Islands.size())
-            MN_position=((MN_position+move)-Islands.size()+1);
-        else
-            MN_position=MN_position+move;
+    public void moveMotherNature(int move) throws EriantysExceptions {
+        int newMn = getMotherNatureIndex();
+        for(int i = 0; i < move; i ++ )
+            newMn = getRightIslandIndex(newMn);
+        Islands.get(getMotherNatureIndex()).setMotherNature(false);
+        Islands.get(newMn).setMotherNature(true);
     }
     private String[] automaticGenerateCharacters()
     {
@@ -72,5 +45,34 @@ public class Table {
         // here goes algorithm
         return characters;
     }
+    private int getMotherNatureIndex() throws EriantysExceptions
+    {
+        int i = 0;
+        while(i < Islands.size()){
+            if(Islands.get(i).getMotherNature())
+                return i;
+            else
+                i++;
+        }
+        throw new InnerExceptions.NoMotherNatureException("Mother nature does not exist!");
+    }
+
+    private int getLeftIslandIndex(int index)
+    {
+        if(index == 0)
+            return Islands.size() - 1;
+        else
+            return index - 1;
+    }
+
+    private int getRightIslandIndex(int index)
+    {
+        if(index == Islands.size() - 1)
+            return 0;
+        else
+            return index + 1;
+    }
+
+
 }
 
