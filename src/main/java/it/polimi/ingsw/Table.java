@@ -1,7 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.Island;
-
 import java.util.ArrayList;
 
 // prova yan

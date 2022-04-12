@@ -1,7 +1,4 @@
-package it.polimi;
-
-
-
+package it.polimi.ingsw;
 
 
 public class Island {
