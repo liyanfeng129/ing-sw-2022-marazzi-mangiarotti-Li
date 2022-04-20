@@ -45,10 +45,10 @@ public class Table {
         // here goes algorithm
         return characters;
     }
-    private int getMotherNatureIndex() throws EriantysExceptions
+    private int getMotherNatureIndex() throws EriantysExceptions // va messo come attributo della classe così è troppo complicato
     {
         int i = 0;
-        while(i < Islands.size()){
+        while(i < Islands.size()){ // non ha senso questo qui c'è un problema
             if(Islands.get(i).getMotherNature())
                 return i;
             else

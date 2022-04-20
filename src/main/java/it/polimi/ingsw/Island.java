@@ -30,7 +30,7 @@ public class Island {
         this.students[color]++;
     }
 
-    public void mergeStudents(int[] students)
+    public void mergeStudents(int[] students) // a cosa serve ?
     {
         for(int i = 0; i < 5; i++)
             this.students[i] = this.students[i] + students[i];
@@ -38,9 +38,9 @@ public class Island {
 
     public boolean getMotherNature(){
         return this.mother_nature;
-    }
+    } // secondo me non serve
 
-    public void setMotherNature(boolean mother_nature){this.mother_nature = mother_nature; }
+    public void setMotherNature(boolean mother_nature){this.mother_nature = mother_nature; }// secondo me non serve
 
     public void setTower(String color){
         this.tower = color;
