@@ -1,0 +1,9 @@
+Welcome to world of Eriantys
+Please select one of following options by digiting the number in the left
+1. Create a new game for 2 players
+2. Create a new game for 3 players
+3. Create a new game for 4 players
+4. Resume an old game
+5. Show existing games in the lobby
+6. Show resumable games 
+7. Join in a reasumable game
