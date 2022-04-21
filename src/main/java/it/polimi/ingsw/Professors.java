@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.Island;
 
 public class Professors {
     private Mage[] List_professors= new Mage[5];
