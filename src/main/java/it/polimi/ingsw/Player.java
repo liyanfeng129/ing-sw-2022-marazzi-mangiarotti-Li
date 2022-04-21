@@ -20,6 +20,5 @@ public class Player {
        this.mage = mage;
     }
     public Player(){
-
     }
 }
