@@ -28,4 +28,5 @@ public class InnerExceptions {
             super(msg);
         }
     }
+
 }
