@@ -1,7 +1,4 @@
-package it.polimi;
-
-
-
+package it.polimi.ingsw;
 
 
 public class Island {
@@ -25,7 +22,7 @@ public class Island {
         this.mother_nature = false;
         this.size = 1;
     }
-    public int[] getStutents(){
+    public int[] getStudents(){
         return this.students;
     }
 
@@ -33,11 +30,17 @@ public class Island {
         this.students[color]++;
     }
 
-    public boolean getMotherNature(){
-        return this.mother_nature;
+    public void mergeStudents(int[] students) // a cosa serve ?
+    {
+        for(int i = 0; i < 5; i++)
+            this.students[i] = this.students[i] + students[i];
     }
 
-    public void setMotherNature(boolean mother_nature){this.mother_nature = mother_nature; }
+    public boolean getMotherNature(){
+        return this.mother_nature;
+    } // secondo me non serve
+
+    public void setMotherNature(boolean mother_nature){this.mother_nature = mother_nature; }// secondo me non serve
 
     public void setTower(String color){
         this.tower = color;
@@ -45,5 +48,15 @@ public class Island {
 
     public String getTower() {
         return this.tower;
+    }
+
+    public void IncreasingSize(int size)
+    {
+        this.size = this.size + size;
+    }
+
+    public int getSize()
+    {
+        return this.size;
     }
 }
