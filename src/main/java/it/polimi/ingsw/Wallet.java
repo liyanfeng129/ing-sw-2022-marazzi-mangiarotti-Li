@@ -11,7 +11,9 @@ public class Wallet {
         Saving=Saving+n;
     }
 
-    public void removeCoin(int n){
+    public void removeCoin(int n) throws EriantysExceptions{
+        if((Saving-n)<0)
+            throw new InnerExceptions.NotEnoughMoneyException("Not enough money on wallet");
         Saving=Saving-n;
     }
     public Wallet(){

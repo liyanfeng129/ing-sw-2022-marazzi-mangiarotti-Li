@@ -17,9 +17,14 @@ class WalletTest {
         assertEquals(5, wallet.getWallet());
     }
     @Test
-    public void test_removeCoin(){
+    public void test_removeCoin() throws EriantysExceptions {
         Wallet wallet=new Wallet();
-        wallet.removeCoin(2);
+        try {
+            wallet.removeCoin(2);
+        } catch (InnerExceptions.NotEnoughMoneyException e) {
+            System.out.println(e);
+            fail();
+        }
         assertEquals(1, wallet.getWallet());
     }
 

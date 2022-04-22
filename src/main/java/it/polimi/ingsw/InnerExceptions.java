@@ -28,5 +28,11 @@ public class InnerExceptions {
             super(msg);
         }
     }
-
+    public static class NotEnoughMoneyException extends EriantysExceptions
+    {
+        public NotEnoughMoneyException(String msg) {
+            super(msg);
+        }
+    }
 }
+
