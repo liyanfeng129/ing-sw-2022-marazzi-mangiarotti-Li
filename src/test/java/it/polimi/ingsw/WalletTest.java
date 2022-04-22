@@ -21,7 +21,7 @@ class WalletTest {
         Wallet wallet=new Wallet();
         try {
             wallet.removeCoin(2);
-        } catch (InnerExceptions.NotEnoughMoneyException e) {
+        } catch (InnerExceptions.NegativeValue e) {
             System.out.println(e);
             fail();
         }
