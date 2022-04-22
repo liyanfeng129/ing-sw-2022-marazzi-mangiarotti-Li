@@ -8,12 +8,6 @@ public class InnerExceptions {
         }
     }
 
-    public static class NotEnoughStudentsINBagException extends EriantysExceptions
-    {
-        public NotEnoughStudentsINBagException(String msg) {
-            super(msg);
-        }
-    }
 
     public static class IncompactIslandsException extends EriantysExceptions
     {
@@ -28,11 +22,22 @@ public class InnerExceptions {
             super(msg);
         }
     }
-    public static class NotEnoughMoneyException extends EriantysExceptions
+    public static class EmptyBag extends EriantysExceptions
     {
-        public NotEnoughMoneyException(String msg) {
+        public EmptyBag(String msg) {
+            super(msg);
+        }
+    }
+    public static class NegativeValue extends EriantysExceptions
+    {
+        public NegativeValue(String msg) {
+            super(msg);
+        }
+    }
+    public static class BagMax26 extends EriantysExceptions
+    {
+        public BagMax26(String msg) {
             super(msg);
         }
     }
 }
-
