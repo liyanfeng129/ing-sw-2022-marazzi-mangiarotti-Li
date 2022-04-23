@@ -2,6 +2,8 @@ package it.polimi.ingsw;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
@@ -25,6 +27,25 @@ class BagTest {
         }
         assertArrayEquals(finalBag, b.getBag());
         assertArrayEquals(islandStudent, temp1);
+    }
+    @Test
+    public void test_draw(){
+        Bag b=new Bag();
+        int temp[] = new int[5];
+        try {
+            b.bagSet2();
+        } catch (InnerExceptions.BagMax26 e) {
+            e.printStackTrace();
+        }
+        try {
+            temp=b.draw(124);
+        } catch (InnerExceptions.EmptyBag e) {
+            e.printStackTrace();
+        } catch (InnerExceptions.NegativeValue e) {
+            e.printStackTrace();
+        }
+        assertEquals(124,Arrays.stream(temp).sum());
+        //assertEquals(123,Arrays.stream(b).sum());
     }
 
 }
