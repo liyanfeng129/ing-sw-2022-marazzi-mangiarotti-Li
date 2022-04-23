@@ -15,6 +15,10 @@ public class Bag {
         this.N_students = 0;
     }
 
+    public int[] getBag() {
+        return students;
+    }
+
     public int[] bagSet1() throws EriantysExceptions /** bagSet1() takes out 2 students of each kind */
     {
         int temp[] = {2,2,2,2,2};
@@ -30,7 +34,7 @@ public class Bag {
 
     public void bagSet2() throws InnerExceptions.BagMax26 /** bagSet2 initializes the bag with 120 students in total, 24 for each kind*/
     {
-        if (IntStream.of(this.students).sum() == 0)
+        if (IntStream.of(this.students).sum() != 0)
             throw new InnerExceptions.BagMax26("Max 26 students for color");
 
         for(int i = 0 ; i < students.length; i++)
