@@ -27,6 +27,9 @@ public class Player {
     public TowerColor getTowerColor(){
         return towerColor;
     }
-    public Player(){
+    public Player(String name){
+         Name=name;
+         mage=Mage.NO_MAGE;
     }
+
 }

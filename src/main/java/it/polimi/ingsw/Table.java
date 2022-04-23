@@ -14,6 +14,14 @@ public class Table {
         Islands.get(0).setMotherNature(true);
         characters = this.automaticGenerateCharacters();
     }
+
+    public ArrayList<Island> getIslands() {
+        return Islands;
+    }
+
+    public Island getIslands(int isola){
+        return Islands.get(isola);
+    }
     public void mergeIsland() throws EriantysExceptions
     {
         //check leftIsland

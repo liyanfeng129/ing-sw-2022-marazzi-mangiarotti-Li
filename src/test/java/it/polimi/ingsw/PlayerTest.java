@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
     @Test
     public void test_player(){
-        Player player=new Player();
+        Player player=new Player("Alessio");
         player.setName("Alessio");
         player.assignTower(TowerColor.BLACK);
         player.assignMage(Mage.MAGE1);
