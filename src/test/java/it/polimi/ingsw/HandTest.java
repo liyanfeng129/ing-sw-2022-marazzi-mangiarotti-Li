@@ -13,16 +13,25 @@ class HandTest {
     }
     @Test
     public void test_setList_cards(){
-        Hand hand2=new Hand();
+        Assistant a1=new Assistant(AssistantType.Card_1,Mage.MAGE1);
+        Assistant a2=new Assistant(AssistantType.Card_7,Mage.MAGE1);
         hand.setList_cards(Mage.MAGE1);
-        hand2.setList_cards(Mage.MAGE1);
-            assertArrayEquals(hand2.getList_cards().toArray(),hand.getList_cards().toArray());
+        assertEquals(a2.getNum(),hand.getList_cards().get(6).getNum());
         }
     @Test
     public void test_getN_cards(){
         Hand hand=new Hand();
         hand.setList_cards(Mage.MAGE1);
         assertEquals(10,hand.getN_cards());
+    }
+    @Test
+    public void test_useCard(){
+        hand.setList_cards(Mage.MAGE1);
+        Assistant a=new Assistant(AssistantType.Card_1,Mage.MAGE1);
+        hand.use_cards(a);
+        assertEquals(9,hand.getN_cards());
+        //assertEquals(a.getNum()+1,hand.getList_cards().get(0).getNum());
+
     }
 
 
