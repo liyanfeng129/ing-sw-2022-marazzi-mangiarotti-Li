@@ -5,15 +5,58 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class EriantysCLIClient {
+     static String serverAddress = "";
     public static void main(String[] args)  {
         // TODO Auto-generated method stub
 
+
+        connectTOServer();
         welcomeMessage();
+
+        for(int i =0; i<10; i++)
+            socketClient();
         //String filePath = new File("").getAbsolutePath();
         //System.out.println("path is:"+filePath);
 
 
     }
+    private static void connectTOServer()
+    {
+        System.out.println("Please insert ip address for connection to server:");
+        serverAddress = new Scanner(System.in).nextLine();
+
+        Socket client;
+
+        String response = "";
+        try {
+            // client = new Socket("192.168.8.196", 12345);
+            client = new Socket(serverAddress, 12345);
+            //client = new Socket("localhost", 12345);
+            System.out.println("Client ready.\n");
+            // Input stream
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            // Output stream
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
+
+            //sending a message to server
+            out.println("try to connect");
+
+            response = in.readLine();
+
+            System.out.println("message received is: "+response);
+            //close client
+            client.close();
+
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
+
+
     private static void welcomeMessage()
     {
         try
@@ -43,11 +86,13 @@ public class EriantysCLIClient {
     private static void socketClient()
     {
         Socket client;
-        String message="";
+        String message = "";
+        String response = "";
 
         Scanner receiveFromKeyBoard =new Scanner(System.in);
         try {
             // client = new Socket("192.168.8.196", 12345);
+            //serverAddress
             client = new Socket("localhost", 12345);
             System.out.println("Client ready.\n");
             // Input stream
@@ -56,10 +101,11 @@ public class EriantysCLIClient {
             PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
 
             //sending a message to server
-            out.println("connected");
+            //out.println("connected");
             message = receiveFromKeyBoard.nextLine();
             out.println(message);
-
+            response = in.readLine();
+            System.out.println("message received is: "+response);
             //close client
             client.close();
 
