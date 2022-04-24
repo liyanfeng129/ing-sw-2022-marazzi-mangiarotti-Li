@@ -3,7 +3,7 @@ package it.polimi.ingsw;
 
 public class Cloud {
     private int size;
-    private final int[] students;
+    private int[] students;
 
     Cloud()
     {
@@ -23,6 +23,13 @@ public class Cloud {
     public int getSize() {
         return size;
     }
+    public int[] getStudents() {
+        return students;
+    }
 
+    public void setStudents(int [] students)
+    {
+        this.students = students;
+    }
 
 }
