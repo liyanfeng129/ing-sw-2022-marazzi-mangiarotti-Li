@@ -3,9 +3,9 @@ package it.polimi.ingsw;
 
 public class Cloud {
     private int size;
-    private final int[] students;
+    private int[] students;
 
-    Cloud()
+    public Cloud()
     {
         this.size = 0;
         this.students = new int[5];
@@ -18,6 +18,12 @@ public class Cloud {
         else
             throw new InnerExceptions.NotValidCloudSizeException("Cloud size is not valid");
     }
+
+    public void takeStudent(int stu)
+    {
+        this.students[stu]--;
+    }
+
      //non manca una addStudent?
     //non ci serve una getCloud e una getStudent della cloud?? io la creo ma poi ditemi voi se ha senso
     public int getSize() {
@@ -26,5 +32,10 @@ public class Cloud {
 
     public int[] getStudents() {
         return students;
+    }
+
+    public void setStudents(int [] students)
+    {
+        this.students = students;
     }
 }
