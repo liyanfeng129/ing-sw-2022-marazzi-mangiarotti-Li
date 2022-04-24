@@ -18,7 +18,17 @@ public class Bag {
     public int[] getBag() {
         return students;
     }
+    public void setBag_test(){
+        students[0]=1;
+    }
+    public void setBag2_test(){
+        students[0]=1;
+        students[0]=1;
+        students[0]=1;
+        students[0]=-1;
+        students[0]=1;
 
+    }
     public int[] bagSet1() throws EriantysExceptions /** bagSet1() takes out 2 students of each kind */
     {
         int temp[] = {2,2,2,2,2};
