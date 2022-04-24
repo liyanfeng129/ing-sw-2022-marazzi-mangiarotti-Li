@@ -11,8 +11,8 @@ public class Bag {
 
     public Bag()
     {
-        this.students = new int[5];
-        this.N_students = 0;
+        this.students = new int[] {26, 26, 26, 26, 26};
+        this.N_students = 130;
     }
 
     public int[] getBag() {
@@ -42,7 +42,7 @@ public class Bag {
     }
 
 
-    public void bagSet2() throws InnerExceptions.BagMax26 /** bagSet2 initializes the bag with 120 students in total, 24 for each kind*/
+    public void bagSet2() throws InnerExceptions.BagMax26 /** bagSet2 initializes the bag with 130 students in total, 26 for each kind*/
     {
         if (IntStream.of(this.students).sum() != 0)
             throw new InnerExceptions.BagMax26("Max 26 students for color");
@@ -55,9 +55,17 @@ public class Bag {
     }
 
 
-    public int[] draw(int n) throws InnerExceptions.EmptyBag, InnerExceptions.NegativeValue /** draw the number of student in a random order*/
+
+    /** Extract randomly n students from bag
+     *  @throws InnerExceptions.NotEnoughStudentsInBagException
+     *  if there aren't n students in bag for extraction
+     * */
+
+    public int[] draw(int n) throws EriantysExceptions
     {
         int drawn_students[] = {0,0,0,0,0};
+        if (IntStream.of(this.students).sum() < n)
+            throw new InnerExceptions.NotEnoughStudentsInBagException("Not enough students in bag, is time to declare a winner!");
 
 
         for(int i = 0 ; i < n; i++)
@@ -68,6 +76,12 @@ public class Bag {
             if (IntStream.of(this.students).anyMatch(k-> k <0))
                 throw new InnerExceptions.NegativeValue("NegativeValue");
 
+            if (IntStream.of(this.students).sum() < n)
+                throw new InnerExceptions.NotEnoughStudentsInBagException("Not enough students in bag, is time to declare a winner!");
+
+
+            /** old draw algorithm
+
             Random rand = new Random();
             // Obtain a number between [0 - 4].
             int random = rand.nextInt(5);
@@ -76,6 +90,48 @@ public class Bag {
                 random = rand.nextInt(5);
             this.students[random] = this.students[random]-1;
             drawn_students[random] = drawn_students[random] +1;
+
+             */
+
+            /**
+             * new draw algorithm with balanced probability
+             * now the probability of extraction of one student is based on their quantity
+             * in relationship with the total quantity
+             */
+            int range1Start = 0;
+            int range2Start = this.students[0];
+            int range3Start = range2Start + this.students[1];
+            int range4Start = range3Start + this.students[2];
+            int range5Start = range4Start + this.students[3];
+            Random rand = new Random();
+            // Obtain a number between [0 - 4].
+            int random = rand.nextInt(IntStream.of(this.students).sum());
+            if(random >= range1Start && random <= range1Start+this.students[0]-1)
+            {
+                this.students[0] --;
+                drawn_students[0] ++;
+            }
+            if(random >= range2Start && random <= range2Start+this.students[1]-1)
+            {
+                this.students[1] --;
+                drawn_students[1] ++;
+            }
+            if(random >= range3Start && random <= range3Start+this.students[2]-1)
+            {
+                this.students[2] --;
+                drawn_students[2] ++;
+            }
+            if(random >= range4Start && random <= range4Start+this.students[3]-1)
+            {
+                this.students[3] --;
+                drawn_students[3] ++;
+            }
+            if(random >= range5Start && random <= range5Start+this.students[4]-1)
+            {
+                this.students[4] --;
+                drawn_students[4] ++;
+            }
+
         }
         return drawn_students;
     }

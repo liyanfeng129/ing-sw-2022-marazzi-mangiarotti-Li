@@ -5,7 +5,7 @@ public class Cloud {
     private int size;
     private int[] students;
 
-    Cloud()
+    public Cloud()
     {
         this.size = 0;
         this.students = new int[5];
@@ -18,6 +18,12 @@ public class Cloud {
         else
             throw new InnerExceptions.NotValidCloudSizeException("Cloud size is not valid");
     }
+
+    public void takeStudent(int stu)
+    {
+        this.students[stu]--;
+    }
+
      //non manca una addStudent?
     //non ci serve una getCloud e una getStudent della cloud?? io la creo ma poi ditemi voi se ha senso
     public int getSize() {

@@ -40,4 +40,10 @@ public class InnerExceptions {
             super(msg);
         }
     }
+    public static class NotEnoughStudentsInBagException extends EriantysExceptions
+    {
+        public NotEnoughStudentsInBagException(String msg) {
+            super(msg);
+        }
+    }
 }

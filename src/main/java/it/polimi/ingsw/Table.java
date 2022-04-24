@@ -1,18 +1,46 @@
 package it.polimi.ingsw;
 
-import java.util.ArrayList;
+import it.polimi.ingsw.characterCards.CharacterCard;
 
-// prova yan
+import java.util.ArrayList;
+import java.util.Random;
+
+
 public class Table {
     private ArrayList<Island> Islands = new ArrayList<Island>();
-    private String[] characters;
+    private ArrayList<Cloud> clouds;
+    private ArrayList<CharacterCard> characterCards;
+    private Bag bag;
 
-    public Table(){
+    public Table() throws EriantysExceptions {
         for (int i=0;i<12;i++){
             Islands.add(new Island());
         }
         Islands.get(0).setMotherNature(true);
-        characters = this.automaticGenerateCharacters();
+        this.bag = new Bag();
+        initIslands();
+    }
+
+    public void tableInit(ArrayList<Cloud> clouds, ArrayList<CharacterCard> characterCards)
+    {
+        this.clouds = clouds;
+        this.characterCards = characterCards;
+    }
+
+
+    private void initIslands() throws EriantysExceptions {
+        int students[] = bag.bagSet1();
+        Random rand = new Random();
+        // Obtain a number between [0 - 4].
+        for (int i=1; i<12 ;i++)
+        {
+            int random = rand.nextInt(5);
+            while (students[random] == 0)
+                random = rand.nextInt(5);
+            students[random] --;
+            if(i != 6)
+                Islands.get(i).addStudent(random);
+        }
     }
 
     public ArrayList<Island> getIslands() {
@@ -47,12 +75,7 @@ public class Table {
         Islands.get(getMotherNatureIndex()).setMotherNature(false);
         Islands.get(newMn).setMotherNature(true);
     }
-    private String[] automaticGenerateCharacters()
-    {
-        String characters[] = {"es1", "es2", "es3"};
-        // here goes algorithm
-        return characters;
-    }
+
     private int getMotherNatureIndex() throws EriantysExceptions // va messo come attributo della classe così è troppo complicato
     {
         int i = 0;
