@@ -18,7 +18,7 @@ public class Cloud {
         else
             throw new InnerExceptions.NotValidCloudSizeException("Cloud size is not valid");
     }
-
+     //non manca una addStudent?
     //non ci serve una getCloud e una getStudent della cloud?? io la creo ma poi ditemi voi se ha senso
     public int getSize() {
         return size;

@@ -28,9 +28,7 @@ public class Game {
         return Players;
     }
 
-    public void addPlayers(ArrayList<Player> players) {
-        for (int i=0;i<getN_Player();i++){
-            Players.add(new Player());
-        }
+    public void addPlayers(String name) {
+            Players.add(new Player(name));
     }
 }

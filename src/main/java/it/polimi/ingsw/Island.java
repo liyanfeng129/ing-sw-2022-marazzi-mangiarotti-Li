@@ -6,7 +6,7 @@ public class Island {
    // private Island inext_island;
     private boolean mother_nature;
     private int size;
-    private String tower;
+    private TowerColor towerColor;
 
     //public Island(Island inext_island) {
     public Island() {
@@ -17,7 +17,7 @@ public class Island {
         this.students[SType.PINK.ordinal()] = 0;
         this.students[SType.BLUE.ordinal()] = 0;
         this.students[SType.GREEN.ordinal()] = 0;
-        this.tower = null;
+        this.towerColor = null;
         //this.inext_island = inext_island;
         this.mother_nature = false;
         this.size = 1;
@@ -42,12 +42,12 @@ public class Island {
 
     public void setMotherNature(boolean mother_nature){this.mother_nature = mother_nature; }// secondo me non serve
 
-    public void setTower(String color){
-        this.tower = color;
+    public void setTower(TowerColor towerColor){
+        this.towerColor = towerColor;
     }
 
-    public String getTower() {
-        return this.tower;
+    public TowerColor getTower() {
+        return this.towerColor;
     }
 
     public void IncreasingSize(int size)

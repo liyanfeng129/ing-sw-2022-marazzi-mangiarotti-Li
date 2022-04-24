@@ -5,9 +5,7 @@ public class Player {
     private Mage mage;
 
     private int A; // int can go from 1-4
-    private enum TowerColor{
-        WHITE,BLACK,GREY
-    }
+    private TowerColor towerColor;
 
     public String getName() {
         return Name;
@@ -19,6 +17,19 @@ public class Player {
     public void assignMage(Mage mage){
        this.mage = mage;
     }
-    public Player(){
+
+    public Mage getMage() {
+        return mage;
     }
+    public void assignTower(TowerColor color){
+        this.towerColor=color;
+    }
+    public TowerColor getTowerColor(){
+        return towerColor;
+    }
+    public Player(String name){
+         Name=name;
+         mage=Mage.NO_MAGE;
+    }
+
 }
