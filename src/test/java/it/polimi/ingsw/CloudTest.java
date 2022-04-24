@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +11,10 @@ class CloudTest {
     @BeforeEach
     public void setup(){
         cloud=new Cloud();
+    }
+    @AfterEach
+    public void teardown(){
+        cloud=null;
     }
     @Test
     public void test_setCloud(){
@@ -28,13 +33,9 @@ class CloudTest {
             e.printStackTrace();
         }
     }
-    /*
-    non so come fare questo test,a cosa deve essere uguale la cloud?
-    dovrei avere una addstudent no?
-         */
     @Test
     public void test_getCloud(){
-        int temp[]={0,0,0};
+        int temp[]={0,0,0,0,0};
         try {
             cloud.setCloud(3);
         } catch (EriantysExceptions e) {
