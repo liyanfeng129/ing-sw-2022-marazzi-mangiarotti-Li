@@ -3,10 +3,13 @@ package it.polimi.ingsw;
 import java.util.ArrayList;
 
 public class Hand {
-    private ArrayList<Assistant> List_cards = new ArrayList<Assistant>();
-    private int N_cards = List_cards.size();
 
+    private ArrayList<Assistant> List_cards;
+    private int N_cards = 0;
 
+    public Hand(){
+        this.List_cards= new ArrayList<Assistant>();
+    }
 
 
 
@@ -20,8 +23,9 @@ public class Hand {
     }
 
     public void setList_cards(Mage mage) {
-        for (int i=0 ;i<11;i++){
+        for (int i=0 ;i<10;i++){
             this.List_cards.add(new Assistant(AssistantType.index(i),mage));
+            this.N_cards = this.N_cards+1;
         }
     }
 

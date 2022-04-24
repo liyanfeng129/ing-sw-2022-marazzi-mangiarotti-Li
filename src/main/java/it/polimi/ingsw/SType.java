@@ -1,4 +1,4 @@
-package it.polimi;
+package it.polimi.ingsw;
 
 public enum SType {
         RED,
