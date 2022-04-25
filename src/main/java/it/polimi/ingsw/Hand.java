@@ -30,6 +30,7 @@ public class Hand {
     }
 
     //void perche so gia la carta che il player usa,altimenti bisogna cambiare un po di cose
+    //non ci drovebbe essere un exception?
     public void use_cards(Assistant assistant) {
         N_cards = N_cards-1;
         List_cards.remove(List_cards.indexOf(assistant));

@@ -29,7 +29,6 @@ public class Cloud {
     public int getSize() {
         return size;
     }
-
     public int[] getStudents() {
         return students;
     }
