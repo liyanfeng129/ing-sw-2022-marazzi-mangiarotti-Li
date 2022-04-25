@@ -34,12 +34,14 @@ public class Table {
         // Obtain a number between [0 - 4].
         for (int i=1; i<12 ;i++)
         {
-            int random = rand.nextInt(5);
-            while (students[random] == 0)
-                random = rand.nextInt(5);
-            students[random] --;
             if(i != 6)
+            {
+                int random = rand.nextInt(5);
+                while (students[random] == 0)
+                    random = rand.nextInt(5);
+                students[random] --;
                 Islands.get(i).addStudent(random);
+            }
         }
     }
 
