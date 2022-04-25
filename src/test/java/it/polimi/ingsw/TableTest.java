@@ -11,7 +11,11 @@ class TableTest {
     private Table table;
     @BeforeEach
     public void setup(){
-        table=new Table();
+        try {
+            table=new Table();
+        } catch (EriantysExceptions e) {
+            fail();
+        }
     }
     @Test
     public void test_mergeIsland(){

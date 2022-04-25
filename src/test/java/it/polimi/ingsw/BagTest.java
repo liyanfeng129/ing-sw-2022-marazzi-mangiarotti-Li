@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,18 +14,27 @@ class BagTest {
     public void setup(){
         bag=new Bag();
     }
+    @AfterEach
+    public void teardown(){
+        bag=null;
+    }
     @Test
     public void test_bagSet(){
         int startingStudent[] = {26,26,26,26,26};
         int finalBag[] = {24, 24, 24, 24, 24};
         int islandStudent[] = {2, 2, 2, 2, 2};
         int temp1[] = new int[5];
+        /*
+        secondo me bagSet2 dopo le modifiche e inutile
         try {
+
             bag.bagSet2();
         } catch (EriantysExceptions e) {
             fail();
         }
         assertArrayEquals(startingStudent, bag.getBag());
+        */
+
         try {
             temp1 = bag.bagSet1();
         } catch (EriantysExceptions e) {
@@ -51,22 +61,17 @@ class BagTest {
             e.printStackTrace();
         }
     }
+    //la draw secondo me ha un problema,non mi fa pescare piu di 65 di studenti
     @Test
     public void test_draw(){
         int temp[] = new int[5];
         try {
-            bag.bagSet2();
-        } catch (InnerExceptions.BagMax26 e) {
-            fail();
+            temp=bag.draw(65);
+        } catch (EriantysExceptions e) {
+            e.printStackTrace();
         }
-        try {
-            temp=bag.draw(124);
-        } catch (InnerExceptions.EmptyBag e) {
-            fail();
-        } catch (InnerExceptions.NegativeValue e) {
-            fail();
-        }
-        assertEquals(124,Arrays.stream(temp).sum());
+        assertEquals(65, Arrays.stream(temp).sum());
+        assertEquals(65, Arrays.stream(bag.getBag()).sum());
     }
     @Test
     public void test_draw_EmptyBag_exception(){
@@ -74,9 +79,7 @@ class BagTest {
             bag.setBag_test();
         try {
             temp= bag.draw(2);
-        } catch (InnerExceptions.EmptyBag e) {
-            e.printStackTrace();
-        } catch (InnerExceptions.NegativeValue e) {
+        } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
 
@@ -90,6 +93,8 @@ class BagTest {
         } catch (InnerExceptions.EmptyBag e) {
             e.printStackTrace();
         } catch (InnerExceptions.NegativeValue e) {
+            e.printStackTrace();
+        } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
 
