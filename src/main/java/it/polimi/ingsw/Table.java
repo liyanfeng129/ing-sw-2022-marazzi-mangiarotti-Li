@@ -2,11 +2,12 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.characterCards.CharacterCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Table {
+public class Table implements Serializable {
     private ArrayList<Island> Islands = new ArrayList<Island>();
     private ArrayList<Cloud> clouds;
     private ArrayList<CharacterCard> characterCards;
@@ -34,7 +35,7 @@ public class Table {
         // Obtain a number between [0 - 4].
         for (int i=1; i<12 ;i++)
         {
-            if(i != 6)
+            if(i != 6) // skip this island
             {
                 int random = rand.nextInt(5);
                 while (students[random] == 0)
