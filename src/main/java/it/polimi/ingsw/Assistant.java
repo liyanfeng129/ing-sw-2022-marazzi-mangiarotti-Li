@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-public class Assistant {
+
+
+public class Assistant  {
     private AssistantType type;
     private Mage mage;
 

@@ -7,3 +7,4 @@ Please select one of following options by digiting the number in the left
 5. Show existing games in the lobby
 6. Show resumable games 
 7. Join in a reasumable game
+8. logout and exit

@@ -1,11 +1,13 @@
 package it.polimi.ingsw;
 
-import  it.polimi.ingsw.Config;
+
+
+import java.io.Serializable;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Bag {
+public class Bag{
     private final int[] students;
     private int N_students;
 

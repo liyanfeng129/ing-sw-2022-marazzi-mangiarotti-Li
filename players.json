@@ -1,0 +1,11 @@
+{
+  "players" : [ {
+    "mage" : "NO_MAGE",
+    "towerColor" : null,
+    "name" : "marco"
+  }, {
+    "mage" : "NO_MAGE",
+    "towerColor" : null,
+    "name" : "polo"
+  } ]
+}

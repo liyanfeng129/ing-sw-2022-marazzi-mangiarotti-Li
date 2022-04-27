@@ -46,4 +46,22 @@ public class InnerExceptions {
             super(msg);
         }
     }
+    public static class NoSuchUserException extends EriantysExceptions
+    {
+        public NoSuchUserException(String msg) {
+            super(msg);
+        }
+    }
+    public static class GameStartingError extends EriantysExceptions
+    {
+        public GameStartingError(String msg) {
+            super(msg);
+        }
+    }
+    public static class InvalidTowerNumberException extends EriantysExceptions
+    {
+        public InvalidTowerNumberException(String msg) {
+            super(msg);
+        }
+    }
 }

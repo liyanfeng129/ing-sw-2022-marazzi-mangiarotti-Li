@@ -1,7 +1,9 @@
 package it.polimi.ingsw;
 
 
-public class Cloud {
+import java.io.Serializable;
+
+public class Cloud implements Serializable {
     private int size;
     private int[] students;
 

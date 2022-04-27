@@ -7,8 +7,9 @@ public class Hand {
     private ArrayList<Assistant> List_cards;
     private int N_cards = 0;
 
-    public Hand(){
+    public Hand(Mage mage){
         this.List_cards= new ArrayList<Assistant>();
+        setList_cards(mage);
     }
 
 

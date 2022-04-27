@@ -1,6 +1,9 @@
 package it.polimi.ingsw;
 
-public enum AssistantType {
+
+import java.io.Serializable;
+
+public enum AssistantType implements Serializable {
 
     Card_1(1, 1), Card_2(2, 1), Card_3(3, 2),
     Card_4(4, 2), Card_5(5, 3), Card_6(6, 3),

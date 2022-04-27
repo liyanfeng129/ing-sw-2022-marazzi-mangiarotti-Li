@@ -1,18 +1,43 @@
 package it.polimi.ingsw;
 
-public class Player {
-    private String Name;
-    private Mage mage;
+import java.io.Serializable;
 
-    private int A; // int can go from 1-4
+public class Player implements Serializable {
+    private String name;
+    private Mage mage;
+    private PlayerBoard pb;
+    private Hand hand;
+    private Wallet wallet;
+
+    public Player(String name, Mage mage, PlayerBoard pb, TowerColor towerColor) {
+        this.name = name;
+        this.mage = mage;
+        this.pb = pb;
+        this.towerColor = towerColor;
+        hand = new Hand(mage);
+    }
+
+    /**
+     * Constructor for expertMode
+     * */
+    public Player(String name, Mage mage, PlayerBoard pb, TowerColor towerColor, Wallet wallet) {
+        this.name = name;
+        this.mage = mage;
+        this.pb = pb;
+        this.towerColor = towerColor;
+        hand = new Hand(mage);
+        this.wallet = wallet;
+    }
+
+
     private TowerColor towerColor;
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
     public void assignMage(Mage mage){
        this.mage = mage;
@@ -26,10 +51,6 @@ public class Player {
     }
     public TowerColor getTowerColor(){
         return towerColor;
-    }
-    public Player(String name){
-         Name=name;
-         mage=Mage.NO_MAGE;
     }
 
 }

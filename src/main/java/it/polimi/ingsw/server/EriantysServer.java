@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import com.google.gson.Gson;
+import it.polimi.ingsw.client.User;
+import it.polimi.ingsw.client.Users;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,7 +19,7 @@ public class EriantysServer {
             InetAddress iAddress = InetAddress.getLocalHost();
             String server_IP = iAddress.getHostAddress();
             System.out.println("Server IP address : " +server_IP);
-            
+            logOutAll();
 
             // declare socket client
             Socket client;
@@ -34,39 +34,54 @@ public class EriantysServer {
                 // waiting for a client to connect
                 client = server.accept();
                 System.out.println("Client connected: "+client);
-
-                // Input stream
-                BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                // Output stream
-                PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-
-                message = in.readLine();
-                switch (message)
-                {
-                    case "1":
-                        System.out.println(client+"asking for option 1");
-                        out.println("ok, option 1");
-                        break;
-                    case "2":
-                        System.out.println(client+"asking for option 2");
-                        out.println("ok, option 2");
-                        break;
-                    case "try to connect":
-                        System.out.println(client+"trying to connect");
-                        out.println("ok, you are connected");
-                        break;
-
-                    default:
-                        out.println("not ok, no option valid for this");
-                }
-                // close client
-                client.close();
+                new EriantysClientHandler(client).start();
             }
 
+        }
+        catch (Exception e)
+        {
+            logOutAll();
+            e.printStackTrace();
+        }
+    }
+
+    private static void logOutAll()
+    {
+        Users userList = (Users) fileJason2Object("users.jason", Users.class);
+        userList.logOutAll();
+       object2FileJason("users.jason", userList);
+    }
+
+    private static synchronized Object fileJason2Object(String fileName, Class ob)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+        Gson gson = new Gson();
+        try (Reader reader = new FileReader(absolutePathToProject+pathFromContentRoot+fileName)) {
+
+            // Convert JSON File to Java Object
+            Object obb = gson.fromJson(reader, ob);
+            return obb;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+    private static synchronized  void object2FileJason(String fileName, Object ob)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+        Gson gson = new Gson();
+        try(FileWriter writer = new FileWriter(absolutePathToProject+pathFromContentRoot+fileName))
+        {
+            gson.toJson(ob, writer);
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
     }
+
+
 }
