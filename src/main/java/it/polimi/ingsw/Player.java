@@ -32,6 +32,15 @@ public class Player implements Serializable {
 
     private TowerColor towerColor;
 
+    /** TODO
+     * player board va aggiunta come attributo
+     */
+
+
+
+
+
+
     public String getName() {
         return name;
     }
