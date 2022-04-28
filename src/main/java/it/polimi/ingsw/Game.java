@@ -7,6 +7,14 @@ public class Game {
     private ArrayList<Player> Players = new ArrayList<Player>();
     private int n_Player;
     private boolean Gamemode;
+    private Table table;
+
+    /** TODO
+        va implementato il costruttore
+        va implementato il calcolo dei turni
+     */
+    public Game(){}
+
 
     public int getN_Player() {
         return n_Player;

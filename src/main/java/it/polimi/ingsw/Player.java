@@ -7,6 +7,15 @@ public class Player {
     private int A; // int can go from 1-4
     private TowerColor towerColor;
 
+    /** TODO
+     * player board va aggiunta come attributo
+     */
+
+
+
+
+
+
     public String getName() {
         return Name;
     }

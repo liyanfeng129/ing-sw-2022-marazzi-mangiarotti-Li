@@ -5,6 +5,14 @@ public class PlayerBoard {
     private int[] Hall= new int[5];
     private int Tower;
 
+
+
+    /*
+    public void sposta_studente(Island island, int[]){
+    }
+     */
+
+
     public int[] getEntrance() {
         return Entrance;
     }
