@@ -68,20 +68,14 @@ public class Bag{
         int drawn_students[] = {0,0,0,0,0};
         if (IntStream.of(this.students).sum() < n)
             throw new InnerExceptions.NotEnoughStudentsInBagException("Not enough students in bag, is time to declare a winner!");
+        if (IntStream.of(this.students).sum() == 0)
+            throw new InnerExceptions.EmptyBag("Emptybag");
+        if (IntStream.of(this.students).anyMatch(k-> k <0))
+            throw new InnerExceptions.NegativeValue("NegativeValue");
 
 
         for(int i = 0 ; i < n; i++)
         {
-            if (IntStream.of(this.students).sum() == 0)
-                throw new InnerExceptions.EmptyBag("Emptybag");
-
-            if (IntStream.of(this.students).anyMatch(k-> k <0))
-                throw new InnerExceptions.NegativeValue("NegativeValue");
-
-            if (IntStream.of(this.students).sum() < n)
-                throw new InnerExceptions.NotEnoughStudentsInBagException("Not enough students in bag, is time to declare a winner!");
-
-
             /** old draw algorithm
 
             Random rand = new Random();
