@@ -17,4 +17,8 @@ public class Assistant  {
     public int getSteps(){
         return this.type.getSteps();
     }
+
+    public AssistantType getAssistantType() {
+        return type;
+    }
 }

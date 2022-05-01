@@ -31,11 +31,10 @@ public class Hand {
     }
 
     //non ci drovebbe essere un exception?
-    public void use_cards(Assistant assistant) {
+    public void use_cards(AssistantType assistant) {
         N_cards = N_cards-1;
-        //List_cards.remove(assistant);
         for (int i=0;i<N_cards;i++){
-            if(getList_cards().get(i) == assistant){
+            if(getList_cards().get(i).getAssistantType() == assistant){
                 List_cards.remove(i);
             }
         }

@@ -30,8 +30,8 @@ class HandTest {
     }
     @Test
     public void test_useCard(){
-        Assistant a=new Assistant(AssistantType.Card_1,Mage.MAGE1);
-        hand.use_cards(a);
+        //Assistant a=new Assistant(AssistantType.Card_1,Mage.MAGE1);
+        hand.use_cards(AssistantType.Card_1);
         System.out.println(hand.getList_cards());
         assertEquals(9,hand.getN_cards());
         assertEquals(9,hand.getList_cards().size());
