@@ -31,7 +31,7 @@ public class Island implements Serializable {
         this.students[color]++;
     }
 
-    public void mergeStudents(int[] students) // a cosa serve ?
+    public void mergeStudents(int[] students)
     {
         for(int i = 0; i < 5; i++)
             this.students[i] = this.students[i] + students[i];

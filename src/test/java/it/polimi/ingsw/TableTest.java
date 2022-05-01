@@ -19,15 +19,22 @@ class TableTest {
     }
     @Test
     public void test_mergeIsland(){
+        int temp[]=table.getIslands(0).getStudents();
         table.getIslands(0).setTower(TowerColor.BLACK);
         table.getIslands(1).setTower(TowerColor.BLACK);
         table.getIslands(11).setTower(TowerColor.BLACK);
+        table.getIslands(0).addStudent(3);
+        temp[3]++;
+        table.getIslands(11).addStudent(0);
+        temp[0]++;
         try {
             table.mergeIsland();
         } catch (EriantysExceptions e) {
             fail();
         }
         assertEquals(10,table.getIslands().size());
+        assertArrayEquals(temp,table.getIslands(0).getStudents());
+
     }
     @Test
     public void test_moveMn(){

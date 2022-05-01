@@ -44,18 +44,6 @@ public class Bag{
     }
 
 
-    public void bagSet2() throws InnerExceptions.BagMax26 /** bagSet2 initializes the bag with 130 students in total, 26 for each kind*/
-    {
-        if (IntStream.of(this.students).sum() != 0)
-            throw new InnerExceptions.BagMax26("Max 26 students for color");
-
-        for(int i = 0 ; i < students.length; i++)
-        {
-            students[i] = 26;
-            N_students = N_students+26;
-        }
-    }
-
 
 
     /** Extract randomly n students from bag
@@ -69,18 +57,13 @@ public class Bag{
         if (IntStream.of(this.students).sum() < n)
             throw new InnerExceptions.NotEnoughStudentsInBagException("Not enough students in bag, is time to declare a winner!");
 
+        if (IntStream.of(this.students).sum() == 0)
+            throw new InnerExceptions.EmptyBag("Emptybag");
 
+        if (IntStream.of(this.students).anyMatch(k-> k <0))
+            throw new InnerExceptions.NegativeValue("NegativeValue");
         for(int i = 0 ; i < n; i++)
         {
-            if (IntStream.of(this.students).sum() == 0)
-                throw new InnerExceptions.EmptyBag("Emptybag");
-
-            if (IntStream.of(this.students).anyMatch(k-> k <0))
-                throw new InnerExceptions.NegativeValue("NegativeValue");
-
-            if (IntStream.of(this.students).sum() < n)
-                throw new InnerExceptions.NotEnoughStudentsInBagException("Not enough students in bag, is time to declare a winner!");
-
 
             /** old draw algorithm
 

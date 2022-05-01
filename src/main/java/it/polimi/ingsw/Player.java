@@ -9,6 +9,7 @@ public class Player implements Serializable {
     private Hand hand;
     private Wallet wallet;
 
+    //non sarebbe meglio fare new pb invece che passargli una pb?
     public Player(String name, Mage mage, PlayerBoard pb, TowerColor towerColor) {
         this.name = name;
         this.mage = mage;
@@ -62,4 +63,7 @@ public class Player implements Serializable {
         return towerColor;
     }
 
+    public PlayerBoard getPlayerBoard() {
+        return pb;
+    }
 }

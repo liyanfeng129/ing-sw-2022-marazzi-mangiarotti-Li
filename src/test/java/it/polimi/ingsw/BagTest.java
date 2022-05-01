@@ -20,21 +20,11 @@ class BagTest {
     }
     @Test
     public void test_bagSet(){
-        int startingStudent[] = {26,26,26,26,26};
+        assertEquals(130, Arrays.stream(bag.getBag()).sum());
         int finalBag[] = {24, 24, 24, 24, 24};
         int islandStudent[] = {2, 2, 2, 2, 2};
         int temp1[] = new int[5];
-        /*
-        secondo me bagSet2 dopo le modifiche e inutile
-        try {
-
-            bag.bagSet2();
-        } catch (EriantysExceptions e) {
-            fail();
-        }
-        assertArrayEquals(startingStudent, bag.getBag());
-        */
-
+        assertEquals(130, Arrays.stream(bag.getBag()).sum());
         try {
             temp1 = bag.bagSet1();
         } catch (EriantysExceptions e) {
@@ -42,15 +32,6 @@ class BagTest {
         }
         assertArrayEquals(finalBag, bag.getBag());
         assertArrayEquals(islandStudent, temp1);
-    }
-    @Test
-    public void test_bag_Max26_Exceptions(){
-        try {
-            bag.setBag_test();
-            bag.bagSet2();
-        } catch (InnerExceptions.BagMax26 e) {
-            e.printStackTrace();
-        }
     }
     @Test
     public void test_bag_NegativeValue_Exceptions() {
@@ -64,15 +45,27 @@ class BagTest {
     //la draw secondo me ha un problema,non mi fa pescare piu di 65 di studenti
     @Test
     public void test_draw(){
+        assertEquals(130, Arrays.stream(bag.getBag()).sum());
         int temp[] = new int[5];
+        int temp1[]=new int[5];
         try {
-            temp=bag.draw(65);
+            temp=bag.draw(60);
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
-        assertEquals(65, Arrays.stream(temp).sum());
-        assertEquals(65, Arrays.stream(bag.getBag()).sum());
+        assertEquals(60, Arrays.stream(temp).sum());
+        assertEquals(70, Arrays.stream(bag.getBag()).sum());
+        int temp2[]= bag.getBag();
+        System.out.println(temp2);
+        try {
+            temp1=bag.draw(35);
+        } catch (EriantysExceptions e) {
+            e.printStackTrace();
+        }
+        //assertEquals(64, Arrays.stream(temp1).sum());
+        assertEquals(35, Arrays.stream(bag.getBag()).sum());
     }
+
     @Test
     public void test_draw_EmptyBag_exception(){
         int temp[] = new int[5];

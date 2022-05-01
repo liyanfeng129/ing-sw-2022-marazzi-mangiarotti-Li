@@ -64,4 +64,10 @@ public class InnerExceptions {
             super(msg);
         }
     }
+    public static class NotValidStudentSizeException extends EriantysExceptions
+    {
+        public NotValidStudentSizeException(String msg) {
+            super(msg);
+        }
+    }
 }

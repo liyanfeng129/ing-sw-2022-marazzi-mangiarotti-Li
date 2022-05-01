@@ -11,6 +11,7 @@ public class Game {
     private boolean expertMode;
     private Table table;
 
+    //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
     public Game(int n_Player, boolean expertMode, Player creator)
     {
         this.n_Player = n_Player;
@@ -23,6 +24,7 @@ public class Game {
         return table;
     }
 
+    //secondo me manca un exception nel caso in cui i giocatori avessero lo stesso colore di torre
     public void startGame() throws EriantysExceptions {
         ArrayList<Cloud> clouds = new ArrayList<>();
         ArrayList<CharacterCard> characterCards = new ArrayList<>();
@@ -31,6 +33,12 @@ public class Game {
             throw new InnerExceptions.GameStartingError("The number of player is incorrect.");
 
                 if(n_Player == 2 && expertMode)
+                {
+                    /**
+                     * TODO
+                     * */
+                }
+                if(n_Player == 3 &&expertMode)
                 {
                     /**
                      * TODO
@@ -53,12 +61,22 @@ public class Game {
                     table.tableInit(clouds,null);
                 }
 
+                if(n_Player == 3 && !expertMode)
+                {
+                    for(int i = 0; i < n_Player; i++)
+                    {
+                        Cloud cloud = new Cloud();
+                        cloud.setCloud(4);
+                        clouds.add(cloud);
+                    }
+                    table.tableInit(clouds,null);
+                }
                 if(n_Player == 4 && !expertMode)
                 {
                     for(int i = 0; i < n_Player; i++)
                     {
                         Cloud cloud = new Cloud();
-                        cloud.setCloud(4); // era 4?
+                        cloud.setCloud(3); // era 4? mi sembra fosse 3
                         clouds.add(cloud);
                     }
                     table.tableInit(clouds,null);

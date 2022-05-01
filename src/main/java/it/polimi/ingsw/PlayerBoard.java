@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import java.util.Arrays;
+
 public class PlayerBoard {
     private int[] studentsHolder;
     private int[] waitingRoom;
@@ -8,6 +10,7 @@ public class PlayerBoard {
     private Boolean[] profHolder;
     private int maxStudentsInWaiting;
 
+    //ma perche devo passare un array di student se poi lo inizializzi a 0?
     public PlayerBoard(int tower, int[] students, int maxStudentsInWaiting) {
         this.studentsHolder = new int[5];
         this.waitingRoom = new int[5];
@@ -29,7 +32,11 @@ public class PlayerBoard {
         return studentsHolder;
     }
 
-    public void setStudentsHolder(int[] studentsHolder) {
+    public void setStudentsHolder(int[] studentsHolder) throws EriantysExceptions {
+        for (int i=0;i<5;i++){
+            if(studentsHolder[i]>10 || studentsHolder[i]<0)
+                throw new InnerExceptions.NotValidStudentSizeException("Number of student is not valid");
+        }
         this.studentsHolder = studentsHolder;
     }
 
@@ -37,7 +44,9 @@ public class PlayerBoard {
         return waitingRoom;
     }
 
-    public void setWaitingRoom(int[] waitingRoom) {
+    public void setWaitingRoom(int[] waitingRoom) throws EriantysExceptions {
+        if(Arrays.stream(waitingRoom).sum() > maxStudentsInWaiting || Arrays.stream(waitingRoom).sum() <0)
+            throw new InnerExceptions.NotValidStudentSizeException("Number of student is not valid");
         this.waitingRoom = waitingRoom;
     }
 
@@ -45,16 +54,25 @@ public class PlayerBoard {
         return tower;
     }
 
-    public void setTower(int tower) {
+    // nella set tower devo passare per forza 6 o 8 giusto?
+    public void setTower(int tower) throws EriantysExceptions {
+        if(tower != n_tower)
+            throw new InnerExceptions.InvalidTowerNumberException("Invalid tower number exception!");
+
         this.tower = tower;
     }
 
+
+    //secondo me non servono, ho un array a parte che mi dice chi ha i professori
     public Boolean[] getProfHolder() {
         return profHolder;
     }
-
     public void setProfHolder(Boolean[] profHolder) {
         this.profHolder = profHolder;
+    }
+    public void setProf(int prof, boolean occupy)
+    {
+        this.profHolder[prof] = occupy;
     }
 
     public void moveTower(int n) throws EriantysExceptions
@@ -65,10 +83,6 @@ public class PlayerBoard {
         tower += n;
     }
 
-    public void setProf(int prof, boolean occupy)
-    {
-        this.profHolder[prof] = occupy;
-    }
 
 
     private int[] sumArray(int[] a1, int[] a2){
@@ -78,11 +92,20 @@ public class PlayerBoard {
         return a1;
     }
 
-    public void takeStudentFromWaitingRoom(int student)
+    public void takeStudentFromWaitingRoom(int student) throws EriantysExceptions
     {
+        if((this.waitingRoom[student]-1)<0)
+            throw new InnerExceptions.NegativeValue("Negative Value");
         this.waitingRoom[student] -- ;
     }
+    public  void addStudentToHolder(int student) throws EriantysExceptions
+    {
+        if((this.studentsHolder[student]+1)>10)
+            throw new InnerExceptions.NotValidStudentSizeException("Number of student is already at max");
+        this.studentsHolder[student] ++;
+    }
 
+    //secondo me non serve
     public  void takeStudentFromHolder(int student)
     {
         this.studentsHolder[student] --;

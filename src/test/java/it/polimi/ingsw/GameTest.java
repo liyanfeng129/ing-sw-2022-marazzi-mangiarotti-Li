@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,25 +10,73 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
     private Game game;
+    private Game Egame;
+    private Player p1;
+    private Player p2;
+    private PlayerBoard pb;
+    private Table table;
     @BeforeEach
     public void setup(){
-        //game=new Game();
+        pb =new PlayerBoard(8, new int[]{0, 0, 0, 0, 0},7);
+        p1=new Player("Alessio",Mage.MAGE1,pb,TowerColor.BLACK);
+        p2=new Player("Yan",Mage.MAGE2,pb,TowerColor.WHITE);
+        game=new Game(2,false,p1);
+        Egame=new Game(2,true,p1);
     }
     @Test
     public void test_game(){
         ArrayList<Player> temp = new ArrayList<Player>();
-        Player p1=new Player("alessio");
-        Player p2=new Player("leonardo");
         temp.add(p1);
         temp.add(p2);
         game.setN_Player(2);
-      //  game.setGamemode(true);
-        game.addPlayers("alessio");
-        game.addPlayers("leonardo");
+        game.addPlayers(p2);
         assertEquals(2,game.getN_Player());
-        //assertTrue(game.getGamemode());
+        assertFalse(game.isExpertMode());
+        assertTrue(Egame.isExpertMode());
         assertEquals(temp.get(0).getName(),game.getPlayers().get(0).getName());
         assertEquals(temp.get(1).getName(),game.getPlayers().get(1).getName());
     }
+    @Test
+    public void test_startGame2Player(){
+        try {
+            table=new Table();
+            game.setTable(table);
+            game.addPlayers(p2);
+            game.startGame();
+        } catch (EriantysExceptions e) {
+            e.printStackTrace();
+        }
+        // secondo me manca una get cloud in table
+        // assertEquals(3,game.getTable().getcloud(0).getsize();
 
+    }
+    @Test
+    public void test_startGame4Player(){
+        try {
+            table=new Table();
+            game.setTable(table);
+            game.setN_Player(4);
+            game.addPlayers(p2);
+            game.addPlayers(p2);
+            game.addPlayers(p2);
+            game.startGame();
+        } catch (EriantysExceptions e) {
+            e.printStackTrace();
+        }
+        // secondo me manca una get cloud in table
+        // assertEquals(3,game.getTable().getcloud(0).getsize();
+
+    }
+    @Test
+    public void test_incorrectNumberOfPlayer(){
+        try {
+            table=new Table();
+            game.setTable(table);
+            game.addPlayers(p2);
+            game.addPlayers(p2);
+            game.startGame();
+        } catch (EriantysExceptions e) {
+            e.printStackTrace();
+        }
+    }
 }
