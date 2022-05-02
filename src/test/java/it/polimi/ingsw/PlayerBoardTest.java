@@ -10,16 +10,16 @@ class PlayerBoardTest {
     private Professors prof;
     @BeforeEach
     public void setup(){
-        pb=new PlayerBoard(8, new int[]{1, 2, 0, 3, 1},7);
+        pb=new PlayerBoard(8,TowerColor.BLACK,7);
     }
     @Test
     public void test_pbStudent(){
         try {
-            pb.setStudentsHolder(new int[]{0, 3, 2, 1, 2});
+            pb.setDiningRoom(new int[]{0, 3, 2, 1, 2});
         } catch (EriantysExceptions e) {
             fail();
         }
-        assertArrayEquals(new int[]{0, 3, 2, 1, 2},pb.getStudentsHolder());
+        assertArrayEquals(new int[]{0, 3, 2, 1, 2},pb.getDiningRoom());
         try {
             pb.setWaitingRoom(new int[]{0, 1, 2, 1, 2});
         } catch (EriantysExceptions e) {
@@ -31,7 +31,7 @@ class PlayerBoardTest {
         } catch (EriantysExceptions e) {
             fail();
         }
-        assertArrayEquals(new int[]{0, 4, 2, 1, 2},pb.getStudentsHolder());
+        assertArrayEquals(new int[]{0, 4, 2, 1, 2},pb.getDiningRoom());
         try {
             pb.takeStudentFromWaitingRoom(2);
         } catch (EriantysExceptions e) {
@@ -42,7 +42,7 @@ class PlayerBoardTest {
     @Test
     public void test_pbNotValidStudentException(){
         try {
-            pb.setStudentsHolder(new int[]{0, 11, 2, -1, 2});
+            pb.setDiningRoom(new int[]{0, 11, 2, -1, 2});
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
@@ -52,7 +52,7 @@ class PlayerBoardTest {
             e.printStackTrace();
         }
         try {
-            pb.setStudentsHolder(new int[]{0, 3, 10, 1, 2});
+            pb.setDiningRoom(new int[]{0, 3, 10, 1, 2});
         } catch (EriantysExceptions e) {
             fail();
         }
@@ -75,27 +75,27 @@ class PlayerBoardTest {
     @Test
     public void test_pbTower(){
         try {
-            pb.setTower(8);
+            pb.setN_tower(8);
         } catch (EriantysExceptions e) {
             fail();
         }
-        assertEquals(8,pb.getTower());
+        assertEquals(8,pb.getN_tower());
         try {
             pb.moveTower(-2);
         } catch (EriantysExceptions e) {
             fail();
         }
-        assertEquals(6,pb.getTower());
+        assertEquals(6,pb.getN_tower());
     }
     @Test
     public void test_InvalidTowerNumberException(){
         try {
-            pb.setTower(9);
+            pb.setN_tower(9);
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
         try {
-            pb.setTower(8);
+            pb.setN_tower(8);
         } catch (EriantysExceptions e) {
             fail();
         }

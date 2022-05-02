@@ -16,10 +16,9 @@ class GameTest {
     private PlayerBoard pb;
     private Table table;
     @BeforeEach
-    public void setup(){
-        pb =new PlayerBoard(8, new int[]{0, 0, 0, 0, 0},7);
-        p1=new Player("Alessio",Mage.MAGE1,pb,TowerColor.BLACK);
-        p2=new Player("Yan",Mage.MAGE2,pb,TowerColor.WHITE);
+    public void setup() throws EriantysExceptions {
+        p1=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,8,7);
+        p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,8,7);
         game=new Game(2,false,p1);
         Egame=new Game(2,true,p1);
     }

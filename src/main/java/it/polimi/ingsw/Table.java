@@ -50,9 +50,11 @@ public class Table implements Serializable {
         return Islands;
     }
 
-    public Island getIslands(int isola){
-        return Islands.get(isola);
+    public Island getIslands(int island_pos){
+        return Islands.get(island_pos);
     }
+
+    // forse meglio privato
     public void mergeIsland() throws EriantysExceptions
     {
         //check leftIsland
@@ -77,12 +79,13 @@ public class Table implements Serializable {
             newMn = getRightIslandIndex(newMn);
         Islands.get(getMotherNatureIndex()).setMotherNature(false);
         Islands.get(newMn).setMotherNature(true);
+        mergeIsland();
     }
 
-    private int getMotherNatureIndex() throws EriantysExceptions // va messo come attributo della classe così è troppo complicato
+    private int getMotherNatureIndex() throws EriantysExceptions
     {
         int i = 0;
-        while(i < Islands.size()){ // non ha senso questo qui c'è un problema
+        while(i < Islands.size()){
             if(Islands.get(i).getMotherNature())
                 return i;
             else
@@ -107,5 +110,8 @@ public class Table implements Serializable {
             return index + 1;
     }
 
+    public Bag getBag() {
+        return bag;
+    }
 }
 

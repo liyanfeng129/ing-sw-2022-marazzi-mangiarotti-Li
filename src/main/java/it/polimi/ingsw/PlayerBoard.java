@@ -3,41 +3,40 @@ package it.polimi.ingsw;
 import java.util.Arrays;
 
 public class PlayerBoard {
-    private int[] studentsHolder;
+    private int[] diningRoom;
     private int[] waitingRoom;
-    private int tower;
+    private TowerColor tower;
     private int n_tower;
     private Boolean[] profHolder;
     private int maxStudentsInWaiting;
 
     //ma perche devo passare un array di student se poi lo inizializzi a 0?
-    public PlayerBoard(int tower, int[] students, int maxStudentsInWaiting) {
-        this.studentsHolder = new int[5];
+    public PlayerBoard(int n_tower,TowerColor tower_color, int maxStudentsInWaiting) {
+        this.diningRoom = new int[5];
         this.waitingRoom = new int[5];
         this.profHolder = new Boolean[5];
         for(int i = 0; i < 5; i++)
         {
-            this.studentsHolder[i] = 0;
+            this.diningRoom[i] = 0;
             this.waitingRoom[i] = 0;
             this.profHolder[i] = false;
         }
-        this.tower = tower;
-        this.n_tower = tower;
+        this.tower = tower_color;
+        this.n_tower = n_tower ;
         this.maxStudentsInWaiting = maxStudentsInWaiting;
-        this.waitingRoom = sumArray(this.waitingRoom, students);
 
     }
 
-    public int[] getStudentsHolder() {
-        return studentsHolder;
+    public int[] getDiningRoom() {
+        return diningRoom;
     }
 
-    public void setStudentsHolder(int[] studentsHolder) throws EriantysExceptions {
+    public void setDiningRoom(int[] diningRoom) throws EriantysExceptions {
         for (int i=0;i<5;i++){
-            if(studentsHolder[i]>10 || studentsHolder[i]<0)
+            if(diningRoom[i]>10 || diningRoom[i]<0)
                 throw new InnerExceptions.NotValidStudentSizeException("Number of student is not valid");
         }
-        this.studentsHolder = studentsHolder;
+        this.diningRoom = diningRoom;
     }
 
     public int[] getWaitingRoom() {
@@ -50,16 +49,16 @@ public class PlayerBoard {
         this.waitingRoom = waitingRoom;
     }
 
-    public int getTower() {
-        return tower;
+    public int getN_tower() {
+        return n_tower;
     }
 
     // nella set tower devo passare per forza 6 o 8 giusto?
-    public void setTower(int tower) throws EriantysExceptions {
-        if(tower != n_tower)
+    public void setN_tower(int n_tower) throws EriantysExceptions {
+        if(this.n_tower != n_tower)
             throw new InnerExceptions.InvalidTowerNumberException("Invalid tower number exception!");
 
-        this.tower = tower;
+        this.n_tower = n_tower;
     }
 
 
@@ -77,10 +76,10 @@ public class PlayerBoard {
 
     public void moveTower(int n) throws EriantysExceptions
     {
-        if(tower+n < 0 || tower +n > n_tower)
+        if(n_tower+n < 0 || n_tower +n > n_tower)
             throw new InnerExceptions.InvalidTowerNumberException("Invalid tower number exception!");
 
-        tower += n;
+        n_tower += n;
     }
 
 
@@ -100,15 +99,15 @@ public class PlayerBoard {
     }
     public  void addStudentToHolder(int student) throws EriantysExceptions
     {
-        if((this.studentsHolder[student]+1)>10)
+        if((this.diningRoom[student]+1)>10)
             throw new InnerExceptions.NotValidStudentSizeException("Number of student is already at max");
-        this.studentsHolder[student] ++;
+        this.diningRoom[student] ++;
     }
 
     //secondo me non serve
     public  void takeStudentFromHolder(int student)
     {
-        this.studentsHolder[student] --;
+        this.diningRoom[student] --;
     }
 
 

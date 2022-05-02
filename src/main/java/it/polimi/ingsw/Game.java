@@ -10,14 +10,15 @@ public class Game {
     private int n_Player;
     private boolean expertMode;
     private Table table;
+    private Professors professors;
 
     //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
-    public Game(int n_Player, boolean expertMode, Player creator)
-    {
+    public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
         this.n_Player = n_Player;
         this.expertMode = expertMode;
         Players.add(creator);
-        table = null;
+        table = new Table();
+        professors = new Professors();
     }
 
     public Table getTable() {

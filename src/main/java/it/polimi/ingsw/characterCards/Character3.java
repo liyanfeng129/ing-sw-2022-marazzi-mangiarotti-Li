@@ -2,12 +2,12 @@ package it.polimi.ingsw.characterCards;
 
 import it.polimi.ingsw.*;
 
-public class Character1 implements CharacterBehavior{
+public class Character3 implements CharacterBehavior{
     private int coin;
     private boolean firstUse;
     private int students[]= new int[5];
 
-    public Character1(Game game) throws EriantysExceptions {
+    public Character3(Game game) throws EriantysExceptions {
 
         Bag bag  = game.getTable().getBag();
 
