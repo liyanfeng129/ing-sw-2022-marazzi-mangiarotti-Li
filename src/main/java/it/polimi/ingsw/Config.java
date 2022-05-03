@@ -8,4 +8,5 @@ public class Config {
     public static final String LOG_OUT = "logOut";
     public static final String LOG_OUT_SUC = "logOutSuccessfully";
     public static final String CREATE_GAME_FOR_2 = "CreateGameFor2";
+    public static final String USER_LOGGING = "userTriesToLog";
 }

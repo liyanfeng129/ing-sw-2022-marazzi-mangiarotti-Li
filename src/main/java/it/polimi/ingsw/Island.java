@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Island implements Serializable {
     private final int[] students;
@@ -64,5 +65,15 @@ public class Island implements Serializable {
     public int getSize()
     {
         return this.size;
+    }
+
+    @Override
+    public String toString() {
+        return "Island{" +
+                "students=" + Arrays.toString(students) +
+                ", mother_nature=" + mother_nature +
+                ", size=" + size +
+                ", towerColor=" + towerColor +
+                '}';
     }
 }

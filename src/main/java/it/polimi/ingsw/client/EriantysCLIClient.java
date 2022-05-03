@@ -4,6 +4,7 @@ import it.polimi.ingsw.Config;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EriantysCLIClient {
@@ -105,25 +106,11 @@ public class EriantysCLIClient {
 
     private static String logOut()
     {
-        try
-        {
-            Socket client = new Socket(serverAddress, 12345);
-            // Input stream
-            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            // Output stream
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-            out.println(Config.LOG_OUT);
-            out.println(userName);
-            String res = in.readLine().substring(4);
-            client.close();
-            return res;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return "unknown error occurred";
+         ArrayList<Object> messages = new ArrayList<>();
+         messages.add(Config.LOG_OUT);
+         messages.add(userName);
+         ArrayList<Object> responses = responseFromServer(messages);
+         return (String) responses.get(0);
     }
 
 
@@ -131,47 +118,12 @@ public class EriantysCLIClient {
     {
         System.out.println("What's your username?");
         userName = new Scanner(System.in).nextLine();
-        try
-        {
-            Socket client = new Socket(serverAddress, 12345);
-            // Input stream
-            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            // Output stream
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-            out.println("logging");
-            out.println(userName);
-            String res = in.readLine().substring(4);
-            client.close();
-            return res;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return "Unknown error occurred ";
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.USER_LOGGING);
+        messages.add(userName);
+        ArrayList<Object> responses = responseFromServer(messages);
+        return (String) responses.get(0);
     }
-
-    private static String sendReceiveMessageFromServer(String message)
-    {
-        try
-        {
-            Socket client = new Socket(serverAddress, 12345);
-            // Input stream
-            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            // Output stream
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-            out.println(message);
-            String response = in.readLine().substring(4);
-            client.close();
-            return response;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 
     private static void connectTOServer()
     {
@@ -234,4 +186,27 @@ public class EriantysCLIClient {
             e.printStackTrace();
         }
     }
+
+    private static ArrayList<Object> responseFromServer(ArrayList<Object> messages)
+    {
+        ArrayList<Object> responses = new ArrayList<>();
+        try
+        {
+            Socket client = new Socket(serverAddress, 12345);
+            // Input stream
+            ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+            oos.writeObject(messages);
+            responses = (ArrayList<Object>) ois.readObject();
+            client.close();
+            return responses;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        responses.add("Unknown Error");
+        return responses;
+    }
+
 }

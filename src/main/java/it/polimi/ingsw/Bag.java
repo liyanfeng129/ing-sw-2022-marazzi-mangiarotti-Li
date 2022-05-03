@@ -3,11 +3,12 @@ package it.polimi.ingsw;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Bag{
+public class Bag implements Serializable{
     private final int[] students;
     private int N_students;
 
@@ -130,5 +131,13 @@ public class Bag{
 
         }
         return drawn_students;
+    }
+
+    @Override
+    public String toString() {
+        return "Bag{" +
+                "students=" + Arrays.toString(students) +
+                ", N_students=" + N_students +
+                '}';
     }
 }
