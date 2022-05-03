@@ -115,5 +115,14 @@ public class Table implements Serializable {
     public Bag getBag() {
         return bag;
     }
+
+    public TowerColor getInfleance(Game game){
+        for (int i = 0; i< game.getPlayers().size(); i++) {
+            game.getPlayers().get(i).getMage();
+
+        }
+        return TowerColor.BLACK;
+    }
+
 }
 
