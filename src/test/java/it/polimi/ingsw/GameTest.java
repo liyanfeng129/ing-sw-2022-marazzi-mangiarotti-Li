@@ -17,8 +17,8 @@ class GameTest {
     private Table table;
     @BeforeEach
     public void setup() throws EriantysExceptions {
-        p1=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,8,7);
-        p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,8,7);
+        p1=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,8,false);
+        p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,8,false);
         game=new Game(2,false,p1);
         Egame=new Game(2,true,p1);
     }
@@ -28,7 +28,11 @@ class GameTest {
         temp.add(p1);
         temp.add(p2);
         game.setN_Player(2);
-        game.addPlayers(p2);
+        try {
+            game.addPlayers(p2);
+        } catch (EriantysExceptions e) {
+            fail();
+        }
         assertEquals(2,game.getN_Player());
         assertFalse(game.isExpertMode());
         assertTrue(Egame.isExpertMode());

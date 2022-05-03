@@ -105,7 +105,9 @@ public class Game {
         return Players;
     }
 
-    public void addPlayers(Player player) {
+    public void addPlayers(Player player) throws EriantysExceptions {
+        if(Players.size()>n_Player)
+            throw new InnerExceptions.InvalidPlayerNumberException("too many players");
             Players.add(player);
     }
 }

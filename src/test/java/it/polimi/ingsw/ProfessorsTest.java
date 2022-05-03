@@ -16,8 +16,8 @@ class ProfessorsTest {
     public void setup() throws EriantysExceptions {
 
         prof=new Professors();
-        p1=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,8,7);
-        p2=new Player("Leonardo",Mage.MAGE2,TowerColor.WHITE,8,7);
+        p1=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,8,false);
+        p2=new Player("Leonardo",Mage.MAGE2,TowerColor.WHITE,8,false);
         try {
             p1.getPlayerBoard().setDiningRoom(new int[]{1, 3, 2, 1, 2});
         } catch (EriantysExceptions e) {

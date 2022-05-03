@@ -13,8 +13,8 @@ class PlayerTest {
     private Wallet wallet;
     @BeforeEach
     public void setup(){
-        player=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,8,7);
-        Eplayer=new Player("Alessio",Mage.MAGE1,pb,TowerColor.BLACK,wallet,8,7);
+        player=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,8,false);
+        Eplayer=new Player("Alessio",Mage.MAGE1,pb,TowerColor.BLACK,wallet,8,false);
     }
     @Test
     public void test_player(){
