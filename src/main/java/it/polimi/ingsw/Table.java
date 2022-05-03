@@ -58,19 +58,21 @@ public class Table implements Serializable {
     public void mergeIsland() throws EriantysExceptions
     {
         //check leftIsland
-        if(Islands.get(getMotherNatureIndex()).getTower().equals(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getTower()))
-        {
-            Islands.get(getMotherNatureIndex()).mergeStudents(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getStudents());
-            Islands.get(getMotherNatureIndex()).IncreasingSize(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getSize());
-            Islands.remove(getRightIslandIndex(getMotherNatureIndex()));
+        if(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getTower()!=null) {
+            if (Islands.get(getMotherNatureIndex()).getTower().equals(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getTower())) {
+                Islands.get(getMotherNatureIndex()).mergeStudents(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getStudents());
+                Islands.get(getMotherNatureIndex()).IncreasingSize(Islands.get(getRightIslandIndex(getMotherNatureIndex())).getSize());
+                Islands.remove(getRightIslandIndex(getMotherNatureIndex()));
 
+            }
         }
         //check rightIsland
-        if(Islands.get(getMotherNatureIndex()).getTower().equals(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getTower()))
-        {
-            Islands.get(getMotherNatureIndex()).mergeStudents(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getStudents());
-            Islands.get(getMotherNatureIndex()).IncreasingSize(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getSize());
-            Islands.remove(getLeftIslandIndex(getMotherNatureIndex()));
+        if(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getTower()!=null) {
+            if (Islands.get(getMotherNatureIndex()).getTower().equals(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getTower())) {
+                Islands.get(getMotherNatureIndex()).mergeStudents(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getStudents());
+                Islands.get(getMotherNatureIndex()).IncreasingSize(Islands.get(getLeftIslandIndex(getMotherNatureIndex())).getSize());
+                Islands.remove(getLeftIslandIndex(getMotherNatureIndex()));
+            }
         }
     }
     public void moveMotherNature(int move) throws EriantysExceptions {
