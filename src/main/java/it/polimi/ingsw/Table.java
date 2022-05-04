@@ -115,13 +115,28 @@ public class Table implements Serializable {
     public Bag getBag() {
         return bag;
     }
-
-    public TowerColor getInfleance(Game game){
-        for (int i = 0; i< game.getPlayers().size(); i++) {
-            game.getPlayers().get(i).getMage();
-
+//secondo me sarebbe utile mettere professor come attributo di game o table o player board
+    //altrimenti lo devo passare come parametro
+    public int[] getInfluence(Game game,Professors prof) throws EriantysExceptions {
+        int[] influence= new int[4];
+        for (int i = 0;i<5; i++) {
+            if(prof.getList_professors()[i]==Mage.MAGE1)
+                influence[0]=influence[0]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+            if(prof.getList_professors()[i]==Mage.MAGE2)
+                influence[1]=influence[1]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+            if(prof.getList_professors()[i]==Mage.MAGE3)
+                influence[2]=influence[2]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+            if(prof.getList_professors()[i]==Mage.MAGE4)
+                influence[3]=influence[3]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+            //          if(prof.getList_professors()[i]!=Mage.NO_MAGE)
+  //              influence[prof.getList_professors()[i].index()]=game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
         }
-        return TowerColor.BLACK;
+        for(int i=0;i<game.getN_Player();i++){
+            if(game.getTable().getIslands(getMotherNatureIndex()).getTower()== game.getPlayers().get(i).getTowerColor()){
+                    influence[i]=influence[i]+game.getTable().getIslands(getMotherNatureIndex()).getSize();
+            }
+        }
+        return influence;
     }
 
 }

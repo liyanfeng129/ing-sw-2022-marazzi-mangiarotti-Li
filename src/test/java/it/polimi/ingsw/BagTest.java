@@ -42,7 +42,6 @@ class BagTest {
             e.printStackTrace();
         }
     }
-    //la draw secondo me ha un problema,non mi fa pescare piu di 65 di studenti
     @Test
     public void test_draw(){
         assertEquals(130, Arrays.stream(bag.getBag()).sum());
