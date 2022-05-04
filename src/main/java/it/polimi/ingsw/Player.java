@@ -29,7 +29,7 @@ public class Player implements Serializable {
     /**
      * Constructor for expertMode
      * */
-    public Player(String name, Mage mage, PlayerBoard pb, TowerColor towerColor, Wallet wallet,int n_Player, boolean leader) {
+    public Player(String name, Mage mage, TowerColor towerColor, Wallet wallet,int n_Player, boolean leader) {
         this.name = name;
         this.mage = mage;
         if (n_Player ==2)
@@ -40,7 +40,6 @@ public class Player implements Serializable {
             this.pb = new PlayerBoard(8,towerColor,7);
         if (n_Player ==4 && leader == false)
             this.pb = new PlayerBoard(0,towerColor,7);
-        this.towerColor = towerColor;
         this.towerColor = towerColor;
         hand = new Hand(mage);
         this.wallet = wallet;

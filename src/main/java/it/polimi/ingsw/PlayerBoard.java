@@ -11,6 +11,7 @@ public class PlayerBoard {
     private int maxStudentsInWaiting;
 
     //ma perche devo passare un array di student se poi lo inizializzi a 0?
+    //si potrebbe migliorare il costruttore settando direttamente il numero di torri in base alla partita
     public PlayerBoard(int n_tower,TowerColor tower_color, int maxStudentsInWaiting) {
         this.diningRoom = new int[5];
         this.waitingRoom = new int[5];
