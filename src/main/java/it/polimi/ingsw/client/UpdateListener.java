@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.Config;
-import it.polimi.ingsw.Game;
+import it.polimi.ingsw.model.*;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class UpdateListener extends Thread{
     private EriantysCLIClient cliClient;
     private String serverAddress;
-    private test2 test;
+    //private test2 test;
     public UpdateListener(EriantysCLIClient cliClient, String serverAddress)
     {
         this.cliClient = cliClient;
         this.serverAddress = serverAddress;
     }
-
+        /**
     public UpdateListener(test2 test, String serverAddress)
     {
         this.test = test;
@@ -53,5 +53,7 @@ public class UpdateListener extends Thread{
         }
 
 
+
     }
+         **/
 }

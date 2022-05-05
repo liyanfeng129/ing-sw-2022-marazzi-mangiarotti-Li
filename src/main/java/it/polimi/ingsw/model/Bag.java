@@ -1,14 +1,11 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 
 
-import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
-public class Bag implements Serializable{
+public class Bag{
     private final int[] students;
     private int N_students;
 
@@ -45,18 +42,6 @@ public class Bag implements Serializable{
     }
 
 
-    public void bagSet2() throws InnerExceptions.BagMax26 /** bagSet2 initializes the bag with 130 students in total, 26 for each kind*/
-    {
-        if (IntStream.of(this.students).sum() != 0)
-            throw new InnerExceptions.BagMax26("Max 26 students for color");
-
-        for(int i = 0 ; i < students.length; i++)
-        {
-            students[i] = 26;
-            N_students = N_students+26;
-        }
-    }
-
 
 
     /** Extract randomly n students from bag
@@ -69,14 +54,15 @@ public class Bag implements Serializable{
         int drawn_students[] = {0,0,0,0,0};
         if (IntStream.of(this.students).sum() < n)
             throw new InnerExceptions.NotEnoughStudentsInBagException("Not enough students in bag, is time to declare a winner!");
+
         if (IntStream.of(this.students).sum() == 0)
             throw new InnerExceptions.EmptyBag("Emptybag");
+
         if (IntStream.of(this.students).anyMatch(k-> k <0))
             throw new InnerExceptions.NegativeValue("NegativeValue");
-
-
         for(int i = 0 ; i < n; i++)
         {
+
             /** old draw algorithm
 
             Random rand = new Random();
@@ -131,13 +117,5 @@ public class Bag implements Serializable{
 
         }
         return drawn_students;
-    }
-
-    @Override
-    public String toString() {
-        return "Bag{" +
-                "students=" + Arrays.toString(students) +
-                ", N_students=" + N_students +
-                '}';
     }
 }

@@ -1,7 +1,6 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import java.io.Serializable;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Player implements Serializable {
@@ -10,12 +9,21 @@ public class Player implements Serializable {
     private PlayerBoard pb;
     private Hand hand;
     private Wallet wallet;
+    private TowerColor towerColor;
     private ReentrantLock update = new ReentrantLock();
 
-    public Player(String name, Mage mage, TowerColor towerColor) {
+    //non sarebbe meglio fare new pb invece che passargli una pb?
+    public Player(String name, Mage mage, TowerColor towerColor,int n_Player, boolean leader) {
         this.name = name;
         this.mage = mage;
-        //this.pb = pb;
+        if (n_Player ==2)
+            this.pb = new PlayerBoard(8,towerColor,7);
+        if (n_Player ==3)
+            this.pb = new PlayerBoard(6,towerColor,9);
+        if (n_Player ==4 && leader == true)
+            this.pb = new PlayerBoard(8,towerColor,7);
+        if (n_Player ==4 && leader == false)
+            this.pb = new PlayerBoard(0,towerColor,7);
         this.towerColor = towerColor;
         hand = new Hand(mage);
         update.lock();
@@ -24,29 +32,22 @@ public class Player implements Serializable {
     /**
      * Constructor for expertMode
      * */
-    public Player(String name, Mage mage, TowerColor towerColor, Wallet wallet) {
+    public Player(String name, Mage mage, TowerColor towerColor, Wallet wallet,int n_Player, boolean leader) {
         this.name = name;
         this.mage = mage;
-        //this.pb = pb;
+        if (n_Player ==2)
+            this.pb = new PlayerBoard(8,towerColor,7);
+        if (n_Player ==3)
+            this.pb = new PlayerBoard(6,towerColor,9);
+        if (n_Player ==4 && leader == true)
+            this.pb = new PlayerBoard(8,towerColor,7);
+        if (n_Player ==4 && leader == false)
+            this.pb = new PlayerBoard(0,towerColor,7);
         this.towerColor = towerColor;
         hand = new Hand(mage);
         this.wallet = wallet;
     }
 
-    public void unLockUpdate() {
-        this.update.unlock();
-    }
-
-    public void lockUpdate()
-    {
-        this.update.lock();
-    }
-
-    private TowerColor towerColor;
-
-    /** TODO
-     * player board va aggiunta come attributo
-     */
 
 
 
@@ -74,6 +75,14 @@ public class Player implements Serializable {
         return towerColor;
     }
 
+    public PlayerBoard getPlayerBoard() {
+        return pb;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
     public void setMage(Mage mage) {
         this.mage = mage;
     }
@@ -94,15 +103,28 @@ public class Player implements Serializable {
         this.hand = hand;
     }
 
-    public Wallet getWallet() {
-        return wallet;
-    }
-
     public void setWallet(Wallet wallet) {
         this.wallet = wallet;
     }
 
     public void setTowerColor(TowerColor towerColor) {
         this.towerColor = towerColor;
+    }
+
+    public ReentrantLock getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(ReentrantLock update) {
+        this.update = update;
+    }
+
+    public void unLockUpdate() {
+        this.update.unlock();
+    }
+
+    public void lockUpdate()
+    {
+        this.update.lock();
     }
 }

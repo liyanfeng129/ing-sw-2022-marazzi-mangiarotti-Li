@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 public class InnerExceptions {
     public static class NotValidCloudSizeException extends EriantysExceptions
@@ -61,6 +61,17 @@ public class InnerExceptions {
     public static class InvalidTowerNumberException extends EriantysExceptions
     {
         public InvalidTowerNumberException(String msg) {
+            super(msg);
+        }
+    }
+    public static class NotValidStudentSizeException extends EriantysExceptions {
+        public NotValidStudentSizeException(String msg) {
+            super(msg);
+        }
+    }
+    public static class InvalidPlayerNumberException extends EriantysExceptions
+    {
+        public InvalidPlayerNumberException(String msg) {
             super(msg);
         }
     }

@@ -1,7 +1,8 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Cloud implements Serializable {
     private int size;
@@ -21,13 +22,12 @@ public class Cloud implements Serializable {
             throw new InnerExceptions.NotValidCloudSizeException("Cloud size is not valid");
     }
 
+    //non era meglio prendere tutto l array?
     public void takeStudent(int stu)
     {
         this.students[stu]--;
     }
 
-     //non manca una addStudent?
-    //non ci serve una getCloud e una getStudent della cloud?? io la creo ma poi ditemi voi se ha senso
     public int getSize() {
         return size;
     }
@@ -35,8 +35,10 @@ public class Cloud implements Serializable {
         return students;
     }
 
-    public void setStudents(int [] students)
+    public void setStudents(int [] students) throws EriantysExceptions
     {
+        if(Arrays.stream(students).sum() != getSize())
+            throw new InnerExceptions.NotValidStudentSizeException("Number of student is not valid");
         this.students = students;
     }
 
