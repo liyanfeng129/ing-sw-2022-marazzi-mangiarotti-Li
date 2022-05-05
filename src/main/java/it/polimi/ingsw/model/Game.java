@@ -3,9 +3,10 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.characterCards.CharacterCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Serializable {
     private ArrayList<Player> Players = new ArrayList<Player>();
     private int n_Player;
     private boolean expertMode;
@@ -109,5 +110,16 @@ public class Game {
         if(Players.size()>n_Player)
             throw new InnerExceptions.InvalidPlayerNumberException("too many players");
             Players.add(player);
+    }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "Players=" + Players +
+                ", n_Player=" + n_Player +
+                ", expertMode=" + expertMode +
+                ", table=" + table +
+                ", professors=" + professors +
+                '}';
     }
 }

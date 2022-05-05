@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import java.io.Serializable;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Player implements Serializable {
     private String name;
@@ -9,6 +10,7 @@ public class Player implements Serializable {
     private Hand hand;
     private Wallet wallet;
     private TowerColor towerColor;
+    private ReentrantLock update = new ReentrantLock();
 
     //non sarebbe meglio fare new pb invece che passargli una pb?
     public Player(String name, Mage mage, TowerColor towerColor,int n_Player, boolean leader) {
@@ -24,6 +26,7 @@ public class Player implements Serializable {
             this.pb = new PlayerBoard(0,towerColor,7);
         this.towerColor = towerColor;
         hand = new Hand(mage);
+        update.lock();
     }
 
     /**
@@ -78,5 +81,50 @@ public class Player implements Serializable {
 
     public Wallet getWallet() {
         return wallet;
+    }
+
+    public void setMage(Mage mage) {
+        this.mage = mage;
+    }
+
+    public PlayerBoard getPb() {
+        return pb;
+    }
+
+    public void setPb(PlayerBoard pb) {
+        this.pb = pb;
+    }
+
+    public Hand getHand() {
+        return hand;
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public void setTowerColor(TowerColor towerColor) {
+        this.towerColor = towerColor;
+    }
+
+    public ReentrantLock getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(ReentrantLock update) {
+        this.update = update;
+    }
+
+    public void unLockUpdate() {
+        this.update.unlock();
+    }
+
+    public void lockUpdate()
+    {
+        this.update.lock();
     }
 }

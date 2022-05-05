@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Professors {
+public class Professors implements Serializable {
     private Mage[] List_professors= new Mage[5];
 
     public Professors (){
@@ -43,4 +44,5 @@ public class Professors {
     public void setList_professors(Mage[] list_professors) {
         List_professors = list_professors;
     }
+
 }

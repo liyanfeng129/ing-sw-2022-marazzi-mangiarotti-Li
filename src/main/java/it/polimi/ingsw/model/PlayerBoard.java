@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class PlayerBoard {
+public class PlayerBoard implements Serializable {
     private int[] diningRoom;
     private int[] waitingRoom;
     private TowerColor tower;
@@ -112,7 +113,19 @@ public class PlayerBoard {
     }
 
 
+    public TowerColor getTower() {
+        return tower;
+    }
 
+    public void setTower(TowerColor tower) {
+        this.tower = tower;
+    }
 
+    public int getMaxStudentsInWaiting() {
+        return maxStudentsInWaiting;
+    }
 
+    public void setMaxStudentsInWaiting(int maxStudentsInWaiting) {
+        this.maxStudentsInWaiting = maxStudentsInWaiting;
+    }
 }

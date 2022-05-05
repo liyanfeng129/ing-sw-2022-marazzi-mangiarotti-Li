@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
-public class Wallet {
+import java.io.Serializable;
+
+public class Wallet implements Serializable {
     private int Saving;
 
     public int getWallet() {
