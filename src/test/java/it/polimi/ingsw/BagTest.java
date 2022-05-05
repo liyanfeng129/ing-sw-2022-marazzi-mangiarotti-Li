@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Bag;
+import it.polimi.ingsw.model.EriantysExceptions;
+import it.polimi.ingsw.model.InnerExceptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

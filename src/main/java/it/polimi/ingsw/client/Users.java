@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.EriantysExceptions;
-import it.polimi.ingsw.InnerExceptions;
+import it.polimi.ingsw.model.EriantysExceptions;
+import it.polimi.ingsw.model.InnerExceptions;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 public class InnerExceptions {
     public static class NotValidCloudSizeException extends EriantysExceptions

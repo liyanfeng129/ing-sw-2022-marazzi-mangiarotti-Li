@@ -1,19 +1,19 @@
 package it.polimi.ingsw;
 
-import org.junit.jupiter.api.BeforeAll;
+import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
-    private  Player player;
+    private Player player;
     private  Player Eplayer;
     private PlayerBoard pb;
     private Wallet wallet;
     @BeforeEach
     public void setup(){
-        player=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,2,false);
+        player=new Player("Alessio", Mage.MAGE1, TowerColor.BLACK,2,false);
         Eplayer=new Player("Alessio",Mage.MAGE1,TowerColor.BLACK,wallet,2,false);
     }
     @Test

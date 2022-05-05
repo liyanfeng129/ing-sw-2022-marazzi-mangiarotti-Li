@@ -1,7 +1,10 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Assistant;
+import it.polimi.ingsw.model.AssistantType;
+import it.polimi.ingsw.model.Hand;
+import it.polimi.ingsw.model.Mage;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
@@ -74,5 +74,9 @@ public class Player implements Serializable {
 
     public PlayerBoard getPlayerBoard() {
         return pb;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
     }
 }

@@ -1,9 +1,8 @@
 package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.Config;
-import it.polimi.ingsw.EriantysExceptions;
-import it.polimi.ingsw.client.User;
+import it.polimi.ingsw.model.Config;
+import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.client.Users;
 
 import java.io.*;

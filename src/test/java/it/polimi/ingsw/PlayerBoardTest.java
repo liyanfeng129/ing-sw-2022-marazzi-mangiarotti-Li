@@ -1,5 +1,9 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.EriantysExceptions;
+import it.polimi.ingsw.model.PlayerBoard;
+import it.polimi.ingsw.model.Professors;
+import it.polimi.ingsw.model.TowerColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +14,7 @@ class PlayerBoardTest {
     private Professors prof;
     @BeforeEach
     public void setup(){
-        pb=new PlayerBoard(8,TowerColor.BLACK,7);
+        pb=new PlayerBoard(8, TowerColor.BLACK,7);
     }
     @Test
     public void test_pbStudent(){

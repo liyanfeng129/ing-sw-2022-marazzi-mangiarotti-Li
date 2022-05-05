@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.characterCards.CharacterCard;
 
@@ -47,8 +47,16 @@ public class Table implements Serializable {
     }
 
     public ArrayList<Island> getIslands() {
-        return Islands;
+        return this.Islands;
     }
+    public ArrayList<Cloud> getClouds() {
+        return this.clouds;
+    }
+    public ArrayList<CharacterCard> getCharacters() {
+        return this.characterCards;
+    }
+
+
 
     public Island getIslands(int island_pos){
         return Islands.get(island_pos);

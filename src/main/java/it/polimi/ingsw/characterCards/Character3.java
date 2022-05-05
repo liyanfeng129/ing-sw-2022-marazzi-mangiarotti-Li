@@ -1,6 +1,6 @@
 package it.polimi.ingsw.characterCards;
 
-import it.polimi.ingsw.*;
+import it.polimi.ingsw.model.*;
 
 public class Character3 implements CharacterBehavior{
     private int coin;
@@ -19,7 +19,7 @@ public class Character3 implements CharacterBehavior{
     }
 
     @Override
-    public void useCharacter(Game game, Player user,Island island, int colore) throws EriantysExceptions {
+    public void useCharacter(Game game, Player user, Island island, int colore) throws EriantysExceptions {
         Bag bag  = game.getTable().getBag();
         island.putStudent(colore);
         int temp [] = bag.draw(1);

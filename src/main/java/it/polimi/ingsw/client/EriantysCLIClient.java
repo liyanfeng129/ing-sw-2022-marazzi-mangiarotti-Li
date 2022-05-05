@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.Config;
+import it.polimi.ingsw.model.Config;
 
 import java.io.*;
 import java.net.Socket;

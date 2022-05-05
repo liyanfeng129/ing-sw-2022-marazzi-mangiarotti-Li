@@ -1,9 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,7 +57,7 @@ class TableTest {
     }
     @Test
     public void test_influence() throws EriantysExceptions {
-        Player p1=new Player("ale",Mage.MAGE1,TowerColor.WHITE,2,false);
+        Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,false);
         Player p2=new Player("leo",Mage.MAGE2,TowerColor.BLACK,2,false);
         Game game = new Game(2,false,p1);
         game.addPlayers(p2);
