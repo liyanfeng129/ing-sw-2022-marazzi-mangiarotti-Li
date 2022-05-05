@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 import com.google.gson.Gson;
-import it.polimi.ingsw.Game;
+import it.polimi.ingsw.model.*;
+
 import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
 
@@ -9,6 +10,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import it.polimi.ingsw.model.*;
+
 
 public class EriantysServer {
     static ArrayList<Game> games = new ArrayList<>();

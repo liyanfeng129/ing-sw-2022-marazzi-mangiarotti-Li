@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.*;
 import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
+import it.polimi.ingsw.model.*;
+
 
 import java.io.*;
 import java.net.Socket;
@@ -157,14 +159,13 @@ public class EriantysClientHandler extends Thread{
             throw new InnerExceptions.GameStartingError("Cannot join a game where is full");
         if(game.getN_Player() == 2 && !game.isExpertMode())
         {
-            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE));
+            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,true));
         }
             return Config.JOIN_ONE_GAME_SUC;
     }
 
-    private synchronized String createGameFor2(String userName)
-    {
-        Game game = new Game(2, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK));
+    private synchronized String createGameFor2(String userName) throws EriantysExceptions {
+        Game game = new Game(2, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,true));
         games.add(game);
         return Config.CREATE_GAME_FOR_2_SUC;
     }
