@@ -9,7 +9,7 @@ class PlayerTest {
     private  Player player;
     @BeforeEach
     public void setup(){
-        player=new Player("Alessio");
+        //player=new Player("Alessio");
     }
     @Test
     public void test_player(){

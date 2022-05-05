@@ -1,7 +1,9 @@
 package it.polimi.ingsw;
 
 
-public class Professors {
+import java.io.Serializable;
+
+public class Professors implements Serializable {
     private Mage[] List_professors= new Mage[5];
 
     public Professors (){

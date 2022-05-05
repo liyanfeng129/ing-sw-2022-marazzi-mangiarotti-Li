@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-public enum SType {
+import java.io.Serializable;
+
+public enum SType implements Serializable {
         RED,
         YELLOW,
         PINK,

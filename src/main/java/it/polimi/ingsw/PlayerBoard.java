@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
-public class PlayerBoard {
+import java.io.Serializable;
+
+public class PlayerBoard implements Serializable {
     private int[] studentsHolder;
     private int[] waitingRoom;
     private int tower;

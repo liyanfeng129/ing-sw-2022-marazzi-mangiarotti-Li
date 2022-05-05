@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 import java.io.Serializable;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Player implements Serializable {
     private String name;
@@ -8,27 +10,37 @@ public class Player implements Serializable {
     private PlayerBoard pb;
     private Hand hand;
     private Wallet wallet;
+    private ReentrantLock update = new ReentrantLock();
 
-    public Player(String name, Mage mage, PlayerBoard pb, TowerColor towerColor) {
+    public Player(String name, Mage mage, TowerColor towerColor) {
         this.name = name;
         this.mage = mage;
-        this.pb = pb;
+        //this.pb = pb;
         this.towerColor = towerColor;
         hand = new Hand(mage);
+        update.lock();
     }
 
     /**
      * Constructor for expertMode
      * */
-    public Player(String name, Mage mage, PlayerBoard pb, TowerColor towerColor, Wallet wallet) {
+    public Player(String name, Mage mage, TowerColor towerColor, Wallet wallet) {
         this.name = name;
         this.mage = mage;
-        this.pb = pb;
+        //this.pb = pb;
         this.towerColor = towerColor;
         hand = new Hand(mage);
         this.wallet = wallet;
     }
 
+    public void unLockUpdate() {
+        this.update.unlock();
+    }
+
+    public void lockUpdate()
+    {
+        this.update.lock();
+    }
 
     private TowerColor towerColor;
 
@@ -62,4 +74,35 @@ public class Player implements Serializable {
         return towerColor;
     }
 
+    public void setMage(Mage mage) {
+        this.mage = mage;
+    }
+
+    public PlayerBoard getPb() {
+        return pb;
+    }
+
+    public void setPb(PlayerBoard pb) {
+        this.pb = pb;
+    }
+
+    public Hand getHand() {
+        return hand;
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
+
+    public Wallet getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
+    }
+
+    public void setTowerColor(TowerColor towerColor) {
+        this.towerColor = towerColor;
+    }
 }

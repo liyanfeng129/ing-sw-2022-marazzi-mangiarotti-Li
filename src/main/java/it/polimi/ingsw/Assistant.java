@@ -1,8 +1,9 @@
 package it.polimi.ingsw;
 
 
+import java.io.Serializable;
 
-public class Assistant  {
+public class Assistant  implements Serializable {
     private AssistantType type;
     private Mage mage;
 

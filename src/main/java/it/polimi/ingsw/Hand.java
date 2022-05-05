@@ -1,8 +1,9 @@
 package it.polimi.ingsw;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Hand {
+public class Hand implements Serializable {
 
     private ArrayList<Assistant> List_cards;
     private int N_cards = 0;

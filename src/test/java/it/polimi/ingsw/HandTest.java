@@ -9,7 +9,7 @@ class HandTest {
     private Hand hand;
     @BeforeEach
     public void setup(){
-        hand=new Hand();
+        //hand=new Hand();
     }
     @Test
     public void test_setList_cards(){
@@ -20,7 +20,7 @@ class HandTest {
         }
     @Test
     public void test_getN_cards(){
-        Hand hand=new Hand();
+      //  Hand hand=new Hand();
         hand.setList_cards(Mage.MAGE1);
         assertEquals(10,hand.getN_cards());
     }

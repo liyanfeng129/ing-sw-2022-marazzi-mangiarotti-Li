@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 import com.google.gson.Gson;
+import it.polimi.ingsw.Game;
 import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
 
@@ -7,8 +8,10 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class EriantysServer {
+    static ArrayList<Game> games = new ArrayList<>();
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         try
@@ -34,7 +37,7 @@ public class EriantysServer {
                 // waiting for a client to connect
                 client = server.accept();
                 System.out.println("Client connected: "+client);
-                new EriantysClientHandler(client).start();
+                new EriantysClientHandler(client,games).start();
             }
 
         }
