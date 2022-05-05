@@ -1,9 +1,9 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 
 import java.io.Serializable;
 
-public class Assistant  implements Serializable {
+public class Assistant implements Serializable {
     private AssistantType type;
     private Mage mage;
 
@@ -17,5 +17,9 @@ public class Assistant  implements Serializable {
     }
     public int getSteps(){
         return this.type.getSteps();
+    }
+
+    public AssistantType getAssistantType() {
+        return type;
     }
 }

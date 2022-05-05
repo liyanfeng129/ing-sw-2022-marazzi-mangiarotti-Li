@@ -1,226 +1,129 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.Config;
-import it.polimi.ingsw.Game;
+import it.polimi.ingsw.model.Config;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
-
-import static java.lang.Thread.sleep;
 
 public class EriantysCLIClient {
      static String serverAddress = "localhost";
      static String userName = "";
-     private static void loggingMenu() throws InterruptedException {
-         clearScreen();
-         String response;
-         System.out.println("Do you want to log?\n"+"1.YES\n"+"Everything else you enter terminates program\n");
-         response = new Scanner(System.in).nextLine();
-         if(response.equals("1"))
-         {
-             do
-             {
-                 response = loggingWithUserName();
-                 switch (response)
-                 {
-                     case Config.USER_ALREADY_LOGGED:
-                         System.out.println(userName + " has already logged, please use another user name.");
-                         break;
-                     case Config.USER_LOGGED:
-                         System.out.println(userName + " is logged successfully." );
-                         break;
-                     case Config.USER_CREATED_AND_LOGGED:
-                         System.out.println(userName + " is created and logged.");
-                         break;
-                     default:
-                         System.out.println("Unknown response (error): "+ response);
-                         break;
-                 }
-
-             }
-             while(response.equals(Config.USER_ALREADY_LOGGED));
-             lobbyMenu();
-         }
-     }
-     private static void lobbyMenu() throws InterruptedException {
-         /**
-          * 1. Create a new game for 2 players
-          * 2. Create a new game for 3 players
-          * 3. Create a new game for 4 players
-          * 4. Resume an old game
-          * 5. Show existing games in the lobby
-          * 6. Show resumable games
-          * 7. Join in a resumable game
-          * 8. logout and exit
-          * */
-         clearScreen();
-         int option = -1;
-         boolean exit;
-         ArrayList<Object> responses = new ArrayList<>();
-         do {
-             messagePrinter("welcome.txt");
-             option = new Scanner(System.in).nextInt();
-             String msg;
-             exit = false;
-             switch (option) {
-                 case 1: //Create a new game for 2 players
-                     responses = createGameFor2();
-                     msg = (String) responses.get(0);
-                     if (msg.equals(Config.CREATE_GAME_FOR_2_SUC))
-                         exit = true;
-                     else
-                         System.out.println(msg);
-                     break;
-                 case 2: //Create a new game for 3 players
-
-                     break;
-                 case 3: //Create a new game for 4 players
-
-                     break;
-                 case 4: //Resume an old game
-
-                     break;
-                 case 5: //show existing games in the lobby
-                     responses = getExistingGames();
-                     msg = (String) responses.get(0);
-                     if (msg.equals(Config.SHOW_EXISTING_GAMES_SUC))
-                         exit = true;
-                     else
-                         System.out.println(msg);
-                     break;
-                 case 6: //Show resumable games
-
-                     break;
-                 case 7: //Join in a resumable game
-
-                     break;
-                 case 8: //logout user
-                     String res = logOut();
-                     if (res.equals(Config.LOG_OUT_SUC))
-                     {
-                         System.out.println("Logout successfully");
-                         sleep(1000);
-                         exit = true;
-                     }
-                     else
-                         System.out.println(res);
-                     break;
-                 default:
-                     System.out.println("Option not valid, please select a valid option.\n");
-             }
-         }
-         while (!exit);
-
-         switch (option)
-         {
-             case 1: //after creation enter to game room
-                 showCreatorGameRoom((Game) responses.get(1));
-                 break;
-             case 5: //display all join-able game
-                 showExistingGames((ArrayList<Game>) responses.get(1));
-                 break;
-             case 8: //after logout return to logging menu
-                 loggingMenu();
-                 break;
-         }
-     }
     public static void main(String[] args)  {
         // TODO Auto-generated method stub
+
+
+        //connectTOServer();
+        String response;
+        do
+        {
+            response = loggingWithUserName();
+            switch (response)
+            {
+                case Config.USER_ALREADY_LOGGED:
+                    System.out.println(userName + " has already logged, please use another user name.");
+                    break;
+                case Config.USER_LOGGED:
+                    System.out.println(userName + " is logged successfully." );
+                    break;
+                case Config.USER_CREATED_AND_LOGGED:
+                    System.out.println(userName + " is created and logged.");
+                    break;
+                default:
+                    System.out.println("Unknown response (error): "+ response);
+                    break;
+            }
+
+        }
+        while(response.equals(Config.USER_ALREADY_LOGGED));
+
+        int option = -1;
+        do {
+            messagePrinter("welcome.txt");
+            option = new Scanner(System.in).nextInt();
+            switch (option)
+            {
+                case 1: //Create a new game for 2 players
+
+                    break;
+                case 5: //show existing games in the lobby
+
+                    break;
+                case 8: //logout user
+                    String res = logOut();
+                    if(res.equals(Config.LOG_OUT_SUC))
+                        System.out.println("Logout successfully");
+                    else
+                        System.out.println(res);
+                    break;
+            }
+        }
+        while(option != 8);
+
+
+    /*
+            for(int i =0; i<10; i++)
+        {
+            String message = new Scanner(System.in).nextLine();
+            System.out.println(sendReceiveMessageFromServer(message));
+        }
+
+
+     */
+
+            //socketClient();
+        //String filePath = new File("").getAbsolutePath();
+        //System.out.println("path is:"+filePath);
+
+
+    }
+
+    private static String createGameFor2()
+    {
+
         try
         {
-            //connectTOServer();
-            loggingMenu();
-            //lobbyMenu();
+            Socket client = new Socket(serverAddress, 12345);
+            // Input stream
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            // Output stream
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
+            out.println(Config.CREATE_GAME_FOR_2);
+            out.println(userName);
+            String res = in.readLine().substring(4);
+            client.close();
+            return res;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             e.printStackTrace();
         }
-    }
 
-    private static ArrayList<Object> createGameFor2()
-    {
-
-       ArrayList<Object> messages = new ArrayList<>();
-       messages.add(Config.CREATE_GAME_FOR_2);
-       messages.add(userName);
-       ArrayList<Object> responses = responseFromServer(messages);
-
-        return responses;
-    }
-
-    private static ArrayList<Object> getExistingGames()
-    {
-        ArrayList<Object> messages = new ArrayList<>();
-        messages.add(Config.SHOW_EXISTING_GAMES);
-        ArrayList<Object> responses = responseFromServer(messages);
-        return responses;
-    }
-
-    /**
-     * TODO
-     * */
-    private static void showCreatorGameRoom(Game game)
-    {
-        System.out.println("this is creator's game room, only he can start the game.");
-        System.out.println(game);
-    }
-
-    /**
-     * TODO
-     * */
-    private static void showExistingGames(ArrayList<Game> games) throws InterruptedException {
-        clearScreen();
-        int i = 0;
-        ArrayList<String> roomName = new ArrayList<>();
-        for(Game g : games)
-        {
-            roomName.add(g.getPlayers().get(0).getName());
-            System.out.println(String.format("%d. %s's game for %d, waiting for other %d.",
-                    i+1,
-                    g.getPlayers().get(0).getName(),
-                    g.getN_Player(),
-                    g.getN_Player()-g.getPlayers().size()
-            ));
-            i++;
-        }
-        System.out.println("Please select one that you want join, invalid enter will bring you previous page.");
-        try
-        {
-            int choice = new Scanner(System.in).nextInt();
-            ArrayList<Object> responses;
-            if(choice >= 1 && choice <= i)
-                responses = joinOneGame(roomName.get(choice - 1));
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            lobbyMenu();
-        }
-
-
-
-    }
-    private static ArrayList<Object> joinOneGame(String creator)
-    {
-        ArrayList<Object> messages = new ArrayList<>();
-        messages.add(Config.JOIN_ONE_GAME);
-        messages.add(creator);
-        ArrayList<Object> responses = responseFromServer(messages);
-        return responses;
+        return "unknown error occurred";
     }
 
 
     private static String logOut()
     {
-         ArrayList<Object> messages = new ArrayList<>();
-         messages.add(Config.LOG_OUT);
-         messages.add(userName);
-         ArrayList<Object> responses = responseFromServer(messages);
-         return (String) responses.get(0);
+        try
+        {
+            Socket client = new Socket(serverAddress, 12345);
+            // Input stream
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            // Output stream
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
+            out.println(Config.LOG_OUT);
+            out.println(userName);
+            String res = in.readLine().substring(4);
+            client.close();
+            return res;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return "unknown error occurred";
     }
 
 
@@ -228,12 +131,47 @@ public class EriantysCLIClient {
     {
         System.out.println("What's your username?");
         userName = new Scanner(System.in).nextLine();
-        ArrayList<Object> messages = new ArrayList<>();
-        messages.add(Config.USER_LOGGING);
-        messages.add(userName);
-        ArrayList<Object> responses = responseFromServer(messages);
-        return (String) responses.get(0);
+        try
+        {
+            Socket client = new Socket(serverAddress, 12345);
+            // Input stream
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            // Output stream
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
+            out.println("logging");
+            out.println(userName);
+            String res = in.readLine().substring(4);
+            client.close();
+            return res;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return "Unknown error occurred ";
     }
+
+    private static String sendReceiveMessageFromServer(String message)
+    {
+        try
+        {
+            Socket client = new Socket(serverAddress, 12345);
+            // Input stream
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            // Output stream
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
+            out.println(message);
+            String response = in.readLine().substring(4);
+            client.close();
+            return response;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     private static void connectTOServer()
     {
@@ -269,6 +207,9 @@ public class EriantysCLIClient {
         }
     }
 
+
+
+
     private static void messagePrinter(String fileName)
     {
         try
@@ -286,51 +227,11 @@ public class EriantysCLIClient {
                 sb.append("\n");     //end of line
             }
             fr.close();    //closes the stream and release the resources
-            System.out.println(sb.toString()+"\n");   //returns a string that textually represents the object
+            System.out.println(sb.toString());   //returns a string that textually represents the object
         }
         catch(IOException e)
         {
             e.printStackTrace();
         }
     }
-
-    private static ArrayList<Object> responseFromServer(ArrayList<Object> messages)
-    {
-        ArrayList<Object> responses = new ArrayList<>();
-        try
-        {
-            Socket client = new Socket(serverAddress, 12345);
-            // Input stream
-            ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-            oos.writeObject(messages);
-            responses = (ArrayList<Object>) ois.readObject();
-            client.close();
-            return responses;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        responses.add("Unknown Error");
-        return responses;
-    }
-
-    /**
-     * TODO
-     * */
-    public static void updateGame(Game game)
-    {
-        System.out.println("Game has been updated.\n");
-        System.out.println(game);
-    }
-
-    private static void clearScreen()
-    {
-        for(int clear = 0; clear < 1000; clear++)
-        {
-            System.out.println("\b") ;
-        }
-    }
-
 }

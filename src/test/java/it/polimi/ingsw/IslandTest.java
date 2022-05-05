@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.model.Island;
+import it.polimi.ingsw.model.TowerColor;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,17 +14,20 @@ class IslandTest {
     public void setup(){
         island=new Island();
     }
+    @AfterEach
+    public void teardown(){
+        island=null;
+    }
     @Test
     public void test_student(){
         int temp[] = new int[5];
         island.addStudent(0);
-        island.addStudent(0);
+        island.putStudent(0);
         island.addStudent(3);
-        temp=island.getStudents();
-        assertEquals(2,temp[0]);
-        assertArrayEquals(island.getStudents(), temp);
-        island.mergeStudents(temp);
-        assertArrayEquals(temp, island.getStudents());
+        assertEquals(2,island.getStudents()[0]);
+        assertArrayEquals(new int[]{2, 0, 0, 1, 0}, island.getStudents());
+        island.mergeStudents(new int[]{0,1,0,1,0});
+        assertArrayEquals(new int[]{2,1,0,2,0}, island.getStudents());
     }
     @Test
     public void test_motherNature(){
