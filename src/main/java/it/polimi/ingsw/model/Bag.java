@@ -2,10 +2,11 @@ package it.polimi.ingsw.model;
 
 
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-public class Bag{
+public class Bag implements Serializable {
     private final int[] students;
     private int N_students;
 

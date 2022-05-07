@@ -10,7 +10,8 @@ public class Player implements Serializable {
     private Hand hand;
     private Wallet wallet;
     private TowerColor towerColor;
-    private ReentrantLock update = new ReentrantLock();
+    private boolean update;
+
 
     //non sarebbe meglio fare new pb invece che passargli una pb?
     public Player(String name, Mage mage, TowerColor towerColor,int n_Player, boolean leader) {
@@ -26,7 +27,8 @@ public class Player implements Serializable {
             this.pb = new PlayerBoard(0,towerColor,7);
         this.towerColor = towerColor;
         hand = new Hand(mage);
-        update.lock();
+        update = false;
+
     }
 
     /**
@@ -46,6 +48,7 @@ public class Player implements Serializable {
         this.towerColor = towerColor;
         hand = new Hand(mage);
         this.wallet = wallet;
+        update = false;
     }
 
 
@@ -111,20 +114,11 @@ public class Player implements Serializable {
         this.towerColor = towerColor;
     }
 
-    public ReentrantLock getUpdate() {
+    public boolean isUpdate() {
         return update;
     }
 
-    public void setUpdate(ReentrantLock update) {
+    public void setUpdate(boolean update) {
         this.update = update;
-    }
-
-    public void unLockUpdate() {
-        this.update.unlock();
-    }
-
-    public void lockUpdate()
-    {
-        this.update.lock();
     }
 }

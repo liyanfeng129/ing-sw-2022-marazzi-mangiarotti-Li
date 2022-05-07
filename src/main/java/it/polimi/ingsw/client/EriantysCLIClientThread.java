@@ -12,12 +12,11 @@ import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
 
-public class EriantysCLIClient {
-
+public class EriantysCLIClientThread extends Thread {
     public boolean needUpdate = false;
-    private static String serverAddress = "localhost";
-    private static String userName = "";
-    private static void loggingMenu() throws InterruptedException {
+    private  String serverAddress = "localhost";
+    private  String userName = "";
+    private  void loggingMenu() throws InterruptedException {
         clearScreen();
         String response;
         System.out.println("Do you want to log?\n"+"1.YES\n"+"Everything else you enter terminates program\n");
@@ -48,7 +47,7 @@ public class EriantysCLIClient {
             lobbyMenu();
         }
     }
-    private static void lobbyMenu() throws InterruptedException {
+    private void lobbyMenu() throws InterruptedException {
         /**
          * 1. Create a new game for 2 players
          * 2. Create a new game for 3 players
@@ -130,14 +129,13 @@ public class EriantysCLIClient {
                 break;
         }
     }
-    public static void main(String[] args)  {
+    public void run() {
         // TODO Auto-generated method stub
         try
         {
             //connectTOServer();
-            //loggingMenu();
+            loggingMenu();
             //lobbyMenu();
-            new EriantysCLIClientThread().run();
         }
         catch (Exception e)
         {
@@ -145,7 +143,7 @@ public class EriantysCLIClient {
         }
     }
 
-    private static ArrayList<Object> createGameFor2()
+    private ArrayList<Object> createGameFor2()
     {
 
         ArrayList<Object> messages = new ArrayList<>();
@@ -156,7 +154,7 @@ public class EriantysCLIClient {
         return responses;
     }
 
-    private static ArrayList<Object> getExistingGames()
+    private ArrayList<Object> getExistingGames()
     {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.SHOW_EXISTING_GAMES);
@@ -167,33 +165,29 @@ public class EriantysCLIClient {
     /**
      * TODO
      * */
-    private static void showCreatorGameRoom(Game game)
+    private void showCreatorGameRoom(Game game)
     {
+        clearScreen();
         System.out.println("this is creator's game room, only he can start the game.");
         System.out.println(game);
-        // new UpdateListener(this,serverAddress).run();
-        while(true)
-        {
+         new UpdateListener(this,serverAddress).run();
 
-        }
     }
 
-    private static void showOtherPlayerGameRoom(Game game)
+    private void showOtherPlayerGameRoom(Game game)
     {
+        clearScreen();
         System.out.println(String.format("you are in %s's game, waiting for other %d",
                 game.getPlayers().get(0).getName(),
                 game.getN_Player()-game.getPlayers().size()
         ));
-        while(true)
-        {
-
-        }
+        new UpdateListener(this,serverAddress).run();
     }
 
     /**
      * TODO
      * */
-    private static void showExistingGames(ArrayList<Game> games) throws InterruptedException {
+    private void showExistingGames(ArrayList<Game> games) throws InterruptedException {
         clearScreen();
         int i = 0;
         ArrayList<String> roomName = new ArrayList<>();
@@ -221,6 +215,12 @@ public class EriantysCLIClient {
                 {
                     showOtherPlayerGameRoom((Game) responses.get(1));
                 }
+                else
+                {
+                    System.out.println(msg);
+                    sleep(1000);
+                    lobbyMenu();
+                }
             }
             else
                 lobbyMenu();
@@ -234,7 +234,7 @@ public class EriantysCLIClient {
 
 
     }
-    private static ArrayList<Object> joinOneGame(String creator, String player)
+    private ArrayList<Object> joinOneGame(String creator, String player)
     {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.JOIN_ONE_GAME);
@@ -245,7 +245,7 @@ public class EriantysCLIClient {
     }
 
 
-    private static String logOut()
+    private String logOut()
     {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.LOG_OUT);
@@ -255,7 +255,7 @@ public class EriantysCLIClient {
     }
 
 
-    private static String loggingWithUserName()
+    private String loggingWithUserName()
     {
         System.out.println("What's your username?");
         userName = new Scanner(System.in).nextLine();
@@ -266,7 +266,7 @@ public class EriantysCLIClient {
         return (String) responses.get(0);
     }
 
-    private  void connectTOServer()
+    private void connectTOServer()
     {
         System.out.println("Please insert ip address for connection to server:");
         serverAddress = new Scanner(System.in).nextLine();
@@ -300,7 +300,7 @@ public class EriantysCLIClient {
         }
     }
 
-    private static void messagePrinter(String fileName)
+    private void messagePrinter(String fileName)
     {
         try
         {
@@ -325,7 +325,7 @@ public class EriantysCLIClient {
         }
     }
 
-    private static ArrayList<Object> responseFromServer(ArrayList<Object> messages)
+    private ArrayList<Object> responseFromServer(ArrayList<Object> messages)
     {
         ArrayList<Object> responses = new ArrayList<>();
         try
@@ -350,13 +350,9 @@ public class EriantysCLIClient {
     /**
      * TODO
      * */
-    public  void updateGame(Game game)
-    {
-        System.out.println("Game has been updated.\n");
-        System.out.println(game);
-    }
 
-    private static void clearScreen()
+
+    private void clearScreen()
     {
         for(int clear = 0; clear < 1000; clear++)
         {
@@ -364,9 +360,15 @@ public class EriantysCLIClient {
         }
     }
 
-    public  String getUserName()
+    public String getUserName()
     {
         return userName;
+    }
+    public void updateGame(Game game)
+    {
+        clearScreen();
+        System.out.println("Game has been updated.\n");
+        System.out.println(game);
     }
 
 }
