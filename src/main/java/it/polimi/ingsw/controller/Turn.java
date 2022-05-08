@@ -8,6 +8,7 @@ public class Turn {
     private Game game;
     private int activePlayer=0;
     private Phase state = new PianificationState();
+    private int endOfTurn = 1;
     private List<AssistantType> usedCard;
 
     public void setState(Phase state) {
@@ -30,15 +31,13 @@ public class Turn {
         state.printStatus();
     }
 
+    public int getEndOfTurn() {
+        return endOfTurn;
+    }
 
-
-
-
-
-
-
-
-
+    public void setEndOfTurn(int endOfTurn) {
+        this.endOfTurn = endOfTurn;
+    }
 
     public Turn(Game game){
         this.game=game;
@@ -69,30 +68,9 @@ public class Turn {
     }
 
     public void nextPlayer(){
-        if(activePlayer+1 >= game.getN_Player())
+        if(getActivePlayer()+1 >= game.getN_Player())
             activePlayer=0;
         else
             activePlayer=activePlayer+1;
     }
 }
-
-
-/*     fasi partita
-    public void nextPhase() {
-        switch (getPhaseType()) {
-            case YOUR_MOVE:
-            case YOUR_MOVE_AFTER:
-                buildPhase();
-                break;
-            case YOUR_BUILD:
-            case YOUR_BUILD_AFTER:
-                next();
-                newTurn();
-                break;
-            default: // should never reach this condition.
-                Server.LOGGER.warning("Invalid game phase!");
-                break;
-        }
-    }
-
- */

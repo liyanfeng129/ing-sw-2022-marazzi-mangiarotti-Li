@@ -1,9 +1,9 @@
 package it.polimi.ingsw.controller;
 
-public class ActionPhase1 implements Phase{
+public class ActionPhase2 implements Phase {
     @Override
     public void next(Turn turn) {
-        turn.setState(new ActionPhase2());
+        turn.setState(new ActionPhase3());
     }
 
     @Override
@@ -15,7 +15,7 @@ public class ActionPhase1 implements Phase{
     public void printStatus() {
 
     }
-    public ActionPhase1(){
-        //sposta studenti da waitingroom
+    public ActionPhase2(){
+        //sposta madrenatura
     }
 }
