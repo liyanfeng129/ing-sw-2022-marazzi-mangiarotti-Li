@@ -1,9 +1,11 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
+
 
 import java.util.ArrayList;
+
+import static it.polimi.ingsw.model.Config.*;
 
 public class CliInterface {
     private Cli cli;
@@ -33,69 +35,33 @@ public class CliInterface {
 
 
         public void selector (String msg,ArrayList<Object> msg_list){
-            /**
+
             switch (msg) {
-                case msg -> System.out.println("Parameter is A");
-                case b -> System.out.println("Parameter is b");
+                case UPDATE -> System.out.println("Parameter is A");
+                case REQ_ASSISTANT -> System.out.println("Parameter is b");
+                case ASSISTANT_ERROR -> System.out.println("Parameter is b");
+                case START_TURN -> System.out.println("Parameter is b");
+                case STUDENT_DESTINATION -> System.out.println("Parameter is b");
+                case NOT_ENAUGH_MONEY -> System.out.println("Parameter is A");
+                case REQ_PARAMS_CHARACTER -> System.out.println("Parameter is b");
+                case MOVE_MN -> System.out.println("Parameter is b");
+                case MN_POSITION_ERROR -> System.out.println("Parameter is b");
+                case CHARACTER_STUDENT_MOVES -> System.out.println("Parameter is b");
+                case CHARACTER_MN_MOVES -> System.out.println("Parameter is A");
+                case CHARACTER_CLOUD_MOVES -> System.out.println("Parameter is b");
+                case REAQ_CLOUD -> System.out.println("Parameter is b");
+                case ERROR_CLOUD -> System.out.println("Parameter is b");
+                case END_TURN -> System.out.println("Parameter is b");
+                case END_GAME -> System.out.println("Parameter is b");
+
+
+
                 default -> System.out.println("Parameter is unknown");
-            };
-            **/
-
-
-
+            }
 
 
 
 
-
-
-            // ci sono diversi messaggi in entrata
-            if (msg=="UPDATE") {
-                // aggiorno il model e faccio show
-            }
-            else if(msg=="REQ_ASSISTANT"){
-                // richiedo assistente
-            }
-            else if(msg=="ASSISTANT_ERROR"){
-                // richiedo nuovo assistente per errore
-            }
-            else if(msg=="START_TURN"){
-                // avviso inizio turno
-            }
-            else if(msg=="STUDENT_DESTINATION"){
-                // richiedo dove mettere lo studente selezionato
-            }
-
-            else if(msg=="NOT_ENAUGH_MONEY"){
-                // avviso che non hai abbastanza soldi per usare il character
-            }
-            else if(msg=="REQ_PARAMS_CHARACTER"){
-                // avviso che non hai abbastanza soldi per usare il character
-            }
-            else if(msg=="MOVE_MN"){
-                // richiedo posizionare madre natura
-            }
-            else if(msg=="MN_POSITION_ERROR"){
-                // la posizione non va bene
-            }
-            else if(msg=="CHARACTER_STUDENT_MOVES"){
-                // avviso che non hai abbastanza soldi per usare il character
-            }
-            else if(msg=="CHARACTER_MN_MOVES"){
-                // richiedo spiego mosse (character, MN)
-            }
-            else if(msg=="CHARACTER_CLOUD_MOVES"){
-                // richiedo spiego mosse (character, CLOUD)
-            }
-            else if(msg=="REAQ_CLOUD"){
-                // richiedo spiego mosse (character, cloud)
-            }
-            else if(msg=="ERROR_CLOUD"){
-                // richiedo nuova nuvola
-            }
-            else if(msg=="END_TURN"){
-                // avviso fine turno
-            }
 
         }
     }
