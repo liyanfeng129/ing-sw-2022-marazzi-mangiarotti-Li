@@ -23,9 +23,9 @@ public class Cloud implements Serializable {
     }
 
     //non era meglio prendere tutto l array?
-    public void takeStudent(int stu)
+    public void setCloudStudent(int[] students)
     {
-        this.students[stu]--;
+        this.students = students;
     }
 
     public int getSize() {

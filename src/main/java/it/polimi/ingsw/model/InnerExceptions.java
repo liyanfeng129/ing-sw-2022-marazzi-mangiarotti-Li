@@ -75,4 +75,10 @@ public class InnerExceptions {
             super(msg);
         }
     }
+    public static class InvalidCardNumberException extends EriantysExceptions
+    {
+        public InvalidCardNumberException(String msg) {
+            super(msg);
+        }
+    }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.characterCards.CharacterCard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game implements Serializable {
     private ArrayList<Player> Players = new ArrayList<Player>();
@@ -13,6 +14,7 @@ public class Game implements Serializable {
     private Table table;
     private Professors professors;
     private boolean gameStarted;
+    private List<Player> turnList;
 
     //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
@@ -22,6 +24,14 @@ public class Game implements Serializable {
         table = new Table();
         professors = new Professors();
         this.gameStarted = false;
+    }
+
+    public List<Player> getTurnList() {
+        return turnList;
+    }
+
+    public void setTurnList(List<Player> turnList) {
+        this.turnList = turnList;
     }
 
     public Table getTable() {
@@ -121,6 +131,10 @@ public class Game implements Serializable {
 
     public void setGameStarted(boolean gameStarted) {
         this.gameStarted = gameStarted;
+    }
+
+    public Professors getProfessors() {
+        return professors;
     }
 
     @Override
