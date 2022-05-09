@@ -108,45 +108,57 @@ public class EriantysClientHandler extends Thread{
                     responses.add(logOutUser((String) messages.get(1)));
                     oos.writeObject(responses);
                     break;
-                case "test":
-                    System.out.println(client+" is doing a test");
-                    int ob1 = (int) messages.get(1);
-                    Bag ob2 = (Bag) messages.get(2);
-                    System.out.println(ob1);
-                    System.out.println(ob2);
-                    responses.add("test successful");
-                    responses.add(new User("nima", false));
-                    responses.add(new Island());
-                    oos.writeObject(responses);
-                    break;
-                case "testModifyPlayer":
-                    System.out.println(client+" tries to modify game");
+                case Config.GAME_START:
+                    System.out.println(client+" wants to start a game");
                     game = findGameForPlayer((String) messages.get(1));
-                    for(Player p : game.getPlayers())
-                        p.setUpdate(true);
-                    responses.add("all player has been notified");
+                    game.startGame();
+                    responses.add(Config.GAME_START_SUC);
                     oos.writeObject(responses);
-
-
+                    gameUpdate(game);
+                    break;
                 case Config.LISTENING_FOR_UPDATE:
                     System.out.println(client+" is listening for update");
-                    player = findPlayerByName((String) messages.get(1));
+                    String name = (String) messages.get(1);
+                    player = findPlayerByName(name);
                     while(!client.isClosed())
                     {
                         while(!player.isUpdate())
                         {
                             sleep(500);
                         }
-                        System.out.println(player.getName()+"'s game has been updated");
-                        responses = new ArrayList<>();
-                        responses.add(Config.GAME_UPDATED);
-                        responses.add(findGameForPlayer(player.getName()));
-                        oos.writeObject(responses);
-                        player.setUpdate(false);
+                        if(!findGameForPlayer(name).isGameStarted()) // game hasn't started yet
+                        {
+                            if(findGameForPlayer(name).getPlayers().get(0).getName().equals(name))// this player is not creator
+                            {
+                                System.out.println(player.getName()+"'s game room has been changed");
+                                responses = new ArrayList<>();
+                                responses.add(Config.UPDATE_CREATOR_WAITING_ROOM);
+                                responses.add(findGameForPlayer(player.getName()));
+                                oos.writeObject(responses);
+                                player.setUpdate(false);
+                            }
+                            else
+                            {
+                                System.out.println(player.getName()+", the room he is in has been changed");
+                                responses = new ArrayList<>();
+                                responses.add(Config.UPDATE_OTHER_WAITING_ROOM);
+                                responses.add(findGameForPlayer(player.getName()));
+                                oos.writeObject(responses);
+                                player.setUpdate(false);
+                            }
+                        }
+                        else // Game started
+                        {
+                            System.out.println(player.getName()+"'s game has been updated");
+                            responses = new ArrayList<>();
+                            responses.add(Config.GAME_UPDATED);
+                            responses.add(findGameForPlayer(player.getName()));
+                            oos.writeObject(responses);
+                            player.setUpdate(false);
+                        }
+
                     }
-
                     break;
-
                 default:
                     out.println("not ok, no option valid for this");
             }

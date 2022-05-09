@@ -85,6 +85,7 @@ public class Game implements Serializable {
                     }
                     table.tableInit(clouds,null);
                 }
+                this.gameStarted = true;
     }
 
     public void setTable(Table table) {

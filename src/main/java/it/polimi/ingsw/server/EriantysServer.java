@@ -37,7 +37,7 @@ public class EriantysServer {
 
             while(true)
             {
-                // waiting for a client to connect
+                // waiting for a client to connect1
                 client = server.accept();
                 System.out.println("Client connected: "+client);
                 new EriantysClientHandler(client,games).start();

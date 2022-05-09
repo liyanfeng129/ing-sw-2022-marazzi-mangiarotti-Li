@@ -22,10 +22,10 @@ public class Table implements Serializable {
         initIslands();
     }
 
-    public void tableInit(ArrayList<Cloud> clouds, ArrayList<CharacterCard> characterCards)
-    {
+    public void tableInit(ArrayList<Cloud> clouds, ArrayList<CharacterCard> characterCards) throws EriantysExceptions {
         this.clouds = clouds;
         this.characterCards = characterCards;
+        initIslands();
     }
 
 

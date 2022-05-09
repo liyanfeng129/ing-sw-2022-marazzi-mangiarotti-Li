@@ -13,7 +13,6 @@ import java.util.Scanner;
 import static java.lang.Thread.sleep;
 
 public class EriantysCLIClientThread extends Thread {
-    public boolean needUpdate = false;
     private  String serverAddress = "localhost";
     private  String userName = "";
     private  void loggingMenu() throws InterruptedException {
@@ -162,14 +161,17 @@ public class EriantysCLIClientThread extends Thread {
         return responses;
     }
 
-    /**
-     * TODO
-     * */
     private void showCreatorGameRoom(Game game)
     {
         clearScreen();
-        System.out.println("this is creator's game room, only he can start the game.");
-        System.out.println(game);
+        System.out.println("This is creator's game room, only he can start the game.");
+        System.out.println(String.format("Game mode: %s\n" +
+                "needs %d participant\n" +
+                        "waiting for %d",
+                (game.isExpertMode()? "expert" : "normal"),
+                game.getN_Player(),
+                game.getN_Player()-game.getPlayers().size()
+        ));
          new UpdateListener(this,serverAddress).run();
 
     }
@@ -177,10 +179,17 @@ public class EriantysCLIClientThread extends Thread {
     private void showOtherPlayerGameRoom(Game game)
     {
         clearScreen();
-        System.out.println(String.format("you are in %s's game, waiting for other %d",
+        System.out.println(String.format("you are in %s's game, waiting for other %d\n",
                 game.getPlayers().get(0).getName(),
                 game.getN_Player()-game.getPlayers().size()
         ));
+        System.out.println("Participants:\n");
+        int i = 0;
+        for(;i<game.getPlayers().size();i++)
+            System.out.println(String.format("%d: %s",
+                    i+1,
+                    game.getPlayers().get(i).getName()
+                    ));
         new UpdateListener(this,serverAddress).run();
     }
 
@@ -347,11 +356,6 @@ public class EriantysCLIClientThread extends Thread {
         return responses;
     }
 
-    /**
-     * TODO
-     * */
-
-
     private void clearScreen()
     {
         for(int clear = 0; clear < 1000; clear++)
@@ -364,11 +368,83 @@ public class EriantysCLIClientThread extends Thread {
     {
         return userName;
     }
-    public void updateGame(Game game)
+
+    /**
+     * TODO
+     * */
+    public void update(ArrayList<Object> messages)
     {
         clearScreen();
-        System.out.println("Game has been updated.\n");
-        System.out.println(game);
+        String msg = (String) messages.get(0);
+        switch (msg)
+        {
+            case Config.UPDATE_CREATOR_WAITING_ROOM :
+                updateCreatorGameRoom((Game) messages.get(1));
+                break;
+            case Config.UPDATE_OTHER_WAITING_ROOM:
+                updateOtherPlayerGameRoom((Game) messages.get(1));
+                break;
+            case Config.GAME_UPDATED:
+                gameUpdate((Game) messages.get(1));
+                break;
+        }
+    }
+
+    private void updateCreatorGameRoom(Game game) {
+        clearScreen();
+        System.out.println(String.format("%s, this is your game, waiting for other %d\n",
+                game.getPlayers().get(0).getName(),
+                game.getN_Player() - game.getPlayers().size()
+        ));
+        System.out.println("Participants:\n");
+        int i = 0;
+        for (; i < game.getPlayers().size(); i++)
+            System.out.println(String.format("%d: %s",
+                    i + 1,
+                    game.getPlayers().get(i).getName()
+            ));
+        if (game.getN_Player() == game.getPlayers().size())
+        {
+            System.out.println("Game is ready to be started, press 1 if you want to start" +
+                    "every other input is invalid\n");
+            String input = "";
+            while(!input.equals("1"))
+            {
+                input = new Scanner(System.in).nextLine();
+                if(input.equals("1"))
+                {
+                    ArrayList<Object> messages = new ArrayList<>();
+                    messages.add(Config.GAME_START);
+                    messages.add(userName);
+                    ArrayList<Object> responses = responseFromServer(messages);
+                    String msg = (String) responses.get(0);
+                    if(msg.equals(Config.GAME_START_SUC))
+                    {
+                        System.out.println("Launching..");
+                    }
+                }
+            }
+        }
+    }
+    private void updateOtherPlayerGameRoom(Game game)
+    {
+        clearScreen();
+        System.out.println(String.format("you are in %s's game, waiting for other %d\n",
+                game.getPlayers().get(0).getName(),
+                game.getN_Player()-game.getPlayers().size()
+        ));
+        System.out.println("Participants:\n");
+        int i = 0;
+        for(;i<game.getPlayers().size();i++)
+            System.out.println(String.format("%d: %s",
+                    i+1,
+                    game.getPlayers().get(i).getName()
+            ));
+    }
+    private void gameUpdate(Game game)
+    {
+        System.out.println("Game has been updated");
+        new Cli().show_game(game);
     }
 
 }

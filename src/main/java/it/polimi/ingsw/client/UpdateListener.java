@@ -3,7 +3,6 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.*;
 
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -33,18 +32,12 @@ public class UpdateListener extends Thread{
             while (true)
             {
                 ArrayList<Object> responses = (ArrayList<Object>) ois.readObject();
-                String msg = (String) responses.get(0);
-                if(msg.equals(Config.GAME_UPDATED))
-                    cliClient.updateGame((Game) responses.get(1));
+                    cliClient.update(responses);
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
-
-
     }
-
 }
