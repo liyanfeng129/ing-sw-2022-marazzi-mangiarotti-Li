@@ -31,7 +31,9 @@ public class Cli {
     }
 
     public void show_hand(Hand hand){
+
         for (int i =0; i< hand.getN_cards();i++){
+            System.out.println("Card_"+i);
             show_assistant(hand.getList_cards().get(i));
         }
 
@@ -115,8 +117,7 @@ public class Cli {
 
 
     public void show_assistant(Assistant card){
-        System.out.println("Steps: " + card.getAssistantType().getSteps());
-        System.out.println("Value: " + card.getAssistantType().getNum());
+        System.out.println("Steps: " + card.getAssistantType().getSteps() + "" + "Value: " + card.getAssistantType().getNum());
     }
 
 

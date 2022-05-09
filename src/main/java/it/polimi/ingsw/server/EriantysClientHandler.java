@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.*;
 import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
 import it.polimi.ingsw.model.*;
@@ -10,6 +9,7 @@ import it.polimi.ingsw.model.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class EriantysClientHandler extends Thread{
     BufferedReader in;
@@ -19,6 +19,7 @@ public class EriantysClientHandler extends Thread{
     Socket client;
     ArrayList<Game> games;
     Player player;
+    ReentrantLock update = new ReentrantLock();
     public EriantysClientHandler(Socket client,ArrayList<Game> games)
     {
         this.client=client;
@@ -77,10 +78,19 @@ public class EriantysClientHandler extends Thread{
                     String gameRoom = (String) messages.get(1);
                     String playerName = (String) messages.get(2);
                     msg = joinAGame(gameRoom, playerName);
-                    game = findGameForPlayer(playerName);
-                    responses.add(msg);
-                    responses.add(game);
-                    oos.writeObject(responses);
+                    if(msg.equals(Config.JOIN_ONE_GAME_SUC))
+                    {
+                        game = findGameForPlayer(playerName);
+                        responses.add(msg);
+                        responses.add(game);
+                        oos.writeObject(responses);
+                        gameUpdate(game);
+                    }
+                    else
+                    {
+                        responses.add(msg);
+                        oos.writeObject(responses);
+                    }
                     break;
                 case Config.USER_LOGGING:
                     System.out.println(client+" asking for logging");
@@ -113,7 +123,7 @@ public class EriantysClientHandler extends Thread{
                     System.out.println(client+" tries to modify game");
                     game = findGameForPlayer((String) messages.get(1));
                     for(Player p : game.getPlayers())
-                        p.unLockUpdate();
+                        p.setUpdate(true);
                     responses.add("all player has been notified");
                     oos.writeObject(responses);
 
@@ -123,12 +133,18 @@ public class EriantysClientHandler extends Thread{
                     player = findPlayerByName((String) messages.get(1));
                     while(!client.isClosed())
                     {
-                        player.lockUpdate();
+                        while(!player.isUpdate())
+                        {
+                            sleep(500);
+                        }
+                        System.out.println(player.getName()+"'s game has been updated");
                         responses = new ArrayList<>();
                         responses.add(Config.GAME_UPDATED);
                         responses.add(findGameForPlayer(player.getName()));
                         oos.writeObject(responses);
+                        player.setUpdate(false);
                     }
+
                     break;
 
                 default:
@@ -145,7 +161,8 @@ public class EriantysClientHandler extends Thread{
 
     private synchronized void gameUpdate(Game game)
     {
-
+        for(Player p : game.getPlayers())
+            p.setUpdate(true);
     }
     /**
      * TODO
@@ -154,9 +171,9 @@ public class EriantysClientHandler extends Thread{
     private synchronized String joinAGame(String gameName,String player) throws EriantysExceptions {
         Game game = findGameForPlayer(gameName);
         if(game.isGameStarted())
-            throw new InnerExceptions.GameStartingError("Cannot join a started game");
+            return "Cannot join a started game";
         if(game.getPlayers().size() == game.getN_Player())
-            throw new InnerExceptions.GameStartingError("Cannot join a game where is full");
+            return "Cannot join a game where is full";
         if(game.getN_Player() == 2 && !game.isExpertMode())
         {
             game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,true));
