@@ -7,6 +7,7 @@ import java.util.List;
 public class Turn {
     private Game game;
     private int activePlayer=0;
+    private List<Player> playerQueue = game.getPlayers();
     private Phase state = new PianificationState();
     private int endOfTurn = 1;
     private List<AssistantType> usedCard;
@@ -19,12 +20,9 @@ public class Turn {
         return state;
     }
 
-    public void previousState() {
-        state.prev(this);
-    }
+    public void nextState() throws EriantysExceptions {
+        state.next(this,game);
 
-    public void nextState() {
-        state.next(this);
     }
 
     public void printStatus() {
@@ -39,13 +37,18 @@ public class Turn {
         this.endOfTurn = endOfTurn;
     }
 
-    public Turn(Game game){
+    public Turn(Game game) throws EriantysExceptions {
         this.game=game;
     }
 
     public int getActivePlayer() {
         return activePlayer;
     }
+
+    public List<Player> getPlayerQueue() {
+        return playerQueue;
+    }
+
 
     public List<AssistantType> playCard(AssistantType assistant) {
         usedCard.add(assistant);

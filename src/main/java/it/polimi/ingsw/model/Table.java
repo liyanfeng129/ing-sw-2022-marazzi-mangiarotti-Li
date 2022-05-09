@@ -89,7 +89,7 @@ public class Table implements Serializable {
             newMn = getRightIslandIndex(newMn);
         Islands.get(getMotherNatureIndex()).setMotherNature(false);
         Islands.get(newMn).setMotherNature(true);
-        mergeIsland();
+        //mergeIsland();
     }
 
     private int getMotherNatureIndex() throws EriantysExceptions

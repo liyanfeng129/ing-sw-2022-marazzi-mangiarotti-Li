@@ -91,6 +91,9 @@ public class CliInterface {
         System.out.println("SERVER:  PLEASE ENTER THE NUMBER OF THE CHARACTER YOU WANT TO PLAY");
         cli.show_hand(player.getHand());
         int card = Integer.parseInt(scanner.nextLine());
+        msg_list.add("ASSISTANT");
+        msg_list.add(player);
+        msg_list.add(card);
         return msg_list;
     }
 
@@ -125,11 +128,14 @@ public class CliInterface {
                 System.out.println("SERVER:  0 RED, 1 YELLOW, 2 PINK, 3 BLUE, 4 GREEN");
                 int Colore = Integer.parseInt(scanner.nextLine());
 
+
                 while (c_1 == 0) {
 
                     if (Colore == 0 || Colore == 1 || Colore == 2 || Colore == 3 || Colore == 4) {
                         c_1 = 1;
-                        // va aggiunto lo studente
+                        msg_list.add("STUDENT");
+                        msg_list.add(player);
+                        msg_list.add(Colore);
 
                     } else {
                         System.out.println("SERVER:  ILLIGAL INPUT");
@@ -187,6 +193,9 @@ public class CliInterface {
                     if (island >= 0 && island < game.getTable().getIslands().size()) {
                         c_1 = 1;
                         // BISOGNA AGGIUNERE COME VIENE CARICATO IL MESSAGGIO
+                        msg_list.add("ISLAND");
+                        msg_list.add(player);
+                        msg_list.add(island); //e un intero
                     } else {
                         System.out.println("SERVER:  ILLIGAL INPUT");
                         System.out.println("SERVER: SELECT ISLANDS WITH INT POSITION FROM 0 TO "
@@ -198,6 +207,8 @@ public class CliInterface {
             } else if (destination == 1) {
                 c = 1;
                 // BISOGNA AGGIUNERE COME VIENE CARICATO IL MESSAGGIO
+                msg_list.add("HALL");
+                msg_list.add(player);
             } else {
                 System.out.println("SERVER:  ILLIGAL INPUT");
                 System.out.println("SERVER: SELECT DESTINATION, 0 ISLANDS, 1 HALL");
@@ -225,8 +236,12 @@ public class CliInterface {
         int island = Integer.parseInt(scanner.nextLine());
         while (c == 0) {
             if (island >= 0 && island < game.getTable().getIslands().size()) {
+                //manca un controllo su movimento < carta.step
                 c = 1;
                 // BISOGNA AGGIUNERE COME VIENE CARICATO IL MESSAGGIO
+                msg_list.add("ISLAND");
+                msg_list.add(player);
+                msg_list.add(island); //e un intero
             } else {
                 System.out.println("SERVER:  ILLIGAL INPUT");
                 System.out.println("SERVER: SELECT ISLANDS WITH INT POSITION FROM 0 TO "
