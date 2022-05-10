@@ -119,4 +119,9 @@ public class Bag implements Serializable {
         }
         return drawn_students;
     }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

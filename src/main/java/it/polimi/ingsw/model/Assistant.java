@@ -22,4 +22,9 @@ public class Assistant implements Serializable {
     public AssistantType getAssistantType() {
         return type;
     }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

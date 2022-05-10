@@ -59,7 +59,7 @@ class CloudTest {
             fail();
         }
         assertArrayEquals(new int[]{0, 1, 0, 1, 1}, cloud.getStudents());
-        cloud.takeStudent(1);
+       // cloud.takeStudent(1);
         assertArrayEquals(new int[]{0, 0, 0, 1, 1}, cloud.getStudents());
     }
     @Test

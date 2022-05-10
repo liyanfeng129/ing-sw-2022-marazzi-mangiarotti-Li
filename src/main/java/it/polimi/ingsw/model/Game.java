@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements Serializable {
-    private ArrayList<Player> Players = new ArrayList<Player>();
+    private ArrayList<Player> players = new ArrayList<Player>();
     private int n_Player;
     private boolean expertMode;
     private Table table;
@@ -20,7 +20,7 @@ public class Game implements Serializable {
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
         this.n_Player = n_Player;
         this.expertMode = expertMode;
-        Players.add(creator);
+        players.add(creator);
         table = new Table();
         professors = new Professors();
         this.gameStarted = false;
@@ -43,7 +43,7 @@ public class Game implements Serializable {
         ArrayList<Cloud> clouds = new ArrayList<>();
         ArrayList<CharacterCard> characterCards = new ArrayList<>();
 
-        if(Players.size() != n_Player)
+        if(players.size() != n_Player)
             throw new InnerExceptions.GameStartingError("The number of player is incorrect.");
 
                 if(n_Player == 2 && expertMode)
@@ -72,7 +72,9 @@ public class Game implements Serializable {
                         cloud.setCloud(3);
                         clouds.add(cloud);
                     }
-                    table.tableInit(clouds,null);
+                    this.table.tableInit(clouds,null);
+                    for(int i = 0; i< players.size(); i++)
+                        this.players.get(i).getPb().setWaitingRoom(table.getBag().draw(7));
                 }
 
                 if(n_Player == 3 && !expertMode)
@@ -116,13 +118,13 @@ public class Game implements Serializable {
     }
 
     public ArrayList<Player> getPlayers() {
-        return Players;
+        return players;
     }
 
     public void addPlayers(Player player) throws EriantysExceptions {
-        if(Players.size()>n_Player)
+        if(players.size()>n_Player)
             throw new InnerExceptions.InvalidPlayerNumberException("too many players");
-            Players.add(player);
+            players.add(player);
     }
 
     public boolean isGameStarted() {
@@ -140,12 +142,13 @@ public class Game implements Serializable {
     @Override
     public String toString() {
         return "Game{" +
-                "Players=" + Players +
+                "Players=" + players +
                 ", n_Player=" + n_Player +
                 ", expertMode=" + expertMode +
                 ", table=" + table +
                 ", gameStarted=" + gameStarted +
                 '}';
     }
+
 }
 

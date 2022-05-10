@@ -55,14 +55,15 @@ public class Cli {
             show_cloud(table.getClouds().get(i));
             System.out.println(" ");
         }
-        System.out.println(" ");
-        System.out.println("CHARACTERS");
-        for(int i=0; i<table.getCharacters().size();i++) {
-            show_character(table.getCharacters().get(i));
+        if(table.getCharacters()!=null)
+        {
             System.out.println(" ");
+            System.out.println("CHARACTERS");
+            for(int i=0; i<table.getCharacters().size();i++) {
+                show_character(table.getCharacters().get(i));
+                System.out.println(" ");
+            }
         }
-
-
     }
     public void show_island(Island island){
         if (island.getMotherNature())
@@ -94,7 +95,8 @@ public class Cli {
         System.out.println("Player Name: "+ player.getName());
         System.out.println("Player Mage: "+ player.getMage());
         System.out.println("Tower Color : "+ player.getTowerColor());
-        System.out.println("Wallet: "+ player.getWallet().getWallet());
+        if(player.getWallet()!=null)
+            System.out.println("Wallet: "+ player.getWallet().getWallet());
         show_playerboard(player.getPlayerBoard());
 
 

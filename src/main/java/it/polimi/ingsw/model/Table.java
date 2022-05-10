@@ -8,24 +8,33 @@ import java.util.Random;
 
 
 public class Table implements Serializable {
-    private ArrayList<Island> Islands = new ArrayList<Island>();
+    private ArrayList<Island> Islands;
     private ArrayList<Cloud> clouds;
     private ArrayList<CharacterCard> characterCards;
     private Bag bag;
 
     public Table() throws EriantysExceptions {
+        Islands = new ArrayList<>();
         for (int i=0;i<12;i++){
             Islands.add(new Island());
         }
+        clouds = new ArrayList<>();
+        characterCards = new ArrayList<>();
         Islands.get(0).setMotherNature(true);
         this.bag = new Bag();
-        initIslands();
+        //initIslands();
     }
 
     public void tableInit(ArrayList<Cloud> clouds, ArrayList<CharacterCard> characterCards) throws EriantysExceptions {
         this.clouds = clouds;
         this.characterCards = characterCards;
         initIslands();
+        initClouds();
+    }
+
+    private void initClouds() throws EriantysExceptions {
+        for(int i = 0; i<clouds.size(); i++)
+            clouds.get(i).setStudents(bag.draw(clouds.get(i).getSize()));
     }
 
 
@@ -147,5 +156,9 @@ public class Table implements Serializable {
         return influence;
     }
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.view.Cli;
 
 
 import java.io.*;
@@ -103,6 +104,23 @@ public class EriantysClientHandler extends Thread{
                     System.out.println(client+" trying to connect");
                     out.println("ok, you are connected");
                     break;
+                case "try to get a game":
+                    System.out.println(client+" testing for get a game");
+                    game = findGameForPlayer((String) messages.get(1));
+                    responses.add("ok");
+                    responses.add(game);
+                    oos.writeObject(responses);
+                    gameUpdate(game);
+                    break;
+                case "try to modify game":
+                    System.out.println(client+" testing for modifying game");
+                    game = findGameForPlayer((String) messages.get(1));
+                    game.setGameStarted(false);
+                    responses.add("ok");
+                    responses.add(game);
+                    oos.writeObject(responses);
+                    gameUpdate(game);
+                    break;
                 case Config.LOG_OUT:
                     System.out.println(client+" asking for logout");
                     responses.add(logOutUser((String) messages.get(1)));
@@ -110,10 +128,11 @@ public class EriantysClientHandler extends Thread{
                     break;
                 case Config.GAME_START:
                     System.out.println(client+" wants to start a game");
+                    findGameForPlayer((String) messages.get(1)).startGame();
                     game = findGameForPlayer((String) messages.get(1));
-                    game.startGame();
                     responses.add(Config.GAME_START_SUC);
                     oos.writeObject(responses);
+                    new Cli().show_game(game);
                     gameUpdate(game);
                     break;
                 case Config.LISTENING_FOR_UPDATE:

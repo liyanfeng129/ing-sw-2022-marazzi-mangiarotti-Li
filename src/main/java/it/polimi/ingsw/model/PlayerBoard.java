@@ -48,7 +48,10 @@ public class PlayerBoard implements Serializable {
     public void setWaitingRoom(int[] waitingRoom) throws EriantysExceptions {
         if(Arrays.stream(waitingRoom).sum() > maxStudentsInWaiting || Arrays.stream(waitingRoom).sum() <0)
             throw new InnerExceptions.NotValidStudentSizeException("Number of student is not valid");
-        this.waitingRoom = waitingRoom;
+        this.waitingRoom = waitingRoom.clone();
+    }
+    public void addCloudToWaitingRoom(int[] cloud){
+        waitingRoom = sumArray(waitingRoom, cloud);
     }
 
     public int getN_tower() {

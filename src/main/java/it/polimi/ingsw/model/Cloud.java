@@ -39,7 +39,7 @@ public class Cloud implements Serializable {
     {
         if(Arrays.stream(students).sum() != getSize())
             throw new InnerExceptions.NotValidStudentSizeException("Number of student is not valid");
-        this.students = students;
+        this.students = students.clone();
     }
 
 }
