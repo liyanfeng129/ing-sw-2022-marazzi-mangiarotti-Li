@@ -16,6 +16,7 @@ public class PianificationState implements Phase{
 
         for(int i=0;i<game.getN_Player();i++) {
             //richiedi una carta da ogni giocatore in senso orario partendo da activeplayer
+
             Player player = (Player) msg_list.get(1);
             usedCards.add((Assistant) msg_list.get(2));
         }

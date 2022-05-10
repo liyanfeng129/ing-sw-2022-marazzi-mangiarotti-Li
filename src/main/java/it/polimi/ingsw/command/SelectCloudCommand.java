@@ -29,7 +29,15 @@ public class SelectCloudCommand extends Command implements Serializable{
         {
             if(isCliClient())
             {
-
+                int choice;
+                int n_clouds=getGame().getTable().getClouds().size();
+                do
+                {
+                    System.out.println(String.format("Select one cloud from 1 to %d ", n_clouds));
+                    choice = new Scanner(System.in).nextInt()-1;
+                }
+                while(choice<0 || choice>n_clouds);
+                cloud = choice;
             }
         }
         setDataGathered(true);

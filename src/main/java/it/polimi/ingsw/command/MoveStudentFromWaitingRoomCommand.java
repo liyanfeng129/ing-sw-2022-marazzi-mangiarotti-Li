@@ -56,16 +56,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
 
                 do
                 {
-                    System.out.println("Which student do you want to move.");
-                    System.out.println("1: to an island");
-                    System.out.println("2: to your student holder");
-                    choice = new Scanner(System.in).nextInt();
-                }
-                while(!(choice == 1 || choice==2));
-
-                do
-                {
-                    System.out.println("Where do you want to move student?");
+                    System.out.println("Select where do you want to move the student.");
                     System.out.println("1: to an island");
                     System.out.println("2: to your student holder");
                     choice = new Scanner(System.in).nextInt();
