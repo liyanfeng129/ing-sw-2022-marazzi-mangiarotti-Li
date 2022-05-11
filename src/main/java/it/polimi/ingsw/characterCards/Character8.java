@@ -2,15 +2,19 @@ package it.polimi.ingsw.characterCards;
 
 import it.polimi.ingsw.model.*;
 
-public class Character4 implements CharacterBehavior{
+import java.util.ArrayList;
+
+public class Character8 implements CharacterBehavior{
+
     private int coin;
     private boolean firstUse;
     private String msg ;
 
-    public Character4(Game game) throws EriantysExceptions {
+
+    public Character8(Game game) throws EriantysExceptions {
 
         msg = "";
-        coin = 1;
+        coin = 2;
         firstUse = false;
 
     }
@@ -20,7 +24,6 @@ public class Character4 implements CharacterBehavior{
         if (!this.firstUse){
             this.firstUse = true;
         }
-        int max_step=assistant.getSteps()+2;
-    //come lo passo al controller?
+        game.getTable().setCard8(user.getName());
     }
 }

@@ -10,6 +10,7 @@ public class Island implements Serializable {
     private boolean mother_nature;
     private int size;
     private TowerColor towerColor;
+    private boolean NoEntryTiles;
 
 
     public Island() {
@@ -22,6 +23,7 @@ public class Island implements Serializable {
         this.students[SType.GREEN.ordinal()] = 0;
         this.towerColor = null;
         this.mother_nature = false;
+        this.NoEntryTiles=false;
         this.size = 1;
     }
     public int[] getStudents(){
@@ -65,6 +67,14 @@ public class Island implements Serializable {
     public int getSize()
     {
         return this.size;
+    }
+
+    public void setNoEntryTiles(boolean noEntryTiles) {
+        NoEntryTiles = noEntryTiles;
+    }
+
+    public boolean isNoEntryTiles() {
+        return NoEntryTiles;
     }
 
     @Override
