@@ -14,6 +14,7 @@ public class Table implements Serializable {
     private Bag bag;
     private boolean card6;
     private String card8;
+    private int card9;
 
     public Table() throws EriantysExceptions {
         Islands = new ArrayList<>();
@@ -26,6 +27,7 @@ public class Table implements Serializable {
         this.bag = new Bag();
         card6=false;
         card8=null;
+        card9=-1;
         //initIslands();
     }
 
@@ -152,18 +154,28 @@ public class Table implements Serializable {
         this.card8 = card8;
     }
 
+    public void setCard9(int card9) {
+        this.card9 = card9;
+    }
+
+    public int getCard9() {
+        return card9;
+    }
+
     public int[] getInfluence(Game game, Professors prof) throws EriantysExceptions {
         int[] influence= new int[4];
         for (int i = 0;i<5; i++) {
-            if(prof.getList_professors()[i]==Mage.MAGE1)
-                influence[0]=influence[0]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-            if(prof.getList_professors()[i]==Mage.MAGE2)
-                influence[1]=influence[1]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-            if(prof.getList_professors()[i]==Mage.MAGE3)
-                influence[2]=influence[2]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-            if(prof.getList_professors()[i]==Mage.MAGE4)
-                influence[3]=influence[3]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-         }
+            if (game.getTable().getCard9() != i) {
+                if (prof.getList_professors()[i] == Mage.MAGE1)
+                    influence[0] = influence[0] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                if (prof.getList_professors()[i] == Mage.MAGE2)
+                    influence[1] = influence[1] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                if (prof.getList_professors()[i] == Mage.MAGE3)
+                    influence[2] = influence[2] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                if (prof.getList_professors()[i] == Mage.MAGE4)
+                    influence[3] = influence[3] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+            }
+        }
         if(game.getTable().isCard6()==false) {
             for (int i = 0; i < game.getN_Player(); i++) {
                 if (game.getTable().getIslands(getMotherNatureIndex()).getTower() == game.getPlayers().get(i).getTowerColor()) {
@@ -171,6 +183,7 @@ public class Table implements Serializable {
                 }
             }
         }
+        game.getTable().setCard9(-1);
         game.getTable().setCard6(false);//potrebbe esserci un problema se usato con altre carte
         return influence;
     }

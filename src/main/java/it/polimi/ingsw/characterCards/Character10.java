@@ -4,17 +4,17 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class Character8 implements CharacterBehavior{
+public class Character10 implements CharacterBehavior{
 
     private int coin;
     private boolean firstUse;
     private String msg ;
 
 
-    public Character8(Game game) throws EriantysExceptions {
+    public Character10(Game game) throws EriantysExceptions {
 
         msg = "";
-        coin = 2;
+        coin = 1;
         firstUse = false;
 
     }
@@ -24,7 +24,6 @@ public class Character8 implements CharacterBehavior{
         if (!this.firstUse){
             this.firstUse = true;
         }
-        game.getTable().setCard8(user.getName());
-        //stesso problema carta 6
+        //stesso problema carta 7
     }
 }
