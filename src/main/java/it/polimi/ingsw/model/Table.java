@@ -101,7 +101,7 @@ public class Table implements Serializable {
         //mergeIsland();
     }
 
-    private int getMotherNatureIndex() throws EriantysExceptions
+    public int getMotherNatureIndex() throws EriantysExceptions
     {
         int i = 0;
         while(i < Islands.size()){
@@ -132,8 +132,11 @@ public class Table implements Serializable {
     public Bag getBag() {
         return bag;
     }
-//secondo me sarebbe utile mettere professor come attributo di game o table o player board
-    //altrimenti lo devo passare come parametro
+
+
+
+
+
     public int[] getInfluence(Game game,Professors prof) throws EriantysExceptions {
         int[] influence= new int[4];
         for (int i = 0;i<5; i++) {
@@ -145,9 +148,7 @@ public class Table implements Serializable {
                 influence[2]=influence[2]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
             if(prof.getList_professors()[i]==Mage.MAGE4)
                 influence[3]=influence[3]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-            //          if(prof.getList_professors()[i]!=Mage.NO_MAGE)
-  //              influence[prof.getList_professors()[i].index()]=game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-        }
+         }
         for(int i=0;i<game.getN_Player();i++){
             if(game.getTable().getIslands(getMotherNatureIndex()).getTower()== game.getPlayers().get(i).getTowerColor()){
                     influence[i]=influence[i]+game.getTable().getIslands(getMotherNatureIndex()).getSize();
@@ -155,6 +156,30 @@ public class Table implements Serializable {
         }
         return influence;
     }
+
+    public Player getPlayerMaxInfluence(Game game) throws EriantysExceptions {
+        int[] influence  = game.getTable().getInfluence(game, game.getProfessors());
+        int max_index=0;
+        int max =0;
+        for (int i=0; i<game.getN_Player();i++) {
+            if (max < influence[i])
+                max = influence[i];
+                max_index = i;
+        }
+
+        for (int i=0; i<game.getN_Player();i++) {
+            if (max ==influence[i] && max_index!=i){
+                return null;
+            }
+
+
+        }
+        return   game.getPlayers().get(max_index);
+
+    }
+
+
+
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
