@@ -3,7 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import it.polimi.ingsw.view.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,13 +15,14 @@ class GameTest {
     private Player p2;
     private PlayerBoard pb;
     private Table table;
+    private Cli cli ;
     @BeforeEach
-    //public void setup() throws EriantysExceptions {
-    //   p1=new Player("Alessio", Mage.MAGE1,TowerColor.BLACK,2,false);
-    //  p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,2,false);
-    //    game=new Game(2,false,p1);
-    //   Egame=new Game(2,true,p1);
-    //}
+    public void setup() throws EriantysExceptions {
+        p1=new Player("Alessio", Mage.MAGE1,TowerColor.BLACK,2,false,true);
+        p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,2,false,true);
+        game=new Game(2,false,p1);
+        Egame=new Game(2,true,p1);
+    }
     @Test
     /**
     public void test_game(){
@@ -64,9 +65,9 @@ class GameTest {
             table=new Table();
             game.setTable(table);
             game.setN_Player(4);
-            //game.addPlayers(p2);
-            //game.addPlayers(p2);
-            //game.addPlayers(p2);
+            game.addPlayers(p2);
+            game.addPlayers(p2);
+            game.addPlayers(p2);
             game.startGame();
         } catch (EriantysExceptions e) {
             e.printStackTrace();
@@ -78,10 +79,17 @@ class GameTest {
     @Test
     public void test_incorrectNumberOfPlayer(){
         try {
+            cli = new Cli();
             table=new Table();
             game.setTable(table);
+            game.addPlayers(p2);
+            game.startGame();
+            Professors prof = new Professors();
+            prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.MAGE2, Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE1});
+            game.setProfessors(prof);
             //game.addPlayers(p2);
             //game.addPlayers(p2);
+            cli.show_game(game);
             game.startGame();
         } catch (EriantysExceptions e) {
             e.printStackTrace();

@@ -28,7 +28,8 @@ public class Cli {
         System.out.println("------------------------------------------------");
 
         for(int i=0; i<game.getN_Player();i++){
-            show_player(game.getPlayers().get(i));
+            show_player(game.getPlayers().get(i),game);
+            System.out.println("------------------------------------------------");
         }
     }
 
@@ -54,18 +55,13 @@ public class Cli {
         System.out.println("TABLE INFO");
         System.out.println(" ");
         System.out.println("ISLANDS");
-        for(int i=0; i<table.getIslands().size();i++) {
-            System.out.println("ISLAND_" + i);
-            show_island(table.getIslands(i));
-            System.out.println(" ");
-        }
-        System.out.println(" ");
+        show_islands(table);
+
         System.out.println("CLOUDS");
-        for(int i=0; i<table.getClouds().size();i++) {
-            System.out.println("CLOUD_" + i);
-            show_cloud(table.getClouds().get(i));
-            System.out.println(" ");
-        }
+
+        show_clouds(table);
+
+
         if(table.getCharacters()!=null)
         {
             System.out.println(" ");
@@ -76,63 +72,161 @@ public class Cli {
             }
         }
     }
-    public void show_island(Island island){
-        if (island.getMotherNature())
-            System.out.println("Mother Nature");
 
-        System.out.println("Size:" + island.getSize());
-        System.out.println("RED: "+ island.getStudents()[0] + " " + "YELLOW: "+ island.getStudents()[1] + " " +
-                           "PINK: "+ island.getStudents()[2] + " " + "BLUE: "+ island.getStudents()[3] + " " +
-                           "GREEN: "+ island.getStudents()[4]);
-        if (island.getTower() == null)
-            System.out.println("NO TOWER " + island.getSize());
-        else{
-            System.out.println(island.getTower()+ "TOWER");
+
+    public String show_students_island(Island island){
+        String msg = Color.RED + String.valueOf(island.getStudents()[0]) + " " + Color.YELLOW + String.valueOf(island.getStudents()[1]) + " " +
+                Color.PURPLE + String.valueOf(island.getStudents()[2]) + " " + Color.BLUE+ String.valueOf(island.getStudents()[3]) + " " +
+                Color.GREEN + String.valueOf(island.getStudents()[4]) + Color.RESET;
+        return msg;
+    }
+    public String show_students_cloud(Cloud cloud){
+        String msg = Color.RED + String.valueOf(cloud.getStudents()[0]) + " " + Color.YELLOW + String.valueOf(cloud.getStudents()[1]) + " " +
+                Color.PURPLE + String.valueOf(cloud.getStudents()[2]) + " " + Color.BLUE+ String.valueOf(cloud.getStudents()[3]) + " " +
+                Color.GREEN + String.valueOf(cloud.getStudents()[4]) + Color.RESET;
+        return msg;
+    }
+    public String show_students_waiting_room(PlayerBoard pb){
+
+        String msg = Color.RED + String.valueOf(pb.getWaitingRoom()[0]) + " " + Color.YELLOW + String.valueOf(pb.getWaitingRoom()[1]) + " " +
+                Color.PURPLE + String.valueOf(pb.getWaitingRoom()[2]) + " " + Color.BLUE+ String.valueOf(pb.getWaitingRoom()[3]) + " " +
+                Color.GREEN + String.valueOf(pb.getWaitingRoom()[4]) + Color.RESET;
+        return msg;
+    }
+    public String show_students_dining_room(PlayerBoard pb){
+        String msg = Color.RED + String.valueOf(pb.getDiningRoom()[0]) + " " + Color.YELLOW + String.valueOf(pb.getDiningRoom()[1]) + " " +
+                Color.PURPLE + String.valueOf(pb.getDiningRoom()[2]) + " " + Color.BLUE+ String.valueOf(pb.getDiningRoom()[3]) + " " +
+                Color.GREEN + String.valueOf(pb.getDiningRoom()[4]) + Color.RESET;
+        return msg;
+    }
+
+
+    public void show_islands(Table table){
+        for(int i=0; i<table.getIslands().size()/2;i++){
+            System.out.print("ISLAND_" + i + "  |  ");
         }
+        System.out.println(" ");
+        for(int i=0; i<table.getIslands().size()/2;i++){
+            System.out.print("SIZE: " + table.getIslands().get(i).getSize() + "   |  ");
+        }
+        System.out.println(" ");
+        for(int i=0; i<table.getIslands().size()/2;i++){
+            if(i==0)
+                System.out.print(show_students_island(table.getIslands().get(i)) + " | ");
+            else
+                System.out.print(show_students_island(table.getIslands().get(i)) + "  | ");
+
+        }
+        System.out.println(" ");
+        for(int i=0; i<table.getIslands().size()/2;i++) {
+            if(table.getIslands().get(i).getMotherNature()==true){
+                System.out.print("    🗿    | ");
+            }
+            else{
+                System.out.print("            |");
+            }
+        }
+        System.out.println(" ");
+        System.out.println("--------------------------------------------------------------------------");
+
+        for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++){
+            System.out.print("ISLAND_" + i + "  |  ");
+        }
+        System.out.println(" ");
+        for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++){
+            if (i<10)
+                System.out.print("SIZE: " + table.getIslands().get(i).getSize() + "   |  ");
+            else
+                System.out.print("SIZE: " + table.getIslands().get(i).getSize() + "    |  ");
+        }
+        System.out.println("");
+        for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++){
+            if(i==0)
+                System.out.print(show_students_island(table.getIslands().get(i)) + " | ");
+            else
+                System.out.print(show_students_island(table.getIslands().get(i)) + "  | ");
+
+        }
+        System.out.println("");
+        for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++) {
+            if(table.getIslands().get(i).getMotherNature()==true){
+                System.out.print("    🗿    | ");
+            }
+            else{
+                System.out.print("            |");
+            }
+        }
+        System.out.println(" ");
 
     }
 
-    public void show_cloud(Cloud cloud){
-        System.out.println("RED: "+ cloud.getStudents()[0] + " " + "YELLOW: "+ cloud.getStudents()[1] + " " +
-                            "PINK: "+ cloud.getStudents()[2] + " " + "BLUE: "+ cloud.getStudents()[3] + " " +
-                            "GREEN: "+ cloud.getStudents()[4]);
+    public void show_clouds(Table table){
+        for(int i=0; i<table.getClouds().size();i++){
+            System.out.print("CLOUD_" + i + "   |  ");
+        }
+        System.out.println(" ");
+        for(int i=0; i<table.getClouds().size();i++){
+            if(i==0)
+                System.out.print(show_students_cloud(table.getClouds().get(i)) + " | ");
+            else
+                System.out.print(show_students_cloud(table.getClouds().get(i)) + "  | ");
+
+        }
+        System.out.println(" ");
 
     }
     public void show_character(CharacterCard character){
         System.out.println("qui ci saranno i characters");
     }
 
-    public void show_player(Player player){
+    public void show_player(Player player,Game game){
         System.out.println("Player Name: "+ player.getName());
         System.out.println("Player Mage: "+ player.getMage());
         System.out.println("Tower Color : "+ player.getTowerColor());
         if(player.getWallet()!=null)
             System.out.println("Wallet: "+ player.getWallet().getWallet());
-        show_playerboard(player.getPlayerBoard());
+        show_playerboard(player.getPlayerBoard(),game,player);
 
 
     }
 
 
-
-    public void show_playerboard(PlayerBoard playerBoard){
+    public void show_playerboard(PlayerBoard playerBoard,Game game,Player player){
         System.out.println("WAITING ROOM");
-        System.out.println("RED: "+ playerBoard.getWaitingRoom()[0] + " " + "YELLOW: "+ playerBoard.getWaitingRoom()[1] + " " +
-                "PINK: "+ playerBoard.getWaitingRoom()[2] + " " + "BLUE: "+ playerBoard.getWaitingRoom()[3] + " " +
-                "GREEN: "+ playerBoard.getWaitingRoom()[4]);
+        System.out.println(show_students_waiting_room(playerBoard));
         System.out.println("DINING ROOM");
-        System.out.println("RED: "+ playerBoard.getDiningRoom()[0] + " " + "YELLOW: "+ playerBoard.getDiningRoom()[1] + " " +
-                "PINK: "+ playerBoard.getDiningRoom()[2] + " " + "BLUE: "+ playerBoard.getDiningRoom()[3] + " " +
-                "GREEN: "+ playerBoard.getDiningRoom()[4]);
+        System.out.println(show_students_dining_room(playerBoard));
         System.out.println("TOWER: "+ playerBoard.getN_tower());
+        show_professor(game,player);
+
 
     }
 
 
     public void show_assistant(Assistant card){
-        System.out.println("Steps: " + card.getAssistantType().getSteps() + "" + "Value: " + card.getAssistantType().getNum());
+        System.out.println("Steps: " + card.getAssistantType().getSteps() + " " + "Value: " + card.getAssistantType().getNum());
     }
 
-
+    public void show_professor(Game game,Player player){
+        System.out.println("Professor");
+        Mage[] progessor = game.getProfessors().getList_professors();
+        for(int i=0;i<5;i++){
+            if (player.getMage()==progessor[i]){
+                if(i==0)
+                    System.out.print(Color.RED + " ▊ "+ Color.RESET+" ");
+                if(i==1)
+                    System.out.print(Color.YELLOW + " ▊ " + Color.RESET +" ");
+                if(i==2)
+                    System.out.print(Color.PURPLE + " ▊ " + Color.RESET+" ");
+                if(i==3)
+                    System.out.print(Color.BLUE + " ▊ " + Color.RESET+" ");
+                if(i==4)
+                    System.out.print(Color.GREEN + " ▊ "+ Color.RESET+" ");
+            }
+            else
+                System.out.print("");
+        }
+        System.out.println(" ");
+    }
 
 }
