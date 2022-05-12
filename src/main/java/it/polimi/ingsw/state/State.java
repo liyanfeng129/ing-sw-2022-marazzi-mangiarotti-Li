@@ -8,10 +8,10 @@ import java.io.Serializable;
 public abstract class State implements Serializable {
    private Game game;
    private int phase;
-   public State(Game game)
+   public State(Game game,int phase)
    {
        this.game = game;
-       phase = 0;
+       this.phase = phase;
    }
 
     public Game getGame() {
@@ -34,8 +34,5 @@ public abstract class State implements Serializable {
     public abstract boolean canChangeState() throws EriantysExceptions;
     public abstract void executeCommand() throws EriantysExceptions;
     public abstract Command generateCommand() throws EriantysExceptions;
-
-
-
 
 }

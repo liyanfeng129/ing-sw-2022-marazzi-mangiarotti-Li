@@ -11,8 +11,8 @@ public class PlanningState extends State implements Serializable {
     // means that we already executed all commands needed in this state
     ArrayList<Assistant> cards = new ArrayList<>();
     int numPlayers;
-    public PlanningState(Game game) {
-        super(game);
+    public PlanningState(Game game, int phase) {
+        super(game,phase);
         numPlayers = game.getN_Player();
     }
 
@@ -37,7 +37,8 @@ public class PlanningState extends State implements Serializable {
              * TODO
              * implement necessary things before change game state
              * */
-            getGame().changeGameState(new ActionState(getGame()));
+            getGame().changeGameState(new ActionState(getGame(), 0));
+            getGame().addCommand(getGame().getGameState().generateCommand());
         }
     }
 
