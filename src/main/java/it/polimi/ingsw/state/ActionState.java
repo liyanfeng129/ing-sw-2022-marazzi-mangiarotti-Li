@@ -60,7 +60,6 @@ public class ActionState extends State implements Serializable {
         if(!canChangeState())
         {
             int[] waitingRoom = getGame().getTurnList().get(getPhase()).getPlayerBoard().getWaitingRoom();
-            ArrayList<Assistant> hand = getGame().getTurnList().get(getPhase()).getHand().getList_cards();
             String userName = getGame().getTurnList().get(getPhase()).getName();
             boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
             return new MoveStudentFromWaitingRoomCommand(waitingRoom,cliClient,getGame(),userName);
