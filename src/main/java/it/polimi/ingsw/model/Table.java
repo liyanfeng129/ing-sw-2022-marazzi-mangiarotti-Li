@@ -12,6 +12,9 @@ public class Table implements Serializable {
     private ArrayList<Cloud> clouds;
     private ArrayList<CharacterCard> characterCards;
     private Bag bag;
+    private boolean card6;
+    private String card8;
+    private int card9;
 
     public Table() throws EriantysExceptions {
         Islands = new ArrayList<>();
@@ -22,6 +25,9 @@ public class Table implements Serializable {
         characterCards = new ArrayList<>();
         Islands.get(0).setMotherNature(true);
         this.bag = new Bag();
+        card6=false;
+        card8=null;
+        card9=-1;
         //initIslands();
     }
 
@@ -101,7 +107,7 @@ public class Table implements Serializable {
         //mergeIsland();
     }
 
-    private int getMotherNatureIndex() throws EriantysExceptions
+    public int getMotherNatureIndex() throws EriantysExceptions
     {
         int i = 0;
         while(i < Islands.size()){
@@ -132,29 +138,83 @@ public class Table implements Serializable {
     public Bag getBag() {
         return bag;
     }
-//secondo me sarebbe utile mettere professor come attributo di game o table o player board
-    //altrimenti lo devo passare come parametro
-    public int[] getInfluence(Game game,Professors prof) throws EriantysExceptions {
+
+    public boolean isCard6() {
+        return card6;
+    }
+
+    public void setCard6(boolean card6) {
+        this.card6 = card6;
+    }
+    public String getCard8() {
+        return card8;
+    }
+
+    public void setCard8(String card8) {
+        this.card8 = card8;
+    }
+
+    public void setCard9(int card9) {
+        this.card9 = card9;
+    }
+
+    public int getCard9() {
+        return card9;
+    }
+
+    public int[] getInfluence(Game game, Professors prof) throws EriantysExceptions {
         int[] influence= new int[4];
         for (int i = 0;i<5; i++) {
-            if(prof.getList_professors()[i]==Mage.MAGE1)
-                influence[0]=influence[0]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-            if(prof.getList_professors()[i]==Mage.MAGE2)
-                influence[1]=influence[1]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-            if(prof.getList_professors()[i]==Mage.MAGE3)
-                influence[2]=influence[2]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-            if(prof.getList_professors()[i]==Mage.MAGE4)
-                influence[3]=influence[3]+game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
-            //          if(prof.getList_professors()[i]!=Mage.NO_MAGE)
-  //              influence[prof.getList_professors()[i].index()]=game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+            if (game.getTable().getCard9() != i) {
+                if (prof.getList_professors()[i] == Mage.MAGE1)
+                    influence[0] = influence[0] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                if (prof.getList_professors()[i] == Mage.MAGE2)
+                    influence[1] = influence[1] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                if (prof.getList_professors()[i] == Mage.MAGE3)
+                    influence[2] = influence[2] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                if (prof.getList_professors()[i] == Mage.MAGE4)
+                    influence[3] = influence[3] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+            }
         }
-        for(int i=0;i<game.getN_Player();i++){
-            if(game.getTable().getIslands(getMotherNatureIndex()).getTower()== game.getPlayers().get(i).getTowerColor()){
-                    influence[i]=influence[i]+game.getTable().getIslands(getMotherNatureIndex()).getSize();
+        if(game.getTable().isCard6()==false) {
+            for (int i = 0; i < game.getN_Player(); i++) {
+                if (game.getTable().getIslands(getMotherNatureIndex()).getTower() == game.getPlayers().get(i).getTowerColor()) {
+                    influence[i] = influence[i] + game.getTable().getIslands(getMotherNatureIndex()).getSize();
+                }
             }
         }
         return influence;
     }
+
+    public Player getPlayerMaxInfluence(Game game) throws EriantysExceptions {
+        int[] influence  = game.getTable().getInfluence(game, game.getProfessors());
+        if (game.getTable().getCard8()!=null){
+            for (int i=0;i<game.getN_Player();i++){
+                if (game.getTable().getCard8()==game.getPlayers().get(i).getName())
+                    influence[i]=influence[i]+2;
+            }
+        }
+        int max_index=0;
+        int max =0;
+        for (int i=0; i<game.getN_Player();i++) {
+            if (max < influence[i])
+                max = influence[i];
+                max_index = i;
+        }
+
+        for (int i=0; i<game.getN_Player();i++) {
+            if (max ==influence[i] && max_index!=i){
+                return null;
+            }
+
+
+        }
+        return   game.getPlayers().get(max_index);
+
+    }
+
+
+
 
     @Override
     protected Object clone() throws CloneNotSupportedException {

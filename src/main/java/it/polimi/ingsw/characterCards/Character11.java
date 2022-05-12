@@ -4,20 +4,20 @@ import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class Character5 implements CharacterBehavior{
+public class Character11 implements CharacterBehavior{
 
     private int coin;
     private boolean firstUse;
     private String msg ;
-    private int NoEntryTiles;
+    private int students[]= new int[5];
 
 
-    public Character5(Game game) throws EriantysExceptions {
+    public Character11(Game game) throws EriantysExceptions {
 
         msg = "";
         coin = 2;
         firstUse = false;
-        NoEntryTiles=4;
+        students = game.getTable().getBag().draw(4);
 
     }
 
@@ -26,10 +26,10 @@ public class Character5 implements CharacterBehavior{
         if (!this.firstUse){
             this.firstUse = true;
         }
-        int pos=game.getTable().getIslands().indexOf(island);
-        game.getTable().getIslands(pos).setNoEntryTiles(true);
-        NoEntryTiles--;
-        //bisogna aggiungere che se ce questa carta non si calcola influenza e merge
+        user.getPlayerBoard().addStudentToHolder(colore);
+        int[] temp=game.getTable().getBag().draw(1);
+        for(int i = 0 ; i < students.length; i++){
+            this.students[i] = this.students[i] + temp[i];
+        }
     }
 }
-

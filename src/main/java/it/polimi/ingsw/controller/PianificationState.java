@@ -13,7 +13,8 @@ public class PianificationState implements Phase{
     public void next(Turn turn, Game game) {
         ArrayList<Object> response = new ArrayList();
         ArrayList<Object> msg_list = new ArrayList();
-
+        if(game.getTurnList().get(0).getHand().getN_cards()==0)
+            turn.setState(new EndGame());
         for(int i=0;i<game.getN_Player();i++) {
             //richiedi una carta da ogni giocatore in senso orario partendo da activeplayer
 
