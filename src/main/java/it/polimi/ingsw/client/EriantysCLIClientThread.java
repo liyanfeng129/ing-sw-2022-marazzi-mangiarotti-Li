@@ -469,6 +469,10 @@ public class EriantysCLIClientThread extends Thread {
             else
                 System.out.println(responses.get(0));
         }
+        else
+        {
+            // communicate
+        }
     }
 
 }

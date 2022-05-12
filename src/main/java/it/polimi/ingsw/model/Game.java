@@ -136,7 +136,7 @@ public class Game implements Serializable {
                     table.tableInit(clouds,null);
                 }
                 this.gameStarted = true;
-                this.gameState = new PlanningState(this);
+                this.gameState = new PlanningState(this, 0);
                 this.commands.add(this.gameState.generateCommand());
                 this.turnList = players;
     }
