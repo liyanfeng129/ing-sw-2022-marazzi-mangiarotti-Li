@@ -33,6 +33,12 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
             player.getPb().takeStudentFromWaitingRoom(student);
         }
     }
+
+    @Override
+    public void undo() {
+
+    }
+
     public void  getData()
     {
         if(!isDataGathered())
@@ -77,6 +83,11 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
             }
         }
         setDataGathered(true);
+    }
+
+    @Override
+    public boolean execute(Game game) {
+        return false;
     }
 
 }

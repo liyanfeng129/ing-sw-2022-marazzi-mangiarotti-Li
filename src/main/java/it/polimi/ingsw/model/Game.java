@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 
 import it.polimi.ingsw.characterCards.CharacterCard;
+import it.polimi.ingsw.command.Command;
+import it.polimi.ingsw.state.PlanningState;
+import it.polimi.ingsw.state.State;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +17,9 @@ public class Game implements Serializable {
     private Table table;
     private Professors professors;
     private boolean gameStarted;
-    private List<Player> turnList;
+    private ArrayList<Command> commands = new ArrayList<>();
+    private State gameState;
+   // private List<Player> turnList;
 
     //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
@@ -24,8 +29,39 @@ public class Game implements Serializable {
         table = new Table();
         professors = new Professors();
         this.gameStarted = false;
+
     }
 
+    public Player findPlayerByName(String name) throws EriantysExceptions
+    {
+        for(Player p : players)
+            if(p.getName().equals(name))
+                return p;
+        throw new InnerExceptions.NoSuchUserException("Player not found");
+    }
+
+    public Command getLastCommand()
+    {
+        return this.commands.get(commands.size()-1);
+    }
+    public void setLastCommand(Command command)
+    {
+        this.commands.remove(commands.size()-1);
+        this.commands.add(command);
+    }
+    public void addCommand(Command command) { commands.add(command); }
+
+    public State getGameState()
+    {
+        return this.gameState;
+    }
+
+    public void changeGameState(State state)
+    {
+        this.gameState = state;
+    }
+
+    /*
     public List<Player> getTurnList() {
         return turnList;
     }
@@ -33,6 +69,8 @@ public class Game implements Serializable {
     public void setTurnList(List<Player> turnList) {
         this.turnList = turnList;
     }
+
+     */
 
     public Table getTable() {
         return table;
@@ -98,6 +136,8 @@ public class Game implements Serializable {
                     table.tableInit(clouds,null);
                 }
                 this.gameStarted = true;
+                this.gameState = new PlanningState(this);
+                this.commands.add(this.gameState.generateCommand());
     }
 
     public void setTable(Table table) {
@@ -150,5 +190,9 @@ public class Game implements Serializable {
                 '}';
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
 

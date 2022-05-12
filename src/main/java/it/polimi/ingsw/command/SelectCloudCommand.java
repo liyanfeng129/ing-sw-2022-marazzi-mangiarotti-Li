@@ -15,6 +15,11 @@ public class SelectCloudCommand extends Command implements Serializable{
         super(isCliClient, game, username);
     }
 
+    @Override
+    public void undo() {
+
+    }
+
     public void execute(Game game, Player player) throws EriantysExceptions
     {
         if(isDataGathered())
@@ -41,6 +46,11 @@ public class SelectCloudCommand extends Command implements Serializable{
             }
         }
         setDataGathered(true);
+    }
+
+    @Override
+    public boolean execute(Game game) {
+        return false;
     }
 }
 

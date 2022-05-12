@@ -81,4 +81,10 @@ public class InnerExceptions {
             super(msg);
         }
     }
+    public static class PlanningSteteError extends EriantysExceptions
+    {
+        public PlanningSteteError(String msg) {
+            super(msg);
+        }
+    }
 }

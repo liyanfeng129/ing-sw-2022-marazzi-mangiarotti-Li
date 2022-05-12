@@ -4,6 +4,8 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.characterCards.CharacterCard;
 import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
+
 public class Cli {
     private boolean on_bool ;
 
@@ -35,6 +37,15 @@ public class Cli {
         for (int i =0; i< hand.getN_cards();i++){
             System.out.println("Card_"+i);
             show_assistant(hand.getList_cards().get(i));
+        }
+
+    }
+
+    public void show_Assistants(ArrayList<Assistant> assistants){
+        int i = 1;
+        for (Assistant a : assistants){
+            System.out.println("Card_" + i++);
+            show_assistant(a);
         }
 
     }

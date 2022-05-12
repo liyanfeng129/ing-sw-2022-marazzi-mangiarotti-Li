@@ -11,12 +11,14 @@ public class Player implements Serializable {
     private Wallet wallet;
     private TowerColor towerColor;
     private boolean update;
+    private boolean cliClient;
 
 
     //non sarebbe meglio fare new pb invece che passargli una pb?
-    public Player(String name, Mage mage, TowerColor towerColor,int n_Player, boolean leader) {
+    public Player(String name, Mage mage, TowerColor towerColor,int n_Player, boolean leader, boolean cliClient) {
         this.name = name;
         this.mage = mage;
+        this.cliClient = cliClient;
         if (n_Player ==2)
             this.pb = new PlayerBoard(8,towerColor,7);
         if (n_Player ==3)
@@ -52,10 +54,13 @@ public class Player implements Serializable {
     }
 
 
+    public boolean isCliClient() {
+        return cliClient;
+    }
 
-
-
-
+    public void setCliClient(boolean cliClient) {
+        this.cliClient = cliClient;
+    }
 
     public String getName() {
         return name;

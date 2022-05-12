@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import com.google.gson.Gson;
 import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
+import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.Cli;
 
@@ -20,7 +21,7 @@ public class EriantysClientHandler extends Thread{
     Socket client;
     ArrayList<Game> games;
     Player player;
-    ReentrantLock update = new ReentrantLock();
+    Game game;
     public EriantysClientHandler(Socket client,ArrayList<Game> games)
     {
         this.client=client;
@@ -50,12 +51,23 @@ public class EriantysClientHandler extends Thread{
             Game game;
             String userName;
             String msg;
+            boolean cliClient;
+            boolean hasACommand;
             switch (request)
             {
+                case Config.GET_NEWEST_GAME:
+                    System.out.println(client+"tries to get a updated game");
+                    userName = (String) messages.get(1);
+                    game = findGameForPlayer(userName);
+                    responses.add(Config.GET_NEWEST_GAME_SUC);
+                    responses.add(game);
+                    oos.writeObject(responses);
+                    break;
                 case Config.CREATE_GAME_FOR_2:
                     System.out.println(client+"tries to create a game for two");
                     userName = (String) messages.get(1);
-                    msg = createGameFor2(userName);
+                    cliClient = (boolean) messages.get(2);
+                    msg = createGameFor2(userName,cliClient);
                     game = findGameForPlayer((String) messages.get(1));
                     responses.add(msg);
                     responses.add(game);
@@ -78,7 +90,8 @@ public class EriantysClientHandler extends Thread{
                     System.out.println(client+"tries to join a game");
                     String gameRoom = (String) messages.get(1);
                     String playerName = (String) messages.get(2);
-                    msg = joinAGame(gameRoom, playerName);
+                    cliClient = (boolean) messages.get(3);
+                    msg = joinAGame(gameRoom, playerName, cliClient);
                     if(msg.equals(Config.JOIN_ONE_GAME_SUC))
                     {
                         game = findGameForPlayer(playerName);
@@ -132,7 +145,16 @@ public class EriantysClientHandler extends Thread{
                     game = findGameForPlayer((String) messages.get(1));
                     responses.add(Config.GAME_START_SUC);
                     oos.writeObject(responses);
-                    new Cli().show_game(game);
+                    gameUpdate(game);
+                    break;
+                case Config.COMMAND_EXECUTE:
+                    System.out.println(client+"tries to execute a command");
+                    game = findGameForPlayer((String) messages.get(1));
+                    game.setLastCommand((Command) messages.get(2));
+                    game.getGameState().executeCommand();
+                    game.addCommand(game.getGameState().generateCommand());
+                    responses.add(Config.COMMAND_EXECUTE_SUC);
+                    oos.writeObject(responses);
                     gameUpdate(game);
                     break;
                 case Config.LISTENING_FOR_UPDATE:
@@ -147,23 +169,17 @@ public class EriantysClientHandler extends Thread{
                         }
                         if(!findGameForPlayer(name).isGameStarted()) // game hasn't started yet
                         {
-                            if(findGameForPlayer(name).getPlayers().get(0).getName().equals(name))// this player is not creator
+                            if(findGameForPlayer(name).getPlayers().get(0).getName().equals(name))// this player is creator
                             {
                                 System.out.println(player.getName()+"'s game room has been changed");
                                 responses = new ArrayList<>();
                                 responses.add(Config.UPDATE_CREATOR_WAITING_ROOM);
-                                responses.add(findGameForPlayer(player.getName()));
-                                oos.writeObject(responses);
-                                player.setUpdate(false);
                             }
                             else
                             {
                                 System.out.println(player.getName()+", the room he is in has been changed");
                                 responses = new ArrayList<>();
                                 responses.add(Config.UPDATE_OTHER_WAITING_ROOM);
-                                responses.add(findGameForPlayer(player.getName()));
-                                oos.writeObject(responses);
-                                player.setUpdate(false);
                             }
                         }
                         else // Game started
@@ -171,11 +187,10 @@ public class EriantysClientHandler extends Thread{
                             System.out.println(player.getName()+"'s game has been updated");
                             responses = new ArrayList<>();
                             responses.add(Config.GAME_UPDATED);
-                            responses.add(findGameForPlayer(player.getName()));
-                            oos.writeObject(responses);
-                            player.setUpdate(false);
                         }
-
+                        responses.add(findGameForPlayer(player.getName()));
+                        oos.writeObject(responses);
+                        player.setUpdate(false);
                     }
                     break;
                 default:
@@ -199,7 +214,7 @@ public class EriantysClientHandler extends Thread{
      * TODO
      *
      * */
-    private synchronized String joinAGame(String gameName,String player) throws EriantysExceptions {
+    private synchronized String joinAGame(String gameName,String player, boolean cliClient) throws EriantysExceptions {
         Game game = findGameForPlayer(gameName);
         if(game.isGameStarted())
             return "Cannot join a started game";
@@ -207,13 +222,13 @@ public class EriantysClientHandler extends Thread{
             return "Cannot join a game where is full";
         if(game.getN_Player() == 2 && !game.isExpertMode())
         {
-            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,true));
+            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,true,cliClient));
         }
             return Config.JOIN_ONE_GAME_SUC;
     }
 
-    private synchronized String createGameFor2(String userName) throws EriantysExceptions {
-        Game game = new Game(2, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,true));
+    private synchronized String createGameFor2(String userName, boolean cliClient) throws EriantysExceptions {
+        Game game = new Game(2, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,true,cliClient));
         games.add(game);
         return Config.CREATE_GAME_FOR_2_SUC;
     }

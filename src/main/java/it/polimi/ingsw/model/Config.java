@@ -21,6 +21,10 @@ public class Config {
     public static final String GAME_START = "UserWantsToStartTheGame";
     public static final String GAME_START_SUC = "GameStartedSuccessfully";
     public static final String UPDATE_GAME_START = "Game is in launching";
+    public static final String GET_NEWEST_GAME = "Getting newest game";
+    public static final String GET_NEWEST_GAME_SUC = "Getting newest game successfully";
+    public static final String COMMAND_EXECUTE = "executing a command";
+    public static final String COMMAND_EXECUTE_SUC = "executing a command successfully";
 
     public static final String UPDATE = "UPDATE";
     public static final String REQ_ASSISTANT = "REQ_ASSISTANT";

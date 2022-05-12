@@ -32,7 +32,7 @@ public class UpdateListener extends Thread{
             while (true)
             {
                 ArrayList<Object> responses = (ArrayList<Object>) ois.readObject();
-                    cliClient.update(responses);
+                cliClient.update(responses);
             }
         }
         catch (Exception e)

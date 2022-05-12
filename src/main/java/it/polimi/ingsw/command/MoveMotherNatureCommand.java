@@ -17,12 +17,10 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
         this.maxSteps = maxSteps;
     }
 
-    public void execute(Game game, Player player) throws EriantysExceptions
-    {
-        if(isDataGathered())
-        {
-            game.getTable().moveMotherNature(steps);
-        }
+
+    @Override
+    public void undo() {
+
     }
 
     public void  getData()
@@ -42,5 +40,15 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
             }
         }
         setDataGathered(true);
+    }
+
+    @Override
+    public boolean execute(Game game) throws EriantysExceptions {
+        if(isDataGathered())
+        {
+            game.getTable().moveMotherNature(steps);
+            return true;
+        }
+        return false;
     }
 }

@@ -42,4 +42,28 @@ public class Cloud implements Serializable {
         this.students = students.clone();
     }
 
+    @Override
+    public Cloud clone() {
+        try
+        {
+            Cloud temp = new Cloud();
+            temp.setCloud(size);
+            temp.setStudents(students);
+            return temp;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Cloud{" +
+                "size=" + size +
+                ", students=" + Arrays.toString(students) +
+                '}';
+    }
 }

@@ -1,8 +1,11 @@
 package it.polimi.ingsw.command;
 
+import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 
-public abstract class Command {
+import java.io.Serializable;
+
+public abstract class Command implements Serializable {
     private boolean dataGathered;
     private boolean isCliClient;
     private Game game;
@@ -14,9 +17,9 @@ public abstract class Command {
         this.username = username;
         dataGathered = false;
     }
-    public void undo() {}
-    public void  getData() {};
-    public void execute() {};
+    public abstract void undo() throws EriantysExceptions;
+    public abstract void  getData() throws EriantysExceptions;
+    public abstract boolean execute(Game game) throws EriantysExceptions;
     public boolean isDataGathered() {
         return dataGathered;
     }
@@ -39,5 +42,13 @@ public abstract class Command {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

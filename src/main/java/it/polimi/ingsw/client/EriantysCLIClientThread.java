@@ -1,10 +1,12 @@
 package it.polimi.ingsw.client;
 
 
+import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.Cli;
 
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -148,6 +150,7 @@ public class EriantysCLIClientThread extends Thread {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_GAME_FOR_2);
         messages.add(userName);
+        messages.add(false);
         ArrayList<Object> responses = responseFromServer(messages);
 
         return responses;
@@ -249,6 +252,7 @@ public class EriantysCLIClientThread extends Thread {
         messages.add(Config.JOIN_ONE_GAME);
         messages.add(creator);
         messages.add(player);
+        messages.add(false);
         ArrayList<Object> responses = responseFromServer(messages);
         return responses;
     }
@@ -372,10 +376,11 @@ public class EriantysCLIClientThread extends Thread {
     /**
      * TODO
      * */
-    public void update(ArrayList<Object> messages)
-    {
+    public void update(ArrayList<Object> messages) throws EriantysExceptions {
         clearScreen();
         String msg = (String) messages.get(0);
+        ArrayList<Object> newMessages = new ArrayList<>();
+        ArrayList<Object> responses;
         switch (msg)
         {
             case Config.UPDATE_CREATOR_WAITING_ROOM :
@@ -385,8 +390,13 @@ public class EriantysCLIClientThread extends Thread {
                 updateOtherPlayerGameRoom((Game) messages.get(1));
                 break;
             case Config.GAME_UPDATED:
-                gameUpdate((Game) messages.get(1));
+                newMessages.add(Config.GET_NEWEST_GAME);
+                newMessages.add(userName);
+                responses = responseFromServer(newMessages);
+                if(responses.get(0).equals(Config.GET_NEWEST_GAME_SUC));
+                    gameUpdate((Game) responses.get(1));
                 break;
+
         }
     }
 
@@ -441,10 +451,24 @@ public class EriantysCLIClientThread extends Thread {
                     game.getPlayers().get(i).getName()
             ));
     }
-    private void gameUpdate(Game game)
-    {
+    private void gameUpdate(Game game) throws EriantysExceptions {
         System.out.println("Game has been updated");
         new Cli().show_game(game);
+        if(game.getLastCommand().getUsername().equals(userName))
+        {
+            Command command = game.getLastCommand();
+            command.getData();
+            ArrayList<Object> messages = new ArrayList<>();
+            ArrayList<Object> responses = new ArrayList<>();
+            messages.add(Config.COMMAND_EXECUTE);
+            messages.add(userName);
+            messages.add(command);
+            responses = responseFromServer(messages);
+            if(responses.get(0).equals(Config.COMMAND_EXECUTE_SUC))
+                System.out.println("Command executed");
+            else
+                System.out.println(responses.get(0));
+        }
     }
 
 }

@@ -3,17 +3,34 @@ package it.polimi.ingsw.model;
 
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 
 public class Bag implements Serializable {
-    private final int[] students;
+    private  int[] students;
     private int N_students;
 
     public Bag()
     {
         this.students = new int[] {26, 26, 26, 26, 26};
         this.N_students = 130;
+    }
+
+    public int[] getStudents() {
+        return students;
+    }
+
+    public void setStudents(int[] students) {
+        this.students = students;
+    }
+
+    public int getN_students() {
+        return N_students;
+    }
+
+    public void setN_students(int n_students) {
+        N_students = n_students;
     }
 
     public int[] getBag() {
@@ -121,7 +138,18 @@ public class Bag implements Serializable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    protected Bag clone() throws CloneNotSupportedException {
+        Bag temp = new Bag();
+        temp.setN_students(N_students);
+        temp.setStudents(students.clone());
+        return temp;
+    }
+
+    @Override
+    public String toString() {
+        return "Bag{" +
+                "students=" + Arrays.toString(students) +
+                ", N_students=" + N_students +
+                '}';
     }
 }
