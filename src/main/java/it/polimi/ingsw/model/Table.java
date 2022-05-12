@@ -183,8 +183,6 @@ public class Table implements Serializable {
                 }
             }
         }
-        game.getTable().setCard9(-1);
-        game.getTable().setCard6(false);//potrebbe esserci un problema se usato con altre carte
         return influence;
     }
 
@@ -195,7 +193,6 @@ public class Table implements Serializable {
                 if (game.getTable().getCard8()==game.getPlayers().get(i).getName())
                     influence[i]=influence[i]+2;
             }
-            game.getTable().setCard8(null);
         }
         int max_index=0;
         int max =0;
