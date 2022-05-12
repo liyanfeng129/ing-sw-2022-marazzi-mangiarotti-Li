@@ -1,11 +1,12 @@
 package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.command.Command;
-import it.polimi.ingsw.model.EriantysExceptions;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.PlayerBoard;
+import it.polimi.ingsw.command.GetAssistantCommand;
+import it.polimi.ingsw.command.MoveStudentFromWaitingRoomCommand;
+import it.polimi.ingsw.model.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ActionState extends State implements Serializable {
@@ -56,7 +57,15 @@ public class ActionState extends State implements Serializable {
 
     @Override
     public Command generateCommand() throws EriantysExceptions {
-        return null;
+        if(!canChangeState())
+        {
+            int[] waitingRoom = getGame().getTurnList().get(getPhase()).getPlayerBoard().getWaitingRoom();
+            ArrayList<Assistant> hand = getGame().getTurnList().get(getPhase()).getHand().getList_cards();
+            String userName = getGame().getTurnList().get(getPhase()).getName();
+            boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
+            return new MoveStudentFromWaitingRoomCommand(waitingRoom,cliClient,getGame(),userName);
+        }
+        throw new InnerExceptions.PlanningSteteError("cannot generate command.");
     }
 
     public boolean isOnIsland() {
