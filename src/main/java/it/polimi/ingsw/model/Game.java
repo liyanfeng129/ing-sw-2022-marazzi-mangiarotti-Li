@@ -19,7 +19,7 @@ public class Game implements Serializable {
     private boolean gameStarted;
     private ArrayList<Command> commands = new ArrayList<>();
     private State gameState;
-   // private List<Player> turnList;
+    private List<Player> turnList;
 
     //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
@@ -193,6 +193,38 @@ public class Game implements Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
+    }
+
+    public void setExpertMode(boolean expertMode) {
+        this.expertMode = expertMode;
+    }
+
+    public void setProfessors(Professors professors) {
+        this.professors = professors;
+    }
+
+    public ArrayList<Command> getCommands() {
+        return commands;
+    }
+
+    public void setCommands(ArrayList<Command> commands) {
+        this.commands = commands;
+    }
+
+    public void setGameState(State gameState) {
+        this.gameState = gameState;
+    }
+
+    public List<Player> getTurnList() {
+        return turnList;
+    }
+
+    public void setTurnList(List<Player> turnList) {
+        this.turnList = turnList;
     }
 }
 
