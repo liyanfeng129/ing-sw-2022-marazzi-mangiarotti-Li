@@ -45,9 +45,9 @@ public class PianificationState implements Phase{
         activePlayer=j;
         for (int i=0;i< game.getN_Player();i++){
             if((j+1)< game.getN_Player())
-                playerQueue.add(game.getPlayers().get(j));
+                game.getTurnList().add(game.getPlayers().get(j));
             else
-                playerQueue.add(game.getPlayers().get(0));
+                game.getTurnList().add(game.getPlayers().get(0));
             j++;
         }
         //game.setTurnList(playerQueue);

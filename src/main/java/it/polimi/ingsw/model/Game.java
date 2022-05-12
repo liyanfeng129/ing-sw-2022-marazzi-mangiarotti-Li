@@ -19,7 +19,7 @@ public class Game implements Serializable {
     private boolean gameStarted;
     private ArrayList<Command> commands = new ArrayList<>();
     private State gameState;
-    private List<Player> turnList;
+    private ArrayList<Player> turnList  = new ArrayList<Player>();
 
     //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
@@ -61,16 +61,16 @@ public class Game implements Serializable {
         this.gameState = state;
     }
 
-    /*
-    public List<Player> getTurnList() {
+
+    public ArrayList<Player> getTurnList() {
         return turnList;
     }
 
-    public void setTurnList(List<Player> turnList) {
+    public void setTurnList(ArrayList<Player> turnList) {
         this.turnList = turnList;
     }
 
-     */
+
 
     public Table getTable() {
         return table;
@@ -138,6 +138,7 @@ public class Game implements Serializable {
                 this.gameStarted = true;
                 this.gameState = new PlanningState(this);
                 this.commands.add(this.gameState.generateCommand());
+                this.turnList = players;
     }
 
     public void setTable(Table table) {
@@ -217,14 +218,6 @@ public class Game implements Serializable {
 
     public void setGameState(State gameState) {
         this.gameState = gameState;
-    }
-
-    public List<Player> getTurnList() {
-        return turnList;
-    }
-
-    public void setTurnList(List<Player> turnList) {
-        this.turnList = turnList;
     }
 }
 

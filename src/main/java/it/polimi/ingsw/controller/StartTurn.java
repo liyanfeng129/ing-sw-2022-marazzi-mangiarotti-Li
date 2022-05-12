@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Game;
 public class StartTurn implements Phase{
     @Override
     public void next(Turn turn, Game game) throws EriantysExceptions {
-        /*
+
         if(game.getTurnList().size()!=0)
                 turn.setState(new ActionPhase1());
         else {
@@ -18,7 +18,7 @@ public class StartTurn implements Phase{
             turn.setState(new PianificationState());
         }
 
-         */
+
     }
 
     @Override

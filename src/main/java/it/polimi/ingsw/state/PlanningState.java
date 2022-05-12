@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlanningState extends State implements Serializable {
     // condition for state to go next is when phase number equals to numPlayers,
@@ -37,6 +38,7 @@ public class PlanningState extends State implements Serializable {
              * TODO
              * implement necessary things before change game state
              * */
+            setActivePlayer();
             getGame().changeGameState(new ActionState(getGame()));
         }
     }
@@ -45,9 +47,9 @@ public class PlanningState extends State implements Serializable {
     public Command generateCommand() throws EriantysExceptions{
         if(!canChangeState())
         {
-            ArrayList<Assistant> hand = getGame().getPlayers().get(getPhase()).getHand().getList_cards();
-            String userName = getGame().getPlayers().get(getPhase()).getName();
-            boolean cliClient = getGame().getPlayers().get(getPhase()).isCliClient();
+            ArrayList<Assistant> hand = getGame().getTurnList().get(getPhase()).getHand().getList_cards();
+            String userName = getGame().getTurnList().get(getPhase()).getName();
+            boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
             return new GetAssistantCommand(hand,cliClient,getGame(),userName);
         }
         throw new InnerExceptions.PlanningSteteError("cannot generate command.");
@@ -57,4 +59,25 @@ public class PlanningState extends State implements Serializable {
     {
         this.cards.add(assistant);
     }
+    public void setActivePlayer(){
+        ArrayList<Player> playerQueue =new ArrayList<>();
+        int min=cards.get(0).getNum();
+        int j=0;
+        for (int i=0;i<cards.size();i++){
+            if (cards.get(i).getNum()<min){
+                min=min=cards.get(i).getNum();
+                j=i;
+            }
+        }
+        for (int i=0;i< getGame().getN_Player();i++){
+            if((j+1)< getGame().getN_Player())
+                playerQueue.add(getGame().getPlayers().get(j));
+            else
+                playerQueue.add(getGame().getPlayers().get(0));
+            j++;
+        }
+        getGame().setTurnList(playerQueue);
+
+    }
 }
+

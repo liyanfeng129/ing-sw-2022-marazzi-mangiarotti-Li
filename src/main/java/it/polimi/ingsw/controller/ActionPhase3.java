@@ -14,8 +14,8 @@ public class ActionPhase3 implements Phase {
         game.getTable().setCard9(-1);
         game.getTable().setCard6(false);//potrebbe esserci un problema se usato con altre carte
         game.getTable().setCard8(null);
-
-        if(game.getTurnList().get(0).getPlayerBoard().getN_tower()==0)
+        game.getTurnList().remove(0);
+        if(game.getTurnList().get(0).getPlayerBoard().getN_tower()==0)//va messa in phase 2
             turn.setState(new EndGame());
         turn.setState(new StartTurn());
     }
