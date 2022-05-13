@@ -103,7 +103,7 @@ public class Cli {
 
     public void show_islands(Table table){
         for(int i=0; i<table.getIslands().size()/2;i++){
-            System.out.print("ISLAND_" + i + "  |  ");
+            System.out.print("ISLAND_" + (i+1) + "  |  ");
         }
         System.out.println(" ");
         for(int i=0; i<table.getIslands().size()/2;i++){
@@ -119,6 +119,16 @@ public class Cli {
         }
         System.out.println(" ");
         for(int i=0; i<table.getIslands().size()/2;i++) {
+            if (i==0)
+                System.out.print("Tower:"+table.getIslands().get(i).getTower() +"|");
+            else
+                System.out.print("Tower:"+table.getIslands().get(i).getTower() +"  |");
+
+        }
+        System.out.println(" ");
+
+
+        for(int i=0; i<table.getIslands().size()/2;i++) {
             if(table.getIslands().get(i).getMotherNature()==true){
                 System.out.print("    🗿    | ");
             }
@@ -130,19 +140,26 @@ public class Cli {
         System.out.println("--------------------------------------------------------------------------");
 
         for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++){
-            System.out.print("ISLAND_" + i + "  |  ");
+            System.out.print("ISLAND_" + (i+1) + "  |  ");
         }
         System.out.println(" ");
         for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++){
-            if (i<10)
+            if (i<9)
                 System.out.print("SIZE: " + table.getIslands().get(i).getSize() + "   |  ");
             else
                 System.out.print("SIZE: " + table.getIslands().get(i).getSize() + "    |  ");
         }
-        System.out.println("");
+        System.out.println(" ");
+        for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++) {
+            if (i==table.getIslands().size()/2)
+                System.out.print("Tower:"+table.getIslands().get(i).getTower() +"|");
+            else
+                System.out.print("Tower:"+table.getIslands().get(i).getTower() +"  |");
+        }
+        System.out.println(" ");
         for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++){
             if(i==0)
-                System.out.print(show_students_island(table.getIslands().get(i)) + " | ");
+                System.out.print(show_students_island(table.getIslands().get(i)) +  " | ");
             else
                 System.out.print(show_students_island(table.getIslands().get(i)) + "  | ");
 
@@ -153,7 +170,10 @@ public class Cli {
                 System.out.print("    🗿    | ");
             }
             else{
-                System.out.print("            |");
+                if (i<10)
+                    System.out.print("            |");
+                else
+                    System.out.print("             |");
             }
         }
         System.out.println(" ");
