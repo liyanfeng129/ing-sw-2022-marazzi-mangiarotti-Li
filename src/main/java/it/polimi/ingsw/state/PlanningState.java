@@ -70,10 +70,12 @@ public class PlanningState extends State implements Serializable {
             }
         }
         for (int i=0;i< getGame().getN_Player();i++){
-            if((j+1)< getGame().getN_Player())
+            if(j< getGame().getN_Player())
                 playerQueue.add(getGame().getPlayers().get(j));
-            else
+            else {
                 playerQueue.add(getGame().getPlayers().get(0));
+                j=0;
+            }
             j++;
         }
         getGame().setTurnList(playerQueue);
