@@ -16,11 +16,11 @@ public class Character4 implements CharacterBehavior{
     }
 
     @Override
-    public void useCharacter(Game game, Player user, Island island, int colore, Assistant assistant) throws EriantysExceptions {
+    public void useCharacter(Game game, Player user, Island island, int colore, int[] students) throws EriantysExceptions {
         if (!this.firstUse){
             this.firstUse = true;
         }
-        int max_step=assistant.getSteps()+2;
-    //come lo passo al controller?
+        int max_step=user.getHand().getLastPlayedCard()+2;
+        user.getHand().setLastPlayedCard(max_step);
     }
 }
