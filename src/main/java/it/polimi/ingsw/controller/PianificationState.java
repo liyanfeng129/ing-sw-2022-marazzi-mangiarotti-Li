@@ -50,7 +50,7 @@ public class PianificationState implements Phase{
                 game.getTurnList().add(game.getPlayers().get(0));
             j++;
         }
-        game.setTurnList(playerQueue);
+        //game.setTurnList(playerQueue);
     }
 
 }

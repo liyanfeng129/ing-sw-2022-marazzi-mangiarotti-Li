@@ -71,7 +71,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
     public boolean execute(Game game) throws EriantysExceptions {
         if(game.getGameState() instanceof ActionState)
         {
-            Player p = getGame().findPlayerByName(getUsername());
+            Player p = game.findPlayerByName(getUsername());
             if (isDataGathered())
             {
                 if (moveToIsland)

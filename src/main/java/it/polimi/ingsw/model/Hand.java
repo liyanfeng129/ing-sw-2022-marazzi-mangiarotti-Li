@@ -36,7 +36,7 @@ public class Hand implements Serializable {
     public void use_cards(AssistantType assistant) {
         N_cards = N_cards-1;
         for (int i=0;i<N_cards;i++){
-            if(getList_cards().get(i).getAssistantType() == assistant){
+            if(getList_cards().get(i).getType() == assistant){
                 List_cards.remove(i);
             }
         }

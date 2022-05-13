@@ -1,8 +1,8 @@
 package it.polimi.ingsw.command;
 
 import it.polimi.ingsw.model.EriantysExceptions;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.state.TakeCloudState;
 
 import java.io.Serializable;
 import java.util.Scanner;
@@ -43,14 +43,22 @@ public class SelectCloudCommand extends Command implements Serializable{
                 }
                 while(choice<0 || choice>n_clouds);
                 cloud = choice;
+                setDataGathered(true);
             }
         }
-        setDataGathered(true);
+
     }
 
     @Override
-    public boolean execute(Game game) {
-        return false;
+    public boolean execute(Game game) throws EriantysExceptions {
+        if(!isDataGathered())
+            return false;
+        if(!(game.getGameState() instanceof TakeCloudState))
+            return false;
+        Player p = game.findPlayerByName(getUsername());
+        Cloud c = game.getTable().getClouds().get(cloud);
+        p.getPlayerBoard().addCloudToWaitingRoom(c.getStudents());
+        return true;
     }
 }
 

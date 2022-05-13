@@ -19,8 +19,22 @@ public class Assistant implements Serializable {
         return this.type.getSteps();
     }
 
-    public AssistantType getAssistantType() {
+
+
+    public AssistantType getType() {
         return type;
+    }
+
+    public void setType(AssistantType type) {
+        this.type = type;
+    }
+
+    public Mage getMage() {
+        return mage;
+    }
+
+    public void setMage(Mage mage) {
+        this.mage = mage;
     }
 
     @Override

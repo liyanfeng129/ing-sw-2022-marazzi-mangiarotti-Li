@@ -204,7 +204,7 @@ public class Cli {
 
 
     public void show_assistant(Assistant card){
-        System.out.println("Steps: " + card.getAssistantType().getSteps() + " " + "Value: " + card.getAssistantType().getNum());
+        System.out.println("Steps: " + card.getType().getSteps() + " " + "Value: " + card.getType().getNum());
     }
 
     public void show_professor(Game game,Player player){

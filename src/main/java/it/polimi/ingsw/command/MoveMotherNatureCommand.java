@@ -32,14 +32,15 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
                 int choice;
                 do
                 {
-                    System.out.println("How many steps do you want to take?.");
+                    System.out.println("How many steps do you want to take?.\n"+
+                            "You have "+maxSteps+" steps");
                     choice = new Scanner(System.in).nextInt();
                 }
-                while(choice<0 || choice>maxSteps);
+                while(choice < 1 || choice >   maxSteps);
                 steps = choice;
+                setDataGathered(true);
             }
         }
-        setDataGathered(true);
     }
 
     @Override

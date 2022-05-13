@@ -28,7 +28,7 @@ public class PlanningState extends State implements Serializable {
 
     @Override
     public void executeCommand() throws EriantysExceptions {
-        if(getGame().getLastCommand().execute(getGame()));
+        if(getGame().getLastCommand().execute(getGame()))
             setPhase(getPhase()+1);
 
         if(canChangeState())
@@ -39,10 +39,8 @@ public class PlanningState extends State implements Serializable {
              * */
             setActivePlayer();
             getGame().changeGameState(new ActionState(getGame(), 0));
-            getGame().addCommand(getGame().getGameState().generateCommand());
-
-
         }
+        getGame().addCommand(getGame().getGameState().generateCommand());
     }
 
     @Override
@@ -67,7 +65,7 @@ public class PlanningState extends State implements Serializable {
         int j=0;
         for (int i=0;i<cards.size();i++){
             if (cards.get(i).getNum()<min){
-                min=min=cards.get(i).getNum();
+                min = cards.get(i).getNum();
                 j=i;
             }
         }

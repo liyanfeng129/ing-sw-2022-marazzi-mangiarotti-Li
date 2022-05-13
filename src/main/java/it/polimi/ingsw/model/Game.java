@@ -137,8 +137,8 @@ public class Game implements Serializable {
                 }
                 this.gameStarted = true;
                 this.gameState = new PlanningState(this, 0);
-                this.commands.add(this.gameState.generateCommand());
                 this.turnList = players;
+                this.commands.add(this.gameState.generateCommand());
     }
 
     public void setTable(Table table) {

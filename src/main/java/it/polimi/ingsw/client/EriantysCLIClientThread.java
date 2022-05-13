@@ -150,7 +150,7 @@ public class EriantysCLIClientThread extends Thread {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_GAME_FOR_2);
         messages.add(userName);
-        messages.add(false);
+        messages.add(true); //this is CLI
         ArrayList<Object> responses = responseFromServer(messages);
 
         return responses;
@@ -252,7 +252,7 @@ public class EriantysCLIClientThread extends Thread {
         messages.add(Config.JOIN_ONE_GAME);
         messages.add(creator);
         messages.add(player);
-        messages.add(false);
+        messages.add(true);// this is CLI
         ArrayList<Object> responses = responseFromServer(messages);
         return responses;
     }
@@ -415,11 +415,11 @@ public class EriantysCLIClientThread extends Thread {
             ));
         if (game.getN_Player() == game.getPlayers().size())
         {
-            System.out.println("Game is ready to be started, press 1 if you want to start" +
-                    "every other input is invalid\n");
             String input = "";
             while(!input.equals("1"))
             {
+                System.out.println("Game is ready to be started, press 1 if you want to start\n" +
+                        "every other input is invalid\n");
                 input = new Scanner(System.in).nextLine();
                 if(input.equals("1"))
                 {

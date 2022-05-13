@@ -37,6 +37,7 @@ public class ActionState extends State implements Serializable {
     @Override
     public void executeCommand() throws EriantysExceptions {
         if(getGame().getLastCommand().execute(getGame()))
+        {
             if(!onIsland )
             {
                 getGame().getProfessors().assignProfessor(getGame().getPlayers());
@@ -48,6 +49,7 @@ public class ActionState extends State implements Serializable {
                      * */
                 }
             }
+        }
         if(canChangeState())
         {
             getGame().changeGameState(new MoveMotherNatureState(getGame(), getPhase()));

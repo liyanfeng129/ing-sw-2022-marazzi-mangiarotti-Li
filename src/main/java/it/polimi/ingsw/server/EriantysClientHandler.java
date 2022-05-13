@@ -140,19 +140,19 @@ public class EriantysClientHandler extends Thread{
                     oos.writeObject(responses);
                     break;
                 case Config.GAME_START:
-                    System.out.println(client+" wants to start a game");
-                    findGameForPlayer((String) messages.get(1)).startGame();
-                    game = findGameForPlayer((String) messages.get(1));
-                    responses.add(Config.GAME_START_SUC);
-                    oos.writeObject(responses);
-                    gameUpdate(game);
+                        System.out.println(client+" wants to start a game");
+                        findGameForPlayer((String) messages.get(1)).startGame();
+                        game = findGameForPlayer((String) messages.get(1));
+                        responses.add(Config.GAME_START_SUC);
+                        oos.writeObject(responses);
+                        gameUpdate(game);
                     break;
                 case Config.COMMAND_EXECUTE:
                     System.out.println(client+"tries to execute a command");
                     game = findGameForPlayer((String) messages.get(1));
                     game.setLastCommand((Command) messages.get(2));
                     game.getGameState().executeCommand();
-                    game.addCommand(game.getGameState().generateCommand());
+                    //game.addCommand(game.getGameState().generateCommand());
                     responses.add(Config.COMMAND_EXECUTE_SUC);
                     oos.writeObject(responses);
                     gameUpdate(game);
@@ -167,25 +167,23 @@ public class EriantysClientHandler extends Thread{
                         {
                             sleep(500);
                         }
+                        responses = new ArrayList<>();
                         if(!findGameForPlayer(name).isGameStarted()) // game hasn't started yet
                         {
                             if(findGameForPlayer(name).getPlayers().get(0).getName().equals(name))// this player is creator
                             {
                                 System.out.println(player.getName()+"'s game room has been changed");
-                                responses = new ArrayList<>();
                                 responses.add(Config.UPDATE_CREATOR_WAITING_ROOM);
                             }
                             else
                             {
                                 System.out.println(player.getName()+", the room he is in has been changed");
-                                responses = new ArrayList<>();
                                 responses.add(Config.UPDATE_OTHER_WAITING_ROOM);
                             }
                         }
                         else // Game started
                         {
                             System.out.println(player.getName()+"'s game has been updated");
-                            responses = new ArrayList<>();
                             responses.add(Config.GAME_UPDATED);
                         }
                         responses.add(findGameForPlayer(player.getName()));
