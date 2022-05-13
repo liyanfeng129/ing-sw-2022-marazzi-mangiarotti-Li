@@ -12,8 +12,8 @@ public class CharacterCard implements Serializable {
         this.CBehavior = CBehavior;
     }
 
-    public void useCard(Game game, Player user, Island island, int colore, Assistant assistant) throws EriantysExceptions {
-        this.CBehavior.useCharacter(game, user,island,colore,assistant);
+    public void useCard(Game game, Player user, Island island, int colore, int[] students) throws EriantysExceptions {
+        this.CBehavior.useCharacter(game, user,island,colore,students);
     }
 
 }

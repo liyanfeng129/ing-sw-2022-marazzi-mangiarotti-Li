@@ -20,7 +20,7 @@ public class Character6 implements CharacterBehavior{
     }
 
     @Override
-    public void useCharacter(Game game, Player user, Island island, int colore, Assistant assistant) throws EriantysExceptions {
+    public void useCharacter(Game game, Player user, Island island, int colore, int[] students) throws EriantysExceptions {
         if (!this.firstUse){
             this.firstUse = true;
         }
