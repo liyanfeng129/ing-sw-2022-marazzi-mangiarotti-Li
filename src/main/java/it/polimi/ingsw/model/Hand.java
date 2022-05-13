@@ -7,6 +7,7 @@ public class Hand implements Serializable {
 
     private ArrayList<Assistant> List_cards;
     private int N_cards = 0;
+    private int LastPlayedCard;
 
     public Hand(Mage mage){
         this.List_cards= new ArrayList<Assistant>();
@@ -39,5 +40,13 @@ public class Hand implements Serializable {
                 List_cards.remove(i);
             }
         }
+    }
+
+    public int getLastPlayedCard() {
+        return LastPlayedCard;
+    }
+
+    public void setLastPlayedCard(int lastPlayedCard) {
+        LastPlayedCard = lastPlayedCard;
     }
 }

@@ -176,7 +176,7 @@ public class Table implements Serializable {
                     influence[3] = influence[3] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
             }
         }
-        if(game.getTable().isCard6()==false) {
+        if(!game.getTable().isCard6()) {
             for (int i = 0; i < game.getN_Player(); i++) {
                 if (game.getTable().getIslands(getMotherNatureIndex()).getTower() == game.getPlayers().get(i).getTowerColor()) {
                     influence[i] = influence[i] + game.getTable().getIslands(getMotherNatureIndex()).getSize();

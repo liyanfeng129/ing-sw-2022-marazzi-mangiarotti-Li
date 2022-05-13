@@ -46,6 +46,7 @@ public class GetAssistantCommand extends Command implements Serializable {
         {
             ((PlanningState) game.getGameState()).addCard(assistant);
             game.findPlayerByName(getUsername()).getHand().use_cards(assistant.getAssistantType());
+            game.findPlayerByName(getUsername()).getHand().setLastPlayedCard(assistant.getSteps());
             return true;
         }
         else
