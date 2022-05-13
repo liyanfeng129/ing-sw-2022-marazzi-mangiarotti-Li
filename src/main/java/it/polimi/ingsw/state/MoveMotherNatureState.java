@@ -34,11 +34,9 @@ public class MoveMotherNatureState extends State implements Serializable {
     public void executeCommand() throws EriantysExceptions {
         if(getGame().getLastCommand().execute(getGame()));
         {
-            Player player=getGame().getTable().getPlayerMaxInfluence(getGame());
             setCan(true);
-            int MN_pos=getGame().getTable().getMotherNatureIndex();
+            Player player=getGame().getTable().getPlayerMaxInfluence(getGame());
             if (player!=null){
-                getGame().getTable().getIslands(MN_pos).setTower(player.getTowerColor());
                 getGame().getTable().mergeIsland();
                 /**
                  * TODO condizioni di endGame;
