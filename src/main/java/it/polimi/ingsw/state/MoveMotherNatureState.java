@@ -35,7 +35,6 @@ public class MoveMotherNatureState extends State implements Serializable {
         if(getGame().getLastCommand().execute(getGame()));
         {
             setCan(true);
-            int MN_pos=getGame().getTable().getMotherNatureIndex();
             Player player=getGame().getTable().getPlayerMaxInfluence(getGame());
             if (player!=null){
                 getGame().getTable().mergeIsland();
