@@ -209,6 +209,18 @@ public class Table implements Serializable {
 
 
         }
+        TowerColor color= game.getPlayers().get(max_index).getTowerColor();
+        int MN_pos=game.getTable().getMotherNatureIndex();
+        int MN_island_size=game.getTable().getIslands(MN_pos).getSize();
+        TowerColor Previous_TC = game.getTable().getIslands(MN_pos).getTower();
+        if (Previous_TC!=color){
+            for (int i=0;i<game.getN_Player();i++){
+                if (game.getPlayers().get(i).getTowerColor()==Previous_TC)
+                    game.getPlayers().get(i).getPlayerBoard().moveTower(+MN_island_size);
+            }
+        }
+        game.getTable().getIslands(MN_pos).setTower(color);
+        game.getPlayers().get(max_index).getPlayerBoard().moveTower(-MN_island_size);
         return   game.getPlayers().get(max_index);
 
     }
