@@ -25,7 +25,7 @@ public class Character2 implements CharacterBehavior{
     }
 
     @Override
-    public void useCharacter(Game game, Player user, Island island, int colore,Assistant assistant) throws EriantysExceptions {
+    public void useCharacter(Game game, Player user, Island island, int colore,int[] students) throws EriantysExceptions {
         /**TODO
          * add calcolo professor ogni turno del controller
          **/
