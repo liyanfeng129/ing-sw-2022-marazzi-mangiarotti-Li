@@ -1,61 +1,64 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.command.Command;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Config;
+import it.polimi.ingsw.model.EriantysExceptions;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.Cli;
-
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
-public class UpdateListener extends Thread{
-    private EriantysCLIClientThread cliClient;
-    private String serverAddress;
+public class UpdateReceiver extends Thread {
+
+    private int portNumber;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+    private Socket update;
     private String userName;
-    public UpdateListener( EriantysCLIClientThread cliClient, String serverAddress, String userName)
+    private String serverAddress;
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    public UpdateReceiver(int portNumber,String userName,String serverAddress)
     {
-        this.cliClient = cliClient;
-        this.serverAddress = serverAddress;
+        this.portNumber = portNumber;
         this.userName = userName;
+        this.serverAddress =serverAddress;
     }
 
     public void run()
     {
-        Socket client = null;
-        try
-        {
-            client = new Socket(serverAddress, 12345);
-            ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-            ArrayList<Object> messages = new ArrayList<>();
-            messages.add(Config.LISTENING_FOR_UPDATE);
-            messages.add(cliClient.getUserName());
-            oos.writeObject(messages);
-            ArrayList<Object> responses = (ArrayList<Object>) ois.readObject();
-            update(responses);
-        }
-        catch (Exception e)
-        {
+        try {
+            ServerSocket updateReceiver = new ServerSocket(portNumber);
+            while(true)
+            {
+                update = updateReceiver.accept();
+                oos = new ObjectOutputStream(update.getOutputStream());
+                ois=new ObjectInputStream(update.getInputStream());
+                ArrayList<Object> updates = (ArrayList<Object>) ois.readObject();
+
+                updateReceived(updates);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                client.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            new UpdateListener(cliClient, serverAddress, userName).start();
-        }
     }
-    public synchronized void update(ArrayList<Object> messages) throws EriantysExceptions {
-       // clearScreen();
+
+    public void updateReceived(ArrayList<Object> messages) throws EriantysExceptions {
+         clearScreen();
         String msg = (String) messages.get(0);
-        ArrayList<Object> newMessages = new ArrayList<>();
-        ArrayList<Object> responses;
+        System.out.println(dateFormat.format(new Date()));
         switch (msg)
         {
             case Config.UPDATE_CREATOR_WAITING_ROOM :
@@ -65,16 +68,12 @@ public class UpdateListener extends Thread{
                 updateOtherPlayerGameRoom((Game) messages.get(1));
                 break;
             case Config.GAME_UPDATED:
-                newMessages.add(Config.GET_NEWEST_GAME);
-                newMessages.add(userName);
-                responses = responseFromServer(newMessages);
-                if(responses.get(0).equals(Config.GET_NEWEST_GAME_SUC));
-                gameUpdate((Game) responses.get(1));
+               gameUpdate((Game) messages.get(1));
                 break;
 
         }
     }
-    private synchronized void updateCreatorGameRoom(Game game) {
+    private  void updateCreatorGameRoom(Game game) {
         System.out.println(String.format("%s, this is your game, waiting for other %d\n",
                 game.getPlayers().get(0).getName(),
                 game.getN_Player() - game.getPlayers().size()
@@ -123,7 +122,7 @@ public class UpdateListener extends Thread{
                     game.getPlayers().get(i).getName()
             ));
     }
-    private  void gameUpdate(Game game) throws EriantysExceptions {
+    private void gameUpdate(Game game) throws EriantysExceptions {
         System.out.println("Game has been updated");
         new Cli().show_game(game);
         if(game.getLastCommand().getUsername().equals(userName))

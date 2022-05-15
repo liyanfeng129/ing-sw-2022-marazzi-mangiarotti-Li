@@ -10,11 +10,14 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Set;
+
 import it.polimi.ingsw.model.*;
 
 
 public class EriantysServer {
     static ArrayList<Game> games = new ArrayList<>();
+    static ArrayList<Subscriber> subs = new ArrayList<>();
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         try
@@ -40,7 +43,7 @@ public class EriantysServer {
                 // waiting for a client to connect1
                 client = server.accept();
                 System.out.println("Client connected: "+client);
-                new EriantysClientHandler(client,games).start();
+                new EriantysClientHandler(client,games,subs).start();
             }
 
         }

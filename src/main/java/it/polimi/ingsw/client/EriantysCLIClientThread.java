@@ -8,8 +8,11 @@ import it.polimi.ingsw.view.Cli;
 
 import javax.swing.*;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
@@ -17,7 +20,8 @@ import static java.lang.Thread.sleep;
 public class EriantysCLIClientThread extends Thread {
     private  String serverAddress = "localhost";
     private  String userName = "";
-    private  void loggingMenu() throws InterruptedException {
+    private  int listeningPortNumber = new Random().nextInt(65353);
+    private  void loggingMenu() throws InterruptedException, UnknownHostException {
         clearScreen();
         String response;
         System.out.println("Do you want to log?\n"+"1.YES\n"+"Everything else you enter terminates program\n");
@@ -45,10 +49,11 @@ public class EriantysCLIClientThread extends Thread {
 
             }
             while(response.equals(Config.USER_ALREADY_LOGGED));
+            new UpdateReceiver(listeningPortNumber,userName,serverAddress).start();
             lobbyMenu();
         }
     }
-    private void lobbyMenu() throws InterruptedException {
+    private void lobbyMenu() throws InterruptedException, UnknownHostException {
         /**
          * 1. Create a new game for 2 players
          * 2. Create a new game for 3 players
@@ -175,7 +180,7 @@ public class EriantysCLIClientThread extends Thread {
                 game.getN_Player(),
                 game.getN_Player()-game.getPlayers().size()
         ));
-         new UpdateListener(this,serverAddress).run();
+        // new UpdateListener(this,serverAddress,userName).start();
 
     }
 
@@ -193,13 +198,13 @@ public class EriantysCLIClientThread extends Thread {
                     i+1,
                     game.getPlayers().get(i).getName()
                     ));
-        new UpdateListener(this,serverAddress).run();
+      //  new UpdateListener(this,serverAddress,userName).start();
     }
 
     /**
      * TODO
      * */
-    private void showExistingGames(ArrayList<Game> games) throws InterruptedException {
+    private void showExistingGames(ArrayList<Game> games) throws InterruptedException, UnknownHostException {
         clearScreen();
         int i = 0;
         ArrayList<String> roomName = new ArrayList<>();
@@ -268,13 +273,16 @@ public class EriantysCLIClientThread extends Thread {
     }
 
 
-    private String loggingWithUserName()
-    {
+    private String loggingWithUserName() throws UnknownHostException {
         System.out.println("What's your username?");
         userName = new Scanner(System.in).nextLine();
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.USER_LOGGING);
         messages.add(userName);
+        InetAddress iAddress = InetAddress.getLocalHost();
+        String IP = iAddress.getHostAddress();
+        messages.add(IP);
+        messages.add(listeningPortNumber);
         ArrayList<Object> responses = responseFromServer(messages);
         return (String) responses.get(0);
     }
@@ -362,7 +370,7 @@ public class EriantysCLIClientThread extends Thread {
 
     private void clearScreen()
     {
-        for(int clear = 0; clear < 1000; clear++)
+        for(int clear = 0; clear < 50; clear++)
         {
             System.out.println("\b") ;
         }
