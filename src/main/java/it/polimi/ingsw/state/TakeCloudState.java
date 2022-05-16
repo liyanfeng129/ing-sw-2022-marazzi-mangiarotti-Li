@@ -6,6 +6,7 @@ import it.polimi.ingsw.command.SelectCloudCommand;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.InnerExceptions;
+import it.polimi.ingsw.model.InnerExceptions.NotEnoughStudentsInBagException;
 
 import java.io.Serializable;
 
@@ -36,7 +37,18 @@ public class TakeCloudState extends State implements Serializable {
         if(canChangeState())
         {
             if (getPhase()==getGame().getN_Player()-1)
-                getGame().changeGameState(new PlanningState(getGame(), 0));
+            {
+                try
+                {
+                    getGame().getTable().initClouds();
+                    getGame().changeGameState(new PlanningState(getGame(), 0));
+                }
+                catch (InnerExceptions.NotEnoughStudentsInBagException e)
+                {
+
+                }
+
+            }
             else
                 getGame().changeGameState(new ActionState(getGame(),getPhase()+1));
         }

@@ -28,6 +28,12 @@ public class Cloud implements Serializable {
         this.students = students;
     }
 
+    public void emptyCloud()
+    {
+        for( int i = 0; i < students.length; i++)
+            students[i] = 0;
+    }
+
     public int getSize() {
         return size;
     }

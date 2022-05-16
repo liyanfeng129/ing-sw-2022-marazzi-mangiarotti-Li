@@ -59,8 +59,9 @@ class CloudTest {
             fail();
         }
         assertArrayEquals(new int[]{0, 1, 0, 1, 1}, cloud.getStudents());
-       // cloud.takeStudent(1);
-        assertArrayEquals(new int[]{0, 0, 0, 1, 1}, cloud.getStudents());
+
+        cloud.emptyCloud();
+        assertArrayEquals(new int[]{0, 0, 0, 0, 0}, cloud.getStudents());
     }
     @Test
     public void test_NotValidStudentSizeException(){
@@ -72,5 +73,6 @@ class CloudTest {
         }
 
     }
+
 
 }
