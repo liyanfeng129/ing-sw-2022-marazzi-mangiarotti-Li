@@ -27,6 +27,14 @@ public class Character9 implements CharacterBehavior{
         }
         game.getTable().setCard9(colore);
     }
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        return Attributes;
+    }
 
     public int getCoin() {
         return coin;

@@ -35,6 +35,14 @@ public class Character12 implements CharacterBehavior{
             }
         }
     }
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        return Attributes;
+    }
 
     public int getCoin() {
         return coin;

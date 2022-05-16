@@ -34,6 +34,15 @@ public class Character11 implements CharacterBehavior{
             this.students[i] = this.students[i] + temp[i];
         }
     }
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        Attributes.add(this.getStudents());
+        return Attributes;
+    }
 
     public int getCoin() {
         return coin;

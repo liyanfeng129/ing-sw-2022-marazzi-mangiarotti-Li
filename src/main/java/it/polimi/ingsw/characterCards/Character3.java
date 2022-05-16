@@ -2,6 +2,7 @@ package it.polimi.ingsw.characterCards;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Character3 implements CharacterBehavior{
@@ -37,6 +38,15 @@ public class Character3 implements CharacterBehavior{
         //dove si sposta madre natura in caso di merge?
         game.getTable().getIslands(MN_temp).setMotherNature(false);
         game.getTable().getIslands(MN_prec).setMotherNature(true);
+    }
+
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        return Attributes;
     }
 
     public int getCoin() {

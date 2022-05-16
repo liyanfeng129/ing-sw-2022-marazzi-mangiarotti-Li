@@ -27,6 +27,14 @@ public class Character10 implements CharacterBehavior{
         }
         //stesso problema carta 7
     }
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        return Attributes;
+    }
 
     public int getCoin() {
         return coin;

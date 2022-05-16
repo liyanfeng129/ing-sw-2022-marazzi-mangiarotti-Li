@@ -32,6 +32,14 @@ public class Character7 implements CharacterBehavior{
 
         //devo chiamare action phase1 o passare un array di 3 studenti
     }
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        return Attributes;
+    }
 
     public int getCoin() {
         return coin;

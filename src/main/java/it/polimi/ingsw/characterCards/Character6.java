@@ -28,7 +28,14 @@ public class Character6 implements CharacterBehavior{
         game.getTable().setCard6(true);
         //potrebbero esserci problemi con altre carte
     }
-
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        return Attributes;
+    }
     public int getCoin() {
         return coin;
     }

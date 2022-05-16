@@ -22,7 +22,7 @@ public class CliInterface {
         return cli;
     }
 
-    public void read_msg(ArrayList<Object> msg_list) {
+    public void read_msg(ArrayList<Object> msg_list) throws EriantysExceptions {
         // ci sono diversi messaggi in entrata
         // non va bene si deve aggio
         Player curr_player = (Player) msg_list.get(1);   // qui bisogna cambiare questo
@@ -36,7 +36,7 @@ public class CliInterface {
     }
 
 
-    public ArrayList<Object> selector(String msg, ArrayList<Object> respons_list) {
+    public ArrayList<Object> selector(String msg, ArrayList<Object> respons_list) throws EriantysExceptions {
         ArrayList<Object> msg_list = new ArrayList<Object>();
         switch (msg) {
             case UPDATE:
@@ -77,7 +77,7 @@ public class CliInterface {
         return msg_list;
     }
 
-    public ArrayList<Object> update(Game game) {
+    public ArrayList<Object> update(Game game) throws EriantysExceptions {
         ArrayList<Object> msg_list = new ArrayList<Object>();
         System.out.println("SERVER:  UPDATE_GAME");
         cli.show_game(game);
@@ -97,7 +97,7 @@ public class CliInterface {
         return msg_list;
     }
 
-    public ArrayList<Object> assistant_error(Game game) {
+    public ArrayList<Object> assistant_error(Game game) throws EriantysExceptions {
         ArrayList<Object> msg_list = new ArrayList<Object>();
         this.update(game);
         Scanner scanner = new Scanner(System.in);
@@ -110,7 +110,7 @@ public class CliInterface {
 
     // manca il caso in cui non ci sono abbastanza studenti
 
-    public ArrayList<Object> start_turn(Game game) {
+    public ArrayList<Object> start_turn(Game game) throws EriantysExceptions {
         ArrayList<Object> msg_list = new ArrayList<Object>();
         Scanner scanner = new Scanner(System.in);
         this.update(game);
@@ -304,7 +304,7 @@ public class CliInterface {
 
     }
 
-    public ArrayList<Object> character_mn_moves(Game game) {
+    public ArrayList<Object> character_mn_moves(Game game) throws EriantysExceptions {
         ArrayList<Object> msg_list = new ArrayList<Object>();
         Scanner scanner = new Scanner(System.in);
         this.update(game);
@@ -351,7 +351,7 @@ public class CliInterface {
 
     }
 
-    public ArrayList<Object> character_cloud_moves(Game game) {
+    public ArrayList<Object> character_cloud_moves(Game game) throws EriantysExceptions {
         ArrayList<Object> msg_list = new ArrayList<Object>();
         Scanner scanner = new Scanner(System.in);
         this.update(game);

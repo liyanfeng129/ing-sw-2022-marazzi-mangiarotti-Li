@@ -35,6 +35,16 @@ public class Character5 implements CharacterBehavior{
         //bisogna aggiungere che se ce questa carta non si calcola influenza e merge
     }
 
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        Attributes.add(this.getNoEntryTiles());
+        return Attributes;
+    }
+
     public int getCoin() {
         return coin;
     }

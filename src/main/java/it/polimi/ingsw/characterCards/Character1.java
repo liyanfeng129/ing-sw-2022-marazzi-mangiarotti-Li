@@ -2,6 +2,8 @@ package it.polimi.ingsw.characterCards;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
+
 public class Character1 implements CharacterBehavior{
     private int coin;
     private String msg;
@@ -37,6 +39,20 @@ public class Character1 implements CharacterBehavior{
         }
 
     }
+
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        Attributes.add(this.getStudents());
+        return Attributes;
+    }
+
+
+
+
 
     public int getCoin() {
         return coin;

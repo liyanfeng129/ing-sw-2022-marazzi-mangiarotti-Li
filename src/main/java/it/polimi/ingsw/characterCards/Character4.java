@@ -2,6 +2,8 @@ package it.polimi.ingsw.characterCards;
 
 import it.polimi.ingsw.model.*;
 
+import java.util.ArrayList;
+
 public class Character4 implements CharacterBehavior{
     private int coin;
     private boolean firstUse;
@@ -24,6 +26,14 @@ public class Character4 implements CharacterBehavior{
         }
         int max_step=user.getHand().getLastPlayedCard()+2;
         user.getHand().setLastPlayedCard(max_step);
+    }
+    @Override
+    public ArrayList getInfo() throws EriantysExceptions{
+        ArrayList<Object> Attributes = new ArrayList<Object>();
+        Attributes.add(this.getMsg());
+        Attributes.add(this.getCoin());
+        Attributes.add(this.isFirstUse());
+        return Attributes;
     }
 
     public int getCoin() {
