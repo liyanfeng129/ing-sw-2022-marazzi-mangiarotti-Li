@@ -57,9 +57,9 @@ class TableTest {
     }
     @Test
     public void test_influence() throws EriantysExceptions {
-        /*
-        Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,false);
-        Player p2=new Player("leo",Mage.MAGE2,TowerColor.BLACK,2,false);
+
+        Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,false,true);
+        Player p2=new Player("leo",Mage.MAGE2,TowerColor.BLACK,2,false,true);
         Game game = new Game(2,false,p1);
         game.addPlayers(p2);
         game.getTable().getIslands(0).setMotherNature(true);
@@ -71,8 +71,9 @@ class TableTest {
         game.getTable().getIslands(0).addStudent(1);
         game.getTable().getIslands(0).addStudent(2);
         assertArrayEquals(new int[]{3, 1,0,0}, table.getInfluence(game,prof));
+        assertEquals(p1,game.getTable().getPlayerMaxInfluence(game));
 
-         */
+
 
     }
 }
