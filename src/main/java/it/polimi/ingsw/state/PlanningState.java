@@ -40,6 +40,7 @@ public class PlanningState extends State implements Serializable {
             setActivePlayer();
             getGame().changeGameState(new ActionState(getGame(), 0));
         }
+        getGame().removeLastCommand();
         getGame().addCommand(getGame().getGameState().generateCommand());
     }
 

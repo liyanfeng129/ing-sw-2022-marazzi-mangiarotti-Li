@@ -28,7 +28,7 @@ public class ActionState extends State implements Serializable {
     @Override
     public boolean canChangeState() throws EriantysExceptions {
         boolean can = false;
-        PlayerBoard pb = getGame().getPlayers().get(getPhase()).getPlayerBoard();
+        PlayerBoard pb = getGame().getTurnList().get(getPhase()).getPlayerBoard();
         if(Arrays.stream(pb.getWaitingRoom()).sum() == pb.getMaxStudentsInWaiting() - numStudents )
             can = true;
         return can;
@@ -55,6 +55,7 @@ public class ActionState extends State implements Serializable {
             getGame().changeGameState(new MoveMotherNatureState(getGame(), getPhase()));
             //getGame().addCommand(getGame().getGameState().generateCommand());
         }
+            getGame().removeLastCommand();
             getGame().addCommand(getGame().getGameState().generateCommand());
     }
 

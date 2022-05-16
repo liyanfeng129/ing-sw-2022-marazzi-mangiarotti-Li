@@ -43,7 +43,7 @@ public class UpdateReceiver extends Thread {
                 oos = new ObjectOutputStream(update.getOutputStream());
                 ois=new ObjectInputStream(update.getInputStream());
                 ArrayList<Object> updates = (ArrayList<Object>) ois.readObject();
-
+                update.close();
                 updateReceived(updates);
             }
         } catch (IOException e) {
