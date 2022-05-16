@@ -10,7 +10,12 @@ import it.polimi.ingsw.view.Cli;
 
 import java.io.*;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class EriantysClientHandler extends Thread{
@@ -21,11 +26,15 @@ public class EriantysClientHandler extends Thread{
     Socket client;
     ArrayList<Game> games;
     Player player;
+    ArrayList<Subscriber> subs;
     Game game;
-    public EriantysClientHandler(Socket client,ArrayList<Game> games)
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    Date date = new Date();
+    public EriantysClientHandler(Socket client,ArrayList<Game> games, ArrayList<Subscriber> subs)
     {
         this.client=client;
         this.games = games;
+        this.subs = subs;
 
     }
 
@@ -53,8 +62,17 @@ public class EriantysClientHandler extends Thread{
             String msg;
             boolean cliClient;
             boolean hasACommand;
+            System.out.println(dateFormat.format(new Date()));
             switch (request)
             {
+                case "Test_show all threads":
+                    Set<Thread> threads = Thread.getAllStackTraces().keySet();
+                    System.out.printf("%-15s \t %-15s \t %-15s \t %s\n", "Name", "State", "Priority", "isDaemon");
+                    for (Thread t : threads) {
+                        System.out.printf("%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());
+                    }
+                    oos.writeObject(responses);
+                break;
                 case Config.GET_NEWEST_GAME:
                     System.out.println(client+"tries to get a updated game");
                     userName = (String) messages.get(1);
@@ -109,7 +127,9 @@ public class EriantysClientHandler extends Thread{
                 case Config.USER_LOGGING:
                     System.out.println(client+" asking for logging");
                     userName = (String) messages.get(1);
-                    String res=logging(userName);
+                    String address = (String) messages.get(2);
+                    int port = (int) messages.get(3);
+                    String res=logging(userName, address, port);
                     responses.add(res);
                     oos.writeObject(responses);
                     break;
@@ -161,35 +181,32 @@ public class EriantysClientHandler extends Thread{
                     System.out.println(client+" is listening for update");
                     String name = (String) messages.get(1);
                     player = findPlayerByName(name);
-                    while(!client.isClosed())
+                    while(!player.isUpdate())
                     {
-                        while(!player.isUpdate())
-                        {
-                            sleep(500);
-                        }
-                        responses = new ArrayList<>();
-                        if(!findGameForPlayer(name).isGameStarted()) // game hasn't started yet
-                        {
-                            if(findGameForPlayer(name).getPlayers().get(0).getName().equals(name))// this player is creator
-                            {
-                                System.out.println(player.getName()+"'s game room has been changed");
-                                responses.add(Config.UPDATE_CREATOR_WAITING_ROOM);
-                            }
-                            else
-                            {
-                                System.out.println(player.getName()+", the room he is in has been changed");
-                                responses.add(Config.UPDATE_OTHER_WAITING_ROOM);
-                            }
-                        }
-                        else // Game started
-                        {
-                            System.out.println(player.getName()+"'s game has been updated");
-                            responses.add(Config.GAME_UPDATED);
-                        }
-                        responses.add(findGameForPlayer(player.getName()));
-                        oos.writeObject(responses);
-                        player.setUpdate(false);
+                        sleep(1000);
                     }
+                    responses = new ArrayList<>();
+                    if(!findGameForPlayer(name).isGameStarted()) // game hasn't started yet
+                    {
+                        if(findGameForPlayer(name).getPlayers().get(0).getName().equals(name))// this player is creator
+                        {
+                            System.out.println(player.getName()+"'s game room has been changed");
+                            responses.add(Config.UPDATE_CREATOR_WAITING_ROOM);
+                        }
+                        else
+                        {
+                            System.out.println(player.getName()+", the room he is in has been changed");
+                            responses.add(Config.UPDATE_OTHER_WAITING_ROOM);
+                        }
+                    }
+                    else // Game started
+                    {
+                        System.out.println(player.getName()+"'s game has been updated");
+                        responses.add(Config.GAME_UPDATED);
+                    }
+                    responses.add(findGameForPlayer(player.getName()));
+                    oos.writeObject(responses);
+                    player.setUpdate(false);
                     break;
                 default:
                     out.println("not ok, no option valid for this");
@@ -203,10 +220,43 @@ public class EriantysClientHandler extends Thread{
         }
     }
 
-    private synchronized void gameUpdate(Game game)
-    {
+    private void gameUpdate(Game game) throws InterruptedException, IOException {
+        /*
         for(Player p : game.getPlayers())
             p.setUpdate(true);
+
+         */
+        for(Player p : game.getPlayers())
+            for(Subscriber sub : subs)
+                if(p.getName().equals(sub.getUserName()))
+                {
+                    System.out.println(String.format("updating %s's game\n " +
+                            "ip address: %s      Port number: %d",sub.getUserName(), sub.getIpAddress(), sub.getPortNumber()));
+                    Socket update = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                    ObjectOutputStream oos = new ObjectOutputStream(update.getOutputStream());
+                    ArrayList<Object> gameUpdates = new ArrayList<>();
+                    if(!game.isGameStarted()) // game hasn't started yet
+                    {
+                        if(game.getPlayers().get(0).getName().equals(sub.getUserName()))// this player is creator
+                        {
+                            System.out.println(sub.getUserName()+"'s game room has been changed");
+                            gameUpdates.add(Config.UPDATE_CREATOR_WAITING_ROOM);
+                        }
+                        else
+                        {
+                            System.out.println(sub.getUserName()+", the room he is in has been changed");
+                            gameUpdates.add(Config.UPDATE_OTHER_WAITING_ROOM);
+                        }
+                    }
+                    else // Game started
+                    {
+                        System.out.println(sub.getUserName()+"'s game has been updated");
+                        gameUpdates.add(Config.GAME_UPDATED);
+                    }
+                    gameUpdates.add(game);
+                    oos.writeObject(gameUpdates);
+                }
+
     }
     /**
      * TODO
@@ -248,7 +298,7 @@ public class EriantysClientHandler extends Thread{
         return Config.LOG_OUT_SUC;
     }
 
-    private synchronized String logging(String userName) throws EriantysExceptions
+    private synchronized String logging(String userName, String address, int port) throws EriantysExceptions
     {
         Users users = (Users) fileJason2Object("users.jason", Users.class);
         if(users.contains(userName))
@@ -258,6 +308,7 @@ public class EriantysClientHandler extends Thread{
                 users.logUser(userName);
                 object2FileJason("users.jason", users);
                 //out.println(Config.USER_LOGGED);
+                subs.add(new Subscriber(userName, address, port));
                 return Config.USER_LOGGED;
             }
             else // this userName is already logged

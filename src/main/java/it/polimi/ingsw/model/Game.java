@@ -32,7 +32,7 @@ public class Game implements Serializable {
 
     }
 
-    public Player findPlayerByName(String name) throws EriantysExceptions
+    public synchronized Player findPlayerByName(String name) throws EriantysExceptions
     {
         for(Player p : players)
             if(p.getName().equals(name))
@@ -40,39 +40,44 @@ public class Game implements Serializable {
         throw new InnerExceptions.NoSuchUserException("Player not found");
     }
 
-    public Command getLastCommand()
+    public synchronized Command getLastCommand()
     {
         return this.commands.get(commands.size()-1);
     }
-    public void setLastCommand(Command command)
+    public synchronized void setLastCommand(Command command)
     {
         this.commands.remove(commands.size()-1);
         this.commands.add(command);
     }
-    public void addCommand(Command command) { commands.add(command); }
+    public synchronized void removeLastCommand()
+    {
+        this.commands.remove(commands.size()-1);
+    }
 
-    public State getGameState()
+    public synchronized void addCommand(Command command) { commands.add(command); }
+
+    public synchronized State getGameState()
     {
         return this.gameState;
     }
 
-    public void changeGameState(State state)
+    public synchronized void changeGameState(State state)
     {
         this.gameState = state;
     }
 
 
-    public ArrayList<Player> getTurnList() {
+    public synchronized ArrayList<Player> getTurnList() {
         return turnList;
     }
 
-    public void setTurnList(ArrayList<Player> turnList) {
+    public synchronized void setTurnList(ArrayList<Player> turnList) {
         this.turnList = turnList;
     }
 
 
 
-    public Table getTable() {
+    public synchronized Table getTable() {
         return table;
     }
 
@@ -158,7 +163,7 @@ public class Game implements Serializable {
         return expertMode;
     }
 
-    public ArrayList<Player> getPlayers() {
+    public synchronized ArrayList<Player> getPlayers() {
         return players;
     }
 

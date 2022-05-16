@@ -40,6 +40,7 @@ public class PlanningState extends State implements Serializable {
             setActivePlayer();
             getGame().changeGameState(new ActionState(getGame(), 0));
         }
+        getGame().removeLastCommand();
         getGame().addCommand(getGame().getGameState().generateCommand());
     }
 
@@ -60,7 +61,7 @@ public class PlanningState extends State implements Serializable {
         this.cards.add(assistant);
     }
     public void setActivePlayer(){
-        ArrayList<Player> playerQueue =new ArrayList<>();
+        ArrayList<Player> playerQueue = new ArrayList<>();
         int min=cards.get(0).getNum();
         int j=0;
         for (int i=0;i<cards.size();i++){

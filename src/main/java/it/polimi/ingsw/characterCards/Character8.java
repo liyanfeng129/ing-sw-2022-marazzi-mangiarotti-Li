@@ -13,7 +13,8 @@ public class Character8 implements CharacterBehavior{
 
     public Character8(Game game) throws EriantysExceptions {
 
-        msg = "";
+        msg = "During the influence calculation this turn, you\n" +
+                "count as having 2 more influence.";
         coin = 2;
         firstUse = false;
 
@@ -26,5 +27,29 @@ public class Character8 implements CharacterBehavior{
         }
         game.getTable().setCard8(user.getName());
         //stesso problema carta 6
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public boolean isFirstUse() {
+        return firstUse;
+    }
+
+    public void setFirstUse(boolean firstUse) {
+        this.firstUse = firstUse;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view;
 
 
-import it.polimi.ingsw.characterCards.CharacterCard;
+import it.polimi.ingsw.characterCards.*;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
@@ -97,6 +97,13 @@ public class Cli {
         String msg = Color.RED + String.valueOf(pb.getDiningRoom()[0]) + " " + Color.YELLOW + String.valueOf(pb.getDiningRoom()[1]) + " " +
                 Color.PURPLE + String.valueOf(pb.getDiningRoom()[2]) + " " + Color.BLUE+ String.valueOf(pb.getDiningRoom()[3]) + " " +
                 Color.GREEN + String.valueOf(pb.getDiningRoom()[4]) + Color.RESET;
+        return msg;
+    }
+
+    public String show_students(int[] array_student){
+        String msg = Color.RED + String.valueOf(array_student[0]) + " " + Color.YELLOW + String.valueOf(array_student[1]) + " " +
+                Color.PURPLE + String.valueOf(array_student[2]) + " " + Color.BLUE+ String.valueOf(array_student[3]) + " " +
+                Color.GREEN + String.valueOf(array_student[4]) + Color.RESET;
         return msg;
     }
 
@@ -248,5 +255,161 @@ public class Cli {
         }
         System.out.println(" ");
     }
+
+
+
+
+    public void show_character_on_table(Game game){
+        if (game.isExpertMode()){
+            int num;
+            for (int i=0; i<3;i++){
+                num = game.getTable().getCharacters().get(i).getNum();
+
+                if (i==1)
+                    System.out.println("");
+                   // show_character_1((Character1) game.getTable().getCharacters().get(i))
+
+
+
+
+
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+    public void show_character_1(Character1 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+        System.out.println("STUDENTS: ");
+        System.out.println(show_students(character.getStudents()));
+    }
+
+    public void show_character_2(Character2 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+
+    public void show_character_3(Character3 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+
+    public void show_character_4(Character4 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+
+    public void show_character_5(Character5 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+        System.out.println("NO ENTRY TILES: ");
+        System.out.println(character.getNoEntryTiles());
+    }
+    public void show_character_6(Character6 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+
+    public void show_character_7(Character7 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+
+        System.out.println("STUDENTS: ");
+        System.out.println(show_students(character.getStudents()));
+    }
+    public void show_character_8(Character8 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+
+    public void show_character_9(Character9 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+
+    public void show_character_10(Character10 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+    public void show_character_11(Character11 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+    public void show_character_12(Character12 character){
+        System.out.println("EFFECT: ");
+        System.out.println(character.getMsg());
+        System.out.println("COST: ");
+        if (character.isFirstUse())
+            System.out.println(character.getCoin()+1);
+        else
+            System.out.println(character.getCoin());
+    }
+
+
 
 }

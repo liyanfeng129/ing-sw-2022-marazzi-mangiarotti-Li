@@ -61,6 +61,7 @@ public class MoveMotherNatureState extends State implements Serializable {
                     getGame().changeGameState(new EndGameState(getGame(), getPhase()));
                 }
             }
+            getGame().removeLastCommand();
             getGame().addCommand(getGame().getGameState().generateCommand());
         }
     }

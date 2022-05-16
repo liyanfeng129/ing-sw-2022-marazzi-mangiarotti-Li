@@ -13,7 +13,8 @@ public class Character9 implements CharacterBehavior{
 
     public Character9(Game game) throws EriantysExceptions {
 
-        msg = "";
+        msg = "Choose a color of Student: during the influence\n" +
+                "calculation this turn, that color adds no influence.";
         coin = 3;
         firstUse = false;
 
@@ -25,5 +26,29 @@ public class Character9 implements CharacterBehavior{
             this.firstUse = true;
         }
         game.getTable().setCard9(colore);
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public boolean isFirstUse() {
+        return firstUse;
+    }
+
+    public void setFirstUse(boolean firstUse) {
+        this.firstUse = firstUse;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }
