@@ -14,7 +14,10 @@ public class Character5 implements CharacterBehavior{
 
     public Character5(Game game) throws EriantysExceptions {
 
-        msg = "";
+        msg = "Place a No Entry tile on an Island of your choice.\n" +
+                "The first time Mother Nature ends her movement\n" +
+                "there, put the No Entry tile back onto this card DO NOT\n" +
+                "calculate influence on that Island, or place any Towers.";
         coin = 2;
         firstUse = false;
         NoEntryTiles=4;
@@ -30,6 +33,38 @@ public class Character5 implements CharacterBehavior{
         game.getTable().getIslands(pos).setNoEntryTiles(true);
         NoEntryTiles--;
         //bisogna aggiungere che se ce questa carta non si calcola influenza e merge
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public boolean isFirstUse() {
+        return firstUse;
+    }
+
+    public void setFirstUse(boolean firstUse) {
+        this.firstUse = firstUse;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public int getNoEntryTiles() {
+        return NoEntryTiles;
+    }
+
+    public void setNoEntryTiles(int noEntryTiles) {
+        NoEntryTiles = noEntryTiles;
     }
 }
 

@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class CharacterCard implements Serializable {
     private CharacterBehavior CBehavior;
+    private int num;
 
     public CharacterCard(CharacterBehavior CBehavior)
     {
@@ -16,4 +17,11 @@ public class CharacterCard implements Serializable {
         this.CBehavior.useCharacter(game, user,island,colore,students);
     }
 
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
 }

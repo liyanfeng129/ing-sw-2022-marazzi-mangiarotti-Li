@@ -14,7 +14,9 @@ public class Character7 implements CharacterBehavior{
 
     public Character7(Game game) throws EriantysExceptions {
 
-        msg = "";
+        msg = "You may take up to 3 Students from this card\n" +
+                "and replace them with the same number of Students\n" +
+                "from your Entrance.";
         coin = 1;
         firstUse = false;
         Bag bag  = game.getTable().getBag();
@@ -29,5 +31,37 @@ public class Character7 implements CharacterBehavior{
         }
 
         //devo chiamare action phase1 o passare un array di 3 studenti
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public boolean isFirstUse() {
+        return firstUse;
+    }
+
+    public void setFirstUse(boolean firstUse) {
+        this.firstUse = firstUse;
+    }
+
+    public int[] getStudents() {
+        return students;
+    }
+
+    public void setStudents(int[] students) {
+        this.students = students;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

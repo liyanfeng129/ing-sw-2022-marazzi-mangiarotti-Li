@@ -13,7 +13,8 @@ public class Character6 implements CharacterBehavior{
 
     public Character6(Game game) throws EriantysExceptions {
 
-        msg = "";
+        msg = "When resolving a Conquering on an Island,\n" +
+                "Towers do not count towards influence.";
         coin = 3;
         firstUse = false;
 
@@ -26,5 +27,29 @@ public class Character6 implements CharacterBehavior{
         }
         game.getTable().setCard6(true);
         //potrebbero esserci problemi con altre carte
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public boolean isFirstUse() {
+        return firstUse;
+    }
+
+    public void setFirstUse(boolean firstUse) {
+        this.firstUse = firstUse;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

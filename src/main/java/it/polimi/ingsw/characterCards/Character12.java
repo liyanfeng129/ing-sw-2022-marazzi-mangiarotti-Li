@@ -13,7 +13,11 @@ public class Character12 implements CharacterBehavior{
 
     public Character12(Game game) throws EriantysExceptions {
 
-        msg = "";
+        msg = "Choose a type of Student: every player\n" +
+                "(including yourself) must return 3 Students of that type\n" +
+                "from their Dining Room to the bag. If any player has\n" +
+                "fewer than 3 Students of that type, return as many\n" +
+                "Students as they have.";
         coin = 3;
         firstUse = false;
 
@@ -30,5 +34,29 @@ public class Character12 implements CharacterBehavior{
                 game.getPlayers().get(i).getPlayerBoard().takeStudentFromWaitingRoom(colore);
             }
         }
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public boolean isFirstUse() {
+        return firstUse;
+    }
+
+    public void setFirstUse(boolean firstUse) {
+        this.firstUse = firstUse;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

@@ -14,7 +14,9 @@ public class Character11 implements CharacterBehavior{
 
     public Character11(Game game) throws EriantysExceptions {
 
-        msg = "";
+        msg = "Take 1 Student from this card and place it in\n" +
+                "your Dining Room. Then, draw a new Student from the\n" +
+                "Bag and place it on this card.";
         coin = 2;
         firstUse = false;
         students = game.getTable().getBag().draw(4);
@@ -31,5 +33,37 @@ public class Character11 implements CharacterBehavior{
         for(int i = 0 ; i < students.length; i++){
             this.students[i] = this.students[i] + temp[i];
         }
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public boolean isFirstUse() {
+        return firstUse;
+    }
+
+    public void setFirstUse(boolean firstUse) {
+        this.firstUse = firstUse;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public int[] getStudents() {
+        return students;
+    }
+
+    public void setStudents(int[] students) {
+        this.students = students;
     }
 }
