@@ -9,7 +9,9 @@ public class Character4 implements CharacterBehavior{
 
     public Character4(Game game) throws EriantysExceptions {
 
-        msg = "";
+        msg = "You may move Mother Nature up to 2\n" +
+                "additional Islands than is indicated by the Assistant\n" +
+                "card you've played.";
         coin = 1;
         firstUse = false;
 
@@ -22,5 +24,29 @@ public class Character4 implements CharacterBehavior{
         }
         int max_step=user.getHand().getLastPlayedCard()+2;
         user.getHand().setLastPlayedCard(max_step);
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
+    }
+
+    public boolean isFirstUse() {
+        return firstUse;
+    }
+
+    public void setFirstUse(boolean firstUse) {
+        this.firstUse = firstUse;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }
