@@ -140,7 +140,11 @@ public class UpdateReceiver extends Thread {
             else
                 System.out.println(responses.get(0));
         }
-        else
+        else if (userName=="endgame"){
+            Command command = game.getLastCommand();
+            command.getData();
+        }
+         else
         {
             // communicate
         }
