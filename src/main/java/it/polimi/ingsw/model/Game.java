@@ -8,7 +8,6 @@ import it.polimi.ingsw.state.State;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Game implements Serializable {
     private ArrayList<Player> players = new ArrayList<Player>();
@@ -49,9 +48,14 @@ public class Game implements Serializable {
         this.commands.remove(commands.size()-1);
         this.commands.add(command);
     }
-    public synchronized void removeLastCommand()
+    public synchronized void removeCommand()
     {
-        this.commands.remove(commands.size()-1);
+        if(commands.size() >= 2)
+            this.commands.remove(0);
+    }
+    public synchronized Command getExecutedCommand()
+    {
+        return commands.get(0);
     }
 
     public synchronized void addCommand(Command command) { commands.add(command); }
@@ -129,6 +133,8 @@ public class Game implements Serializable {
                         clouds.add(cloud);
                     }
                     table.tableInit(clouds,null);
+                    for(int i = 0; i< players.size(); i++)
+                        this.players.get(i).getPb().setWaitingRoom(table.getBag().draw(9));
                 }
                 if(n_Player == 4 && !expertMode)
                 {

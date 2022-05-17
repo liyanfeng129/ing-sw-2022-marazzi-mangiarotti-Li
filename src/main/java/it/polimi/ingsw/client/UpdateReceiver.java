@@ -125,6 +125,9 @@ public class UpdateReceiver extends Thread {
     private void gameUpdate(Game game) throws EriantysExceptions {
         System.out.println("Game has been updated");
         new Cli().show_game(game);
+        Command c = game.getExecutedCommand();
+        if(c.isDataGathered())
+            System.out.println("\n"+c.getMsg()+"\n");
         if(game.getLastCommand().getUsername().equals(userName))
         {
             Command command = game.getLastCommand();
@@ -140,10 +143,7 @@ public class UpdateReceiver extends Thread {
             else
                 System.out.println(responses.get(0));
         }
-        else
-        {
-            // communicate
-        }
+
     }
     private  void clearScreen()
     {

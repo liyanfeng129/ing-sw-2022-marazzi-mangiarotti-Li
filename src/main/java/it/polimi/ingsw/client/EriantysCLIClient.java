@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.Cli;
 
 
 import java.io.*;
@@ -72,7 +71,7 @@ public class EriantysCLIClient {
                 case 1: //Create a new game for 2 players
                     responses = createGameFor2();
                     msg = (String) responses.get(0);
-                    if (msg.equals(Config.CREATE_GAME_FOR_2_SUC))
+                    if (msg.equals(Config.CREATE_NORMAL_GAME_FOR_2_SUC))
                         exit = true;
                     else
                         System.out.println(msg);
@@ -149,7 +148,7 @@ public class EriantysCLIClient {
     {
 
         ArrayList<Object> messages = new ArrayList<>();
-        messages.add(Config.CREATE_GAME_FOR_2);
+        messages.add(Config.CREATE_NORMAL_GAME_FOR_2);
         messages.add(userName);
         ArrayList<Object> responses = responseFromServer(messages);
 

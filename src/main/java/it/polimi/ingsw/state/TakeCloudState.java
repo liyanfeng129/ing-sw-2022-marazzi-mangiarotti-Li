@@ -1,12 +1,10 @@
 package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.command.Command;
-import it.polimi.ingsw.command.MoveStudentFromWaitingRoomCommand;
 import it.polimi.ingsw.command.SelectCloudCommand;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.InnerExceptions;
-import it.polimi.ingsw.model.InnerExceptions.NotEnoughStudentsInBagException;
 
 import java.io.Serializable;
 
@@ -55,7 +53,7 @@ public class TakeCloudState extends State implements Serializable {
                 else
                     getGame().changeGameState(new ActionState(getGame(),getPhase()+1));
         }
-        getGame().removeLastCommand();
+        getGame().removeCommand();
         getGame().addCommand(getGame().getGameState().generateCommand());
     }
 

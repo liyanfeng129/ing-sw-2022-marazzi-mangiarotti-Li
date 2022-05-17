@@ -1,12 +1,9 @@
 package it.polimi.ingsw.client;
 
 
-import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.Cli;
 
 
-import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -57,12 +54,13 @@ public class EriantysCLIClientThread extends Thread {
         /**
          * 1. Create a new game for 2 players
          * 2. Create a new game for 3 players
-         * 3. Create a new game for 4 players
-         * 4. Resume an old game
-         * 5. Show existing games in the lobby
-         * 6. Show resumable games
-         * 7. Join in a resumable game
-         * 8. logout and exit
+         * 3. Create a new expert game for 2 players
+         * 4. Create a new expert game for 3 players
+         * 5. Resume an old game
+         * 6. Show existing games in the lobby
+         * 7. Show resumable games
+         * 8. Join in a resumable game
+         * 9. logout and exit
          * */
         clearScreen();
         int option = -1;
@@ -75,23 +73,36 @@ public class EriantysCLIClientThread extends Thread {
             exit = false;
             switch (option) {
                 case 1: //Create a new game for 2 players
-                    responses = createGameFor2();
+                    responses = createNormalGameFor2();
                     msg = (String) responses.get(0);
-                    if (msg.equals(Config.CREATE_GAME_FOR_2_SUC))
+                    if (msg.equals(Config.CREATE_NORMAL_GAME_FOR_2_SUC))
                         exit = true;
                     else
                         System.out.println(msg);
                     break;
                 case 2: //Create a new game for 3 players
+                    responses = createNormalGameFor3();
+                    msg = (String) responses.get(0);
+                    if (msg.equals(Config.CREATE_NORMAL_GAME_FOR_3_SUC))
+                        exit = true;
+                    else
+                        System.out.println(msg);
+                    break;
+                case 3: //Create a new expert game for 2 players
+                    responses = createExpertGameFor2();
+                    msg = (String) responses.get(0);
+                    if (msg.equals(Config.CREATE_EXPERT_GAME_FOR_2_SUC))
+                        exit = true;
+                    else
+                        System.out.println(msg);
+                    break;
+                case 4: //Create a new expert game for 3 players
 
                     break;
-                case 3: //Create a new game for 4 players
+                case 5: //Resume an old game
 
                     break;
-                case 4: //Resume an old game
-
-                    break;
-                case 5: //show existing games in the lobby
+                case 6: //show existing games in the lobby
                     responses = getExistingGames();
                     msg = (String) responses.get(0);
                     if (msg.equals(Config.SHOW_EXISTING_GAMES_SUC))
@@ -99,13 +110,13 @@ public class EriantysCLIClientThread extends Thread {
                     else
                         System.out.println(msg);
                     break;
-                case 6: //Show resumable games
+                case 7: //Show resumable games
 
                     break;
-                case 7: //Join in a resumable game
+                case 8: //Join in a resumable game
 
                     break;
-                case 8: //logout user
+                case 9: //logout user
                     String res = logOut();
                     if (res.equals(Config.LOG_OUT_SUC))
                     {
@@ -125,16 +136,20 @@ public class EriantysCLIClientThread extends Thread {
         switch (option)
         {
             case 1: //after creation enter to game room
+            case 2:
+            case 3:
                 showCreatorGameRoom((Game) responses.get(1));
                 break;
-            case 5: //display all join-able game
+            case 6: //display all join-able game
                 showExistingGames((ArrayList<Game>) responses.get(1));
                 break;
-            case 8: //after logout return to logging menu
+            case 9: //after logout return to logging menu
                 loggingMenu();
                 break;
         }
     }
+
+
     public void run() {
         // TODO Auto-generated method stub
         try
@@ -149,11 +164,33 @@ public class EriantysCLIClientThread extends Thread {
         }
     }
 
-    private ArrayList<Object> createGameFor2()
+    private ArrayList<Object> createNormalGameFor2()
     {
 
         ArrayList<Object> messages = new ArrayList<>();
-        messages.add(Config.CREATE_GAME_FOR_2);
+        messages.add(Config.CREATE_NORMAL_GAME_FOR_2);
+        messages.add(userName);
+        messages.add(true); //this is CLI
+        ArrayList<Object> responses = responseFromServer(messages);
+
+        return responses;
+    }
+
+    private ArrayList<Object> createNormalGameFor3()
+    {
+
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.CREATE_NORMAL_GAME_FOR_3);
+        messages.add(userName);
+        messages.add(true); //this is CLI
+        ArrayList<Object> responses = responseFromServer(messages);
+
+        return responses;
+    }
+
+    private ArrayList<Object> createExpertGameFor2() {
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.CREATE_EXPERT_GAME_FOR_2);
         messages.add(userName);
         messages.add(true); //this is CLI
         ArrayList<Object> responses = responseFromServer(messages);
@@ -379,108 +416,6 @@ public class EriantysCLIClientThread extends Thread {
     public String getUserName()
     {
         return userName;
-    }
-
-    /**
-     * TODO
-     * */
-    public void update(ArrayList<Object> messages) throws EriantysExceptions {
-        clearScreen();
-        String msg = (String) messages.get(0);
-        ArrayList<Object> newMessages = new ArrayList<>();
-        ArrayList<Object> responses;
-        switch (msg)
-        {
-            case Config.UPDATE_CREATOR_WAITING_ROOM :
-                updateCreatorGameRoom((Game) messages.get(1));
-                break;
-            case Config.UPDATE_OTHER_WAITING_ROOM:
-                updateOtherPlayerGameRoom((Game) messages.get(1));
-                break;
-            case Config.GAME_UPDATED:
-                newMessages.add(Config.GET_NEWEST_GAME);
-                newMessages.add(userName);
-                responses = responseFromServer(newMessages);
-                if(responses.get(0).equals(Config.GET_NEWEST_GAME_SUC));
-                    gameUpdate((Game) responses.get(1));
-                break;
-
-        }
-    }
-
-    private void updateCreatorGameRoom(Game game) {
-        clearScreen();
-        System.out.println(String.format("%s, this is your game, waiting for other %d\n",
-                game.getPlayers().get(0).getName(),
-                game.getN_Player() - game.getPlayers().size()
-        ));
-        System.out.println("Participants:\n");
-        int i = 0;
-        for (; i < game.getPlayers().size(); i++)
-            System.out.println(String.format("%d: %s",
-                    i + 1,
-                    game.getPlayers().get(i).getName()
-            ));
-        if (game.getN_Player() == game.getPlayers().size())
-        {
-            String input = "";
-            while(!input.equals("1"))
-            {
-                System.out.println("Game is ready to be started, press 1 if you want to start\n" +
-                        "every other input is invalid\n");
-                input = new Scanner(System.in).nextLine();
-                if(input.equals("1"))
-                {
-                    ArrayList<Object> messages = new ArrayList<>();
-                    messages.add(Config.GAME_START);
-                    messages.add(userName);
-                    ArrayList<Object> responses = responseFromServer(messages);
-                    String msg = (String) responses.get(0);
-                    if(msg.equals(Config.GAME_START_SUC))
-                    {
-                        System.out.println("Launching..");
-                    }
-                }
-            }
-        }
-    }
-    private void updateOtherPlayerGameRoom(Game game)
-    {
-        clearScreen();
-        System.out.println(String.format("you are in %s's game, waiting for other %d\n",
-                game.getPlayers().get(0).getName(),
-                game.getN_Player()-game.getPlayers().size()
-        ));
-        System.out.println("Participants:\n");
-        int i = 0;
-        for(;i<game.getPlayers().size();i++)
-            System.out.println(String.format("%d: %s",
-                    i+1,
-                    game.getPlayers().get(i).getName()
-            ));
-    }
-    private void gameUpdate(Game game) throws EriantysExceptions {
-        System.out.println("Game has been updated");
-        new Cli().show_game(game);
-        if(game.getLastCommand().getUsername().equals(userName))
-        {
-            Command command = game.getLastCommand();
-            command.getData();
-            ArrayList<Object> messages = new ArrayList<>();
-            ArrayList<Object> responses = new ArrayList<>();
-            messages.add(Config.COMMAND_EXECUTE);
-            messages.add(userName);
-            messages.add(command);
-            responses = responseFromServer(messages);
-            if(responses.get(0).equals(Config.COMMAND_EXECUTE_SUC))
-                System.out.println("Command executed");
-            else
-                System.out.println(responses.get(0));
-        }
-        else
-        {
-            // communicate
-        }
     }
 
 }

@@ -28,4 +28,11 @@ public enum AssistantType implements Serializable {
         return Steps;
     }
 
+    @Override
+    public String toString() {
+        return "AssistantType{" +
+                "Num=" + Num +
+                ", Steps=" + Steps +
+                '}';
+    }
 }

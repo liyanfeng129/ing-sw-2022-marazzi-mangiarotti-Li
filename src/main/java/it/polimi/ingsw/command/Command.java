@@ -10,12 +10,14 @@ public abstract class Command implements Serializable {
     private boolean isCliClient;
     private Game game;
     private String username;
+    private String msg;
     public Command(boolean isCliClient, Game game, String username)
     {
         this.isCliClient = isCliClient;
         this.game = game;
         this.username = username;
         dataGathered = false;
+        msg = "";
     }
     public abstract void undo() throws EriantysExceptions;
     public abstract void  getData() throws EriantysExceptions;
@@ -50,5 +52,13 @@ public abstract class Command implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

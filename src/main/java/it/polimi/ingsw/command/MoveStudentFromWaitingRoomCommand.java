@@ -3,6 +3,7 @@ package it.polimi.ingsw.command;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.SType;
 import it.polimi.ingsw.state.ActionState;
 import it.polimi.ingsw.view.Cli;
 
@@ -75,9 +76,16 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
             if (isDataGathered())
             {
                 if (moveToIsland)
+                {
                     game.getTable().getIslands().get(island_pos).addStudent(student);
+                    setMsg(String.format("Player %s moved a %s student on island %d",
+                            getUsername(), SType.values()[student].name().toString(), island_pos + 1 ));
+                }
                 else
+                {
                     p.getPb().addStudentToHolder(student);
+                    setMsg(String.format("Player %s moved a %s student on his dining room.",getUsername(),SType.values()[student].name().toString()));
+                }
                 p.getPb().takeStudentFromWaitingRoom(student);
                 ((ActionState) game.getGameState()).setOnIsland(moveToIsland);
                 return true;

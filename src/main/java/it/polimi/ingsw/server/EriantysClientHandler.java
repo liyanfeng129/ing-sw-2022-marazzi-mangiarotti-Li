@@ -1,11 +1,9 @@
 package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.Cli;
 
 
 import java.io.*;
@@ -14,9 +12,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class EriantysClientHandler extends Thread{
     BufferedReader in;
@@ -81,11 +77,31 @@ public class EriantysClientHandler extends Thread{
                     responses.add(game);
                     oos.writeObject(responses);
                     break;
-                case Config.CREATE_GAME_FOR_2:
-                    System.out.println(client+"tries to create a game for two");
+                case Config.CREATE_NORMAL_GAME_FOR_2:
+                    System.out.println(client+"tries to create a normal game for two");
                     userName = (String) messages.get(1);
                     cliClient = (boolean) messages.get(2);
                     msg = createGameFor2(userName,cliClient);
+                    game = findGameForPlayer((String) messages.get(1));
+                    responses.add(msg);
+                    responses.add(game);
+                    oos.writeObject(responses);
+                    break;
+                case Config.CREATE_NORMAL_GAME_FOR_3:
+                    System.out.println(client+"tries to create a noraml game for three");
+                    userName = (String) messages.get(1);
+                    cliClient = (boolean) messages.get(2);
+                    msg = createGameFor3(userName,cliClient);
+                    game = findGameForPlayer((String) messages.get(1));
+                    responses.add(msg);
+                    responses.add(game);
+                    oos.writeObject(responses);
+                    break;
+                case Config.CREATE_EXPERT_GAME_FOR_2:
+                    System.out.println(client+"tries to create a expert game for two");
+                    userName = (String) messages.get(1);
+                    cliClient = (boolean) messages.get(2);
+                    msg = createExpertGameFor2(userName,cliClient);
                     game = findGameForPlayer((String) messages.get(1));
                     responses.add(msg);
                     responses.add(game);
@@ -220,6 +236,8 @@ public class EriantysClientHandler extends Thread{
         }
     }
 
+
+
     private void gameUpdate(Game game) throws InterruptedException, IOException {
         /*
         for(Player p : game.getPlayers())
@@ -272,13 +290,37 @@ public class EriantysClientHandler extends Thread{
         {
             game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,true,cliClient));
         }
+        if(game.getN_Player() == 3 && !game.isExpertMode() && game.getPlayers().size() == 1)
+        {
+            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,3,true,cliClient));
+        }
+        else if(game.getN_Player() == 3 && !game.isExpertMode() && game.getPlayers().size() == 2)
+        {
+            game.addPlayers(new Player(player,Mage.MAGE3,TowerColor.GREY,3,true,cliClient));
+        }
+
+        if(game.getN_Player() == 2 && game.isExpertMode())
+        {
+            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,true,cliClient));
+        }
             return Config.JOIN_ONE_GAME_SUC;
     }
 
     private synchronized String createGameFor2(String userName, boolean cliClient) throws EriantysExceptions {
         Game game = new Game(2, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,true,cliClient));
         games.add(game);
-        return Config.CREATE_GAME_FOR_2_SUC;
+        return Config.CREATE_NORMAL_GAME_FOR_2_SUC;
+    }
+
+    private synchronized String createGameFor3(String userName, boolean cliClient) throws EriantysExceptions {
+        Game game = new Game(3, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,3,true,cliClient));
+        games.add(game);
+        return Config.CREATE_NORMAL_GAME_FOR_3_SUC;
+    }
+    private String createExpertGameFor2(String userName, boolean cliClient) throws EriantysExceptions {
+        Game game = new Game(2, true, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,true,cliClient));
+        games.add(game);
+        return Config.CREATE_EXPERT_GAME_FOR_2;
     }
 
     private synchronized ArrayList<Game> showGames()

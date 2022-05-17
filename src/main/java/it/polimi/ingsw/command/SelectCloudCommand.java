@@ -57,6 +57,7 @@ public class SelectCloudCommand extends Command implements Serializable{
         Cloud c = game.getTable().getClouds().get(cloud);
         p.getPlayerBoard().addCloudToWaitingRoom(c.getStudents());
         c.emptyCloud();
+        setMsg(String.format("Player %s took cloud %d", getUsername(), cloud + 1));
         return true;
     }
 }
