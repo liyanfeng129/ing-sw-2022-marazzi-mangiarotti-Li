@@ -4,12 +4,13 @@ import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class EndGameCommand extends Command implements Serializable {
-    private String winner;
-    public EndGameCommand(boolean isCliClient, Game game, String username,String winner) {
+    private ArrayList<String> winners;
+    public EndGameCommand(boolean isCliClient, Game game, String username, ArrayList<String> winners) {
         super(isCliClient, game, username);
-        this.winner = winner;
+        this.winners = winners;
     }
 
     @Override
@@ -19,7 +20,10 @@ public class EndGameCommand extends Command implements Serializable {
 
     @Override
     public void getData() throws EriantysExceptions {
-        System.out.println("the winner is" +winner);
+        if (winners.size()>1)
+            System.out.println("the winners are" +winners);
+        else
+            System.out.println("the winner is" +winners);
         setDataGathered(true);
     }
 

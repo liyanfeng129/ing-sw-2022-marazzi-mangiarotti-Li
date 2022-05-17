@@ -10,6 +10,10 @@ public class PlayerBoard implements Serializable {
     private int n_tower;
     private Boolean[] profHolder;
     private int maxStudentsInWaiting;
+    private boolean[] coin3;
+    private boolean[] coin6;
+    private boolean[] coin9;
+
 
     //ma perche devo passare un array di student se poi lo inizializzi a 0?
     //si potrebbe migliorare il costruttore settando direttamente il numero di torri in base alla partita
@@ -26,6 +30,9 @@ public class PlayerBoard implements Serializable {
         this.tower = tower_color;
         this.n_tower = n_tower ;
         this.maxStudentsInWaiting = maxStudentsInWaiting;
+        this.coin3 = new boolean[]{false, false, false, false, false};
+        this.coin6 = new boolean[]{false, false, false, false, false};
+        this.coin9 = new boolean[]{false, false, false, false, false};
 
     }
 
@@ -109,7 +116,6 @@ public class PlayerBoard implements Serializable {
         this.diningRoom[student] ++;
     }
 
-    //secondo me non serve
     public  void takeStudentFromHolder(int student)
     {
         this.diningRoom[student] --;
@@ -130,5 +136,29 @@ public class PlayerBoard implements Serializable {
 
     public void setMaxStudentsInWaiting(int maxStudentsInWaiting) {
         this.maxStudentsInWaiting = maxStudentsInWaiting;
+    }
+
+    public boolean[] getCoin3() {
+        return coin3;
+    }
+
+    public void setCoin3(int student) {
+        coin3[student] = true;
+    }
+
+    public boolean[] getCoin6() {
+        return coin6;
+    }
+
+    public void setCoin6(int student) {
+        coin6[student] = true;
+    }
+
+    public boolean[] getCoin9() {
+        return coin9;
+    }
+
+    public void setCoin9(int student) {
+        coin9[student] = true;
     }
 }

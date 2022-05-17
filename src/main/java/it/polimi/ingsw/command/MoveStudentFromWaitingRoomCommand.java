@@ -78,6 +78,21 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                     game.getTable().getIslands().get(island_pos).addStudent(student);
                 else
                     p.getPb().addStudentToHolder(student);
+                //aggiungo coin
+                if(getGame().isExpertMode()) {
+                    if (p.getPb().getDiningRoom()[student] == 3 && p.getPb().getCoin3()[student] == false) {
+                        p.getWallet().addCoin(1);
+                        p.getPb().setCoin3(student);
+                    }
+                    if (p.getPb().getDiningRoom()[student] == 6 && p.getPb().getCoin6()[student] == false) {
+                        p.getWallet().addCoin(1);
+                        p.getPb().setCoin6(student);
+                    }
+                    if (p.getPb().getDiningRoom()[student] == 9 && p.getPb().getCoin9()[student] == false) {
+                        p.getWallet().addCoin(1);
+                        p.getPb().setCoin9(student);
+                    }
+                }
                 p.getPb().takeStudentFromWaitingRoom(student);
                 ((ActionState) game.getGameState()).setOnIsland(moveToIsland);
                 return true;
