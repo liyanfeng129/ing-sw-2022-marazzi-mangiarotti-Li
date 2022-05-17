@@ -48,6 +48,7 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
         if(isDataGathered())
         {
             game.getTable().moveMotherNature(steps);
+            setMsg(String.format("Player %s moved the mother nature %d steps in forward.", getUsername(), steps));
             return true;
         }
         return false;

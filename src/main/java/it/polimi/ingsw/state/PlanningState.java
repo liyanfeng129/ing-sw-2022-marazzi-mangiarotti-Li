@@ -40,7 +40,7 @@ public class PlanningState extends State implements Serializable {
             setActivePlayer();
             getGame().changeGameState(new ActionState(getGame(), 0));
         }
-        getGame().removeLastCommand();
+        getGame().removeCommand();
         getGame().addCommand(getGame().getGameState().generateCommand());
     }
 
@@ -51,7 +51,7 @@ public class PlanningState extends State implements Serializable {
             ArrayList<Assistant> hand = getGame().getTurnList().get(getPhase()).getHand().getList_cards();
             String userName = getGame().getTurnList().get(getPhase()).getName();
             boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
-            return new GetAssistantCommand(hand,cliClient,getGame(),userName);
+            return new GetAssistantCommand(hand,cards,cliClient,getGame(),userName);
         }
         throw new InnerExceptions.PlanningSteteError("cannot generate command.");
     }

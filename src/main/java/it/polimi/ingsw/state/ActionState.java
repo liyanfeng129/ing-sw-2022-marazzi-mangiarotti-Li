@@ -1,12 +1,10 @@
 package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.command.Command;
-import it.polimi.ingsw.command.GetAssistantCommand;
 import it.polimi.ingsw.command.MoveStudentFromWaitingRoomCommand;
 import it.polimi.ingsw.model.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ActionState extends State implements Serializable {
@@ -53,9 +51,8 @@ public class ActionState extends State implements Serializable {
         if(canChangeState())
         {
             getGame().changeGameState(new MoveMotherNatureState(getGame(), getPhase()));
-            //getGame().addCommand(getGame().getGameState().generateCommand());
         }
-            getGame().removeLastCommand();
+            getGame().removeCommand();
             getGame().addCommand(getGame().getGameState().generateCommand());
     }
 

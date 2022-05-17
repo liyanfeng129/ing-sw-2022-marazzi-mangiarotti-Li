@@ -10,11 +10,13 @@ import java.util.Scanner;
 
 public class GetAssistantCommand extends Command implements Serializable {
     ArrayList<Assistant> assistants ; // pre_execute
+    ArrayList<Assistant> playedCard;
     Assistant assistant; // post_execute
-    public GetAssistantCommand(ArrayList<Assistant> assistants,boolean isCliClient,Game game, String username)
+    public GetAssistantCommand(ArrayList<Assistant> assistants,ArrayList<Assistant> playedCard,boolean isCliClient,Game game, String username)
     {
         super(isCliClient,game,username);
         this.assistants = (ArrayList<Assistant>) assistants.clone();
+        this.playedCard = (ArrayList<Assistant>) playedCard.clone();
     }
 
     @Override
@@ -29,6 +31,13 @@ public class GetAssistantCommand extends Command implements Serializable {
             System.out.println("Please select a assistant, choose from your hand");
             new Cli().show_Assistants(assistants);
             choice = new Scanner(System.in).nextInt();
+            if(choice >= 1 && choice <= assistants.size())
+                for(Assistant as : playedCard)
+                    if( as.getNum() == assistants.get(choice - 1).getNum())
+                    {
+                        System.out.println("\nCard already played, please play another one.\n");
+                        choice = -1;
+                    }
         }
         while(choice<1 || choice > assistants.size());
 
@@ -48,15 +57,10 @@ public class GetAssistantCommand extends Command implements Serializable {
             ((PlanningState) game.getGameState()).addCard(assistant);
             game.findPlayerByName(getUsername()).getHand().use_cards(assistant.getType());
             game.findPlayerByName(getUsername()).getHand().setLastPlayedCard(assistant.getSteps());
+            setMsg(String.format("Player %s used a card : %s",getUsername(), assistant.toString()));
             return true;
         }
         else
             return false;
     }
-
-
-    public ArrayList<Assistant> gettingCondition(){
-        return assistants;
-    }
-
 }

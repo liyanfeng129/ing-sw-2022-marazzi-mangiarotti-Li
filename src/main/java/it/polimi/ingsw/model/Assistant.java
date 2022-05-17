@@ -41,4 +41,9 @@ public class Assistant implements Serializable {
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    @Override
+    public String toString() {
+        return type.toString();
+    }
 }
