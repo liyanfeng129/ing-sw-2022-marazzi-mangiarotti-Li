@@ -22,7 +22,7 @@ class IslandTest {
     public void test_student(){
         int temp[] = new int[5];
         island.addStudent(0);
-        island.putStudent(0);
+        island.addStudent(0);
         island.addStudent(3);
         assertEquals(2,island.getStudents()[0]);
         assertArrayEquals(new int[]{2, 0, 0, 1, 0}, island.getStudents());

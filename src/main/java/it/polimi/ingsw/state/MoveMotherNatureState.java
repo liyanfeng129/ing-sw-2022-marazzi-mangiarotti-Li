@@ -75,7 +75,7 @@ public class MoveMotherNatureState extends State implements Serializable {
             boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
             return new MoveMotherNatureCommand(cliClient,getGame(),userName,maxSteps);
         }
-        throw new InnerExceptions.PlanningSteteError("cannot generate command.");
+        throw new InnerExceptions.PlanningStateError("cannot generate command.");
     }
 
     public boolean isCan() {

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Wallet implements Serializable {
     private int Saving;
 
-    public int getWallet() {
+    public int getSaving() {
         return Saving;
     }
 

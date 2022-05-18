@@ -31,7 +31,7 @@ public class Character1 implements CharacterBehavior{
             this.firstUse = true;
         }
         Bag bag  = game.getTable().getBag();
-        island.putStudent(colore);
+        island.addStudent(colore);
         int temp [] = bag.draw(1);
 
         for(int i = 0 ; i < students.length; i++){

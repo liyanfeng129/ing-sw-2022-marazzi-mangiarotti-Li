@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.characterCards.CharacterCard;
+import it.polimi.ingsw.characterCards2.CharacterCard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class Table implements Serializable {
 
 
 
-    public Island getIslands(int island_pos){
+    public Island getIsland(int island_pos){
         return Islands.get(island_pos);
     }
 
@@ -167,19 +167,19 @@ public class Table implements Serializable {
         for (int i = 0;i<5; i++) {
             if (game.getTable().getCard9() != i) {
                 if (prof.getList_professors()[i] == Mage.MAGE1)
-                    influence[0] = influence[0] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                    influence[0] = influence[0] + game.getTable().getIsland(getMotherNatureIndex()).getStudents()[i];
                 if (prof.getList_professors()[i] == Mage.MAGE2)
-                    influence[1] = influence[1] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                    influence[1] = influence[1] + game.getTable().getIsland(getMotherNatureIndex()).getStudents()[i];
                 if (prof.getList_professors()[i] == Mage.MAGE3)
-                    influence[2] = influence[2] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                    influence[2] = influence[2] + game.getTable().getIsland(getMotherNatureIndex()).getStudents()[i];
                 if (prof.getList_professors()[i] == Mage.MAGE4)
-                    influence[3] = influence[3] + game.getTable().getIslands(getMotherNatureIndex()).getStudents()[i];
+                    influence[3] = influence[3] + game.getTable().getIsland(getMotherNatureIndex()).getStudents()[i];
             }
         }
         if(!game.getTable().isCard6()) {
             for (int i = 0; i < game.getN_Player(); i++) {
-                if (game.getTable().getIslands(getMotherNatureIndex()).getTower() == game.getPlayers().get(i).getTowerColor()) {
-                    influence[i] = influence[i] + game.getTable().getIslands(getMotherNatureIndex()).getSize();
+                if (game.getTable().getIsland(getMotherNatureIndex()).getTower() == game.getPlayers().get(i).getTowerColor()) {
+                    influence[i] = influence[i] + game.getTable().getIsland(getMotherNatureIndex()).getSize();
                 }
             }
         }
@@ -213,18 +213,26 @@ public class Table implements Serializable {
         }
         TowerColor color= game.getPlayers().get(max_index).getTowerColor();
         int MN_pos=game.getTable().getMotherNatureIndex();
-        int MN_island_size=game.getTable().getIslands(MN_pos).getSize();
-        TowerColor Previous_TC = game.getTable().getIslands(MN_pos).getTower();
+        int MN_island_size=game.getTable().getIsland(MN_pos).getSize();
+        TowerColor Previous_TC = game.getTable().getIsland(MN_pos).getTower();
         if (Previous_TC!=color && Previous_TC != TowerColor.NO_COLOR){
             for (int i=0;i<game.getN_Player();i++){
                 if (game.getPlayers().get(i).getTowerColor()==Previous_TC)
                     game.getPlayers().get(i).getPlayerBoard().moveTower(+MN_island_size);
             }
         }
-        game.getTable().getIslands(MN_pos).setTower(color);
+        game.getTable().getIsland(MN_pos).setTower(color);
         game.getPlayers().get(max_index).getPlayerBoard().moveTower(-MN_island_size);
         return   game.getPlayers().get(max_index);
 
+    }
+
+    public CharacterCard findCharacterCardByName(String name) throws EriantysExceptions
+    {
+        for(int i = 0; i < characterCards.size(); i++)
+            if(characterCards.get(i).name().equals(name))
+                return characterCards.get(i);
+        throw new InnerExceptions.CharacterCardError("Character "+ name +" not find" );
     }
 
 

@@ -17,7 +17,7 @@ public class SelectCloudCommand extends Command implements Serializable{
     }
 
     @Override
-    public void undo() {
+    public void undo(Game game) {
 
     }
 

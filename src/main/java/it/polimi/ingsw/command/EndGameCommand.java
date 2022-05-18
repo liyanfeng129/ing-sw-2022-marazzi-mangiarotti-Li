@@ -14,7 +14,7 @@ public class EndGameCommand extends Command implements Serializable {
     }
 
     @Override
-    public void undo() throws EriantysExceptions {
+    public void undo(Game game) throws EriantysExceptions {
 
     }
 

@@ -8,6 +8,7 @@ import java.io.Serializable;
 public abstract class State implements Serializable {
    private Game game;
    private int phase;
+
    public State(Game game,int phase)
    {
        this.game = game;

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model;
 
 
-import it.polimi.ingsw.characterCards.CharacterCard;
+import it.polimi.ingsw.characterCards2.Character1;
+import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.command.Command;
+import it.polimi.ingsw.command.UseCharacterCommand;
 import it.polimi.ingsw.state.PlanningState;
 import it.polimi.ingsw.state.State;
 
@@ -19,6 +21,7 @@ public class Game implements Serializable {
     private ArrayList<Command> commands = new ArrayList<>();
     private State gameState;
     private ArrayList<Player> turnList  = new ArrayList<Player>();
+    private UseCharacterCommand usedCharacter = null;
 
     //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
@@ -95,9 +98,22 @@ public class Game implements Serializable {
 
                 if(n_Player == 2 && expertMode)
                 {
-                    /**
-                     * TODO
-                     * */
+                    for(int i = 0; i < n_Player; i++)
+                    {
+                        Cloud cloud = new Cloud();
+                        cloud.setCloud(3);
+                        clouds.add(cloud);
+                    }
+                    characterCards.add(new Character1(table.getBag().draw(4)) );
+                    characterCards.add(new Character1(table.getBag().draw(4)) );
+                    characterCards.add(new Character1(table.getBag().draw(4)) );
+                    this.table.tableInit(clouds,characterCards);
+                    for(int i = 0; i< players.size(); i++)
+                    {
+                        Player p =   this.players.get(i);
+                        p.getPb().setWaitingRoom(table.getBag().draw(7));
+                        p.setWallet(new Wallet());
+                    }
                 }
                 if(n_Player == 3 &&expertMode)
                 {
@@ -229,6 +245,14 @@ public class Game implements Serializable {
 
     public void setGameState(State gameState) {
         this.gameState = gameState;
+    }
+
+    public UseCharacterCommand getUsedCharacter() {
+        return usedCharacter;
+    }
+
+    public void setUsedCharacter(UseCharacterCommand usedCharacter) {
+        this.usedCharacter = usedCharacter;
     }
 }
 

@@ -40,11 +40,6 @@ public class Island implements Serializable {
             this.students[i] = this.students[i] + students[i];
     }
 
-    public void putStudent(int student)
-    {
-        this.students[student]++;
-    }
-
     public boolean getMotherNature(){
         return this.mother_nature;
     } // secondo me non serve

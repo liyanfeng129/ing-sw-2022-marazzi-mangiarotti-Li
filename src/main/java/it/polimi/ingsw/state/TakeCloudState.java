@@ -42,7 +42,20 @@ public class TakeCloudState extends State implements Serializable {
                     if (getGame().getPlayers().get(0).getHand().getN_cards()==0)
                         getGame().changeGameState(new EndGameState(getGame(),getPhase()));
                     else
+                    {
                         getGame().changeGameState(new PlanningState(getGame(), 0));
+                        /*
+                         * if someone used a character card in previous turn
+                         * undo the temporary effect caused by the card
+                         * reset the card
+                         * */
+                        if(getGame().getUsedCharacter() != null)
+                        {
+                            getGame().getUsedCharacter().undo(getGame());
+                            getGame().setUsedCharacter(null);
+                        }
+                    }
+
                 }
                 catch (InnerExceptions.NotEnoughStudentsInBagException e)
                 {
@@ -65,7 +78,7 @@ public class TakeCloudState extends State implements Serializable {
             boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
             return new SelectCloudCommand(cliClient,getGame(),userName);
         }
-        throw new InnerExceptions.PlanningSteteError("cannot generate command.");
+        throw new InnerExceptions.PlanningStateError("cannot generate command.");
     }
     public boolean isCan() {
         return can;

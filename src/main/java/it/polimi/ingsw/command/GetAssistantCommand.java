@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GetAssistantCommand extends Command implements Serializable {
-    ArrayList<Assistant> assistants ; // pre_execute
-    ArrayList<Assistant> playedCard;
+    private ArrayList<Assistant> assistants ; // pre_execute
+    private ArrayList<Assistant> playedCard;
     Assistant assistant; // post_execute
     public GetAssistantCommand(ArrayList<Assistant> assistants,ArrayList<Assistant> playedCard,boolean isCliClient,Game game, String username)
     {
@@ -20,30 +20,32 @@ public class GetAssistantCommand extends Command implements Serializable {
     }
 
     @Override
-    public void undo() {
+    public void undo(Game game) {
 
     }
 
     public void getData() {
-        int choice;
-        do
+        if(isCliClient())
         {
-            System.out.println("Please select a assistant, choose from your hand");
-            new Cli().show_Assistants(assistants);
-            choice = new Scanner(System.in).nextInt();
-            if(choice >= 1 && choice <= assistants.size())
-                for(Assistant as : playedCard)
-                    if( as.getNum() == assistants.get(choice - 1).getNum())
-                    {
-                        System.out.println("\nCard already played, please play another one.\n");
-                        choice = -1;
-                    }
+            int choice;
+            do
+            {
+                System.out.println("Please select a assistant, choose from your hand");
+                new Cli().show_Assistants(assistants);
+                choice = new Scanner(System.in).nextInt();
+                if(choice >= 1 && choice <= assistants.size())
+                    for(Assistant as : playedCard)
+                        if( as.getNum() == assistants.get(choice - 1).getNum())
+                        {
+                            System.out.println("\nCard already played, please play another one.\n");
+                            choice = -1;
+                        }
+            }
+            while(choice<1 || choice > assistants.size());
+
+            assistant = assistants.get(choice-1);
+            setDataGathered(true);
         }
-        while(choice<1 || choice > assistants.size());
-
-        assistant = assistants.get(choice-1);
-        setDataGathered(true);
-
     }
 
     @Override

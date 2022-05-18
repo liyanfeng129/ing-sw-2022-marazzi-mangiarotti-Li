@@ -30,7 +30,7 @@ public class Character5 implements CharacterBehavior{
             this.firstUse = true;
         }
         int pos=game.getTable().getIslands().indexOf(island);
-        game.getTable().getIslands(pos).setNoEntryTiles(true);
+        game.getTable().getIsland(pos).setNoEntryTiles(true);
         NoEntryTiles--;
         //bisogna aggiungere che se ce questa carta non si calcola influenza e merge
     }
