@@ -36,12 +36,13 @@ public class EndGameState extends State implements Serializable {
         int maxNumOfTower=0;
         int max3=0;
         if(!canChangeState()) {
-            //calcolo vincitore
+            //calcolo vincitore se player finisce torri
             for (int i=0;i<getGame().getN_Player();i++) {
                 if (getGame().getTurnList().get(i).getPlayerBoard().getN_tower() == 0) {
                     winners.add(getGame().getPlayers().get(i).getName());
                 }
             }
+            //caso nessuno finisce torri,controllo chi ne ha di piu
             if (winners.size()==0){
                 for(int i=0;i<getGame().getTable().getIslands().size();i++){
                     for (int j=0;j<getGame().getN_Player();j++){
@@ -57,25 +58,28 @@ public class EndGameState extends State implements Serializable {
                     if(players[i]==maxNumOfTower)
                         winners.add(getGame().getPlayers().get(i).getName());
                 }
-                //stand by se ci sono piu giocatori con la stessa torre
-/*
+                //caso piu giocatori con stesso numero torre
                 for(int i=0;i<winners.size();i++){
-                    if(winners.get(i).getMage()==getGame().getProfessors().getList_professors()[0])
+                    if(getGame().findPlayerByName(winners.get(i)).getMage()==getGame().getProfessors().getList_professors()[0])
                         max_n_professor[i]++;
-                    if(winners.get(i).getMage()==getGame().getProfessors().getList_professors()[1])
+                    if(getGame().findPlayerByName(winners.get(i)).getMage()==getGame().getProfessors().getList_professors()[1])
                         max_n_professor[i]++;
-                    if(winners.get(i).getMage()==getGame().getProfessors().getList_professors()[2])
+                    if(getGame().findPlayerByName(winners.get(i)).getMage()==getGame().getProfessors().getList_professors()[2])
                         max_n_professor[i]++;
-                    if(winners.get(i).getMage()==getGame().getProfessors().getList_professors()[3])
+                    if(getGame().findPlayerByName(winners.get(i)).getMage()==getGame().getProfessors().getList_professors()[3])
                         max_n_professor[i]++;
-                    if(winners.get(i).getMage()==getGame().getProfessors().getList_professors()[4])
+                    if(getGame().findPlayerByName(winners.get(i)).getMage()==getGame().getProfessors().getList_professors()[4])
                         max_n_professor[i]++;
                 }
-                List<Integer> max1=Arrays.asList(max_n_professor);
-                int max2=max1.indexOf(Collections.max(max1));
-                */
+                List<Integer> max_number=Arrays.asList(max_n_professor);
+                int max_prof=max_number.indexOf(Collections.max(max_number));
+
+                for(int i=0;i<winners.size();i++){
+                    if(max_n_professor[i]<max_prof)
+                        winners.remove(i);
+                }
+
             }
-//devo controllare caso parita numero di torri
             boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
             return new EndGameCommand(cliClient,getGame(),"endgame",winners);
         }
