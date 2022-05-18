@@ -19,7 +19,7 @@ public abstract class Command implements Serializable {
         dataGathered = false;
         msg = "";
     }
-    public abstract void undo() throws EriantysExceptions;
+    public abstract void undo(Game game) throws EriantysExceptions;
     public abstract void  getData() throws EriantysExceptions;
     public abstract boolean execute(Game game) throws EriantysExceptions;
     public boolean isDataGathered() {

@@ -16,12 +16,12 @@ class WalletTest {
     }
     @Test
     public void test_getWallet(){
-        assertEquals(3, wallet.getWallet());
+        assertEquals(3, wallet.getSaving());
     }
     @Test
     public void test_addCoin(){
         wallet.addCoin(2);
-        assertEquals(5, wallet.getWallet());
+        assertEquals(5, wallet.getSaving());
     }
     @Test
     public void test_removeCoin() throws EriantysExceptions {
@@ -30,7 +30,7 @@ class WalletTest {
         } catch (InnerExceptions.NegativeValue e) {
             e.printStackTrace();
         }
-        assertEquals(1, wallet.getWallet());
+        assertEquals(1, wallet.getSaving());
     }
     @Test
     public void test_removeCoin_NegativeValue_exception(){

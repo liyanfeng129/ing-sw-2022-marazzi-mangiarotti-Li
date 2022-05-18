@@ -67,7 +67,7 @@ public class Bag implements Serializable {
      *  if there aren't n students in bag for extraction
      * */
 
-    public int[] draw(int n) throws EriantysExceptions
+    public synchronized int[] draw(int n) throws EriantysExceptions
     {
         int drawn_students[] = {0,0,0,0,0};
         if (IntStream.of(this.students).sum() < n)

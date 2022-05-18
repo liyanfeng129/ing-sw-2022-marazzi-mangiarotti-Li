@@ -11,7 +11,7 @@ public class PlanningState extends State implements Serializable {
     // means that we already executed all commands needed in this state
     ArrayList<Assistant> cards = new ArrayList<>();
     int numPlayers;
-    public PlanningState(Game game, int phase) {
+    public PlanningState(Game game, int phase) throws EriantysExceptions {
         super(game,phase);
         numPlayers = game.getN_Player();
     }
@@ -33,10 +33,6 @@ public class PlanningState extends State implements Serializable {
 
         if(canChangeState())
         {
-            /**
-             * TODO
-             * implement necessary things before change game state
-             * */
             setActivePlayer();
             getGame().changeGameState(new ActionState(getGame(), 0));
         }
@@ -53,7 +49,7 @@ public class PlanningState extends State implements Serializable {
             boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
             return new GetAssistantCommand(hand,cards,cliClient,getGame(),userName);
         }
-        throw new InnerExceptions.PlanningSteteError("cannot generate command.");
+        throw new InnerExceptions.PlanningStateError("cannot generate command.");
     }
 
     public void addCard(Assistant assistant)

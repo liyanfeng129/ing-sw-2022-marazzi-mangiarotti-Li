@@ -2,7 +2,6 @@ package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.command.EndGameCommand;
-import it.polimi.ingsw.command.SelectCloudCommand;
 import it.polimi.ingsw.model.*;
 
 import java.io.Serializable;
@@ -83,6 +82,6 @@ public class EndGameState extends State implements Serializable {
             boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
             return new EndGameCommand(cliClient,getGame(),"endgame",winners);
         }
-        throw new InnerExceptions.PlanningSteteError("cannot generate command.");
+        throw new InnerExceptions.PlanningStateError("cannot generate command.");
     }
 }

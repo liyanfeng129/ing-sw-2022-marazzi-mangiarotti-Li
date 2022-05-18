@@ -81,9 +81,22 @@ public class InnerExceptions {
             super(msg);
         }
     }
-    public static class PlanningSteteError extends EriantysExceptions
+    public static class PlanningStateError extends EriantysExceptions
     {
-        public PlanningSteteError(String msg) {
+        public PlanningStateError(String msg) {
+            super(msg);
+        }
+    }
+
+    public static class ActionStateError extends EriantysExceptions
+    {
+        public ActionStateError(String msg) {
+            super(msg);
+        }
+    }
+    public static class CharacterCardError extends EriantysExceptions
+    {
+        public CharacterCardError(String msg) {
             super(msg);
         }
     }

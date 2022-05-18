@@ -1,5 +1,6 @@
 package it.polimi.ingsw.command;
 
+import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -15,61 +16,108 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
     private int island_pos;
     private int[] waitingRoom;
     private boolean moveToIsland;
+    private boolean characterCardUsed;
+    private boolean characterCardExecuted;
+    private int characterIndex = -1;
 
 
     // state
-    public MoveStudentFromWaitingRoomCommand(int[] waitingRoom, boolean isCliClient, Game game, String username) {
+    public MoveStudentFromWaitingRoomCommand(int[] waitingRoom, boolean isCliClient, Game game, String username,boolean characterCardUsed,boolean characterCardExecuted) {
         super(isCliClient, game, username);
         this.waitingRoom = waitingRoom;
+        this.characterCardUsed = characterCardUsed;
+        this.characterCardExecuted = characterCardExecuted;
     }
 
 
     @Override
-    public void undo() {
+    public void undo(Game game) {
 
     }
 
     public void getData() {
         if (!isDataGathered()) {
             if (isCliClient()) {
-                int choice;
-
-                do {
-                    System.out.println("Which student do you want to move, make sure that you have this student in your waiting room.");
-                    System.out.println("1: Red");
-                    System.out.println("2: Yellow");
-                    System.out.println("3: Pink");
-                    System.out.println("4: Blue");
-                    System.out.println("5: Green");
-                    choice = new Scanner(System.in).nextInt() - 1;
-                }
-                while (waitingRoom[choice] == 0);
-                student = choice;
-
-                do {
-                    System.out.println("Select where do you want to move the student.");
-                    System.out.println("1: to an island");
-                    System.out.println("2: to your student holder");
-                    choice = new Scanner(System.in).nextInt();
-                }
-                while (!(choice == 1 || choice == 2));
-                moveToIsland = (choice == 1) ? true : false;
-                if (moveToIsland) {
-                    int islands_size = getGame().getTable().getIslands().size();
-                    do {
-                        System.out.println(String.format("Select one island from 1 to %d ", islands_size));
-                        choice = new Scanner(System.in).nextInt();
+                if(getGame().isExpertMode() && !characterCardUsed)
+                {
+                    System.out.println("Digit 10 if you want to use a character");
+                    if(new Scanner(System.in).nextInt() == 10)
+                    {
+                        /*
+                        which character do you want to use
+                        get this character
+                        * */
+                        Cli c = new Cli();
+                       for(CharacterCard card : getGame().getTable().getCharacters())
+                           c.show_character(card);
+                       while(characterIndex<0|| characterIndex>2 )
+                       {
+                           System.out.println("Choose form 1 to 3");
+                           characterIndex = new Scanner(System.in).nextInt()-1;
+                       }
+                        characterCardUsed = true;
                     }
-                    while (choice < 1 || choice > islands_size);
-                    island_pos = choice - 1;
+                    else
+                        getDataForMoveStudent();
+                }
+                else
+                {
+                    getDataForMoveStudent();
                 }
             }
         }
         setDataGathered(true);
     }
 
+    private void getDataForMoveStudent()
+    {
+        int choice;
+
+        do {
+            System.out.println("Which student do you want to move, make sure that you have this student in your waiting room.");
+            System.out.println("1: Red");
+            System.out.println("2: Yellow");
+            System.out.println("3: Pink");
+            System.out.println("4: Blue");
+            System.out.println("5: Green");
+            choice = new Scanner(System.in).nextInt() - 1;
+        }
+        while (waitingRoom[choice] == 0);
+        student = choice;
+
+        do {
+            System.out.println("Select where do you want to move the student.");
+            System.out.println("1: to an island");
+            System.out.println("2: to your student holder");
+            choice = new Scanner(System.in).nextInt();
+        }
+        while (!(choice == 1 || choice == 2));
+        moveToIsland = (choice == 1) ? true : false;
+        if (moveToIsland) {
+            int islands_size = getGame().getTable().getIslands().size();
+            do {
+                System.out.println(String.format("Select one island from 1 to %d ", islands_size));
+                choice = new Scanner(System.in).nextInt();
+            }
+            while (choice < 1 || choice > islands_size);
+            island_pos = choice - 1;
+        }
+    }
+
     @Override
     public boolean execute(Game game) throws EriantysExceptions {
+        if(!characterCardUsed || characterCardExecuted)
+            return normalExecute(game);
+        else
+            if(game.getGameState() instanceof ActionState)
+            {
+                ((ActionState)game.getGameState()).setCharacterCardUsed(characterCardUsed);
+                ((ActionState)game.getGameState()).setCharacterIndex(characterIndex);
+            }
+        return true;
+    }
+
+    private boolean normalExecute(Game game) throws EriantysExceptions {
         if(game.getGameState() instanceof ActionState)
         {
             Player p = game.findPlayerByName(getUsername());
@@ -107,8 +155,6 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                 return true;
             }
         }
-
         return false;
-
     }
 }

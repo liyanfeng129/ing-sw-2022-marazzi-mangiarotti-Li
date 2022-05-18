@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view;
 
 
-import it.polimi.ingsw.characterCards.*;
+import it.polimi.ingsw.characterCards2.*;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class Cli {
         show_table(game.getTable());
 
         System.out.println("------------------------------------------------");
-        show_character_on_table(game);
+        //show_character_on_table(game);
         System.out.println("------------------------------------------------");
 
         for(int i=0; i<game.getN_Player();i++){
@@ -205,7 +205,7 @@ public class Cli {
 
     }
     public void show_character(CharacterCard character){
-        System.out.println("qui ci saranno i characters");
+        System.out.println(character.toString());
     }
 
     public void show_player(Player player,Game game){
@@ -213,7 +213,7 @@ public class Cli {
         System.out.println("Player Mage: "+ player.getMage());
         System.out.println("Tower Color : "+ player.getTowerColor());
         if(player.getWallet()!=null)
-            System.out.println("Wallet: "+ player.getWallet().getWallet());
+            System.out.println("Wallet: "+ player.getWallet().getSaving());
         show_playerboard(player.getPlayerBoard(),game,player);
 
 
@@ -260,7 +260,7 @@ public class Cli {
 
 
 
-
+/*
     public void show_character_on_table(Game game) throws EriantysExceptions {
         if (game.isExpertMode()){
             int num;
@@ -270,7 +270,7 @@ public class Cli {
             }
         }
     }
-
+*/
 
 
     public void show_character(int num, ArrayList<Object> info){

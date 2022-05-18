@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Character3 implements CharacterBehavior, Serializable {
     private int coin;
@@ -28,17 +27,17 @@ public class Character3 implements CharacterBehavior, Serializable {
             this.firstUse = true;
         }
         int MN_prec=game.getTable().getMotherNatureIndex();
-        game.getTable().getIslands(MN_prec).setMotherNature(false);
+        game.getTable().getIsland(MN_prec).setMotherNature(false);
         int MN_temp=game.getTable().getIslands().indexOf(island);
-        game.getTable().getIslands(MN_temp).setMotherNature(true);
+        game.getTable().getIsland(MN_temp).setMotherNature(true);
         for (int i = 0; i < game.getN_Player(); i++) {
             if (game.getTable().getPlayerMaxInfluence(game) == game.getPlayers().get(i))
-                game.getTable().getIslands(game.getTable().getMotherNatureIndex()).setTower(game.getPlayers().get(i).getTowerColor());
+                game.getTable().getIsland(game.getTable().getMotherNatureIndex()).setTower(game.getPlayers().get(i).getTowerColor());
         }
         game.getTable().mergeIsland();
         //dove si sposta madre natura in caso di merge?
-        game.getTable().getIslands(MN_temp).setMotherNature(false);
-        game.getTable().getIslands(MN_prec).setMotherNature(true);
+        game.getTable().getIsland(MN_temp).setMotherNature(false);
+        game.getTable().getIsland(MN_prec).setMotherNature(true);
     }
 
     @Override
