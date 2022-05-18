@@ -35,9 +35,6 @@ public class EndGameState extends State implements Serializable {
         Integer [] max_n_professor = new Integer[getGame().getN_Player()];
         int maxNumOfTower=0;
         int max3=0;
-        TowerColor color_p1=getGame().getPlayers().get(0).getTowerColor();
-        TowerColor color_p2=getGame().getPlayers().get(1).getTowerColor();
-        TowerColor color_p3=getGame().getPlayers().get(2).getTowerColor();
         if(!canChangeState()) {
             //calcolo vincitore
             for (int i=0;i<getGame().getN_Player();i++) {

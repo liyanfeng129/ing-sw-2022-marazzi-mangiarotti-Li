@@ -320,7 +320,7 @@ public class EriantysClientHandler extends Thread{
     private String createExpertGameFor2(String userName, boolean cliClient) throws EriantysExceptions {
         Game game = new Game(2, true, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,true,cliClient));
         games.add(game);
-        return Config.CREATE_EXPERT_GAME_FOR_2;
+        return Config.CREATE_EXPERT_GAME_FOR_2_SUC;
     }
 
     private synchronized ArrayList<Game> showGames()

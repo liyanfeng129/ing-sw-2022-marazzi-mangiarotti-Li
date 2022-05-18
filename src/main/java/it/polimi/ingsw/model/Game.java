@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.characterCards.*;
+import it.polimi.ingsw.characterCards.Character2;
+import it.polimi.ingsw.characterCards.Character3;
 import it.polimi.ingsw.characterCards.CharacterCard;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.state.PlanningState;
@@ -94,11 +97,25 @@ public class Game implements Serializable {
             throw new InnerExceptions.GameStartingError("The number of player is incorrect.");
 
                 if(n_Player == 2 && expertMode)
-                {
-                    /**
-                     * TODO
-                     * */
-                }
+                    {
+                        characterCards.add(new CharacterCard(new Character1(this)));
+                        characterCards.add(new CharacterCard(new Character2(this)));
+                        characterCards.add(new CharacterCard(new Character3(this)));
+                        for(int i = 0; i < n_Player; i++)
+                        {
+                            Cloud cloud = new Cloud();
+                            cloud.setCloud(3);
+                            clouds.add(cloud);
+                        }
+                        this.table.tableInit(clouds,characterCards);
+                        for(int i = 0; i< players.size(); i++) {
+                            this.players.get(i).getPb().setWaitingRoom(table.getBag().draw(7));
+                            Wallet wallet=new Wallet();
+                            this.players.get(i).setWallet(wallet);
+
+                        }
+
+                    }
                 if(n_Player == 3 &&expertMode)
                 {
                     /**

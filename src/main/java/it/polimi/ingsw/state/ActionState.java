@@ -39,13 +39,6 @@ public class ActionState extends State implements Serializable {
             if(!onIsland )
             {
                 getGame().getProfessors().assignProfessor(getGame().getPlayers());
-                if(expertMode)
-                {
-                    /**TODO
-                     * Ass
-                     * wallet, coin
-                     * */
-                }
             }
         }
         if(canChangeState())

@@ -33,7 +33,7 @@ public class Hand implements Serializable {
     }
 
     //non ci drovebbe essere un exception?
-    public void use_cards(AssistantType assistant) {
+    public synchronized void use_cards(AssistantType assistant) {
         N_cards = N_cards-1;
         for (int i=0;i<N_cards;i++){
             if(getList_cards().get(i).getType() == assistant){

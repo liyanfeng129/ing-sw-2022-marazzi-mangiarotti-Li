@@ -2,9 +2,10 @@ package it.polimi.ingsw.characterCards;
 
 import it.polimi.ingsw.model.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Character1 implements CharacterBehavior{
+public class Character1 implements CharacterBehavior, Serializable {
     private int coin;
     private String msg;
     private boolean firstUse;
