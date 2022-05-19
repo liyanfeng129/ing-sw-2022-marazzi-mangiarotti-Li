@@ -34,12 +34,13 @@ public class Hand implements Serializable {
 
     //non ci drovebbe essere un exception?
     public synchronized void use_cards(AssistantType assistant) {
-        N_cards = N_cards-1;
-        for (int i=0;i<N_cards;i++){
-            if(getList_cards().get(i).getType() == assistant){
+        for (int i=0;i<N_cards;i++)
+            if(List_cards.get(i).getType() == assistant)
+            {
                 List_cards.remove(i);
+                i = N_cards+1; // break the for circle
             }
-        }
+        N_cards = List_cards.size();
     }
 
     public int getLastPlayedCard() {
