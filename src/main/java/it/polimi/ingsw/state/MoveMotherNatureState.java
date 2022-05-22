@@ -1,5 +1,6 @@
 package it.polimi.ingsw.state;
 
+import it.polimi.ingsw.characterCards2.Character5;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.command.MoveMotherNatureCommand;
 import it.polimi.ingsw.model.EriantysExceptions;
@@ -34,19 +35,28 @@ public class MoveMotherNatureState extends State implements Serializable {
     public void executeCommand() throws EriantysExceptions {
         if(getGame().getLastCommand().execute(getGame()));
         {
-            Player player=getGame().getTable().getPlayerMaxInfluence(getGame());
-            //condizione endGame finite torri in pb
-            if (player!=null){
-                for (int i=0;i<getGame().getN_Player();i++){
-                    if(getGame().getTurnList().get(i).getPlayerBoard().getN_tower()==0){
+            int MN_pos=getGame().getTable().getMotherNatureIndex();
+            if(!getGame().getTable().getIsland(MN_pos).isNoEntryTiles()) {
+                Player player = getGame().getTable().getPlayerMaxInfluence(getGame());
+                //condizione endGame finite torri in pb
+                if (player != null) {
+                    for (int i = 0; i < getGame().getN_Player(); i++) {
+                        if (getGame().getTurnList().get(i).getPlayerBoard().getN_tower() == 0) {
+                            setGameEnded(true);
+                            //devo passargli anche chi ha vinto?
+                        }
+                    }
+                    getGame().getTable().mergeIsland();
+                    if (getGame().getTable().getIslands().size() <= 3) {
                         setGameEnded(true);
-                        //devo passargli anche chi ha vinto?
                     }
                 }
-                getGame().getTable().mergeIsland();
-                if (getGame().getTable().getIslands().size()<=3){
-                    setGameEnded(true);
-                }
+            }
+            else{
+                getGame().getTable().getIsland(MN_pos).setNoEntryTiles(false);
+                //devo aggiungere la no entrytiles alla carta 5
+                Character5 card5 = (Character5) getGame().getTable().findCharacterCardByName("Character5");
+                card5.takeEntryTile();
             }
             setCan(true);
             /**

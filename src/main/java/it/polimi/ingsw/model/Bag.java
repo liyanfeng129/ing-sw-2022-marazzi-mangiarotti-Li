@@ -136,6 +136,9 @@ public class Bag implements Serializable {
         }
         return drawn_students;
     }
+    public void addStudentToBag(int color){
+        students[color]++;
+    }
 
     @Override
     protected Bag clone() throws CloneNotSupportedException {

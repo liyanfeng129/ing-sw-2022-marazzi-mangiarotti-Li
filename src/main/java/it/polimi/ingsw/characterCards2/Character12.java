@@ -1,0 +1,99 @@
+package it.polimi.ingsw.characterCards2;
+
+import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.view.Cli;
+
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Character12 extends CharacterCard implements Serializable {
+    int student_color = -1;
+    public Character12() {
+        super();
+        setCoin(3);
+        String msg = "Choose a type of Student: every player\n" +
+                "(including yourself) must return 3 Students of that type\n" +
+                "from their Dining Room to the bag. If any player has\n" +
+                "fewer than 3 Students of that type, return as many\n" +
+                "Students as they have.";
+        setMsg(msg);
+    }
+
+    @Override
+    public boolean useCard(Game game, Player player) throws EriantysExceptions {
+        if (!isDataGathered())
+            throw new InnerExceptions.CharacterCardError("Cannot apply character effect because the lack of information.");
+        Character12 card = (Character12) game.getTable().findCharacterCardByName(this.name());
+        Bag bag = game.getTable().getBag();
+
+        for (int i = 0; i < game.getN_Player(); i++) {
+            int DiningRoomStudents = game.getPlayers().get(i).getPlayerBoard().getDiningRoom()[student_color];
+            for (int j = 0; j < 3 && DiningRoomStudents > 0; j++) {
+                game.getPlayers().get(i).getPlayerBoard().takeStudentFromWaitingRoom(student_color);
+                bag.addStudentToBag(student_color);
+            }
+        }
+            game.getProfessors().assignProfessor(game.getPlayers());
+            player.getWallet().removeCoin(card.getCoin());
+            game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: student removed from dining room",
+                    player.getName(), this.name(), this.getCoin(), SType.values()[student_color].name()));
+            if (card.isFirstUse())
+                card.setFirstUse(false);
+            return true;
+        }
+
+    @Override
+    public boolean undoEffect(Game game, Player player) throws EriantysExceptions {
+        // this character has permanent effect on game, nothing has to be undone.
+        return true;
+    }
+
+    @Override
+    public boolean getData(Game game, boolean isCliClient) throws EriantysExceptions {
+        if(isCliClient)
+        {
+            int choice;
+                System.out.println("Which students color do you want to remove from dining room.");
+                System.out.println("1: Red");
+                System.out.println("2: Yellow");
+                System.out.println("3: Pink");
+                System.out.println("4: Blue");
+                System.out.println("5: Green");
+                choice = new Scanner(System.in).nextInt() - 1;
+            student_color = choice;
+            setDataGathered(true);
+            game.getLastCommand().setDataGathered(true);
+        }
+        else
+        {
+            /**TODO
+             * GUI get data
+             * */
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Character12{" +
+                "dataGathered=" + isDataGathered() +
+                ", student_color=" + student_color +
+                '}';
+    }
+
+    public String name()
+    {
+        return "Character12";
+    }
+    public int getStudent_color() {
+        return student_color;
+    }
+
+    public void setStudent_color(int student_color) {
+        this.student_color = student_color;
+    }
+
+}
+
