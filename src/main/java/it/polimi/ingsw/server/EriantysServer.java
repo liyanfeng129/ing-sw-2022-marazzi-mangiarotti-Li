@@ -22,6 +22,7 @@ public class EriantysServer {
         // TODO Auto-generated method stub
         try
         {
+            onServerClose();
             //Create socket server
             ServerSocket server = new ServerSocket(12345);
 
@@ -92,5 +93,51 @@ public class EriantysServer {
         }
     }
 
+    private static void Object2fileBin(String fileName, Object ob)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+        try
+        {
+            FileOutputStream f = new FileOutputStream(new File(absolutePathToProject+pathFromContentRoot+fileName));
+            ObjectOutputStream o = new ObjectOutputStream(f);
+
+            // Write objects to file
+            o.writeObject(ob);
+
+            o.close();
+            f.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+
+        }
+    }
+
+    private static void onServerClose() throws Exception{
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            public void run()
+            {
+                try
+                {
+                    for(Subscriber sub : subs)
+                    {
+                        System.out.println(String.format("closing %s's connection\n " +
+                                "ip address: %s      Port number: %d",sub.getUserName(), sub.getIpAddress(), sub.getPortNumber()));
+                        Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                        ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
+                        ArrayList<Object> msg = new ArrayList<>();
+                        msg.add(Config.GAME_OVER);
+                        oos.writeObject(msg);
+                    }
+                    logOutAll();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
 }
