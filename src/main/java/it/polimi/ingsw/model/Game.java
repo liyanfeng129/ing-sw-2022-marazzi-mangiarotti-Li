@@ -9,7 +9,10 @@ import it.polimi.ingsw.state.PlanningState;
 import it.polimi.ingsw.state.State;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Game implements Serializable {
     private ArrayList<Player> players = new ArrayList<Player>();
@@ -22,6 +25,7 @@ public class Game implements Serializable {
     private State gameState;
     private ArrayList<Player> turnList  = new ArrayList<Player>();
     private UseCharacterCommand usedCharacter = null;
+    private String gameStartingTime;
 
     //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
@@ -166,6 +170,8 @@ public class Game implements Serializable {
                 this.gameState = new PlanningState(this, 0);
                 this.turnList = players;
                 this.commands.add(this.gameState.generateCommand());
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                this.gameStartingTime = dateFormat.format(new Date());
     }
 
     public void setTable(Table table) {
@@ -254,5 +260,14 @@ public class Game implements Serializable {
     public void setUsedCharacter(UseCharacterCommand usedCharacter) {
         this.usedCharacter = usedCharacter;
     }
+
+    public String getGameStartingTime() {
+        return gameStartingTime;
+    }
+
+    public void setGameStartingTime(String gameStartingTime) {
+        this.gameStartingTime = gameStartingTime;
+    }
 }
+
 

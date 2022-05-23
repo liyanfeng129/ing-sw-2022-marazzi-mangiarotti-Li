@@ -25,26 +25,34 @@ public class UpdateReceiver extends Thread {
     private Socket update;
     private String userName;
     private String serverAddress;
+    private boolean receiverOn;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     public UpdateReceiver(int portNumber,String userName,String serverAddress)
     {
         this.portNumber = portNumber;
         this.userName = userName;
         this.serverAddress =serverAddress;
+        this.receiverOn = true;
     }
 
     public void run()
     {
         try {
             ServerSocket updateReceiver = new ServerSocket(portNumber);
-            while(true)
+            while(receiverOn)
             {
                 update = updateReceiver.accept();
                 oos = new ObjectOutputStream(update.getOutputStream());
                 ois=new ObjectInputStream(update.getInputStream());
                 ArrayList<Object> updates = (ArrayList<Object>) ois.readObject();
                 update.close();
-                updateReceived(updates);
+                if(updates.get(0).equals(Config.GAME_OVER))
+                {
+                    receiverOn = false;
+                    System.out.println("Game is closing.");
+                }
+                else
+                    updateReceived(updates);
             }
         } catch (IOException e) {
             e.printStackTrace();

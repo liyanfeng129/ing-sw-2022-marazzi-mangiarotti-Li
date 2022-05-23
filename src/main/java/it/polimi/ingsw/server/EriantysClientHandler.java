@@ -57,7 +57,6 @@ public class EriantysClientHandler extends Thread{
             String userName;
             String msg;
             boolean cliClient;
-            boolean hasACommand;
             System.out.println(dateFormat.format(new Date()));
             switch (request)
             {
