@@ -30,7 +30,8 @@ public class Character3 extends CharacterCard implements Serializable {
         if(!game.getTable().getIsland(island_pos).isNoEntryTiles()) {
             int MN_prec = game.getTable().getMotherNatureIndex();
             game.getTable().getIsland(MN_prec).setMotherNature(false);
-            int MN_temp = game.getTable().getIslands().indexOf(island_pos);
+            Island island=game.getTable().getIsland(island_pos);
+            int MN_temp = game.getTable().getIslands().indexOf(island);
             game.getTable().getIsland(MN_temp).setMotherNature(true);
             for (int i = 0; i < game.getN_Player(); i++) {
                 if (game.getTable().getPlayerMaxInfluence(game) == game.getPlayers().get(i))

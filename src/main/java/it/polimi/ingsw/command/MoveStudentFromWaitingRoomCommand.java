@@ -18,6 +18,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
     private boolean moveToIsland;
     private boolean characterCardUsed;
     private boolean characterCardExecuted;
+    private boolean endGame=false;
     private int characterIndex = -1;
 
 
@@ -69,38 +70,40 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
         setDataGathered(true);
     }
 
-    private void getDataForMoveStudent()
-    {
+    private void getDataForMoveStudent() {
         int choice;
-
-        do {
-            System.out.println("Which student do you want to move, make sure that you have this student in your waiting room.");
-            System.out.println("1: Red");
-            System.out.println("2: Yellow");
-            System.out.println("3: Pink");
-            System.out.println("4: Blue");
-            System.out.println("5: Green");
-            choice = new Scanner(System.in).nextInt() - 1;
-        }
-        while (waitingRoom[choice] == 0);
-        student = choice;
-
-        do {
-            System.out.println("Select where do you want to move the student.");
-            System.out.println("1: to an island");
-            System.out.println("2: to your student holder");
-            choice = new Scanner(System.in).nextInt();
-        }
-        while (!(choice == 1 || choice == 2));
-        moveToIsland = (choice == 1) ? true : false;
-        if (moveToIsland) {
-            int islands_size = getGame().getTable().getIslands().size();
+        if (waitingRoom.length == 0)
+            ((ActionState) getGame().getGameState()).setEndGame(true);
+        else {
             do {
-                System.out.println(String.format("Select one island from 1 to %d ", islands_size));
+                System.out.println("Which student do you want to move, make sure that you have this student in your waiting room.");
+                System.out.println("1: Red");
+                System.out.println("2: Yellow");
+                System.out.println("3: Pink");
+                System.out.println("4: Blue");
+                System.out.println("5: Green");
+                choice = new Scanner(System.in).nextInt() - 1;
+            }
+            while (waitingRoom[choice] == 0);
+            student = choice;
+
+            do {
+                System.out.println("Select where do you want to move the student.");
+                System.out.println("1: to an island");
+                System.out.println("2: to your student holder");
                 choice = new Scanner(System.in).nextInt();
             }
-            while (choice < 1 || choice > islands_size);
-            island_pos = choice - 1;
+            while (!(choice == 1 || choice == 2));
+            moveToIsland = (choice == 1) ? true : false;
+            if (moveToIsland) {
+                int islands_size = getGame().getTable().getIslands().size();
+                do {
+                    System.out.println(String.format("Select one island from 1 to %d ", islands_size));
+                    choice = new Scanner(System.in).nextInt();
+                }
+                while (choice < 1 || choice > islands_size);
+                island_pos = choice - 1;
+            }
         }
     }
 

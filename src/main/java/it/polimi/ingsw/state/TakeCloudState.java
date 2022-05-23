@@ -59,7 +59,7 @@ public class TakeCloudState extends State implements Serializable {
                 }
                 catch (InnerExceptions.NotEnoughStudentsInBagException e)
                 {
-                    getGame().changeGameState(new EndGameState(getGame(),0));
+                    getGame().changeGameState(new PlanningState(getGame(),0));
                 }
 
             }
