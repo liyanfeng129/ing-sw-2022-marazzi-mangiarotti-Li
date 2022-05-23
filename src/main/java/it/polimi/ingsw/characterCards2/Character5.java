@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Character5 extends CharacterCard implements Serializable {
     int island_pos = -1;
     int no_entry_tile;
-    public Character5(int [] students) {
+    public Character5() {
         super();
         setCoin(2);
         String msg = "Place a No Entry tile on an Island of your choice.\n" +

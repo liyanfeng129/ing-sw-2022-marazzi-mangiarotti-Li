@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model;
 
 
-import it.polimi.ingsw.characterCards2.Character1;
-import it.polimi.ingsw.characterCards2.CharacterCard;
+import it.polimi.ingsw.characterCards2.*;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.command.UseCharacterCommand;
 import it.polimi.ingsw.state.PlanningState;
@@ -109,8 +108,16 @@ public class Game implements Serializable {
                         clouds.add(cloud);
                     }
                     characterCards.add(new Character1(table.getBag().draw(4)) );
-                    characterCards.add(new Character1(table.getBag().draw(4)) );
-                    characterCards.add(new Character1(table.getBag().draw(4)) );
+                    characterCards.add(new Character2());
+                    characterCards.add(new Character3());
+                    characterCards.add(new Character4());
+                    characterCards.add(new Character5());
+                    characterCards.add(new Character6());
+                    characterCards.add(new Character8());
+                    characterCards.add(new Character9());
+                    characterCards.add(new Character11(table.getBag().draw(4)));
+                    characterCards.add(new Character12());
+
                     this.table.tableInit(clouds,characterCards);
                     for(int i = 0; i< players.size(); i++)
                     {
