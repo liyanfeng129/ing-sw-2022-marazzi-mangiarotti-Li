@@ -134,6 +134,26 @@ public class PlayerBoard implements Serializable {
         return maxStudentsInWaiting;
     }
 
+    public void removeStudentFromWaitingRoom(int students[]){
+        for(int i = 0; i < 5; i++)
+            this.waitingRoom[i] -= students[i];
+    }
+
+    public void removeStudentFromDiningRoom(int students[]){
+        for(int i = 0; i < 5; i++)
+            this.diningRoom[i] -= students[i];
+    }
+
+    public void addStudentsToDiningRoom(int students[]){
+        for(int i = 0; i < 5; i++)
+            this.diningRoom[i] += students[i];
+    }
+
+    public void addStudentsToWaitingRoom(int students[]){
+        for(int i = 0; i < 5; i++)
+            this.waitingRoom[i] += students[i];
+    }
+
     public void setMaxStudentsInWaiting(int maxStudentsInWaiting) {
         this.maxStudentsInWaiting = maxStudentsInWaiting;
     }
