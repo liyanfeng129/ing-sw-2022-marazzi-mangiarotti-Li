@@ -26,7 +26,7 @@ public class Character4 extends CharacterCard implements Serializable {
         player.getWallet().removeCoin(card.getCoin());
         int max_steps = player.getHand().getLastPlayedCard();
         player.getHand().setLastPlayedCard(max_steps + 2);
-        game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: one %s student has been moved to island %d",
+        game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: you have 2 extra steps",
                 player.getName(), this.name(), this.getCoin()));
         if (card.isFirstUse())
             card.setFirstUse(false);

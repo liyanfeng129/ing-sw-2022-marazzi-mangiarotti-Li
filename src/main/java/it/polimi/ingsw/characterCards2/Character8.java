@@ -24,7 +24,7 @@ public class Character8 extends CharacterCard implements Serializable {
         Character8 card = (Character8) game.getTable().findCharacterCardByName(this.name());
         game.getTable().setCard8(player.getName());
         player.getWallet().removeCoin(card.getCoin());
-        game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: one %s student has been moved to island %d",
+        game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: this player has 2 more influence this turn",
                 player.getName(),this.name(), this.getCoin()));
         if(card.isFirstUse())
             card.setFirstUse(false);
