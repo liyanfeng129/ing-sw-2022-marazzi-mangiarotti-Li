@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Character10 extends CharacterCard implements Serializable {
-    private int dining_students[]= {0,0,0,0,0,0};
-    private int entrance_student[]={0,0,0,0,0,0};
+    private int dining_students[]= {0,0,0,0,0};
+    private int entrance_student[]={0,0,0,0,0};
     int take_student=0;
     public Character10() {
         super();

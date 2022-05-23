@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 public class Character7 extends CharacterCard implements Serializable {
     private int card_students[] = new int[5];
-    private int students[]= {0,0,0,0,0,0};
-    private int entrance_student[]={0,0,0,0,0,0};
+    private int students[]= {0,0,0,0,0};
+    private int entrance_student[]={0,0,0,0,0};
     int take_student=0;
     public Character7(int [] students) {
         super();
