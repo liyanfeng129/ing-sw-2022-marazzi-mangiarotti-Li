@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Character5 extends CharacterCard implements Serializable {
     int island_pos = -1;
     int no_entry_tile;
-    public Character5(int [] students) {
+    public Character5() {
         super();
         setCoin(2);
         String msg = "Place a No Entry tile on an Island of your choice.\n" +
@@ -36,7 +36,7 @@ public class Character5 extends CharacterCard implements Serializable {
             card.useEntyTile();
         }
 
-        game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: one no entry tile has been moved to island %d",
+        game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: one no entry tile has been placed to island %d",
                 player.getName(),this.name(), this.getCoin(), island_pos));
         if(card.isFirstUse())
             card.setFirstUse(false);
