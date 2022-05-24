@@ -77,7 +77,7 @@ public class Character5 extends CharacterCard implements Serializable {
     public String toString() {
         return "Character5{" +
                 "dataGathered=" + isDataGathered() +
-                ", island_pos=" + island_pos +
+                ", no entry tiles =" + no_entry_tile +
                 '}';
     }
 

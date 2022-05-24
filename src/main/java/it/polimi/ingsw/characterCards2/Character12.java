@@ -29,10 +29,14 @@ public class Character12 extends CharacterCard implements Serializable {
         Bag bag = game.getTable().getBag();
 
         for (int i = 0; i < game.getN_Player(); i++) {
-            int DiningRoomStudents = game.getPlayers().get(i).getPlayerBoard().getDiningRoom()[student_color];
-            for (int j = 0; j < 3 && DiningRoomStudents > 0; j++) {
-                game.getPlayers().get(i).getPlayerBoard().takeStudentFromWaitingRoom(student_color);
-                bag.addStudentToBag(student_color);
+            int j=0;
+            while (game.getPlayers().get(i).getPlayerBoard().getDiningRoom()[student_color]>0){
+                if(j==3)
+                    break;
+                else
+                    game.getPlayers().get(i).getPlayerBoard().takeStudentFromHolder(student_color);
+                    bag.addStudentToBag(student_color);
+                    j++;
             }
         }
             game.getProfessors().assignProfessor(game.getPlayers());

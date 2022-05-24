@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Character10 extends CharacterCard implements Serializable {
-    private int dining_students[]= {0,0,0,0,0};
-    private int entrance_student[]={0,0,0,0,0};
+    private int dining_students[];
+    private int entrance_student[];
     int take_student=0;
     public Character10() {
         super();
@@ -18,6 +18,8 @@ public class Character10 extends CharacterCard implements Serializable {
         String msg = "You may exchange up to 2 Students between\n" +
                 "your Entrance and your Dining Room.";
         setMsg(msg);
+        this.dining_students= new int[]{0,0,0,0,0};
+        this.entrance_student=new int[]{0,0,0,0,0};
     }
 
     @Override
@@ -47,24 +49,33 @@ public class Character10 extends CharacterCard implements Serializable {
     public boolean getData(Game game, boolean isCliClient) throws EriantysExceptions {
         if(isCliClient)
         {
+            int choice;
+            Player player=game.getTurnList().get(game.getGameState().getPhase());
             do {
                 System.out.println("Do you want to exchange a student? 1 Yes");
                 if(new Scanner(System.in).nextInt()==1){
-                    System.out.println("Which student do you want to exchange, make sure that you have this student in your waiting room");
-                    System.out.println("1: Red");
-                    System.out.println("2: Yellow");
-                    System.out.println("3: Pink");
-                    System.out.println("4: Blue");
-                    System.out.println("5: Green");
-                    entrance_student[new Scanner(System.in).nextInt() - 1]++;
+                    do {
+                        System.out.println("Which student do you want to exchange, make sure that you have this student in your waiting room");
+                        System.out.println("1: Red");
+                        System.out.println("2: Yellow");
+                        System.out.println("3: Pink");
+                        System.out.println("4: Blue");
+                        System.out.println("5: Green");
+                        choice = new Scanner(System.in).nextInt() - 1;
+                    }while (player.getPlayerBoard().getWaitingRoom()[choice]-entrance_student[choice] == 0);
+                    entrance_student[choice]++;
+                    do {
+                        System.out.println("Which student do you want to exchange, make sure that you have this student on your dining room");
+                        System.out.println("1: Red");
+                        System.out.println("2: Yellow");
+                        System.out.println("3: Pink");
+                        System.out.println("4: Blue");
+                        System.out.println("5: Green");
+                        choice = new Scanner(System.in).nextInt() - 1;
+
+                    }while (player.getPlayerBoard().getDiningRoom()[choice]-dining_students[choice] == 0);
+                    dining_students[choice]++;
                     take_student++;
-                    System.out.println("Which student do you want to exchange, make sure that you have this student on your dining room");
-                    System.out.println("1: Red");
-                    System.out.println("2: Yellow");
-                    System.out.println("3: Pink");
-                    System.out.println("4: Blue");
-                    System.out.println("5: Green");
-                    dining_students[new Scanner(System.in).nextInt() - 1]++;
                 }
                 else
                     break;
