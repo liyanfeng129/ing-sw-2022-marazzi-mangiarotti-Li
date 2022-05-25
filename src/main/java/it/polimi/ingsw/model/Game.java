@@ -111,16 +111,9 @@ public class Game implements Serializable {
                         cloud.setCloud(3);
                         clouds.add(cloud);
                     }
-                   // characterCards.add(new Character1(table.getBag().draw(4)) );
-                    characterCards.add(new Character2());
-                    characterCards.add(new Character3());
-                    characterCards.add(new Character4());
-                    //characterCards.add(new Character5());
-                   // characterCards.add(new Character6());
-                    //characterCards.add(new Character8());
-                    //characterCards.add(new Character9());
-                   //characterCards.add(new Character11(table.getBag().draw(4)));
-                    //characterCards.add(new Character12());
+                    characterCards.add(new Character7(table.getBag().draw(6)));
+                    characterCards.add(new Character11(table.getBag().draw(4)));
+                    characterCards.add(new Character12());
 
                     this.table.tableInit(clouds,characterCards);
                     for(int i = 0; i< players.size(); i++)
