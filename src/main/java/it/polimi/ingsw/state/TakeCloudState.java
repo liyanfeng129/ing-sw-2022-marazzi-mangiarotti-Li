@@ -31,7 +31,19 @@ public class TakeCloudState extends State implements Serializable {
     @Override
     public void executeCommand() throws EriantysExceptions {
         if(getGame().getLastCommand().execute(getGame()))
+        {
             setCan(true);
+            /*
+             * if someone used a character card in previous turn
+             * undo the temporary effect caused by the card
+             * reset the card
+             * */
+            if(getGame().getUsedCharacter() != null)
+            {
+                getGame().getUsedCharacter().undo(getGame());
+                getGame().setUsedCharacter(null);
+            }
+        }
         if(canChangeState())
         {
             if (getPhase()==getGame().getN_Player()-1)
@@ -42,19 +54,7 @@ public class TakeCloudState extends State implements Serializable {
                     if (getGame().getPlayers().get(0).getHand().getN_cards()==0)
                         getGame().changeGameState(new EndGameState(getGame(),getPhase()));
                     else
-                    {
                         getGame().changeGameState(new PlanningState(getGame(), 0));
-                        /*
-                         * if someone used a character card in previous turn
-                         * undo the temporary effect caused by the card
-                         * reset the card
-                         * */
-                        if(getGame().getUsedCharacter() != null)
-                        {
-                            getGame().getUsedCharacter().undo(getGame());
-                            getGame().setUsedCharacter(null);
-                        }
-                    }
 
                 }
                 catch (InnerExceptions.NotEnoughStudentsInBagException e)

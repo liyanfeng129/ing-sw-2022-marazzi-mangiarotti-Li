@@ -42,6 +42,7 @@ public class Character2 extends CharacterCard implements Serializable {
         for (int i = 0; i < 5; i++) {
             player.getPlayerBoard().takeStudentFromHolder(i);
         }
+        game.getProfessors().assignProfessor(game.getPlayers());
         return true;
     }
 

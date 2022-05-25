@@ -10,9 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 public class EriantysClientHandler extends Thread{
     BufferedReader in;
@@ -21,16 +19,18 @@ public class EriantysClientHandler extends Thread{
     ObjectInputStream ois;
     Socket client;
     ArrayList<Game> games;
+    ArrayList<Game> oldGames;
     Player player;
     ArrayList<Subscriber> subs;
     Game game;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     Date date = new Date();
-    public EriantysClientHandler(Socket client,ArrayList<Game> games, ArrayList<Subscriber> subs)
+    public EriantysClientHandler(Socket client,ArrayList<Game> games, ArrayList<Subscriber> subs,ArrayList<Game> oldGames)
     {
         this.client=client;
         this.games = games;
         this.subs = subs;
+        this.oldGames = oldGames;
 
     }
 
@@ -53,9 +53,11 @@ public class EriantysClientHandler extends Thread{
             ArrayList<Object> messages = (ArrayList<Object>) ois.readObject();
             ArrayList<Object> responses = new ArrayList<>();
             String request = (String) messages.get(0);
-            Game game;
+            Game game = null;
             String userName;
             String msg;
+            String gameStartedDate;
+            ArrayList<Game> allOldGames;
             boolean cliClient;
             System.out.println(dateFormat.format(new Date()));
             switch (request)
@@ -67,7 +69,12 @@ public class EriantysClientHandler extends Thread{
                         System.out.printf("%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());
                     }
                     oos.writeObject(responses);
-                break;
+                    break;
+                case "Test_all_game_status":
+                    responses.add(games);
+                    responses.add(oldGames);
+                    oos.writeObject(responses);
+                    break;
                 case Config.GET_NEWEST_GAME:
                     System.out.println(client+"tries to get a updated game");
                     userName = (String) messages.get(1);
@@ -75,6 +82,54 @@ public class EriantysClientHandler extends Thread{
                     responses.add(Config.GET_NEWEST_GAME_SUC);
                     responses.add(game);
                     oos.writeObject(responses);
+                    break;
+                case Config.RESUME_OLD_GAMES:
+                    System.out.println(client+"tries to resume old games");
+                    userName = (String) messages.get(1);
+                    allOldGames = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
+                    ArrayList<Game> yourGames = buildGamesInfoForAPLayer(allOldGames,userName);
+                    responses.add(Config.RESUME_OLD_GAMES_SUC);
+                    responses.add(yourGames);
+                    oos.writeObject(responses);
+                    break;
+                case Config.RELOAD_AN_OLD_GAME:
+                    System.out.println(client+"tries to reload an old game.");
+                    userName = (String) messages.get(1);
+                    gameStartedDate = (String) messages.get(2);
+                    allOldGames = buildGamesInfoForAPLayer((ArrayList<Game>) fileBin2Object("gameRecord.bin"),userName);
+                    for(Game g : allOldGames)
+                        if(g.getPlayers().get(0).getName().equals(userName) && g.getGameStartingTime().equals(gameStartedDate))
+                        {
+                            game = g;
+                            oldGames.add(g);
+                        }
+                    responses.add(Config.RELOAD_AN_OLD_GAME_SUC);
+                    responses.add(game);
+                    oos.writeObject(responses);
+
+                    break;
+                case Config.JOIN_RESUMABLE_GAME:
+                    System.out.println(client+"tries to join an old game");
+                    String room = (String) messages.get(1);
+                    userName = (String) messages.get(2);
+                    msg = joinAReasumaleGame(room, userName);
+                    if(msg.equals(Config.JOIN_RESUMABLE_GAME_SUC))
+                    {
+
+                        for(Game g : oldGames)
+                            for(Player p : g.getPlayers())
+                                if(p.getName().equals(userName))
+                                    game = g;
+                        responses.add(msg);
+                        responses.add(game);
+                        oos.writeObject(responses);
+                        gameUpdate(game);
+                    }
+                    else
+                    {
+                        responses.add(msg);
+                        oos.writeObject(responses);
+                    }
                     break;
                 case Config.CREATE_NORMAL_GAME_FOR_2:
                     System.out.println(client+"tries to create a normal game for two");
@@ -117,6 +172,18 @@ public class EriantysClientHandler extends Thread{
                     }
                     else
                         responses.add("No game created yet, you should create one.");
+                    oos.writeObject(responses);
+                    break;
+                case Config.SHOW_RESUMABLE_GAMES:
+                    System.out.println(client+"wants a list of old games");
+                    ArrayList<Game> oldGameList = new ArrayList<>();
+                    userName = (String) messages.get(1);
+                    for(Game g : oldGames)
+                        for(Player p : g.getTurnList())
+                            if(p.getName().equals(userName))
+                                oldGameList.add(g);
+                    responses.add(Config.SHOW_RESUMABLE_GAMES_SUC);
+                    responses.add(oldGameList);
                     oos.writeObject(responses);
                     break;
                 case Config.JOIN_ONE_GAME:
@@ -182,6 +249,25 @@ public class EriantysClientHandler extends Thread{
                         oos.writeObject(responses);
                         gameUpdate(game);
                     break;
+                case Config.GAME_OLD_START:
+                    System.out.println(client+" wants to start an old game");
+                    userName = (String) messages.get(1);
+                    allOldGames = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
+                    Game oldGame = null;
+                    for(Game g : oldGames)
+                        if(g.getPlayers().get(0).getName().equals(userName))
+                            oldGame = g;
+                    for(Game g : allOldGames)
+                        if(g.getPlayers().get(0).getName().equals(userName) && g.getGameStartingTime().equals(oldGame.getGameStartingTime()))
+                            game = g;
+                    allOldGames.remove(game);
+                    Object2fileBin("gameRecord.bin",allOldGames);
+                    responses.add(Config.GAME_OLD_START_SUC);
+                    oos.writeObject(responses);
+                    games.add(game);
+                    gameUpdate(game);
+                    
+                    break;
                 case Config.COMMAND_EXECUTE:
                     System.out.println(client+"tries to execute a command");
                     game = findGameForPlayer((String) messages.get(1));
@@ -189,6 +275,7 @@ public class EriantysClientHandler extends Thread{
                     game.getGameState().executeCommand();
                     //game.addCommand(game.getGameState().generateCommand());
                     responses.add(Config.COMMAND_EXECUTE_SUC);
+
                     oos.writeObject(responses);
                     gameUpdate(game);
                     break;
@@ -244,41 +331,73 @@ public class EriantysClientHandler extends Thread{
 
          */
         for(Player p : game.getPlayers())
-            for(Subscriber sub : subs)
-                if(p.getName().equals(sub.getUserName()))
-                {
-                    System.out.println(String.format("updating %s's game\n " +
-                            "ip address: %s      Port number: %d",sub.getUserName(), sub.getIpAddress(), sub.getPortNumber()));
-                    Socket update = new Socket(sub.getIpAddress(),sub.getPortNumber());
-                    ObjectOutputStream oos = new ObjectOutputStream(update.getOutputStream());
-                    ArrayList<Object> gameUpdates = new ArrayList<>();
-                    if(!game.isGameStarted()) // game hasn't started yet
+            synchronized (subs)
+            {
+                for(Subscriber sub : subs)
+                    if(p.getName().equals(sub.getUserName()))
                     {
-                        if(game.getPlayers().get(0).getName().equals(sub.getUserName()))// this player is creator
+                        System.out.println(String.format("updating %s's game\n " +
+                                "ip address: %s      Port number: %d",sub.getUserName(), sub.getIpAddress(), sub.getPortNumber()));
+                        Socket update = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                        ObjectOutputStream oos = new ObjectOutputStream(update.getOutputStream());
+                        ArrayList<Object> gameUpdates = new ArrayList<>();
+                        if(!game.isGameStarted()) // game hasn't started yet
                         {
-                            System.out.println(sub.getUserName()+"'s game room has been changed");
-                            gameUpdates.add(Config.UPDATE_CREATOR_WAITING_ROOM);
+                            if(game.getTurnList().size()>0)
+                            {
+                                if(game.getPlayers().get(0).getName().equals(sub.getUserName()))// this player is creator for this old game
+                                {
+                                    System.out.println(sub.getUserName()+"'s game room has been changed");
+                                    gameUpdates.add(Config.UPDATE_CREATOR_WAITING_ROOM_FOR_OLD_GAME);
+                                }
+                                else
+                                {
+                                    System.out.println(sub.getUserName()+", the room he is in has been changed");
+                                    gameUpdates.add(Config.UPDATE_OTHER_WAITING_ROOM_FOR_OLD_GAME);
+                                }
+                            }
+                            else
+                            {
+                                if(game.getPlayers().get(0).getName().equals(sub.getUserName()))// this player is creator
+                                {
+                                    System.out.println(sub.getUserName()+"'s game room has been changed");
+                                    gameUpdates.add(Config.UPDATE_CREATOR_WAITING_ROOM);
+                                }
+                                else
+                                {
+                                    System.out.println(sub.getUserName()+", the room he is in has been changed");
+                                    gameUpdates.add(Config.UPDATE_OTHER_WAITING_ROOM);
+                                }
+                            }
                         }
-                        else
+                        else // Game started
                         {
-                            System.out.println(sub.getUserName()+", the room he is in has been changed");
-                            gameUpdates.add(Config.UPDATE_OTHER_WAITING_ROOM);
+                            System.out.println(sub.getUserName()+"'s game has been updated");
+                            gameUpdates.add(Config.GAME_UPDATED);
                         }
+                        gameUpdates.add(game);
+                        oos.writeObject(gameUpdates);
                     }
-                    else // Game started
-                    {
-                        System.out.println(sub.getUserName()+"'s game has been updated");
-                        gameUpdates.add(Config.GAME_UPDATED);
-                    }
-                    gameUpdates.add(game);
-                    oos.writeObject(gameUpdates);
-                }
-
+            }
     }
     /**
      * TODO
      *
      * */
+    private synchronized String joinAReasumaleGame(String gameName, String name)
+    {
+        Game game = null;
+        for (Game g : oldGames)
+            if(g.getPlayers().get(0).getName().equals(gameName))
+                game = g;
+        if(game.isGameStarted())
+            return "Cannot join a started game";
+        if(game.getPlayers().size() == game.getN_Player())
+            return "Cannot join a game where is full";
+        game.getPlayers().add(new Player(name));
+        return Config.JOIN_RESUMABLE_GAME_SUC;
+    }
+
     private synchronized String joinAGame(String gameName,String player, boolean cliClient) throws EriantysExceptions {
         Game game = findGameForPlayer(gameName);
         if(game.isGameStarted())
@@ -331,11 +450,29 @@ public class EriantysClientHandler extends Thread{
         return notStartedGame;
     }
 
-    private synchronized String logOutUser(String userName) throws EriantysExceptions {
+    private synchronized String logOutUser(String userName) throws EriantysExceptions, IOException {
         Users userList = (Users) fileJason2Object("users.jason", Users.class);
         userList.logOutUser(userName);
         object2FileJason("users.jason", userList);
-        //out.println(Config.LOG_OUT_SUC);
+        try
+        {
+            Game g = findGameForPlayer(userName);
+            removeSubs(g);
+            games.remove(g);
+        }
+        catch (InnerExceptions.NoSuchUserException e)
+        {
+            System.out.println(String.format("%s has no game associated logout success",userName));
+            for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();) {
+                Subscriber sub = ite.next();
+                if (sub.getUserName().equals(userName))
+                    ite.remove();
+            }
+        }
+        /**TODO
+         * Save the game to server
+         * */
+
         return Config.LOG_OUT_SUC;
     }
 
@@ -348,8 +485,16 @@ public class EriantysClientHandler extends Thread{
             {
                 users.logUser(userName);
                 object2FileJason("users.jason", users);
-                //out.println(Config.USER_LOGGED);
-                subs.add(new Subscriber(userName, address, port));
+                boolean subDuplicate = false;
+                for(Subscriber sub : subs)
+                    if(sub.getUserName().equals(userName))
+                    {
+                        sub.setIpAddress(address);
+                        sub.setPortNumber(port);
+                        subDuplicate = true;
+                    }
+                if(!subDuplicate)
+                    subs.add(new Subscriber(userName, address, port));
                 return Config.USER_LOGGED;
             }
             else // this userName is already logged
@@ -412,8 +557,9 @@ public class EriantysClientHandler extends Thread{
         catch (Exception e)
         {
             e.printStackTrace();
+            return null;
         }
-        return null;
+
     }
 
     public synchronized void Object2fileBin(String fileName, Object ob)
@@ -456,4 +602,43 @@ public class EriantysClientHandler extends Thread{
         throw new InnerExceptions.NoSuchUserException("This player is not in any game.");
     }
 
+    private void removeSubs(Game game) throws IOException {
+        for(Player p : game.getPlayers())
+            synchronized (subs)
+            {
+
+                for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
+                {
+                    Subscriber sub = ite.next();
+                    if(sub.getUserName().equals(p.getName()))
+                    {
+                        Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                        ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
+                        ArrayList<Object> msg = new ArrayList<>();
+                        msg.add(Config.GAME_OVER);
+                        oos.writeObject(msg);
+                        ite.remove();
+                    }
+                }
+
+            }
+    }
+    private ArrayList<Game> buildGamesInfoForAPLayer(ArrayList<Game> games, String name) throws EriantysExceptions {
+        ArrayList<Game> gameInfos = new ArrayList<>();
+        for(Game game : games)
+            for(Player p : game.getPlayers())
+                if(p.getName().equals(name))
+                {
+                    Game lightGame = new Game();
+                    lightGame.setN_Player(game.getN_Player());
+                    lightGame.addPlayers(new Player(game.getPlayers().get(0).getName()));
+                    for(Player p1 : game.getPlayers())
+                        lightGame.addPlayerToTurnList(new Player(p1.getName()));
+                   lightGame.setExpertMode(game.isExpertMode());
+                   lightGame.setGameStarted(false);
+                   lightGame.setGameStartingTime(game.getGameStartingTime());
+                   gameInfos.add(lightGame);
+                }
+        return gameInfos;
+    }
 }

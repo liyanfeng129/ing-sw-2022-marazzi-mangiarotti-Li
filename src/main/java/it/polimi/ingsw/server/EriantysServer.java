@@ -17,6 +17,7 @@ import it.polimi.ingsw.model.*;
 
 public class EriantysServer {
     static ArrayList<Game> games = new ArrayList<>();
+    static ArrayList<Game> oldGames = new ArrayList<>();
     static ArrayList<Subscriber> subs = new ArrayList<>();
     public static void main(String[] args) {
         // TODO Auto-generated method stub
@@ -44,7 +45,7 @@ public class EriantysServer {
                 // waiting for a client to connect1
                 client = server.accept();
                 System.out.println("Client connected: "+client);
-                new EriantysClientHandler(client,games,subs).start();
+                new EriantysClientHandler(client,games,subs,oldGames).start();
             }
 
         }
@@ -114,14 +115,45 @@ public class EriantysServer {
 
         }
     }
+    private static Object fileBin2Object(String fileName)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+        try
+        {
+            FileInputStream fi = new FileInputStream(new File(absolutePathToProject+pathFromContentRoot+fileName));
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            return oi.readObject();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 
     private static void onServerClose() throws Exception{
         Runtime.getRuntime().addShutdownHook(new Thread()
         {
             public void run()
             {
+                ArrayList<Game> oldGames = null;
                 try
                 {
+                    oldGames = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
+                } catch (Exception e) {
+                }
+
+                try
+                {
+                    if(oldGames == null)
+                        oldGames = new ArrayList<>();
+                    for(Game g : games)
+                        if(g.isGameStarted())
+                            oldGames.add(g);
+                    Object2fileBin("gameRecord.bin",oldGames);
                     for(Subscriber sub : subs)
                     {
                         System.out.println(String.format("closing %s's connection\n " +
@@ -133,7 +165,9 @@ public class EriantysServer {
                         oos.writeObject(msg);
                     }
                     logOutAll();
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }

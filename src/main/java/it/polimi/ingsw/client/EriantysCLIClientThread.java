@@ -17,10 +17,12 @@ import static java.lang.Thread.sleep;
 public class EriantysCLIClientThread extends Thread {
     private  String serverAddress = "localhost";
     private  String userName = "";
-    private  int listeningPortNumber = new Random().nextInt(65353);
+    private  int listeningPortNumber;
+    private UpdateReceiver ur = null;
     private  void loggingMenu() throws InterruptedException, UnknownHostException {
         clearScreen();
         String response;
+        listeningPortNumber = new Random().nextInt(65353);
         System.out.println("Do you want to log?\n"+"1.YES\n"+"Everything else you enter terminates program\n");
         response = new Scanner(System.in).nextLine();
         if(response.equals("1"))
@@ -46,7 +48,8 @@ public class EriantysCLIClientThread extends Thread {
 
             }
             while(response.equals(Config.USER_ALREADY_LOGGED));
-            new UpdateReceiver(listeningPortNumber,userName,serverAddress).start();
+            ur = new UpdateReceiver(listeningPortNumber,userName,serverAddress);
+            ur.start();
             lobbyMenu();
         }
     }
@@ -63,10 +66,13 @@ public class EriantysCLIClientThread extends Thread {
          * 9. logout and exit
          * */
         clearScreen();
+        ArrayList<Object> responses;
+        ArrayList<Object> messages;
         int option = -1;
         boolean exit;
-        ArrayList<Object> responses = new ArrayList<>();
         do {
+            responses = new ArrayList<>();
+            messages = new ArrayList<>();
             messagePrinter("welcome.txt");
             option = new Scanner(System.in).nextInt();
             String msg;
@@ -100,7 +106,14 @@ public class EriantysCLIClientThread extends Thread {
 
                     break;
                 case 5: //Resume an old game
-
+                    messages.add(Config.RESUME_OLD_GAMES);
+                    messages.add(userName);
+                    responses = responseFromServer(messages);
+                    msg = (String) responses.get(0);
+                    if(msg.equals(Config.RESUME_OLD_GAMES_SUC))
+                        exit = true;
+                    else
+                        System.out.println(msg);
                     break;
                 case 6: //show existing games in the lobby
                     responses = getExistingGames();
@@ -111,12 +124,14 @@ public class EriantysCLIClientThread extends Thread {
                         System.out.println(msg);
                     break;
                 case 7: //Show resumable games
-
+                    responses = getJoinAbleResuableGames();
+                    msg = (String) responses.get(0);
+                    if (msg.equals(Config.SHOW_RESUMABLE_GAMES_SUC))
+                        exit = true;
+                    else
+                        System.out.println(msg);
                     break;
-                case 8: //Join in a resumable game
-
-                    break;
-                case 9: //logout user
+                case 8: //logout user
                     String res = logOut();
                     if (res.equals(Config.LOG_OUT_SUC))
                     {
@@ -138,15 +153,93 @@ public class EriantysCLIClientThread extends Thread {
             case 1: //after creation enter to game room
             case 2:
             case 3:
+            case 4:
                 showCreatorGameRoom((Game) responses.get(1));
+                break;
+            case 5: // resume old game created by user
+                getResumeableGames((ArrayList<Game>) responses.get(1));
                 break;
             case 6: //display all join-able game
                 showExistingGames((ArrayList<Game>) responses.get(1));
                 break;
-            case 9: //after logout return to logging menu
+            case 7: //display all join_able old game
+                //showExistingGames((ArrayList<Game>) responses.get(1));
+                showResuableGames((ArrayList<Game>) responses.get(1));
+                break;
+            case 8: //after logout return to logging menu
                 loggingMenu();
                 break;
         }
+    }
+
+    private void showResuableGames(ArrayList<Game> games) throws UnknownHostException, InterruptedException {
+        clearScreen();
+        int i = 0;
+        ArrayList<String> roomName = new ArrayList<>();
+        for(Game g : games)
+        {
+            roomName.add(g.getPlayers().get(0).getName());
+            System.out.println(String.format("%d. %s's game for %d, waiting for other %d.",
+                    i+1,
+                    g.getPlayers().get(0).getName(),
+                    g.getN_Player(),
+                    g.getN_Player()-g.getPlayers().size()
+            ));
+            i++;
+        }
+        if(roomName.size() > 0)
+        {
+            System.out.println("Please select one that you want join, invalid enter will bring you previous page.");
+            try
+            {
+                int choice = new Scanner(System.in).nextInt();
+                ArrayList<Object> responses;
+                if(choice >= 1 && choice <= i)
+                {
+                    responses = joinOneResumaleGame(roomName.get(choice - 1),userName);
+                    String msg = (String) responses.get(0);
+                    if(msg.equals(Config.JOIN_RESUMABLE_GAME_SUC))
+                    {
+                        showOtherPlayerGameRoom((Game) responses.get(1));
+                    }
+                    else
+                    {
+                        System.out.println(msg);
+                        sleep(1000);
+                        lobbyMenu();
+                    }
+                }
+                else
+                    lobbyMenu();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                lobbyMenu();
+            }
+        }
+        else
+        {
+            System.out.println("There's no old join-able game for you, maybe start a new one.");
+            lobbyMenu();
+        }
+    }
+
+    private ArrayList<Object> joinOneResumaleGame(String roomName, String userName) {
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.JOIN_RESUMABLE_GAME);
+        messages.add(roomName);
+        messages.add(userName);
+        messages.add(true);// this is CLI
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
+    }
+
+    private ArrayList<Object> getJoinAbleResuableGames() {
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.SHOW_RESUMABLE_GAMES);
+        messages.add(userName);
+        return responseFromServer(messages);
     }
 
 
@@ -154,6 +247,7 @@ public class EriantysCLIClientThread extends Thread {
         // TODO Auto-generated method stub
         try
         {
+            onClientClose();
             //connectTOServer();
             loggingMenu();
             //lobbyMenu();
@@ -238,9 +332,6 @@ public class EriantysCLIClientThread extends Thread {
       //  new UpdateListener(this,serverAddress,userName).start();
     }
 
-    /**
-     * TODO
-     * */
     private void showExistingGames(ArrayList<Game> games) throws InterruptedException, UnknownHostException {
         clearScreen();
         int i = 0;
@@ -288,6 +379,66 @@ public class EriantysCLIClientThread extends Thread {
 
 
     }
+
+    private void getResumeableGames(ArrayList<Game> games) throws UnknownHostException, InterruptedException {
+        clearScreen();
+        int i = 0;
+        ArrayList<String> gameDates = new ArrayList<>();
+        for(Game g : games)
+        {
+            gameDates.add(g.getGameStartingTime());
+            System.out.println(String.format("%d. %s's %s game for %d, started in %s with player: %s, %s .",
+                    i+1,
+                    g.getTurnList().get(0).getName(),
+                    (g.isExpertMode()? "expert" : "normal"),
+                    g.getN_Player(),
+                    g.getGameStartingTime(),
+                    (g.getN_Player() > 1 ? g.getTurnList().get(1).getName() : " " ),
+                    (g.getN_Player() > 2 ? g.getTurnList().get(2).getName() : " " )
+            ));
+            i++;
+        }
+        System.out.println("Please select one that you want restart, invalid enter will bring you previous page.");
+        try
+        {
+            int choice = new Scanner(System.in).nextInt();
+            ArrayList<Object> responses;
+            if(choice >= 1 && choice <= i)
+            {
+                responses = resumeAnOldGame(gameDates.get(choice -1), userName);
+                String msg = (String) responses.get(0);
+                if(msg.equals(Config.RELOAD_AN_OLD_GAME_SUC))
+                {
+                    showCreatorGameRoom((Game) responses.get(1));
+                }
+                else
+                {
+                    System.out.println(msg);
+                    sleep(1000);
+                    lobbyMenu();
+                }
+            }
+            else
+                lobbyMenu();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            lobbyMenu();
+        }
+
+
+    }
+
+    private ArrayList<Object> resumeAnOldGame(String gameStartedDate, String name)
+    {
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.RELOAD_AN_OLD_GAME);
+        messages.add(name);
+        messages.add(gameStartedDate);
+        return responseFromServer(messages);
+    }
+
     private ArrayList<Object> joinOneGame(String creator, String player)
     {
         ArrayList<Object> messages = new ArrayList<>();
@@ -306,6 +457,7 @@ public class EriantysCLIClientThread extends Thread {
         messages.add(Config.LOG_OUT);
         messages.add(userName);
         ArrayList<Object> responses = responseFromServer(messages);
+        ur.setReceiverOn(false);
         return (String) responses.get(0);
     }
 
@@ -416,6 +568,23 @@ public class EriantysCLIClientThread extends Thread {
     public String getUserName()
     {
         return userName;
+    }
+
+    private void onClientClose() throws Exception{
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            public void run()
+            {
+                try
+                {
+                    System.out.println("Closing connection");
+                    if(ur!=null && ur.isReceiverOn())
+                        logOut();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 }

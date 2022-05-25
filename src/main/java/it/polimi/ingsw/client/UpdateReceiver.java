@@ -54,6 +54,7 @@ public class UpdateReceiver extends Thread {
                 else
                     updateReceived(updates);
             }
+            updateReceiver.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -75,13 +76,81 @@ public class UpdateReceiver extends Thread {
             case Config.UPDATE_OTHER_WAITING_ROOM:
                 updateOtherPlayerGameRoom((Game) messages.get(1));
                 break;
+            case Config.UPDATE_CREATOR_WAITING_ROOM_FOR_OLD_GAME:
+                updateCreatorOldGameRoom((Game) messages.get(1));
+                break;
+            case Config.UPDATE_OTHER_WAITING_ROOM_FOR_OLD_GAME:
+                updateOtherPlayerOldGameRoom((Game) messages.get(1));
+                break;
             case Config.GAME_UPDATED:
                gameUpdate((Game) messages.get(1));
                 break;
-
         }
     }
-    private  void updateCreatorGameRoom(Game game) {
+    private void updateCreatorOldGameRoom(Game game)
+    {
+        clearScreen();
+        System.out.println(String.format("%s's %s game for %d, started in %s with player: %s, %s .",
+                game.getTurnList().get(0).getName(),
+                (game.isExpertMode()? "expert" : "normal"),
+                game.getN_Player(),
+                game.getGameStartingTime(),
+                (game.getN_Player() > 1 ? game.getTurnList().get(1).getName() : " " ),
+                (game.getN_Player() > 2 ? game.getTurnList().get(2).getName() : " " )
+        ));
+        System.out.println("Participants:\n");
+        int i = 0;
+        for (; i < game.getPlayers().size(); i++)
+            System.out.println(String.format("%d: %s",
+                    i + 1,
+                    game.getPlayers().get(i).getName()
+            ));
+        if (game.getN_Player() == game.getPlayers().size())
+        {
+            String input = "";
+            while(!input.equals("1"))
+            {
+                System.out.println("Game is ready to be restarted, press 1 if you want to start\n" +
+                        "every other input is invalid\n");
+                input = new Scanner(System.in).nextLine();
+                if(input.equals("1"))
+                {
+                    ArrayList<Object> messages = new ArrayList<>();
+                    messages.add(Config.GAME_OLD_START);
+                    messages.add(userName);
+                    ArrayList<Object> responses = responseFromServer(messages);
+                    String msg = (String) responses.get(0);
+                    if(msg.equals(Config.GAME_OLD_START_SUC))
+                    {
+                        System.out.println("Launching..");
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateOtherPlayerOldGameRoom(Game game)
+    {
+        clearScreen();
+        System.out.println(String.format("%s's %s game for %d, started in %s with player: %s, %s .",
+                game.getTurnList().get(0).getName(),
+                (game.isExpertMode()? "expert" : "normal"),
+                game.getN_Player(),
+                game.getGameStartingTime(),
+                (game.getN_Player() > 1 ? game.getTurnList().get(1).getName() : " " ),
+                (game.getN_Player() > 2 ? game.getTurnList().get(2).getName() : " " )
+        ));
+        System.out.println("Participants:\n");
+        int i = 0;
+        for (; i < game.getPlayers().size(); i++)
+            System.out.println(String.format("%d: %s",
+                    i + 1,
+                    game.getPlayers().get(i).getName()
+            ));
+        System.out.println("Please wait for game to be started");
+    }
+
+    private void updateCreatorGameRoom(Game game) {
         System.out.println(String.format("%s, this is your game, waiting for other %d\n",
                 game.getPlayers().get(0).getName(),
                 game.getN_Player() - game.getPlayers().size()
@@ -183,5 +252,13 @@ public class UpdateReceiver extends Thread {
         }
         responses.add("Unknown Error");
         return responses;
+    }
+
+    public boolean isReceiverOn() {
+        return receiverOn;
+    }
+
+    public synchronized void setReceiverOn(boolean receiverOn) {
+        this.receiverOn = receiverOn;
     }
 }

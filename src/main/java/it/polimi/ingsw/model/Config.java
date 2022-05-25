@@ -23,13 +23,26 @@ public class Config {
     public static final String JOIN_ONE_GAME_SUC = "JoinSomeone'sGameSuccessfully";
     public static final String UPDATE_CREATOR_WAITING_ROOM = "CreatorWaitingRoomHasBeenUpdated";
     public static final String UPDATE_OTHER_WAITING_ROOM = "OtherWaitingRoomHasBeenUpdated";
+    public static final String UPDATE_CREATOR_WAITING_ROOM_FOR_OLD_GAME = "CreatorOldWaitingRoomHasBeenUpdated";
+    public static final String UPDATE_OTHER_WAITING_ROOM_FOR_OLD_GAME = "OtherOldWaitingRoomHasBeenUpdated";
     public static final String GAME_START = "UserWantsToStartTheGame";
+    public static final String GAME_OLD_START = "UserWantsToStartAnOldGame";
     public static final String GAME_START_SUC = "GameStartedSuccessfully";
+    public static final String GAME_OLD_START_SUC = "OldGameStartedSuccessfully";
     public static final String UPDATE_GAME_START = "Game is in launching";
     public static final String GET_NEWEST_GAME = "Getting newest game";
     public static final String GET_NEWEST_GAME_SUC = "Getting newest game successfully";
     public static final String COMMAND_EXECUTE = "executing a command";
     public static final String COMMAND_EXECUTE_SUC = "executing a command successfully";
+    public static final String RESUME_OLD_GAMES = "resume old games";
+    public static final String RESUME_OLD_GAMES_SUC = "resume old games successfully";
+    public static final String RELOAD_AN_OLD_GAME = "Load an old game";
+    public static final String RELOAD_AN_OLD_GAME_SUC = "Load an old game successfully";
+    public static final String SHOW_RESUMABLE_GAMES = "get resumable games";
+    public static final String SHOW_RESUMABLE_GAMES_SUC = "get resumable games";
+    public static final String JOIN_RESUMABLE_GAME = "join a resumable game";
+    public static final String JOIN_RESUMABLE_GAME_SUC = "join a resumable game successfully";
+
 
     public static final String UPDATE = "UPDATE";
     public static final String REQ_ASSISTANT = "REQ_ASSISTANT";
