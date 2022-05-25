@@ -39,26 +39,38 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
     public void getData() {
         if (!isDataGathered()) {
             if (isCliClient()) {
-                if(getGame().isExpertMode() && !characterCardUsed)
-                {
+                if(getGame().isExpertMode() && !characterCardUsed) {
+                    int coin = getGame().getTurnList().get(getGame().getGameState().getPhase()).getWallet().getSaving();
+                    int choice;
+                    int quit=0;
                     System.out.println("Digit 10 if you want to use a character");
-                    if(new Scanner(System.in).nextInt() == 10)
-                    {
+                    if (new Scanner(System.in).nextInt() == 10) {
                         /*
                         which character do you want to use
                         get this character
                         * */
                         Cli c = new Cli();
-                       for(CharacterCard card : getGame().getTable().getCharacters())
-                           c.show_character(card);
-                       while(characterIndex<0|| characterIndex>2 )
-                       {
-                           System.out.println("Choose form 1 to 3");
-                           characterIndex = new Scanner(System.in).nextInt()-1;
-                       }
-                        characterCardUsed = true;
-                    }
-                    else
+                        for (CharacterCard card : getGame().getTable().getCharacters())
+                            c.show_character(card);
+                            do {
+                                System.out.println("Choose form 1 to 3, 10 to quit");
+                                choice = new Scanner(System.in).nextInt() - 1;
+                                if(choice==9) {
+                                    quit=1;
+                                    break;
+                                }
+                                else
+                                    if (!(choice<0 || choice>2)) {
+                                        characterIndex = choice;
+                                        if (getGame().getTable().getCharacters().get(characterIndex).getCoin() < coin)
+                                            continue;
+                                    }
+                            } while (choice<0 || choice>2);
+                        if(quit!=1)
+                            characterCardUsed = true;
+                        else
+                            getDataForMoveStudent();
+                    } else
                         getDataForMoveStudent();
                 }
                 else
