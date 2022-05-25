@@ -62,8 +62,10 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                                 else
                                     if (!(choice<0 || choice>2)) {
                                         characterIndex = choice;
-                                        if (getGame().getTable().getCharacters().get(characterIndex).getCoin() < coin)
+                                        if (getGame().getTable().getCharacters().get(characterIndex).getCoin() < coin) {
+                                            System.out.println("not enough money");
                                             continue;
+                                        }
                                     }
                             } while (choice<0 || choice>2);
                         if(quit!=1)
