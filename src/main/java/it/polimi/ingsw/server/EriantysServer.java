@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.*;
 
 import it.polimi.ingsw.client.User;
