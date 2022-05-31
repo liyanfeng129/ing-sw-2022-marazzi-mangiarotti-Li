@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameStartedController extends AASceneParent {
 
@@ -22,5 +23,15 @@ public class GameStartedController extends AASceneParent {
         stage.setScene(scene);
         stage.show();
         System.out.println("back");
+    }
+
+    @Override
+    public void listenerCallBack(ArrayList<Object> responses) {
+
+    }
+
+    @Override
+    public void responsesFromSender(ArrayList<Object> responses) {
+
     }
 }

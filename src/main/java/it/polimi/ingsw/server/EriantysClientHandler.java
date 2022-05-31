@@ -73,6 +73,7 @@ public class EriantysClientHandler extends Thread{
                 case "Test_all_game_status":
                     responses.add(games);
                     responses.add(oldGames);
+                    responses.add(subs);
                     oos.writeObject(responses);
                     break;
                 case Config.GET_NEWEST_GAME:

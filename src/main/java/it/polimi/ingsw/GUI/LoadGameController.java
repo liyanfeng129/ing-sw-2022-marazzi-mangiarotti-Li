@@ -1,5 +1,8 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.model.Config;
+import it.polimi.ingsw.model.Game;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -14,18 +17,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class LoadGameController extends AASceneParent implements Initializable {
     @FXML
     private ListView<String> games;
-
-    String[] games_test = {"game_1","game_2","game_3","game_4","game_5","game_6"};
-    String CurrGame;
+    private String CurrGame;
+    private ArrayList<String> roomName;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        games.getItems().addAll(games_test);
+        Platform.runLater(()->new GuiMessageSender(this, Config.SHOW_EXISTING_GAMES).run());
+
+
         games.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
@@ -45,17 +50,53 @@ public class LoadGameController extends AASceneParent implements Initializable {
         stage.show();
         System.out.println("back");
     }
+
     @FXML
     protected void loadGame(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass(). getResource("game_started.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("game_started.fxml"));
+        Parent root = loader.load();
+        GameStartedController gameStarted = loader.getController();
+        gameStarted.setInfo(getInfo());
+        switchScene(root,event);
         System.out.println("game_start");
     }
 
 
 
+    @Override
+    public void listenerCallBack(ArrayList<Object> responses) {
 
+    }
+
+    @Override
+    public void responsesFromSender(ArrayList<Object> responses) {
+        if(responses.get(0).equals(Config.SHOW_EXISTING_GAMES_SUC))
+        {
+            ArrayList<Game> gameList = (ArrayList<Game>) responses.get(1);
+            int i = 0;
+            roomName = new ArrayList<>();
+            for(Game g : gameList)
+            {
+                roomName.add(g.getPlayers().get(0).getName());
+                games.getItems().add(String.format("%d. %s's game for %d, waiting for other %d.",
+                        i+1,
+                        g.getPlayers().get(0).getName(),
+                        g.getN_Player(),
+                        g.getN_Player()-g.getPlayers().size()
+                ));
+                i++;
+            }
+        }
+        else if(responses.get(0).equals(Config.JOIN_ONE_GAME_SUC))
+        {
+            /**
+             * TODO
+             * */
+        }
+        else
+        {
+            System.out.println(responses.get(0));
+            // open a window to display message
+        }
+    }
 }

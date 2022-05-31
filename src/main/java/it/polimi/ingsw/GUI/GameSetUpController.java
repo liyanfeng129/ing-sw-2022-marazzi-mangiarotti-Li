@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameSetUpController extends AASceneParent {
 
@@ -20,18 +21,22 @@ public class GameSetUpController extends AASceneParent {
     @FXML
     protected void startEasy2(ActionEvent event) {
         System.out.println("Easy mode for 2 people");
+        // lobby Scene where is displayed player in waiting and eventually to start game
     }
     @FXML
     protected void startEasy3(ActionEvent event) {
         System.out.println("Easy mode for 3 people");
+        // lobby Scene where is displayed player in waiting and eventually to start game
     }
     @FXML
     protected void startExp2(ActionEvent event) {
         System.out.println("Expert mode for 2 people");
+        // lobby Scene where is displayed player in waiting and eventually to start game
     }
     @FXML
     protected void startExp3(ActionEvent event) {
         System.out.println("Expert mode for 3 people");
+        // lobby Scene where is displayed player in waiting and eventually to start game
     }
     @FXML
     protected void back(ActionEvent event) throws IOException {
@@ -43,4 +48,13 @@ public class GameSetUpController extends AASceneParent {
         System.out.println("back");
     }
 
+    @Override
+    public void listenerCallBack(ArrayList<Object> responses) {
+
+    }
+
+    @Override
+    public void responsesFromSender(ArrayList<Object> responses) {
+
+    }
 }
