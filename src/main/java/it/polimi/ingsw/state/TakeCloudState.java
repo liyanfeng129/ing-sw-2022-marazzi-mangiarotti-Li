@@ -51,8 +51,11 @@ public class TakeCloudState extends State implements Serializable {
                 try
                 {
                     getGame().getTable().initClouds();
-                    if (getGame().getPlayers().get(0).getHand().getN_cards()==0)
-                        getGame().changeGameState(new EndGameState(getGame(),getPhase()));
+                    if (getGame().getTurnList().get(0).getHand().getN_cards()==0) {
+                        getGame().removeCommand();
+                        getGame().addCommand(getGame().getGameState().generateCommand());
+                        getGame().changeGameState(new EndGameState(getGame(), getPhase()));
+                    }
                     else
                         getGame().changeGameState(new PlanningState(getGame(), 0));
 
