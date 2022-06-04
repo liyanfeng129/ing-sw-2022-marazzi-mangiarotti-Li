@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1500.0" style="-fx-background-color: #80BDE3#80BDE3;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.GameBoardController">
+   <children>
+      <ImageView fitHeight="333.0" fitWidth="736.0" layoutX="37.0" layoutY="595.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <image>
+            <Image url="@Image/PLANCIA_GIOCO.png" />
+         </image>
+      </ImageView>
+      <HBox layoutX="735.0" layoutY="682.0" prefHeight="122.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="736.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#ShowAssistant" prefHeight="181.0" prefWidth="255.0" text="Show Assistant" />
+            <Button mnemonicParsing="false" onAction="#ShowCaracter" prefHeight="181.0" prefWidth="255.0" text="Show Character" />
+            <Button mnemonicParsing="false" onAction="#ShowOpponentBoard" prefHeight="122.0" prefWidth="255.0" text="Show opponents board " />
+         </children>
+      </HBox>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#bfd7ee" height="197.0" layoutX="739.0" layoutY="433.0" stroke="BLACK" strokeType="INSIDE" width="765.0" AnchorPane.bottomAnchor="122.0" AnchorPane.leftAnchor="736.0" AnchorPane.rightAnchor="0.0" />
+      <Label layoutX="765.0" layoutY="495.0" prefHeight="17.0" prefWidth="184.0" text="ACTIONS:" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="737.0" AnchorPane.rightAnchor="0.0" />
+      <Label fx:id="messages" alignment="TOP_LEFT" layoutX="742.0" layoutY="501.0" prefHeight="171.0" prefWidth="452.0" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="748.0" AnchorPane.rightAnchor="0.0" />
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="70.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="70.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="70.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="70.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="70.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="70.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="70.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="70.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="70.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="70.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="27.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="27.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="27.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="27.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="27.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="27.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="27.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="27.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
