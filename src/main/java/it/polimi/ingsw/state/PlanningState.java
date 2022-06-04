@@ -58,11 +58,11 @@ public class PlanningState extends State implements Serializable {
     }
     public void setActivePlayer(){
         ArrayList<Player> playerQueue = new ArrayList<>();
-        int min=cards.get(0).getNum();
+        int min=getGame().getPlayers().get(0).getHand().getLastValueAssistant();
         int j=0;
-        for (int i=0;i<cards.size();i++){
-            if (cards.get(i).getNum()<min){
-                min = cards.get(i).getNum();
+        for (int i=0;i<getGame().getN_Player();i++){
+            if (getGame().getPlayers().get(i).getHand().getLastValueAssistant()<min){
+                min = getGame().getPlayers().get(0).getHand().getLastValueAssistant();
                 j=i;
             }
         }
