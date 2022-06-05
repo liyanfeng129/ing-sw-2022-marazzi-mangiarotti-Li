@@ -29,7 +29,10 @@ public class GameSetUpController extends AASceneParent {
         Game game  = new Game(3,false,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,true,false));
         Player player = game.getPlayers().stream().filter(p -> p.getName()=="leo").collect(Collectors.toList()).get(0);
         player.getPlayerBoard().setDiningRoom(new int[]{10, 10, 10, 10, 10});
-
+        player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{2, 1, 3, 1, 2}); // e se sono troppi ?
+        Professors prof = new Professors();
+        prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.MAGE2, Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE1});
+        game.setProfessors(prof);
 
 
         for(int i = 0; i < 3; i++){
