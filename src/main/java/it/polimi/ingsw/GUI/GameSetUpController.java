@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class GameSetUpController extends AASceneParent {
 
@@ -26,6 +27,11 @@ public class GameSetUpController extends AASceneParent {
     protected void startEasy3(ActionEvent event) throws IOException, EriantysExceptions {
 
         Game game  = new Game(3,false,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,true,false));
+        Player player = game.getPlayers().stream().filter(p -> p.getName()=="leo").collect(Collectors.toList()).get(0);
+        player.getPlayerBoard().setDiningRoom(new int[]{10, 10, 10, 10, 10});
+
+
+
         for(int i = 0; i < 3; i++){
             Cloud cloud = new Cloud();
             cloud.setCloud(3);
