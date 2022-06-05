@@ -118,7 +118,6 @@ public class GameBoardController extends AASceneParent {
         FXMLLoader loader=new FXMLLoader();
         loader.setLocation(getClass().getResource("GameBoard.fxml"));
         root=loader.load();
-
         GameBoardController controller = loader.getController();
 
         controller.setGame(game);

@@ -33,9 +33,6 @@ public class GameBoard extends Application {
         stage.setTitle("Eryantis");
         stage.setScene(scene);
 
-        Stage popupwindow=new Stage();
-        popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("This is a pop up window");
 
 
 
