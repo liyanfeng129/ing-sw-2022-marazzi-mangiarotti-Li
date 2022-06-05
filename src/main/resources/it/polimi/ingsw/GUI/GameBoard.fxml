@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1500.0" style="-fx-background-color: #80BDE3#80BDE3;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.GameBoardController">
+<AnchorPane fx:id="root" prefHeight="800.0" prefWidth="1500.0" style="-fx-background-color: #80BDE3#80BDE3;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.GameBoardController">
    <children>
-      <ImageView fitHeight="333.0" fitWidth="736.0" layoutX="37.0" layoutY="595.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+      <ImageView fitHeight="333.0" fitWidth="736.0" layoutX="37.0" layoutY="595.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.23956298828125" AnchorPane.leftAnchor="0.0">
          <image>
             <Image url="@Image/PLANCIA_GIOCO.png" />
          </image>
@@ -70,5 +70,281 @@
             <Image url="@Image/student_yellow.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="137.0" layoutY="633.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="139.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="172.0" layoutY="627.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="174.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="215.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="209.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="248.0" layoutY="627.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="244.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="275.0" layoutY="627.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="279.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="316.0" layoutY="626.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="314.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="391.0" layoutY="614.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="384.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="353.0" layoutY="636.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="349.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="418.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="419.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="462.0" layoutY="623.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="147.0" AnchorPane.leftAnchor="454.0">
+         <image>
+            <Image url="@Image/student_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_1" fitHeight="27.0" fitWidth="27.0" layoutX="139.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="139.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_2" fitHeight="27.0" fitWidth="27.0" layoutX="174.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="174.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_3" fitHeight="27.0" fitWidth="27.0" layoutX="209.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="209.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_4" fitHeight="27.0" fitWidth="27.0" layoutX="244.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="244.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_5" fitHeight="27.0" fitWidth="27.0" layoutX="279.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="279.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_6" fitHeight="27.0" fitWidth="27.0" layoutX="314.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="314.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_7" fitHeight="27.0" fitWidth="27.0" layoutX="349.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="349.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_8" fitHeight="27.0" fitWidth="27.0" layoutX="384.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="384.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_9" fitHeight="27.0" fitWidth="27.0" layoutX="419.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="419.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_std_10" fitHeight="27.0" fitWidth="27.0" layoutX="454.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="251.0" AnchorPane.leftAnchor="454.0">
+         <image>
+            <Image url="@Image/student_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="139.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="139.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="139.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="139.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="139.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="139.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="174.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="174.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="209.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="209.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="244.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="244.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="279.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="279.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="314.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="314.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="353.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="349.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="388.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="384.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="423.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="419.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="458.0" layoutY="574.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="199.0" AnchorPane.leftAnchor="454.0">
+         <image>
+            <Image url="@Image/student_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="174.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="174.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="209.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="209.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="244.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="244.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="279.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="279.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="318.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="314.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="353.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="349.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="388.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="384.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="423.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="419.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="458.0" layoutY="678.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="95.0" AnchorPane.leftAnchor="454.0">
+         <image>
+            <Image url="@Image/student_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="174.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="174.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="209.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="209.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="244.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="244.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="279.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="279.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="314.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="314.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="349.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="349.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="384.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="384.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="419.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="419.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="454.0" layoutY="730.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="454.0">
+         <image>
+            <Image url="@Image/student_blue.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green_professor" fitHeight="32.0" fitWidth="39.0" layoutX="519.0" layoutY="631.0" pickOnBounds="true" preserveRatio="true" rotate="30.0" AnchorPane.bottomAnchor="249.0" AnchorPane.leftAnchor="521.0">
+         <image>
+            <Image url="@Image/teacher_green.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red_professor" fitHeight="32.0" fitWidth="39.0" layoutX="522.0" layoutY="687.0" pickOnBounds="true" preserveRatio="true" rotate="30.0" AnchorPane.bottomAnchor="197.0" AnchorPane.leftAnchor="521.0">
+         <image>
+            <Image url="@Image/teacher_red.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow_professor" fitHeight="32.0" fitWidth="39.0" layoutX="520.0" layoutY="737.0" pickOnBounds="true" preserveRatio="true" rotate="30.0" AnchorPane.bottomAnchor="145.0" AnchorPane.leftAnchor="521.0">
+         <image>
+            <Image url="@Image/teacher_yellow.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="pink_professor" fitHeight="32.0" fitWidth="39.0" layoutX="525.0" layoutY="791.0" pickOnBounds="true" preserveRatio="true" rotate="30.0" AnchorPane.bottomAnchor="92.0" AnchorPane.leftAnchor="521.0">
+         <image>
+            <Image url="@Image/teacher_pink.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blu_professor" fitHeight="32.0" fitWidth="39.0" layoutX="522.0" layoutY="837.0" pickOnBounds="true" preserveRatio="true" rotate="30.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="521.0">
+         <image>
+            <Image url="@Image/teacher_blue.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="27.0" layoutY="523.0" mnemonicParsing="false" onAction="#update" text="reset" AnchorPane.bottomAnchor="365.5" AnchorPane.leftAnchor="27.0" />
    </children>
 </AnchorPane>

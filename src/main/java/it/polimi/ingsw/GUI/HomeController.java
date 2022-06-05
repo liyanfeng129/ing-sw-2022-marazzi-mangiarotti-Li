@@ -16,7 +16,7 @@ public class HomeController extends AASceneParent {
     private TextField myTextfield;
 
 
-    String name;
+    private String name;
 
     @FXML
     protected void submit(ActionEvent event) {
