@@ -56,6 +56,7 @@ public class PlanningState extends State implements Serializable {
     {
         this.cards.add(assistant);
     }
+
     public void setActivePlayer(){
         ArrayList<Player> playerQueue = new ArrayList<>();
         int min=getGame().getPlayers().get(0).getHand().getLastValueAssistant();
