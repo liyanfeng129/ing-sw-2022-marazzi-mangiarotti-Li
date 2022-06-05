@@ -41,7 +41,7 @@ public class MoveMotherNatureState extends State implements Serializable {
                 //condizione endGame finite torri in pb
                 if (player != null) {
                     for (int i = 0; i < getGame().getN_Player(); i++) {
-                        if (getGame().getTurnList().get(i).getPlayerBoard().getN_tower() == 0) {
+                        if (getGame().getTurnList().get(i).getPlayerBoard().getN_tower() <= 0) {
                             setGameEnded(true);
                             //devo passargli anche chi ha vinto?
                         }

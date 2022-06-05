@@ -30,6 +30,7 @@ class EndGameStateTest {
             game.startGame();
             game.getPlayers().get(0).getPlayerBoard().moveTower(-8);
             state.generateCommand();
+            state.executeCommand();
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }

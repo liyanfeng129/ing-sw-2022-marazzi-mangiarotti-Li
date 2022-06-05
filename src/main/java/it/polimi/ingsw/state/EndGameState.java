@@ -25,19 +25,22 @@ public class EndGameState extends State implements Serializable {
     @Override
     public void executeCommand() throws EriantysExceptions {
         System.out.println("end game");
-        if (getGame().getLastCommand().execute(getGame())) {
+        //if (getGame().getLastCommand().execute(getGame())) {
             System.out.println("game ended");
             int[] players = new int[getGame().getN_Player()];
             ArrayList<String> winners = new ArrayList<>();
             Integer[] max_n_professor = new Integer[getGame().getN_Player()];
             int maxNumOfTower = 0;
             int max3 = 0;
-            if (!canChangeState()) {
                 //calcolo vincitore se player finisce torri
                 for (int i = 0; i < getGame().getN_Player(); i++) {
                     if (getGame().getTurnList().get(i).getPlayerBoard().getN_tower() == 0) {
                         winners.add(getGame().getPlayers().get(i).getName());
                     }
+
+
+                    System.out.println("winner is " + winners.get(0));
+
                 }
                 //caso nessuno finisce torri,controllo chi ne ha di piu
                 if (winners.size() == 0) {
@@ -75,11 +78,14 @@ public class EndGameState extends State implements Serializable {
                         if (max_n_professor[i] < max_prof)
                             winners.remove(i);
                     }
-
+                    for (int i=0;i<winners.size();i++){
+                        System.out.println("winner is " + winners.get(i));
+                    }
 
                 }
-            }
-        }
+
+       // }
+
     }
 
     @Override
