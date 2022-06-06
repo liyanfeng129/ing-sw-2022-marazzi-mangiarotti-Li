@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -21,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -42,6 +44,12 @@ public class GameBoardController extends AASceneParent {
 
     @FXML
     private AnchorPane root;
+    protected static String red = "Image/student_red.png";
+    protected static String yellow = "Image/student_yellow.png";
+    protected static String blue = "Image/student_blue.png";
+    protected static String green = "Image/student_green.png";
+    protected static String pink = "Image/student_pink.png";
+    protected static String color;
 
 
     private CharacterCard cardChoice;
@@ -146,6 +154,9 @@ public class GameBoardController extends AASceneParent {
             img_view.setLayoutY(pos_y+30);
             nodes.add(img_view);
             root.getChildren().add(img_view);
+
+            GridPane(pos_x,pos_y,table,i);
+
             if (table.getIslands().get(i).getMotherNature()){
                 ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
                 MN_view.setFitWidth(50);
@@ -451,6 +462,49 @@ public class GameBoardController extends AASceneParent {
     protected void Action(ActionEvent event) throws IOException {
 
         this.messages.setText("ShowAction");
+    }
+    protected  void GridPane(double pos_x,double pos_y,Table table,int i){
+
+        ImageView red_student = new ImageView(new Image(getClass().getResourceAsStream(red)));
+        ImageView yellow_student = new ImageView(new Image(getClass().getResourceAsStream(yellow)));
+        ImageView blue_student = new ImageView(new Image(getClass().getResourceAsStream(blue)));
+        ImageView green_student = new ImageView(new Image(getClass().getResourceAsStream(green)));
+        ImageView pink_student = new ImageView(new Image(getClass().getResourceAsStream(pink)));
+        GridPane island_student = new GridPane();
+        //island_student.setMaxSize(10,10);
+        //island_student.setPreserveRatio(true);
+        //island_student.setAlignment(Pos.CENTER);
+        //grandezza studenti
+        red_student.setFitWidth(15);
+        red_student.setFitHeight(15);
+        yellow_student.setFitWidth(15);
+        yellow_student.setFitHeight(15);
+        blue_student.setFitWidth(15);
+        blue_student.setFitHeight(15);
+        green_student.setFitWidth(15);
+        green_student.setFitHeight(15);
+        pink_student.setFitWidth(15);
+        pink_student.setFitHeight(15);
+        island_student.setHgap(5);
+        island_student.setVgap(2);
+        island_student.setLayoutX(pos_x+70);
+        island_student.setLayoutY(pos_y+60);
+        island_student.add(red_student, 0, 0);
+        island_student.add(new Text(""+table.getIsland(i).getStudents()[0]), 1, 0);
+        island_student.add(yellow_student, 0, 1);
+        island_student.add(new Text(""+table.getIsland(i).getStudents()[1]), 1, 1);
+        island_student.add(blue_student, 0, 2);
+        island_student.add(new Text(""+table.getIsland(i).getStudents()[2]), 1, 2);
+        island_student.add(green_student, 0, 3);
+        island_student.add(new Text(""+table.getIsland(i).getStudents()[3]), 1, 3);
+        island_student.add(pink_student, 0, 4);
+        island_student.add(new Text(""+table.getIsland(i).getStudents()[4]), 1, 4);
+        //island_student.setGridLinesVisible (true);
+
+
+
+        nodes.add(island_student);
+        root.getChildren().add(island_student);
     }
 
 
