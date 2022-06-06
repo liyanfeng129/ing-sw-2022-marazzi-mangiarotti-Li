@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
@@ -43,11 +44,6 @@ public class GameBoardController extends AASceneParent {
     private AnchorPane root;
 
 
-    private List<ImageView> Islands = new ArrayList<>();
-    private List<ImageView> Clouds = new ArrayList<>();
-    private List<ImageView> WaitingRoom = new ArrayList<>();
-    private ImageView[][] DiningRoom = new ImageView[10][5];
-    private List<ImageView> Professor = new ArrayList<>();
     private CharacterCard cardChoice;
     private List<Node> nodes= new ArrayList<>();
 
@@ -63,10 +59,6 @@ public class GameBoardController extends AASceneParent {
     private String name = "leo";
 
 
-
-    public List<ImageView> getIslands() {
-        return Islands;
-    }
 
     public void setGame (Game game){
         this.game = game;
@@ -104,6 +96,7 @@ public class GameBoardController extends AASceneParent {
     protected void update(ActionEvent event) throws IOException, EriantysExceptions {
         removeGame();
         game.getTable().getIslands().remove(game.getTable().getIsland(0));
+        game.getTable().getIsland(1).setMotherNature(true);
         updtadeGame();
 
 
@@ -133,12 +126,9 @@ public class GameBoardController extends AASceneParent {
         int r = 400;
         double angle = 360/table.getIslands().size();
         double angle_;
-        ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
-        MN_view.setFitWidth(50);
-        MN_view.setFitHeight(50);
-        MN_view.setPreserveRatio(true);
         for(int i=0; i<table.getIslands().size();i++){
             ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
+
             img_view.setFitWidth(150);
             img_view.setFitHeight(150);
             img_view.setPreserveRatio(true);
@@ -154,12 +144,16 @@ public class GameBoardController extends AASceneParent {
             pos_y =-r*Math.sin(Math.toRadians(angle_))*0.50+pos_y_center;
             img_view.setLayoutX(pos_x);
             img_view.setLayoutY(pos_y+30);
-            getIslands().add(img_view);
+            nodes.add(img_view);
             root.getChildren().add(img_view);
             if (table.getIslands().get(i).getMotherNature()){
+                ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
+                MN_view.setFitWidth(50);
+                MN_view.setFitHeight(50);
+                MN_view.setPreserveRatio(true);
                 MN_view.setLayoutX(pos_x+35);
                 MN_view.setLayoutY(pos_y+30-5);
-                getIslands().add(MN_view);
+                nodes.add(MN_view);
                 root.getChildren().add(MN_view);
             }
         }
@@ -187,7 +181,7 @@ public class GameBoardController extends AASceneParent {
             img_view.setLayoutX(pos_x);
             img_view.setLayoutY(pos_y_center+30);
             root.getChildren().add(img_view);
-            Clouds.add(img_view);
+            nodes.add(img_view);
             pos_x +=100;
         }
 
@@ -229,7 +223,7 @@ public class GameBoardController extends AASceneParent {
                     pos_y = screenBounds.getHeight()-279;
                 }
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
-                DiningRoom[j][i]=img;
+                nodes.add(img);
                 img.setFitWidth(27);
                 img.setFitHeight(27);
                 img.setPreserveRatio(true);
@@ -242,7 +236,7 @@ public class GameBoardController extends AASceneParent {
 
 
     }
-    public void updateWaitingRoom() throws EriantysExceptions{
+    public void updateWaitingRoom(){
         String red = "Image/student_red.png";
         String yellow = "Image/student_yellow.png";
         String blue = "Image/student_blue.png";
@@ -271,7 +265,7 @@ public class GameBoardController extends AASceneParent {
                     color = green;
                 for (int j =0;j<waitingRoom[i];j++) {
                     ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
-                    WaitingRoom.add(img);
+                    nodes.add(img);
                     img.setFitWidth(27);
                     img.setFitHeight(27);
                     img.setPreserveRatio(true);
@@ -306,7 +300,7 @@ public class GameBoardController extends AASceneParent {
 
             }
         }
-    public void updateProfessor() throws EriantysExceptions{
+    public void updateProfessor(){
         String red = "Image/teacher_red.png";
         String yellow = "Image/teacher_yellow.png";
         String blue = "Image/teacher_blue.png";
@@ -344,7 +338,7 @@ public class GameBoardController extends AASceneParent {
             }
             if (prof[i]==mage) {
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
-                Professor.add(img);
+                nodes.add(img);
                 img.setFitWidth(35);
                 img.setFitHeight(35);
                 img.setPreserveRatio(true);
@@ -429,55 +423,14 @@ public class GameBoardController extends AASceneParent {
 
 
 
-    public void removeGame() throws EriantysExceptions{
-        remove_island();
-        remove_DiningRoom();
-        remove_WaitingRoom();
-        remove_Clouds();
-        remove_Professors();
-    }
 
 
-    private void remove_island() {
-        Table table = game.getTable();
-        for(int i=0; i<table.getIslands().size();i++){
-            ImageView img = getIslands().get(i);
+    private void removeGame() {
+        for(int i=0; i<nodes.size();i++){
+            Node img = nodes.get(i);
             root.getChildren().remove(img);
         }
-        getIslands().clear();
-
-    }
-    private void remove_DiningRoom(){
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==name).collect(Collectors.toList()).get(0);
-        PlayerBoard pb = player.getPlayerBoard();
-        for(int i=0;i<5;i++)
-            for(int j=0;j<pb.getDiningRoom()[i];j++) {
-                root.getChildren().remove(DiningRoom[j][i]);
-            }
-        DiningRoom = new ImageView[10][5];
-    }
-    private void remove_WaitingRoom() {
-        for(int i=0; i<WaitingRoom.size();i++){
-            ImageView img = WaitingRoom.get(i);
-            root.getChildren().remove(img);
-        }
-        WaitingRoom.clear();
-
-    }
-    private void remove_Clouds() {
-        for(int i=0; i<Clouds.size();i++){
-            ImageView img = Clouds.get(i);
-            root.getChildren().remove(img);
-        }
-        Clouds.clear();
-
-    }
-    private void remove_Professors() {
-        for(int i=0; i<Professor.size();i++){
-            ImageView img = Professor.get(i);
-            root.getChildren().remove(img);
-        }
-        Professor.clear();
+        nodes.clear();
 
     }
 
