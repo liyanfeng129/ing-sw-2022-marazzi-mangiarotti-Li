@@ -114,7 +114,7 @@ public class GameBoardController extends AASceneParent {
         Table table = game.getTable();
 
 
-        int pos_x_center =650;
+        int pos_x_center =450; //650
         int pos_y_center =195;
         double pos_x ;
         double pos_y ;
@@ -145,12 +145,11 @@ public class GameBoardController extends AASceneParent {
     }
     public void update_clouds() throws EriantysExceptions{
         Table table = game.getTable();
-        int pos_x_center =650;
+        int pos_x_center =450;//650
         int pos_y_center =195;
         double pos_x ;
-        double pos_y ;
 
-        pos_x =650 - 100 ;
+        pos_x =pos_x_center - 100 ;
         String img;
         for(int i=0; i<table.getClouds().size();i++){
             if (table.getClouds().size()==2)
