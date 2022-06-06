@@ -105,6 +105,7 @@ public class GameBoardController extends AASceneParent {
         removeGame();
         game.getTable().getIslands().remove(game.getTable().getIsland(0));
         game.getTable().getIsland(1).setMotherNature(true);
+        game.getTable().getIsland(5).addStudent(2);
         updtadeGame();
 
 
@@ -155,7 +156,7 @@ public class GameBoardController extends AASceneParent {
             nodes.add(img_view);
             root.getChildren().add(img_view);
 
-            GridPane(pos_x,pos_y,table,i);
+            GridPane(pos_x,pos_y,game,i);
 
             if (table.getIslands().get(i).getMotherNature()){
                 ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
@@ -463,7 +464,7 @@ public class GameBoardController extends AASceneParent {
 
         this.messages.setText("ShowAction");
     }
-    protected  void GridPane(double pos_x,double pos_y,Table table,int i){
+    protected  void GridPane(double pos_x,double pos_y,Game game,int i){
 
         ImageView red_student = new ImageView(new Image(getClass().getResourceAsStream(red)));
         ImageView yellow_student = new ImageView(new Image(getClass().getResourceAsStream(yellow)));
@@ -490,15 +491,15 @@ public class GameBoardController extends AASceneParent {
         island_student.setLayoutX(pos_x+70);
         island_student.setLayoutY(pos_y+60);
         island_student.add(red_student, 0, 0);
-        island_student.add(new Text(""+table.getIsland(i).getStudents()[0]), 1, 0);
+        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[0]), 1, 0);
         island_student.add(yellow_student, 0, 1);
-        island_student.add(new Text(""+table.getIsland(i).getStudents()[1]), 1, 1);
+        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[1]), 1, 1);
         island_student.add(blue_student, 0, 2);
-        island_student.add(new Text(""+table.getIsland(i).getStudents()[2]), 1, 2);
+        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[2]), 1, 2);
         island_student.add(green_student, 0, 3);
-        island_student.add(new Text(""+table.getIsland(i).getStudents()[3]), 1, 3);
+        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[3]), 1, 3);
         island_student.add(pink_student, 0, 4);
-        island_student.add(new Text(""+table.getIsland(i).getStudents()[4]), 1, 4);
+        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[4]), 1, 4);
         //island_student.setGridLinesVisible (true);
 
 
