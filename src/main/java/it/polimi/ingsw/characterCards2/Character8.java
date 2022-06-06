@@ -12,6 +12,7 @@ public class Character8 extends CharacterCard implements Serializable {
     public Character8() {
         super();
         setCoin(2);
+        setN_card(8);
         String msg = "During the influence calculation this turn, you\n" +
                 "count as having 2 more influence.";
         setMsg(msg);

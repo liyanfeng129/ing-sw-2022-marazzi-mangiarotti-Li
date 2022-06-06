@@ -1,8 +1,10 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.model.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.model.Config.UPDATE;
+
 public class GameBoardController extends AASceneParent {
 
     @FXML
@@ -44,6 +48,9 @@ public class GameBoardController extends AASceneParent {
     private List<ImageView> WaitingRoom = new ArrayList<>();
     private ImageView[][] DiningRoom = new ImageView[10][5];
     private List<ImageView> Professor = new ArrayList<>();
+    private CharacterCard cardChoice;
+
+
     /** TODO
      * rimuovere leo
      *
@@ -61,6 +68,9 @@ public class GameBoardController extends AASceneParent {
         return Islands;
     }
 
+    public void setGame (Game game){
+        this.game = game;
+    }
 
 
 
@@ -76,6 +86,8 @@ public class GameBoardController extends AASceneParent {
 
                 try {
                     updtadeGame();
+                    updateCaracter();
+
                 } catch (EriantysExceptions e) {
                     e.printStackTrace();
                 }
@@ -91,15 +103,15 @@ public class GameBoardController extends AASceneParent {
     @FXML
     protected void update(ActionEvent event) throws IOException, EriantysExceptions {
         removeGame();
-        //  qui bisogna passargli il nuovo game
+        game.getTable().getIslands().remove(game.getTable().getIsland(0));
         updtadeGame();
 
 
     }
 
-    public void setGame (Game game){
-        this.game = game;
-    }
+
+
+
 
     public void updtadeGame() throws EriantysExceptions {
         update_islands();
@@ -335,6 +347,77 @@ public class GameBoardController extends AASceneParent {
 
         }
     }
+    public void updateCaracter() throws EriantysExceptions{
+
+       List<CharacterCard> cards = game.getTable().getCharacters();
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double pos_max_x = screenBounds.getMaxX();
+        double pos_y =0;
+
+        for(int i =0;i<3; i++){
+           CharacterCard card = cards.get(i);
+           String img_file;
+            int c = card.getN_card();
+            System.out.println(c);
+           switch (c) {
+               case 1:
+                   img_file = "Image/CarteTOT_front1.jpg";break;
+               case 2:
+                   img_file = "Image/CarteTOT_front2.jpg";break;
+
+               case 3:
+                   img_file = "Image/CarteTOT_front3.jpg";break;
+               case 4:
+                   img_file = "Image/CarteTOT_front4.jpg";break;
+               case 5:
+                   img_file = "Image/CarteTOT_front5.jpg";break;
+               case 6:
+                   img_file = "Image/CarteTOT_front6.jpg";break;
+               case 7:
+                   img_file = "Image/CarteTOT_front7.jpg";break;
+               case 8:
+                   img_file = "Image/CarteTOT_front8.jpg";break;
+               case 9:
+                   img_file = "Image/CarteTOT_front9.jpg";break;
+               case 10:
+                   img_file = "Image/CarteTOT_front10.jpg";break;
+               case 11:
+                   img_file = "Image/CarteTOT_front11.jpg";break;
+               default:
+                   img_file = "Image/CarteTOT_front12.jpg";break;
+           }
+           ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
+           Button bt = new Button();
+           img.setFitWidth(100);
+           img.setPreserveRatio(true);
+           bt.setLayoutX(pos_max_x-112);
+           bt.setPadding(new Insets(0.5,0.5,0.5,0.5));
+           if (i==0)
+                pos_y = 5;
+           else
+              pos_y =pos_y + (img.getLayoutBounds().getHeight());
+
+           System.out.println(pos_y);
+           bt.setLayoutY(pos_y);
+           bt.setGraphic(img);
+           bt.setOnAction(new EventHandler<ActionEvent>() {
+               @Override public void handle(ActionEvent e) {
+                   cardChoice = card;
+
+                   messages.setText(card.getMsg());
+               }
+           });
+           pos_y = pos_y+5;
+
+
+
+
+           root.getChildren().add(bt);
+       }
+
+    }
+
+
 
     public void removeGame() throws EriantysExceptions{
         remove_island();

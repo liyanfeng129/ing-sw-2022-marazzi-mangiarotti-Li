@@ -11,6 +11,7 @@ public abstract class CharacterCard implements Serializable {
     private String msg;
     private boolean firstUse;
     private boolean dataGathered;
+    private int N_card;
 
     public CharacterCard() {
         firstUse = true;
@@ -53,4 +54,11 @@ public abstract class CharacterCard implements Serializable {
         this.dataGathered = dataGathered;
     }
 
+    public int getN_card() {
+        return N_card;
+    }
+
+    public void setN_card(int n_card) {
+        N_card = n_card;
+    }
 }

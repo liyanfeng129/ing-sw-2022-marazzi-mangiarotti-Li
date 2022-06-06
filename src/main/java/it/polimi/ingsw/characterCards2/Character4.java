@@ -12,6 +12,7 @@ public class Character4 extends CharacterCard implements Serializable {
     public Character4() {
         super();
         setCoin(1);
+        setN_card(4);
         String msg = "You may move Mother Nature up to 2\n" +
                 "additional Islands than is indicated by the Assistant\n" +
                 "card you've played.";

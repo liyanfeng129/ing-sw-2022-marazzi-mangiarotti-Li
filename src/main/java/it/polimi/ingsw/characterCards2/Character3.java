@@ -14,6 +14,7 @@ public class Character3 extends CharacterCard implements Serializable {
     public Character3() {
         super();
         setCoin(3);
+        setN_card(3);
         String msg = "Choose an Island and resolve the Island as if\n" +
                 "Mother Nature had ended her movement there. Mother\n" +
                 "Nature will still move and the Island where she ends\n" +

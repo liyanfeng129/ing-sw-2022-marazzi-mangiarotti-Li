@@ -125,16 +125,26 @@ public class Game implements Serializable {
                 }
                 if(n_Player == 3 &&expertMode)
                 {
-                    /**
-                     * TODO
-                     * */
+                    for(int i = 0; i < n_Player; i++)
+                    {
+                        Cloud cloud = new Cloud();
+                        cloud.setCloud(4);
+                        clouds.add(cloud);
+                    }
+                    characterCards.add(new Character7(table.getBag().draw(6)));
+                    characterCards.add(new Character11(table.getBag().draw(4)));
+                    characterCards.add(new Character12());
+
+                    this.table.tableInit(clouds,characterCards);
+                    for(int i = 0; i< players.size(); i++)
+                    {
+                        Player p =   this.players.get(i);
+                        p.getPb().setWaitingRoom(table.getBag().draw(9));
+                        p.setWallet(new Wallet());
+                    }
+
                 }
-                if(n_Player == 4 &&expertMode)
-                {
-                    /**
-                     * TODO
-                     * */
-                }
+
                 if(n_Player == 2 && !expertMode)
                 {
                     for(int i = 0; i < n_Player; i++)

@@ -1,10 +1,14 @@
 package it.polimi.ingsw.GUI;
 
 
+import it.polimi.ingsw.characterCards2.Character12;
+import it.polimi.ingsw.characterCards2.Character2;
+import it.polimi.ingsw.characterCards2.Character8;
 import it.polimi.ingsw.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,6 +38,10 @@ public class GameSetUpController extends AASceneParent {
         prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.MAGE2, Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE1});
         game.setProfessors(prof);
 
+
+        game.getTable().addCharacterCards(new Character12());
+        game.getTable().addCharacterCards(new Character2());
+        game.getTable().addCharacterCards(new Character8());
 
         for(int i = 0; i < 3; i++){
             Cloud cloud = new Cloud();
