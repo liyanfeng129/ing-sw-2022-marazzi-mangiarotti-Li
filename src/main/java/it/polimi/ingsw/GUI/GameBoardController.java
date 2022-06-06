@@ -49,7 +49,7 @@ public class GameBoardController extends AASceneParent {
     private ImageView[][] DiningRoom = new ImageView[10][5];
     private List<ImageView> Professor = new ArrayList<>();
     private CharacterCard cardChoice;
-
+    private List<Node> nodes= new ArrayList<>();
 
     /** TODO
      * rimuovere leo
@@ -133,6 +133,10 @@ public class GameBoardController extends AASceneParent {
         int r = 400;
         double angle = 360/table.getIslands().size();
         double angle_;
+        ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
+        MN_view.setFitWidth(50);
+        MN_view.setFitHeight(50);
+        MN_view.setPreserveRatio(true);
         for(int i=0; i<table.getIslands().size();i++){
             ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
             img_view.setFitWidth(150);
@@ -152,6 +156,12 @@ public class GameBoardController extends AASceneParent {
             img_view.setLayoutY(pos_y+30);
             getIslands().add(img_view);
             root.getChildren().add(img_view);
+            if (table.getIslands().get(i).getMotherNature()){
+                MN_view.setLayoutX(pos_x+35);
+                MN_view.setLayoutY(pos_y+30-5);
+                getIslands().add(MN_view);
+                root.getChildren().add(MN_view);
+            }
         }
 
     }
