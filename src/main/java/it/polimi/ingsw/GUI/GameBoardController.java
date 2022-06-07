@@ -147,8 +147,7 @@ public class GameBoardController extends AASceneParent {
         for(int i=0; i<table.getIslands().size();i++){
             ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
 
-            img_view.setFitWidth(150);
-            img_view.setFitHeight(150);
+            img_view.setFitWidth(screenBounds.getMaxY()/6);
             img_view.setPreserveRatio(true);
 
             angle_ = angle*i;
@@ -188,7 +187,7 @@ public class GameBoardController extends AASceneParent {
         double pos_y = pos_y_center+30;
         double pos_x ;
 
-        pos_x =pos_x_center - 150 ;
+        pos_x =pos_x_center - screenBounds.getMaxY()/6 ;
         String img;
         for(int i=0; i<table.getClouds().size();i++){
             if (table.getClouds().size()==2)
@@ -196,7 +195,7 @@ public class GameBoardController extends AASceneParent {
             else
                 img = "image/cloud_card.png";
             ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream(img)));
-            img_view.setFitWidth(150);
+            img_view.setFitWidth(screenBounds.getMaxY()/6);
             img_view.setPreserveRatio(true);
             img_view.setLayoutX(pos_x);
             img_view.setLayoutY(pos_y);
@@ -205,7 +204,7 @@ public class GameBoardController extends AASceneParent {
             GridPane(pos_x,pos_y-20,game.getTable().getClouds().get(i).getStudents());
 
             nodes.add(img_view);
-            pos_x +=150;
+            pos_x +=screenBounds.getMaxY()/6;
         }
 
     }
