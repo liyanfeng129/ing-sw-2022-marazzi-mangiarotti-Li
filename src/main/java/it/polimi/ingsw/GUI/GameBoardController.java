@@ -6,7 +6,9 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -69,7 +71,7 @@ public class GameBoardController extends AASceneParent {
             @Override public void run() {
 
                 try {
-                    showGameNoAction();
+                    sowGameDragStudent();
                     if (game.isExpertMode()) updateCaracterNoAction();
 
                 } catch (EriantysExceptions e) {
@@ -101,6 +103,9 @@ public class GameBoardController extends AASceneParent {
         game.getTable().getIsland(game.getTable().getIslands().size()/2).addStudent(2);
         game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(1);
         game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(3);
+        game.getTable().getIsland(5).setTower(TowerColor.BLACK);
+        game.getTable().getIsland(3).setTower(TowerColor.WHITE);
+        game.getTable().getIsland(7).setTower(TowerColor.GREY);
         /**TODO YANFENG
          * in base al turno del giocatore puoi fare
          *
@@ -180,7 +185,15 @@ public class GameBoardController extends AASceneParent {
             root.getChildren().add(img_view);
 
             GridPane(pos_x,pos_y,game.getTable().getIslands().get(i).getStudents());
-
+                int size=game.getTable().getIslands().get(i).getSize();
+                if(game.getTable().getIslands().get(i).getTower()!=null) {
+                    TowerColor color = game.getTable().getIslands().get(i).getTower();
+                    TowerGridPane(pos_x,pos_y,size,color);
+                }
+                else
+                TowerGridPane(pos_x,pos_y,size,null);
+                if (game.getTable().getIslands().get(i).isNoEntryTiles())
+                    noTileImg(pos_x,pos_y);
             if (table.getIslands().get(i).getMotherNature()){
                 ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
                 MN_view.setFitWidth(screenBounds.getMaxY()/18);
@@ -220,7 +233,7 @@ public class GameBoardController extends AASceneParent {
             img_view.setLayoutY(pos_y);
             root.getChildren().add(img_view);
 
-            GridPane(pos_x,pos_y-20,game.getTable().getClouds().get(i).getStudents());
+            GridPane(pos_x-5,pos_y-20,game.getTable().getClouds().get(i).getStudents());
 
             nodes.add(img_view);
             pos_x +=screenBounds.getMaxY()/6;
@@ -665,7 +678,7 @@ public class GameBoardController extends AASceneParent {
             for (int j =0;j<waitingRoom[i];j++) {
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
 
-
+                board.add(img);
                 if (board_name==name){
 
                     /**TODO ALESSIO
@@ -775,7 +788,15 @@ public class GameBoardController extends AASceneParent {
             root.getChildren().add(bt);
 
             GridPane(pos_x,pos_y,game.getTable().getIslands().get(i).getStudents());
-
+            int size=game.getTable().getIslands().get(i).getSize();
+            if(game.getTable().getIslands().get(i).getTower()!=null) {
+                TowerColor color = game.getTable().getIslands().get(i).getTower();
+                TowerGridPane(pos_x,pos_y,size,color);
+            }
+            else
+                TowerGridPane(pos_x,pos_y,size,null);
+            if (game.getTable().getIslands().get(i).isNoEntryTiles())
+                noTileImg(pos_x,pos_y);
             if (table.getIslands().get(i).getMotherNature()){
                 ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
                 MN_view.setFitWidth(screenBounds.getMaxY()/18);
@@ -918,6 +939,61 @@ public class GameBoardController extends AASceneParent {
             root.getChildren().remove(img);
         }
         board.clear();
+    }
+
+    protected  void TowerGridPane(double pos_x,double pos_y,int size,TowerColor color){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double dim = screenBounds.getMaxY()/(30);
+        GridPane gridPane = new GridPane();
+        if (color!=null) {
+            ImageView tower;
+            switch (color) {
+                case WHITE:
+                    tower = new ImageView(new Image(getClass().getResourceAsStream("Image/white_tower.png")));
+                    break;
+                case BLACK:
+                    tower = new ImageView(new Image(getClass().getResourceAsStream("Image/black_tower.png")));
+                    break;
+                default:
+                    tower = new ImageView(new Image(getClass().getResourceAsStream("Image/grey_tower.png")));
+            }
+            tower.setFitWidth(dim);
+            tower.setFitHeight(1.5 * dim);
+            gridPane.add(tower, 0, 0);
+            GridPane.setHalignment(tower, HPos.CENTER);
+        }
+        else{
+            ImageView tower;
+            tower = new ImageView(new Image(getClass().getResourceAsStream("Image/white_tower.png")));
+            tower.setFitWidth(dim);
+            tower.setFitHeight(1.5 * dim);
+            tower.setVisible(false);
+            gridPane.add(tower, 0, 0);
+        }
+        gridPane.setHgap(dim/3);
+        gridPane.setVgap(dim/10);
+        gridPane.setLayoutX(pos_x+(dim*1.1));
+        gridPane.setLayoutY(pos_y+(dim*2.5));
+        gridPane.add(new Text("Size:"+size), 0, 1);
+        gridPane.setGridLinesVisible (true);
+
+
+
+        nodes.add(gridPane);
+        root.getChildren().add(gridPane);
+    }
+
+    public void noTileImg(double pos_x,double pos_y){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        ImageView noTile;
+        noTile = new ImageView(new Image(getClass().getResourceAsStream("Image/deny_island_icon.png")));
+        noTile.setFitWidth(screenBounds.getMaxY()/18);
+        noTile.setFitHeight(screenBounds.getMaxY()/18);
+        noTile.setPreserveRatio(true);
+        noTile.setLayoutX(pos_x+screenBounds.getMaxY()/33);
+        noTile.setLayoutY(pos_y+screenBounds.getMaxY()/33);
+        nodes.add(noTile);
+        root.getChildren().add(noTile);
     }
 
 }

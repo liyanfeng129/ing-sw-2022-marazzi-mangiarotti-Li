@@ -53,7 +53,12 @@ public class GameSetUpController extends AASceneParent {
         game.getTable().addCharacterCards(new Character12());
         game.getTable().addCharacterCards(new Character2());
         game.getTable().addCharacterCards(new Character8());
-
+        game.getTable().getIsland(5).setTower(TowerColor.BLACK);
+        game.getTable().getIsland(3).setTower(TowerColor.WHITE);
+        game.getTable().getIsland(7).setTower(TowerColor.GREY);
+        game.getTable().getIsland(7).setNoEntryTiles(true);
+        game.getTable().getIsland(4).setNoEntryTiles(true);
+        game.getTable().getIsland(0).setNoEntryTiles(true);
         for(int i = 0; i < 3; i++){
             Cloud cloud = new Cloud();
             cloud.setCloud(3);
