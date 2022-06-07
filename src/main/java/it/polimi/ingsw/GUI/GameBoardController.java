@@ -286,30 +286,31 @@ public class GameBoardController extends AASceneParent {
                 for (int j =0;j<waitingRoom[i];j++) {
                     ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
                     nodes.add(img);
-                    img.setFitWidth(27);
-                    img.setFitHeight(27);
+                    img.setFitWidth(screenBounds.getMaxY()/(33.333));
+                    img.setFitHeight(screenBounds.getMaxY()/(33.333));
                     img.setPreserveRatio(true);
 
                     if (cont==0){
-                        pos_x = 70;
-                        pos_y = screenBounds.getHeight()-278;
+                        pos_x = screenBounds.getMaxY()/(14.2857);
+                        pos_y = screenBounds.getHeight()/(1.4128);
+                        System.out.println(pos_y);
                         img.setLayoutX(pos_x);
                         img.setLayoutY(pos_y);
                         cont +=1;
                     }
                     else if(cont<5) {
-                        pos_x = 70;
+                        pos_x = screenBounds.getMaxY()/(14.2857);
                         img.setLayoutX(pos_x);
-                        img.setLayoutY(pos_y+52*(cont));
+                        img.setLayoutY(pos_y+(screenBounds.getHeight()/(18))*(cont));
                         cont +=1;
                     }
                     else {
                         if (cont==5)
-                            pos_y = screenBounds.getHeight()-225;
+                            pos_y = screenBounds.getHeight()-225+10;
 
-                        pos_x = 27;
+                        pos_x = screenBounds.getMaxY()/(36);
                         img.setLayoutX(pos_x);
-                        img.setLayoutY(pos_y+52*(cont-5));
+                        img.setLayoutY(pos_y+(screenBounds.getHeight()/(18))*(cont-5));
                         cont +=1;
                     }
 
@@ -333,28 +334,33 @@ public class GameBoardController extends AASceneParent {
         Mage[] prof = game.getProfessors().getList_professors();
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        double pos_x= 520;
+        double pos_x= 487;
         double pos_y ;
         for(int i =0; i<5;i++){
             if (i==3) {
                 color = blue;
-                pos_y = screenBounds.getHeight()-74;
+                pos_y = screenBounds.getHeight()-71;
+                System.out.println(pos_y);
             }
             else if (i==2) {
                 color = pink;
-                pos_y = screenBounds.getHeight()-126;
+                pos_y = screenBounds.getHeight()-120;
+                System.out.println(pos_y);
             }
             else if (i==1) {
                 color = yellow;
-                pos_y = screenBounds.getHeight()-178;
+                pos_y = screenBounds.getHeight()-169;
+                System.out.println(pos_y);
             }
             else if (i==0) {
                 color = red;
-                pos_y = screenBounds.getHeight()-230;
+                pos_y = screenBounds.getHeight()-218;
+                System.out.println(pos_y);
             }
             else {
                 color = green;
-                pos_y = screenBounds.getHeight()-282;
+                pos_y = screenBounds.getHeight()-267;
+                System.out.println(pos_y);
             }
             if (prof[i]==mage) {
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
@@ -411,9 +417,9 @@ public class GameBoardController extends AASceneParent {
            }
            ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
            Button bt = new Button();
-           img.setFitWidth(screenBounds.getMaxY()/10);
+           img.setFitWidth(screenBounds.getMaxY()/8);
            img.setPreserveRatio(true);
-           bt.setLayoutX(pos_max_x-screenBounds.getMaxY()/8);
+           bt.setLayoutX(pos_max_x-screenBounds.getMaxY()/7.5);
            bt.setPadding(new Insets(0.5,0.5,0.5,0.5));
            if (i==0)
                 pos_y = screenBounds.getMaxY()/180;

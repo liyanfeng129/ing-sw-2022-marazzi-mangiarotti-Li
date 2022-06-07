@@ -36,15 +36,15 @@ public class GameSetUpController extends AASceneParent {
         game.addPlayers(new Player("yan", Mage.MAGE3,TowerColor.GREY,3,false,false));
 
         Player player = game.getPlayers().stream().filter(p -> p.getName()=="leo").collect(Collectors.toList()).get(0);
-        player.getPlayerBoard().setDiningRoom(new int[]{10, 10, 10, 10, 10});
+        player.getPlayerBoard().setDiningRoom(new int[]{10, 10, 10, 1, 10});
         player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{1, 1, 3, 1, 3}); // e se sono troppi ?
 
         player = game.getPlayers().stream().filter(p -> p.getName()=="ale").collect(Collectors.toList()).get(0);
-        player.getPlayerBoard().setDiningRoom(new int[]{3, 1, 2, 10, 4});
+        player.getPlayerBoard().setDiningRoom(new int[]{3, 5, 2, 10, 4});
         player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{0, 1, 5, 1, 2}); // e se sono troppi ?
 
         player = game.getPlayers().stream().filter(p -> p.getName()=="yan").collect(Collectors.toList()).get(0);
-        player.getPlayerBoard().setDiningRoom(new int[]{1, 1, 2, 2, 10});
+        player.getPlayerBoard().setDiningRoom(new int[]{1, 1, 2, 2, 9});
         player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{2, 0, 0, 5, 2}); // e se sono troppi ?
 
 
