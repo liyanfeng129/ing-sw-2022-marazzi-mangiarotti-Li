@@ -31,7 +31,7 @@ public class GameSetUpController extends AASceneParent {
     protected void startEasy3(ActionEvent event) throws IOException, EriantysExceptions {
         //
 
-        Game game  = new Game(3,false,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,true,false));
+        Game game  = new Game(3,true,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,true,false));
         game.addPlayers(new Player("ale", Mage.MAGE2,TowerColor.WHITE,3,false,false));
         game.addPlayers(new Player("yan", Mage.MAGE3,TowerColor.GREY,3,false,false));
 

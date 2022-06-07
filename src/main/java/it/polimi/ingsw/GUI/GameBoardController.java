@@ -87,7 +87,7 @@ public class GameBoardController extends AASceneParent {
 
                 try {
                     updtadeGame();
-                    updateCaracter();
+                    if (game.isExpertMode()) updateCaracter();
 
                 } catch (EriantysExceptions e) {
                     e.printStackTrace();
@@ -123,6 +123,7 @@ public class GameBoardController extends AASceneParent {
 
     public void updtadeGame() throws EriantysExceptions {
         dowBoardController();
+        updateTower();
         update_islands();
         update_clouds();
         updateDiningRoom();
@@ -293,7 +294,6 @@ public class GameBoardController extends AASceneParent {
                     if (cont==0){
                         pos_x = screenBounds.getMaxY()/(14.2857);
                         pos_y = screenBounds.getHeight()/(1.4128);
-                        System.out.println(pos_y);
                         img.setLayoutX(pos_x);
                         img.setLayoutY(pos_y);
                         cont +=1;
@@ -334,33 +334,29 @@ public class GameBoardController extends AASceneParent {
         Mage[] prof = game.getProfessors().getList_professors();
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        double pos_x= 487;
+        double pos_x= screenBounds.getMaxY()/(1.848);
         double pos_y ;
         for(int i =0; i<5;i++){
             if (i==3) {
                 color = blue;
-                pos_y = screenBounds.getHeight()-71;
-                System.out.println(pos_y);
+                pos_y = screenBounds.getHeight()/(1.0856);
             }
             else if (i==2) {
                 color = pink;
-                pos_y = screenBounds.getHeight()-120;
-                System.out.println(pos_y);
+                pos_y = screenBounds.getHeight()/(1.1538);
             }
             else if (i==1) {
+
                 color = yellow;
-                pos_y = screenBounds.getHeight()-169;
-                System.out.println(pos_y);
+                pos_y = screenBounds.getHeight()/(1.2312);
             }
             else if (i==0) {
                 color = red;
-                pos_y = screenBounds.getHeight()-218;
-                System.out.println(pos_y);
+                pos_y = screenBounds.getHeight()/(1.3196);
             }
             else {
                 color = green;
-                pos_y = screenBounds.getHeight()-267;
-                System.out.println(pos_y);
+                pos_y = screenBounds.getHeight()/(1.4218);
             }
             if (prof[i]==mage) {
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
@@ -379,7 +375,7 @@ public class GameBoardController extends AASceneParent {
     }
     public void updateCaracter() throws EriantysExceptions{
 
-       List<CharacterCard> cards = game.getTable().getCharacters();
+        List<CharacterCard> cards = game.getTable().getCharacters();
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double pos_max_x = screenBounds.getMaxX();
         double pos_y =0;
@@ -444,8 +440,49 @@ public class GameBoardController extends AASceneParent {
        }
 
     }
+    public void updateTower(){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        double pos_x= screenBounds.getMaxY()/(1.848);
+        Double pos_y = screenBounds.getMaxY()/1.5;
+        PlayerBoard pb = player.getPlayerBoard();
+        TowerColor color ;
+        GridPane gridPane = new GridPane();
+        double dim = screenBounds.getMaxY() / (60);
+        gridPane.setHgap(dim / 3);
+        gridPane.setVgap(dim / 7.5);
+        gridPane.setLayoutX(pos_x+(dim*4.66));
+        gridPane.setLayoutY(pos_y+(dim*4));
+
+        for (int i =0; i<pb.getN_tower();i++){
+
+            color= player.getTowerColor();
+            ImageView img;
+            if (color == TowerColor.WHITE) {
+                 img = new ImageView(new Image(getClass().getResourceAsStream("Image/white_tower.png")));
+
+            }
+            else if (color == TowerColor.BLACK) {
+                 img = new ImageView(new Image(getClass().getResourceAsStream("Image/black_tower.png")));
+
+            }
+            else {
+                 img = new ImageView(new Image(getClass().getResourceAsStream("Image/grey_tower.png")));
+            }
+            img.setFitHeight(screenBounds.getMaxY()/(20));
+            img.setPreserveRatio(true);
+            if (i%2==0)
+                gridPane.add(img,0,i);
+            else
+                gridPane.add(img,1,i-1);
+            nodes.add(gridPane);
 
 
+
+
+        }
+        root.getChildren().add(gridPane);
+    }
     public void dowBoardController(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         HBox bar = new HBox();
@@ -527,20 +564,6 @@ public class GameBoardController extends AASceneParent {
     }
 
 
-    @FXML
-    protected void ShowCaracter(ActionEvent event) {
-        this.messages.setText("ShowCaracter");
-    }
-
-
-    @FXML
-    protected void ShowAssistant(ActionEvent event){
-        this.messages.setText("ShowAssistant");
-    }
-    protected void Action(ActionEvent event){
-
-        this.messages.setText("ShowAction");
-    }
     protected  void GridPane(double pos_x,double pos_y,int[] students){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double dim = screenBounds.getMaxY()/(60);
