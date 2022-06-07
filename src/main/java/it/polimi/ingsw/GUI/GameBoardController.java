@@ -413,7 +413,7 @@ public class GameBoardController extends AASceneParent {
            }
            ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
            Button bt = new Button();
-           img.setFitWidth(screenBounds.getMaxY()/90);
+           img.setFitWidth(screenBounds.getMaxY()/10);
            img.setPreserveRatio(true);
            bt.setLayoutX(pos_max_x-screenBounds.getMaxY()/8);
            bt.setPadding(new Insets(0.5,0.5,0.5,0.5));
