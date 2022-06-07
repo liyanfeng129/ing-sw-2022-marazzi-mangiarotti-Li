@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,10 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
@@ -38,8 +36,7 @@ import static it.polimi.ingsw.model.Config.UPDATE;
 
 public class GameBoardController extends AASceneParent {
 
-    @FXML
-    private Label messages;
+    private Label messages = new Label();
 
     private Game game;
 
@@ -125,6 +122,7 @@ public class GameBoardController extends AASceneParent {
 
 
     public void updtadeGame() throws EriantysExceptions {
+        dowBoardController();
         update_islands();
         update_clouds();
         updateDiningRoom();
@@ -442,7 +440,75 @@ public class GameBoardController extends AASceneParent {
     }
 
 
+    public void dowBoardController(){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        HBox bar = new HBox();
+        ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("Image/PLANCIA_GIOCO.png")));
+        img_view.setFitHeight(screenBounds.getMaxY()/3);
+        img_view.setPreserveRatio(true);
 
+        VBox vbox = new VBox();
+
+        Button bt = new Button();
+        bt.setText("Switc Board");
+        bt.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                int index_player;
+                Player curr_player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+                index_player = game.getPlayers().indexOf(curr_player);
+                if (index_player+1 == game.getPlayers().size())
+                    index_player = 0;
+                else
+                    index_player +=1;
+                board_name = game.getPlayers().get(index_player).getName();
+                messages.setText("you are watching "+board_name+ " board"+"to swich play the ShowOpponentBoard button");
+                removeGame();
+                try {
+                    updtadeGame();
+                } catch (EriantysExceptions ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        });
+        vbox.getChildren().add(bt);
+
+        StackPane stackPane = new StackPane();
+        VBox vbox_messages = new VBox();
+        Label fixlabel = new Label();
+        fixlabel.setText("MESSAGES:");
+        Label label = messages;
+        vbox_messages.getChildren().add(fixlabel);
+        vbox_messages.getChildren().add(label);
+
+        Pane rect = new Pane();
+        rect.setPrefHeight(screenBounds.getMaxY()/3);
+        rect.setPrefWidth(screenBounds.getMaxX()-img_view.getLayoutBounds().getWidth());
+        rect.setStyle("-fx-background-color: #F0FFFF" );
+
+        stackPane.getChildren().add(rect);
+        stackPane.getChildren().add(vbox_messages);
+        vbox.getChildren().add(stackPane);
+
+        bar.setLayoutX(0);
+        bar.setLayoutY(screenBounds.getMaxY()*2/3);
+        bar.getChildren().add(img_view);
+        bar.getChildren().add(vbox);
+
+
+
+
+
+
+
+        root.getChildren().add(bar);
+
+
+
+
+
+
+    }
 
 
     private void removeGame() {
@@ -459,21 +525,7 @@ public class GameBoardController extends AASceneParent {
     protected void ShowCaracter(ActionEvent event) {
         this.messages.setText("ShowCaracter");
     }
-    @FXML
-    protected void ShowOpponentBoard(ActionEvent event) throws EriantysExceptions {
-        int index_player;
-        Player curr_player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
-        index_player = game.getPlayers().indexOf(curr_player);
-        if (index_player+1 == game.getPlayers().size())
-            index_player = 0;
-        else
-            index_player +=1;
-        this.board_name = game.getPlayers().get(index_player).getName();
-        this.messages.setText("you are watching "+board_name+ " board"+"to swich play the ShowOpponentBoard button");
-        removeGame();
-        updtadeGame();
 
-    }
 
     @FXML
     protected void ShowAssistant(ActionEvent event){
