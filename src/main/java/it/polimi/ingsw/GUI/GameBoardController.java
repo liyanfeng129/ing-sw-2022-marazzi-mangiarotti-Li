@@ -218,36 +218,36 @@ public class GameBoardController extends AASceneParent {
         PlayerBoard pb = player.getPlayerBoard();
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        double pos_x = 139;
-        double pos_y = screenBounds.getHeight()-70;
+        double pos_x = screenBounds.getMaxY()/(6.92);
+        double pos_y ;
         for(int i =0; i<5;i++){
             for(int j=0; j<pb.getDiningRoom()[i];j++){
                 if (i==3) {
                     color = blue;
-                    pos_y = screenBounds.getHeight()-71;
+                    pos_y = screenBounds.getMaxY()/(1.078);
                 }
                 else if (i==2) {
                     color = pink;
-                    pos_y = screenBounds.getHeight()-122;
+                    pos_y = screenBounds.getMaxY()/(1.147);
                 }
                 else if (i==1) {
                     color = yellow;
-                    pos_y = screenBounds.getHeight()-175;
+                    pos_y = screenBounds.getMaxY()/(1.225);
                 }
                 else if (i==0) {
                     color = red;
-                    pos_y = screenBounds.getHeight()-227;
+                    pos_y = screenBounds.getMaxY()/(1.313);
                 }
                 else {
                     color = green;
-                    pos_y = screenBounds.getHeight()-279;
+                    pos_y = screenBounds.getMaxY()/(1.41);
                 }
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
                 nodes.add(img);
-                img.setFitWidth(27);
-                img.setFitHeight(27);
+                img.setFitWidth(screenBounds.getMaxY()/(33.333));
+                img.setFitHeight(screenBounds.getMaxY()/(33.333));
                 img.setPreserveRatio(true);
-                img.setLayoutX(pos_x + j*35);
+                img.setLayoutX(pos_x + j*(screenBounds.getMaxY()/(27.74)));
                 img.setLayoutY(pos_y);
                 root.getChildren().add(img);
 
