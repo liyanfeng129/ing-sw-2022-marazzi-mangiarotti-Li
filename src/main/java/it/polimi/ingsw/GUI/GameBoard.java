@@ -37,30 +37,6 @@ public class GameBoard extends Application {
 
 
 
-        /**
-        pos_x =0;
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        for(int i=0; i<table.getClouds().size();i++){
-
-            ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/PLANCIA_GIOCO.png")));
-            img_view.setFitWidth((screenBounds.getMaxX()/table.getClouds().size())-20);
-            if (table.getClouds().size()==2)
-                img_view.setY(screenBounds.getMaxY()*0.66);
-            else
-            img_view.setY(screenBounds.getMaxY()-200);
-            img_view.setX(pos_x);
-            img_view.setPreserveRatio(true);
-
-            root.getChildren().add(img_view);
-
-
-            pos_x +=(screenBounds.getMaxY()/table.getClouds().size())*1.65;
-        }
-         **/
-
-
-
-
         stage.show();
 
     }

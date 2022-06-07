@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,7 +28,9 @@ public class GameSetUpController extends AASceneParent {
     }
     @FXML
     protected void startEasy3(ActionEvent event) throws IOException, EriantysExceptions {
-        //
+
+
+        //bisogna passargli il game
 
         Game game  = new Game(3,true,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,true,false));
         game.addPlayers(new Player("ale", Mage.MAGE2,TowerColor.WHITE,3,false,false));

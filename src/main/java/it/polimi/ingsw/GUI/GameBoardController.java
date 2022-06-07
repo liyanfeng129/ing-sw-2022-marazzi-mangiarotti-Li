@@ -6,39 +6,29 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static it.polimi.ingsw.model.Config.UPDATE;
 
 public class GameBoardController extends AASceneParent {
 
     private Label messages = new Label();
 
     private Game game;
+    private int islandIndex;
+    private int cloudIndex ;
+
 
     @FXML
     private AnchorPane root;
@@ -47,26 +37,19 @@ public class GameBoardController extends AASceneParent {
     protected static String blue = "Image/student_blue.png";
     protected static String green = "Image/student_green.png";
     protected static String pink = "Image/student_pink.png";
-    protected static String color;
 
 
-
-    private CharacterCard cardChoice;
+    private CharacterCard cardChoice = null;
     private List<Node> nodes= new ArrayList<>();
+    private List<Node> board= new ArrayList<>();
 
-    /** TODO
+    /** TODO LEO
      * rimuovere leo
-     *
-     * far passare il nome tra le scene
-     *
-     * prendere il game in update
      *
      * rimuovere il test in gameSetUpController
      */
     private String name = "leo";
-    private String board_name = "leo";
-
-
+    private String board_name = name;
 
 
     public void setGame (Game game){
@@ -86,8 +69,8 @@ public class GameBoardController extends AASceneParent {
             @Override public void run() {
 
                 try {
-                    updtadeGame();
-                    if (game.isExpertMode()) updateCaracter();
+                    showGameNoAction();
+                    if (game.isExpertMode()) updateCaracterNoAction();
 
                 } catch (EriantysExceptions e) {
                     e.printStackTrace();
@@ -101,9 +84,15 @@ public class GameBoardController extends AASceneParent {
 
 
 
-    @FXML
-    protected void update(ActionEvent event)throws EriantysExceptions {
+
+    protected void update()throws EriantysExceptions {
         removeGame();
+
+        /**TODO YANFENG
+         * assegnare game aggiornato
+         *
+         */
+
         game.getTable().getIslands().remove(game.getTable().getIsland(0));
         game.getTable().getIsland(1).setMotherNature(true);
         game.getTable().getClouds().get(0).setCloudStudent(new int[]{1,0,2,0,0});
@@ -112,7 +101,25 @@ public class GameBoardController extends AASceneParent {
         game.getTable().getIsland(game.getTable().getIslands().size()/2).addStudent(2);
         game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(1);
         game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(3);
-        updtadeGame();
+        /**TODO YANFENG
+         * in base al turno del giocatore puoi fare
+         *
+         *  showGameNoAction() è per il solo aggiornamento (chi non sta giocando )
+         *
+         * gli altri sono per ci gioca
+         *
+         * sowGameDragStudent per muovere studente o selezionanre la carta
+         *
+         * sowGameMoveMN per muovere MN o selezionare carta
+         *
+         * sowGamePickCloud per prendere cloud o selezionare carta
+         *
+         * se vuoi anche mandare dei messaggi fai
+         *
+         * messages.setText("msg) dopo aver fatto queste cose
+         *
+         */
+        showGameNoAction();
 
 
     }
@@ -121,18 +128,27 @@ public class GameBoardController extends AASceneParent {
 
 
 
-    public void updtadeGame() throws EriantysExceptions {
-        dowBoardController();
-        updateTower();
-        update_islands();
-        update_clouds();
-        updateDiningRoom();
-        updateWaitingRoom();
-        updateProfessor();
+    //only view
+    public void showGameNoAction() throws EriantysExceptions {
+        System.out.println("Show action");
+        switcBoardController(false);
+
+
+        updateTowerNoAction();
+        updateIslandsNoAction();
+        updateCloudsNoAction();
+        updateDiningRoomNoAction();
+        updateWaitingRoomNoAction();
+        updateProfessorNoAction();
+    }
+    public void showBoardNoAction() throws EriantysExceptions{
+        updateDiningRoomNoAction();
+        updateTowerNoAction();
+        updateProfessorNoAction();
+        updateWaitingRoomNoAction();
     }
 
-
-    public void update_islands(){
+    public void updateIslandsNoAction(){
         Table table = game.getTable();
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -175,10 +191,14 @@ public class GameBoardController extends AASceneParent {
                 nodes.add(MN_view);
                 root.getChildren().add(MN_view);
             }
+            /**TODO ALESSIO
+             * tile no action, Torre, dimensione
+             */
+
         }
 
     }
-    public void update_clouds(){
+    public void updateCloudsNoAction(){
         Table table = game.getTable();
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         double pos_x_center =screenBounds.getMaxX()*2/7 +20; //650
@@ -207,7 +227,7 @@ public class GameBoardController extends AASceneParent {
         }
 
     }
-    public void updateDiningRoom(){
+    public void updateDiningRoomNoAction(){
         String red = "Image/student_red.png";
         String yellow = "Image/student_yellow.png";
         String blue = "Image/student_blue.png";
@@ -244,6 +264,7 @@ public class GameBoardController extends AASceneParent {
                     pos_y = screenBounds.getMaxY()/(1.41);
                 }
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                board.add(img);
                 nodes.add(img);
                 img.setFitWidth(screenBounds.getMaxY()/(33.333));
                 img.setFitHeight(screenBounds.getMaxY()/(33.333));
@@ -257,7 +278,7 @@ public class GameBoardController extends AASceneParent {
 
 
     }
-    public void updateWaitingRoom(){
+    public void updateWaitingRoomNoAction(){
         String red = "Image/student_red.png";
         String yellow = "Image/student_yellow.png";
         String blue = "Image/student_blue.png";
@@ -286,6 +307,7 @@ public class GameBoardController extends AASceneParent {
                     color = green;
                 for (int j =0;j<waitingRoom[i];j++) {
                     ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                    board.add(img);
                     nodes.add(img);
                     img.setFitWidth(screenBounds.getMaxY()/(33.333));
                     img.setFitHeight(screenBounds.getMaxY()/(33.333));
@@ -321,7 +343,7 @@ public class GameBoardController extends AASceneParent {
 
             }
         }
-    public void updateProfessor(){
+    public void updateProfessorNoAction(){
         String red = "Image/teacher_red.png";
         String yellow = "Image/teacher_yellow.png";
         String blue = "Image/teacher_blue.png";
@@ -361,6 +383,7 @@ public class GameBoardController extends AASceneParent {
             if (prof[i]==mage) {
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
                 nodes.add(img);
+                board.add(img);
                 img.setFitWidth(35);
                 img.setFitHeight(35);
                 img.setPreserveRatio(true);
@@ -373,7 +396,7 @@ public class GameBoardController extends AASceneParent {
 
         }
     }
-    public void updateCaracter() throws EriantysExceptions{
+    public void updateCaracterNoAction() throws EriantysExceptions{
 
         List<CharacterCard> cards = game.getTable().getCharacters();
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -440,7 +463,7 @@ public class GameBoardController extends AASceneParent {
        }
 
     }
-    public void updateTower(){
+    public void updateTowerNoAction(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
         double pos_x= screenBounds.getMaxY()/(1.848);
@@ -476,6 +499,7 @@ public class GameBoardController extends AASceneParent {
             else
                 gridPane.add(img,1,i-1);
             nodes.add(gridPane);
+            board.add(gridPane);
 
 
 
@@ -483,7 +507,7 @@ public class GameBoardController extends AASceneParent {
         }
         root.getChildren().add(gridPane);
     }
-    public void dowBoardController(){
+    public void switcBoardController(Boolean Action){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         HBox bar = new HBox();
         ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("Image/PLANCIA_GIOCO.png")));
@@ -505,9 +529,12 @@ public class GameBoardController extends AASceneParent {
                     index_player +=1;
                 board_name = game.getPlayers().get(index_player).getName();
                 messages.setText("you are watching "+board_name+ " board"+"to swich play the ShowOpponentBoard button");
-                removeGame();
+                removeBoard();
                 try {
-                    updtadeGame();
+                    if (Action)
+                        showBoardAction();
+                    else
+                        showBoardNoAction();
                 } catch (EriantysExceptions ex) {
                     ex.printStackTrace();
                 }
@@ -552,17 +579,284 @@ public class GameBoardController extends AASceneParent {
 
 
     }
+    public void showWallet(){
+        /**TODO ALESSIO
+         * mettere le monete
+         */
 
-
-    private void removeGame() {
-        for(int i=0; i<nodes.size();i++){
-            Node img = nodes.get(i);
-            root.getChildren().remove(img);
-        }
-        nodes.clear();
 
     }
 
+
+
+
+    //Drag Student and choose character
+
+    public void sowGameDragStudent() throws EriantysExceptions {
+
+        switcBoardController(true);
+
+
+        addButtonCharacter();
+        updateTowerNoAction();
+        updateIslandsNoAction();
+        updateCloudsNoAction();
+        updateDiningRoomNoAction();
+        updateWaitingRoomNoAction();
+        updateProfessorNoAction();
+    }
+
+    public void showBoardAction() throws EriantysExceptions{
+        updateDiningRoomNoAction();
+        updateTowerNoAction();
+        updateProfessorNoAction();
+        updateWaitingRoomAction();
+    }
+    public void addButtonCharacter(){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+        Button bt = new Button();
+        bt.setText("Use Character");
+        bt.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+        bt.setLayoutY(screenBounds.getMaxY()*2/3 -50);
+        root.getChildren().add(bt);
+        bt.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                /**TODO YANFENG
+                 * qui prendi la carta e la mandi al server
+                 * ricordati di settare a null cardChoice una volta preso l'input
+                 */
+                if (cardChoice ==null)
+                    messages.setText("Seleziona una carta");
+                else
+                    messages.setText("Invio Carta");
+            }
+        });
+        nodes.add(bt);
+
+    }
+    public void updateWaitingRoomAction(){
+        String red = "Image/student_red.png";
+        String yellow = "Image/student_yellow.png";
+        String blue = "Image/student_blue.png";
+        String green = "Image/student_green.png";
+        String pink = "Image/student_pink.png";
+        String color;
+
+        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        PlayerBoard pb = player.getPlayerBoard();
+        int[] waitingRoom = pb.getWaitingRoom();
+
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double pos_x ;
+        double pos_y = screenBounds.getHeight()-70;
+        int cont =0;
+        for(int i =0; i<5;i++){
+            if (i==3)
+                color = blue;
+            else if (i==2)
+                color = pink;
+            else if (i==1)
+                color = yellow;
+            else if (i==0)
+                color = red;
+            else
+                color = green;
+            for (int j =0;j<waitingRoom[i];j++) {
+                ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+
+
+                if (board_name==name){
+
+                    /**TODO ALESSIO
+                     * bisogna aggiungere a img ondrag action
+                     */
+                }
+
+                nodes.add(img);
+                img.setFitWidth(screenBounds.getMaxY()/(33.333));
+                img.setFitHeight(screenBounds.getMaxY()/(33.333));
+                img.setPreserveRatio(true);
+
+                if (cont==0){
+                    pos_x = screenBounds.getMaxY()/(14.2857);
+                    pos_y = screenBounds.getHeight()/(1.4128);
+                    img.setLayoutX(pos_x);
+                    img.setLayoutY(pos_y);
+                    cont +=1;
+                }
+                else if(cont<5) {
+                    pos_x = screenBounds.getMaxY()/(14.2857);
+                    img.setLayoutX(pos_x);
+                    img.setLayoutY(pos_y+(screenBounds.getHeight()/(18))*(cont));
+                    cont +=1;
+                }
+                else {
+                    if (cont==5)
+                        pos_y = screenBounds.getHeight()-225+10;
+
+                    pos_x = screenBounds.getMaxY()/(36);
+                    img.setLayoutX(pos_x);
+                    img.setLayoutY(pos_y+(screenBounds.getHeight()/(18))*(cont-5));
+                    cont +=1;
+                }
+
+                root.getChildren().add(img);
+
+            }
+
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+    //Move MotherNature and choose character
+    public void sowGameMoveMN() {
+
+        switcBoardController(false);
+        addButtonCharacter();
+        updateTowerNoAction();
+        updateIslandsAction(); // I can select island for Mn
+        updateCloudsNoAction();
+        updateDiningRoomNoAction();
+        updateWaitingRoomNoAction();
+        updateProfessorNoAction();
+    }
+
+    public void updateIslandsAction(){
+        Table table = game.getTable();
+
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double pos_x_center =screenBounds.getMaxX()*2/7 +20; //650
+        double pos_y_center =screenBounds.getMaxY()/5;
+        double pos_x ;
+        double pos_y ;
+        double r = screenBounds.getMaxY()/(2.25);
+        double angle = 360/table.getIslands().size();
+        double angle_;
+        for(int i=0; i<table.getIslands().size();i++){
+            ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
+
+            img_view.setFitWidth(screenBounds.getMaxY()/6);
+            img_view.setPreserveRatio(true);
+
+            angle_ = angle*i;
+            if (angle_==0 || angle_ == 180)
+                if (angle_==0)
+                    pos_x = -r*Math.cos(Math.toRadians(angle_))+pos_x_center - 40;
+                else
+                    pos_x = -r*Math.cos(Math.toRadians(angle_))+pos_x_center + 40;
+            else
+                pos_x = -r*Math.cos(Math.toRadians(angle_))+pos_x_center;
+            pos_y =-r*Math.sin(Math.toRadians(angle_))*0.50+pos_y_center;
+            Button bt = new Button();
+            bt.setLayoutX(pos_x);
+            bt.setLayoutY(pos_y+30);
+            bt.setGraphic(img_view);
+            bt.setBackground(null);
+            islandIndex = i;
+            bt.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    /**TODO YANFENG
+                     * in islandIndex trovi l'indice dell'isola scelta pe rmuovere madre natura
+                     */
+                    messages.setText("hai selezionnato l'isola");
+                }
+            });
+            nodes.add(bt);
+            root.getChildren().add(bt);
+
+            GridPane(pos_x,pos_y,game.getTable().getIslands().get(i).getStudents());
+
+            if (table.getIslands().get(i).getMotherNature()){
+                ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
+                MN_view.setFitWidth(screenBounds.getMaxY()/18);
+                MN_view.setFitHeight(screenBounds.getMaxY()/18);
+                MN_view.setPreserveRatio(true);
+                MN_view.setLayoutX(pos_x+screenBounds.getMaxY()/25.7);
+                MN_view.setLayoutY(pos_y+screenBounds.getMaxY()/36);
+                nodes.add(MN_view);
+                root.getChildren().add(MN_view);
+            }
+
+            /**TODO ALESSIO
+             * tile no action, Torre, dimensione
+             */
+        }
+
+    }
+
+
+
+    //Chose Cloud and choose character
+    public void sowGamePickCloud()  {
+
+        switcBoardController(false);
+        addButtonCharacter();
+        updateTowerNoAction();
+        updateIslandsNoAction();
+        updateCloudsAction();
+        updateDiningRoomNoAction();
+        updateWaitingRoomNoAction();
+        updateProfessorNoAction();
+    }
+
+    public void updateCloudsAction(){
+        Table table = game.getTable();
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double pos_x_center =screenBounds.getMaxX()*2/7 +20; //650
+        double pos_y_center =screenBounds.getMaxY()/5;
+        double pos_y = pos_y_center+30;
+        double pos_x ;
+
+        pos_x =pos_x_center - screenBounds.getMaxY()/6 ;
+        String img;
+        for(int i=0; i<table.getClouds().size();i++){
+            if (table.getClouds().size()==2)
+                img = "image/cloud_card_1.png";
+            else
+                img = "image/cloud_card.png";
+            ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream(img)));
+            img_view.setFitWidth(screenBounds.getMaxY()/6);
+            img_view.setPreserveRatio(true);
+            img_view.setLayoutX(pos_x);
+            img_view.setLayoutY(pos_y);
+            Button bt = new Button();
+            bt.setGraphic(img_view);
+            bt.setBackground(null);
+            islandIndex = i;
+            bt.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    /**TODO YANFENG
+                     * in cloudIndex trovi la posizione dell'isola
+                     */
+                }
+            });
+            root.getChildren().add(bt);
+
+            GridPane(pos_x,pos_y-20,game.getTable().getClouds().get(i).getStudents());
+
+            nodes.add(bt);
+            pos_x +=screenBounds.getMaxY()/6;
+        }
+    }
+
+    // end game
+
+    public void endGame(String nameWinner){
+        /**TODO LEO
+         * aggiungre la schermata di fine partita
+         */
+        removeGame();
+    }
 
     protected  void GridPane(double pos_x,double pos_y,int[] students){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -610,6 +904,20 @@ public class GameBoardController extends AASceneParent {
         root.getChildren().add(gridPane);
     }
 
+    private void removeGame() {
+        for(int i=0; i<nodes.size();i++){
+            Node img = nodes.get(i);
+            root.getChildren().remove(img);
+        }
+        nodes.clear();
 
+    }
+    private void removeBoard(){
+        for(int i=0; i<board.size();i++){
+            Node img = board.get(i);
+            root.getChildren().remove(img);
+        }
+        board.clear();
+    }
 
 }
