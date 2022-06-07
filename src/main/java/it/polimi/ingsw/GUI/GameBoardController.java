@@ -79,7 +79,7 @@ public class GameBoardController extends AASceneParent {
 
 
     @FXML
-    private void initialize() throws EriantysExceptions {
+    private void initialize(){
 
         Platform.runLater(new Runnable() {
             @Override public void run() {
@@ -101,7 +101,7 @@ public class GameBoardController extends AASceneParent {
 
 
     @FXML
-    protected void update(ActionEvent event) throws IOException, EriantysExceptions {
+    protected void update(ActionEvent event)throws EriantysExceptions {
         removeGame();
         game.getTable().getIslands().remove(game.getTable().getIsland(0));
         game.getTable().getIsland(1).setMotherNature(true);
@@ -124,7 +124,7 @@ public class GameBoardController extends AASceneParent {
     }
 
 
-    public void update_islands() throws EriantysExceptions{
+    public void update_islands(){
         Table table = game.getTable();
 
 
@@ -171,7 +171,7 @@ public class GameBoardController extends AASceneParent {
         }
 
     }
-    public void update_clouds() throws EriantysExceptions{
+    public void update_clouds(){
         Table table = game.getTable();
         int pos_x_center =450;//650
         int pos_y_center =195;
@@ -198,7 +198,7 @@ public class GameBoardController extends AASceneParent {
         }
 
     }
-    public void updateDiningRoom() throws EriantysExceptions    {
+    public void updateDiningRoom(){
         String red = "Image/student_red.png";
         String yellow = "Image/student_yellow.png";
         String blue = "Image/student_blue.png";
@@ -457,10 +457,10 @@ public class GameBoardController extends AASceneParent {
     }
 
     @FXML
-    protected void ShowAssistant(ActionEvent event) throws IOException {
+    protected void ShowAssistant(ActionEvent event){
         this.messages.setText("ShowAssistant");
     }
-    protected void Action(ActionEvent event) throws IOException {
+    protected void Action(ActionEvent event){
 
         this.messages.setText("ShowAction");
     }
