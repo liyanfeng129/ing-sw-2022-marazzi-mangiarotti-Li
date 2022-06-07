@@ -141,7 +141,7 @@ public class GameBoardController extends AASceneParent {
         double pos_y_center =screenBounds.getMaxY()/5;
         double pos_x ;
         double pos_y ;
-        int r = 400;
+        double r = screenBounds.getMaxY()/(2.25);
         double angle = 360/table.getIslands().size();
         double angle_;
         for(int i=0; i<table.getIslands().size();i++){
@@ -462,7 +462,6 @@ public class GameBoardController extends AASceneParent {
     @FXML
     protected void ShowOpponentBoard(ActionEvent event) throws EriantysExceptions {
         int index_player;
-        System.out.println(game.getPlayers().size());
         Player curr_player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
         index_player = game.getPlayers().indexOf(curr_player);
         if (index_player+1 == game.getPlayers().size())
@@ -485,6 +484,8 @@ public class GameBoardController extends AASceneParent {
         this.messages.setText("ShowAction");
     }
     protected  void GridPane(double pos_x,double pos_y,int[] students){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double dim = screenBounds.getMaxY()/(60);
 
         ImageView red_student = new ImageView(new Image(getClass().getResourceAsStream(red)));
         ImageView yellow_student = new ImageView(new Image(getClass().getResourceAsStream(yellow)));
@@ -496,20 +497,20 @@ public class GameBoardController extends AASceneParent {
         //island_student.setPreserveRatio(true);
         //island_student.setAlignment(Pos.CENTER);
         //grandezza studenti
-        red_student.setFitWidth(15);
-        red_student.setFitHeight(15);
-        yellow_student.setFitWidth(15);
-        yellow_student.setFitHeight(15);
-        blue_student.setFitWidth(15);
-        blue_student.setFitHeight(15);
-        green_student.setFitWidth(15);
-        green_student.setFitHeight(15);
-        pink_student.setFitWidth(15);
-        pink_student.setFitHeight(15);
-        gridPane.setHgap(5);
-        gridPane.setVgap(2);
-        gridPane.setLayoutX(pos_x+70);
-        gridPane.setLayoutY(pos_y+60);
+        red_student.setFitWidth(dim);
+        red_student.setFitHeight(dim);
+        yellow_student.setFitWidth(dim);
+        yellow_student.setFitHeight(dim);
+        blue_student.setFitWidth(dim);
+        blue_student.setFitHeight(dim);
+        green_student.setFitWidth(dim);
+        green_student.setFitHeight(dim);
+        pink_student.setFitWidth(dim);
+        pink_student.setFitHeight(dim);
+        gridPane.setHgap(dim/3);
+        gridPane.setVgap(dim/7.5);
+        gridPane.setLayoutX(pos_x+(dim*4.66));
+        gridPane.setLayoutY(pos_y+(dim*4));
         gridPane.add(red_student, 0, 0);
         gridPane.add(new Text(""+students[0]), 1, 0);
         gridPane.add(yellow_student, 0, 1);
