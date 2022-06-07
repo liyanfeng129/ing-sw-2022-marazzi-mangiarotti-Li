@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,7 @@ public class GameBoardController extends AASceneParent {
     protected static String color;
 
 
+
     private CharacterCard cardChoice;
     private List<Node> nodes= new ArrayList<>();
 
@@ -65,6 +67,8 @@ public class GameBoardController extends AASceneParent {
      * rimuovere il test in gameSetUpController
      */
     private String name = "leo";
+    private String board_name = "leo";
+
 
 
 
@@ -105,7 +109,12 @@ public class GameBoardController extends AASceneParent {
         removeGame();
         game.getTable().getIslands().remove(game.getTable().getIsland(0));
         game.getTable().getIsland(1).setMotherNature(true);
-        game.getTable().getIsland(5).addStudent(2);
+        game.getTable().getClouds().get(0).setCloudStudent(new int[]{1,0,2,0,0});
+        game.getTable().getClouds().get(1).setCloudStudent(new int[]{1,1,1,0,0});
+        game.getTable().getClouds().get(2).setCloudStudent(new int[]{2,1,0,0,0});
+        game.getTable().getIsland(game.getTable().getIslands().size()/2).addStudent(2);
+        game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(1);
+        game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(3);
         updtadeGame();
 
 
@@ -127,9 +136,9 @@ public class GameBoardController extends AASceneParent {
     public void update_islands(){
         Table table = game.getTable();
 
-
-        int pos_x_center =450; //650
-        int pos_y_center =195;
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double pos_x_center =screenBounds.getMaxX()*2/7 +20; //650
+        double pos_y_center =screenBounds.getMaxY()/5;
         double pos_x ;
         double pos_y ;
         int r = 400;
@@ -156,7 +165,7 @@ public class GameBoardController extends AASceneParent {
             nodes.add(img_view);
             root.getChildren().add(img_view);
 
-            GridPane(pos_x,pos_y,game,i);
+            GridPane(pos_x,pos_y,game.getTable().getIslands().get(i).getStudents());
 
             if (table.getIslands().get(i).getMotherNature()){
                 ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
@@ -173,11 +182,13 @@ public class GameBoardController extends AASceneParent {
     }
     public void update_clouds(){
         Table table = game.getTable();
-        int pos_x_center =450;//650
-        int pos_y_center =195;
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double pos_x_center =screenBounds.getMaxX()*2/7 +20; //650
+        double pos_y_center =screenBounds.getMaxY()/5;
+        double pos_y = pos_y_center+30;
         double pos_x ;
 
-        pos_x =pos_x_center - 100 ;
+        pos_x =pos_x_center - 150 ;
         String img;
         for(int i=0; i<table.getClouds().size();i++){
             if (table.getClouds().size()==2)
@@ -185,16 +196,16 @@ public class GameBoardController extends AASceneParent {
             else
                 img = "image/cloud_card.png";
             ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream(img)));
-            img_view.setFitWidth(90);
-            img_view.setFitHeight(90);
+            img_view.setFitWidth(150);
             img_view.setPreserveRatio(true);
-            //button.setStyle("
-            // -fx-background-color: white");
             img_view.setLayoutX(pos_x);
-            img_view.setLayoutY(pos_y_center+30);
+            img_view.setLayoutY(pos_y);
             root.getChildren().add(img_view);
+
+            GridPane(pos_x,pos_y-20,game.getTable().getClouds().get(i).getStudents());
+
             nodes.add(img_view);
-            pos_x +=100;
+            pos_x +=150;
         }
 
     }
@@ -206,7 +217,7 @@ public class GameBoardController extends AASceneParent {
         String pink = "Image/student_pink.png";
         String color;
 
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
         PlayerBoard pb = player.getPlayerBoard();
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -256,7 +267,7 @@ public class GameBoardController extends AASceneParent {
         String pink = "Image/student_pink.png";
         String color;
 
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
         PlayerBoard pb = player.getPlayerBoard();
         int[] waitingRoom = pb.getWaitingRoom();
 
@@ -320,7 +331,7 @@ public class GameBoardController extends AASceneParent {
         String pink = "Image/teacher_pink.png";
         String color;
 
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
         Mage mage = player.getMage();
         Mage[] prof = game.getProfessors().getList_professors();
 
@@ -374,7 +385,6 @@ public class GameBoardController extends AASceneParent {
            CharacterCard card = cards.get(i);
            String img_file;
             int c = card.getN_card();
-            System.out.println(c);
            switch (c) {
                case 1:
                    img_file = "Image/CarteTOT_front1.jpg";break;
@@ -413,7 +423,6 @@ public class GameBoardController extends AASceneParent {
            else
               pos_y =pos_y + (img.getLayoutBounds().getHeight());
 
-           System.out.println(pos_y);
            bt.setLayoutY(pos_y);
            bt.setGraphic(img);
            bt.setOnAction(new EventHandler<ActionEvent>() {
@@ -452,8 +461,20 @@ public class GameBoardController extends AASceneParent {
         this.messages.setText("ShowCaracter");
     }
     @FXML
-    protected void ShowOpponentBoard(ActionEvent event) {
-        this.messages.setText("ShowOpponentBoard");
+    protected void ShowOpponentBoard(ActionEvent event) throws EriantysExceptions {
+        int index_player;
+        System.out.println(game.getPlayers().size());
+        Player curr_player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        index_player = game.getPlayers().indexOf(curr_player);
+        if (index_player+1 == game.getPlayers().size())
+            index_player = 0;
+        else
+            index_player +=1;
+        this.board_name = game.getPlayers().get(index_player).getName();
+        this.messages.setText("you are watching "+board_name+ " board"+"to swich play the ShowOpponentBoard button");
+        removeGame();
+        updtadeGame();
+
     }
 
     @FXML
@@ -464,14 +485,14 @@ public class GameBoardController extends AASceneParent {
 
         this.messages.setText("ShowAction");
     }
-    protected  void GridPane(double pos_x,double pos_y,Game game,int i){
+    protected  void GridPane(double pos_x,double pos_y,int[] students){
 
         ImageView red_student = new ImageView(new Image(getClass().getResourceAsStream(red)));
         ImageView yellow_student = new ImageView(new Image(getClass().getResourceAsStream(yellow)));
         ImageView blue_student = new ImageView(new Image(getClass().getResourceAsStream(blue)));
         ImageView green_student = new ImageView(new Image(getClass().getResourceAsStream(green)));
         ImageView pink_student = new ImageView(new Image(getClass().getResourceAsStream(pink)));
-        GridPane island_student = new GridPane();
+        GridPane gridPane = new GridPane();
         //island_student.setMaxSize(10,10);
         //island_student.setPreserveRatio(true);
         //island_student.setAlignment(Pos.CENTER);
@@ -486,26 +507,26 @@ public class GameBoardController extends AASceneParent {
         green_student.setFitHeight(15);
         pink_student.setFitWidth(15);
         pink_student.setFitHeight(15);
-        island_student.setHgap(5);
-        island_student.setVgap(2);
-        island_student.setLayoutX(pos_x+70);
-        island_student.setLayoutY(pos_y+60);
-        island_student.add(red_student, 0, 0);
-        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[0]), 1, 0);
-        island_student.add(yellow_student, 0, 1);
-        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[1]), 1, 1);
-        island_student.add(blue_student, 0, 2);
-        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[2]), 1, 2);
-        island_student.add(green_student, 0, 3);
-        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[3]), 1, 3);
-        island_student.add(pink_student, 0, 4);
-        island_student.add(new Text(""+game.getTable().getIsland(i).getStudents()[4]), 1, 4);
+        gridPane.setHgap(5);
+        gridPane.setVgap(2);
+        gridPane.setLayoutX(pos_x+70);
+        gridPane.setLayoutY(pos_y+60);
+        gridPane.add(red_student, 0, 0);
+        gridPane.add(new Text(""+students[0]), 1, 0);
+        gridPane.add(yellow_student, 0, 1);
+        gridPane.add(new Text(""+students[1]), 1, 1);
+        gridPane.add(blue_student, 0, 2);
+        gridPane.add(new Text(""+students[2]), 1, 2);
+        gridPane.add(green_student, 0, 3);
+        gridPane.add(new Text(""+students[3]), 1, 3);
+        gridPane.add(pink_student, 0, 4);
+        gridPane.add(new Text(""+students[4]), 1, 4);
         //island_student.setGridLinesVisible (true);
 
 
 
-        nodes.add(island_student);
-        root.getChildren().add(island_student);
+        nodes.add(gridPane);
+        root.getChildren().add(gridPane);
     }
 
 

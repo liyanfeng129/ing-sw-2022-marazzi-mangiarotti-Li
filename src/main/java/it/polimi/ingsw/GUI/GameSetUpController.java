@@ -29,16 +29,26 @@ public class GameSetUpController extends AASceneParent {
     }
     @FXML
     protected void startEasy3(ActionEvent event) throws IOException, EriantysExceptions {
+        //
 
         Game game  = new Game(3,false,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,true,false));
+        game.addPlayers(new Player("ale", Mage.MAGE2,TowerColor.WHITE,3,false,false));
+        game.addPlayers(new Player("yan", Mage.MAGE3,TowerColor.GREY,3,false,false));
+
         Player player = game.getPlayers().stream().filter(p -> p.getName()=="leo").collect(Collectors.toList()).get(0);
         player.getPlayerBoard().setDiningRoom(new int[]{10, 10, 10, 10, 10});
-        player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{2, 1, 3, 1, 2}); // e se sono troppi ?
-        Professors prof = new Professors();
-        prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.MAGE2, Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE1});
-        game.setProfessors(prof);
+        player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{1, 1, 3, 1, 3}); // e se sono troppi ?
+
+        player = game.getPlayers().stream().filter(p -> p.getName()=="ale").collect(Collectors.toList()).get(0);
+        player.getPlayerBoard().setDiningRoom(new int[]{3, 1, 2, 10, 4});
+        player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{0, 1, 5, 1, 2}); // e se sono troppi ?
+
+        player = game.getPlayers().stream().filter(p -> p.getName()=="yan").collect(Collectors.toList()).get(0);
+        player.getPlayerBoard().setDiningRoom(new int[]{1, 1, 2, 2, 10});
+        player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{2, 0, 0, 5, 2}); // e se sono troppi ?
 
 
+        game.getProfessors().assignProfessor(game.getPlayers());
         game.getTable().addCharacterCards(new Character12());
         game.getTable().addCharacterCards(new Character2());
         game.getTable().addCharacterCards(new Character8());
@@ -48,6 +58,11 @@ public class GameSetUpController extends AASceneParent {
             cloud.setCloud(3);
             game.getTable().getClouds().add(cloud);
         }
+
+
+        //
+
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("GameBoard.fxml"));
         Parent root = loader.load();
