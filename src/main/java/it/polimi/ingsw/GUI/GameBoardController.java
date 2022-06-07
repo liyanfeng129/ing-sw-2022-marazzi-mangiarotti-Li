@@ -168,11 +168,11 @@ public class GameBoardController extends AASceneParent {
 
             if (table.getIslands().get(i).getMotherNature()){
                 ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
-                MN_view.setFitWidth(50);
-                MN_view.setFitHeight(50);
+                MN_view.setFitWidth(screenBounds.getMaxY()/18);
+                MN_view.setFitHeight(screenBounds.getMaxY()/18);
                 MN_view.setPreserveRatio(true);
-                MN_view.setLayoutX(pos_x+35);
-                MN_view.setLayoutY(pos_y+30-5);
+                MN_view.setLayoutX(pos_x+screenBounds.getMaxY()/25.7);
+                MN_view.setLayoutY(pos_y+screenBounds.getMaxY()/36);
                 nodes.add(MN_view);
                 root.getChildren().add(MN_view);
             }
@@ -413,12 +413,12 @@ public class GameBoardController extends AASceneParent {
            }
            ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
            Button bt = new Button();
-           img.setFitWidth(100);
+           img.setFitWidth(screenBounds.getMaxY()/90);
            img.setPreserveRatio(true);
-           bt.setLayoutX(pos_max_x-112);
+           bt.setLayoutX(pos_max_x-screenBounds.getMaxY()/8);
            bt.setPadding(new Insets(0.5,0.5,0.5,0.5));
            if (i==0)
-                pos_y = 5;
+                pos_y = screenBounds.getMaxY()/180;
            else
               pos_y =pos_y + (img.getLayoutBounds().getHeight());
 
@@ -431,7 +431,7 @@ public class GameBoardController extends AASceneParent {
                    messages.setText(card.getMsg());
                }
            });
-           pos_y = pos_y+5;
+           pos_y = pos_y+screenBounds.getMaxY()/180;
 
 
 
