@@ -73,6 +73,7 @@ public class GameBoardController extends AASceneParent {
                 try {
                     sowGameDragStudent();
                     if (game.isExpertMode()) updateCaracterNoAction();
+                    showAssistant();
 
                 } catch (EriantysExceptions e) {
                     e.printStackTrace();
@@ -993,6 +994,69 @@ public class GameBoardController extends AASceneParent {
         noTile.setLayoutY(pos_y+screenBounds.getMaxY()/33);
         nodes.add(noTile);
         root.getChildren().add(noTile);
+    }
+
+    public void showAssistant(){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        GridPane gridPane = new GridPane();
+        //int activePlayer=game.getGameState().getPhase();
+        //List<Assistant> cards = game.getPlayers().get(activePlayer).getHand().getList_cards();
+        List<Assistant> cards = game.getPlayers().get(0).getHand().getList_cards();
+        for(int i =0;i<10; i++) {
+            String img_file;
+            switch (i) {
+                case 0:
+                    img_file = "Image/CarteTOT_front1.jpg";
+                    break;
+                case 1:
+                    img_file = "Image/CarteTOT_front2.jpg";
+                    break;
+                case 2:
+                    img_file = "Image/CarteTOT_front3.jpg";
+                    break;
+                case 3:
+                    img_file = "Image/CarteTOT_front4.jpg";
+                    break;
+                case 4:
+                    img_file = "Image/CarteTOT_front5.jpg";
+                    break;
+                case 5:
+                    img_file = "Image/CarteTOT_front6.jpg";
+                    break;
+                case 6:
+                    img_file = "Image/CarteTOT_front7.jpg";
+                    break;
+                case 7:
+                    img_file = "Image/CarteTOT_front8.jpg";
+                    break;
+                case 8:
+                    img_file = "Image/CarteTOT_front9.jpg";
+                    break;
+                default:
+                    img_file = "Image/CarteTOT_front12.jpg";
+                    break;
+            }
+            ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
+            double dim=screenBounds.getMaxY()/8;
+            img.setFitWidth(dim);
+            img.setPreserveRatio(true);
+            gridPane.setHgap(dim/3);
+            gridPane.setVgap(dim/10);
+            if (cards.contains(AssistantType.index(i))){
+                img.setOpacity(0.5);
+            }
+            if(i<5)
+                gridPane.add(img,i , 0);
+            else
+                gridPane.add(img,i-5 , 1);
+            GridPane.setHalignment(img, HPos.CENTER);
+            }
+        Button bt=new Button();
+        gridPane.add(bt,0,3);
+        //bt.setPadding(new Insets(0.5,0.5,0.5,0.5));
+        gridPane.setGridLinesVisible (true);
+        nodes.add(gridPane);
+        root.getChildren().add(gridPane);
     }
 
 }
