@@ -8,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -73,7 +72,7 @@ public class GameBoardController extends AASceneParent {
             @Override public void run() {
 
                 try {
-                    sowGameDragStudent();
+                    sHowGameDragStudent();
                     if (game.isExpertMode()) updateCaracterNoAction();
 
                 } catch (EriantysExceptions e) {
@@ -115,11 +114,11 @@ public class GameBoardController extends AASceneParent {
          *
          * gli altri sono per ci gioca
          *
-         * sowGameDragStudent per muovere studente o selezionanre la carta
+         * showGameDragStudent per muovere studente o selezionanre la carta
          *
-         * sowGameMoveMN per muovere MN o selezionare carta
+         * showGameMoveMN per muovere MN o selezionare carta
          *
-         * sowGamePickCloud per prendere cloud o selezionare carta
+         * showGamePickCloud per prendere cloud o selezionare carta
          *
          * se vuoi anche mandare dei messaggi fai
          *
@@ -608,7 +607,7 @@ public class GameBoardController extends AASceneParent {
 
     //Drag Student and choose character
 
-    public void sowGameDragStudent() throws EriantysExceptions {
+    public void sHowGameDragStudent() throws EriantysExceptions {
 
         switcBoardController(true);
 
@@ -737,7 +736,7 @@ public class GameBoardController extends AASceneParent {
 
 
     //Move MotherNature and choose character
-    public void sowGameMoveMN() {
+    public void showGameMoveMN() {
 
         switcBoardController(false);
         addButtonCharacter();
@@ -820,7 +819,7 @@ public class GameBoardController extends AASceneParent {
 
 
     //Chose Cloud and choose character
-    public void sowGamePickCloud()  {
+    public void showGamePickCloud()  {
 
         switcBoardController(false);
         addButtonCharacter();
