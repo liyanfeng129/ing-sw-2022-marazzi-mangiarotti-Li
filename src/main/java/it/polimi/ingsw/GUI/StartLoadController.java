@@ -10,38 +10,47 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class StartLoadController extends AASceneParent {
 
 
 
-
     @FXML
     protected void newGame(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass(). getResource("game_set_up.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        System.out.println("newGame");
-        System.out.println(getUsername());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("game_set_up.fxml"));
+        Parent root = loader.load();
+        GameSetUpController gameSetUp = loader.getController();
+        gameSetUp.setInfo(getInfo());
+        switchScene(root,event);
+        System.out.println("new game");
     }
     @FXML
     protected void loadGame(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass(). getResource("load_game.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("load_game.fxml"));
+        Parent root = loader.load();
+        LoadGameController loadGame = loader.getController();
+        loadGame.setInfo(getInfo());
+        switchScene(root,event);
         System.out.println("loadGame");
     }
     @FXML
     protected void back(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass(). getResource("home.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+        Parent root = loader.load();
+        HomeController home = loader.getController();
+        home.setInfo(getInfo());
+        switchScene(root,event);
         System.out.println("back");
+    }
+
+    @Override
+    public void listenerCallBack(ArrayList<Object> responses) {
+
+    }
+
+    @Override
+    public void responsesFromSender(ArrayList<Object> responses) {
+
     }
 }

@@ -7,14 +7,25 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class AASceneParent {
+public abstract class AASceneParent {
     private String username;
+    private GUIInfo info;
     public Scene scene;
     public Stage stage;
 
+
     public String getUsername() {
         return username;
+    }
+
+    public GUIInfo getInfo() {
+        return info;
+    }
+
+    public void setInfo(GUIInfo info) {
+        this.info = info;
     }
 
     public void setUsername(String username) {
@@ -28,4 +39,9 @@ public class AASceneParent {
         stage.setFullScreen(true);
         stage.show();
     }
+
+    public abstract void listenerCallBack(ArrayList<Object> responses);
+
+    public abstract void responsesFromSender(ArrayList<Object> responses) throws IOException;
+
 }
