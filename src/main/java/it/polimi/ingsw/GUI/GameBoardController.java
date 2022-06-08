@@ -121,7 +121,9 @@ public class GameBoardController extends AASceneParent {
          *
          * se vuoi anche mandare dei messaggi fai
          *
-         * messages.setText("msg) dopo aver fatto queste cose
+         * messages.setText("msg") dopo aver fatto queste cose
+         *
+         * sowAssistant();
          *
          */
         showGameNoAction();
@@ -204,9 +206,7 @@ public class GameBoardController extends AASceneParent {
                 nodes.add(MN_view);
                 root.getChildren().add(MN_view);
             }
-            /**TODO ALESSIO
-             * tile no action, Torre, dimensione
-             */
+
 
         }
 
@@ -638,6 +638,8 @@ public class GameBoardController extends AASceneParent {
                 /**TODO YANFENG
                  * qui prendi la carta e la mandi al server
                  * ricordati di settare a null cardChoice una volta preso l'input
+                 *
+                 * carta in cardChoice
                  */
                 if (cardChoice ==null)
                     messages.setText("Seleziona una carta");
@@ -808,9 +810,6 @@ public class GameBoardController extends AASceneParent {
                 root.getChildren().add(MN_view);
             }
 
-            /**TODO ALESSIO
-             * tile no action, Torre, dimensione
-             */
         }
 
     }
@@ -975,7 +974,7 @@ public class GameBoardController extends AASceneParent {
         gridPane.setLayoutX(pos_x+(dim*1.1));
         gridPane.setLayoutY(pos_y+(dim*2.5));
         gridPane.add(new Text("Size:"+size), 0, 1);
-        gridPane.setGridLinesVisible (true);
+        //gridPane.setGridLinesVisible (true);
 
 
 
