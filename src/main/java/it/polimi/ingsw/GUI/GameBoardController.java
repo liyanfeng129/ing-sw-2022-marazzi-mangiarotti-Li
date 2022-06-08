@@ -19,6 +19,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ public class GameBoardController extends AASceneParent {
     private Game game;
     private int islandIndex;
     private int cloudIndex ;
+    private Assistant assistantChoice;
 
 
     @FXML
@@ -73,7 +75,6 @@ public class GameBoardController extends AASceneParent {
                 try {
                     sowGameDragStudent();
                     if (game.isExpertMode()) updateCaracterNoAction();
-                    showAssistant();
 
                 } catch (EriantysExceptions e) {
                     e.printStackTrace();
@@ -124,8 +125,9 @@ public class GameBoardController extends AASceneParent {
          *
          * messages.setText("msg") dopo aver fatto queste cose
          *
-         * sowAssistant();
+         * showAssistant(); per far vedere gli assitenti
          *
+         * devi togliere lo showGameNoAction qui sotto ricordatelo
          */
         showGameNoAction();
 
@@ -996,9 +998,15 @@ public class GameBoardController extends AASceneParent {
         root.getChildren().add(noTile);
     }
 
+
+
+
+
     public void showAssistant(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         GridPane gridPane = new GridPane();
+        gridPane.setLayoutX(0);
+        gridPane.setLayoutY(screenBounds.getMinY()/3);
         //int activePlayer=game.getGameState().getPhase();
         //List<Assistant> cards = game.getPlayers().get(activePlayer).getHand().getList_cards();
         List<Assistant> cards = game.getPlayers().get(0).getHand().getList_cards();
@@ -1006,57 +1014,89 @@ public class GameBoardController extends AASceneParent {
             String img_file;
             switch (i) {
                 case 0:
-                    img_file = "Image/CarteTOT_front1.jpg";
+                    img_file = "Image/Assistente_1.png";
                     break;
                 case 1:
-                    img_file = "Image/CarteTOT_front2.jpg";
+                    img_file = "Image/Assistente_2.png";
                     break;
                 case 2:
-                    img_file = "Image/CarteTOT_front3.jpg";
+                    img_file = "Image/Assistente_3.png";
                     break;
                 case 3:
-                    img_file = "Image/CarteTOT_front4.jpg";
+                    img_file = "Image/Assistente_4.png";
                     break;
                 case 4:
-                    img_file = "Image/CarteTOT_front5.jpg";
+                    img_file = "Image/Assistente_5.png";
                     break;
                 case 5:
-                    img_file = "Image/CarteTOT_front6.jpg";
+                    img_file = "Image/Assistente_6.png";
                     break;
                 case 6:
-                    img_file = "Image/CarteTOT_front7.jpg";
+                    img_file = "Image/Assistente_7.png";
                     break;
                 case 7:
-                    img_file = "Image/CarteTOT_front8.jpg";
+                    img_file = "Image/Assistente_8.png";
                     break;
                 case 8:
-                    img_file = "Image/CarteTOT_front9.jpg";
+                    img_file = "Image/Assistente_9.png";
                     break;
                 default:
-                    img_file = "Image/CarteTOT_front12.jpg";
+                    img_file = "Image/Assistente_10.png";
                     break;
             }
             ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
-            double dim=screenBounds.getMaxY()/8;
+            double dim=screenBounds.getMaxY()/7;
+            Button btAssistant=new Button();
             img.setFitWidth(dim);
             img.setPreserveRatio(true);
+            btAssistant.setGraphic(img);
+            btAssistant.setPadding(new Insets(0.5,0.5,0.5,0.5));
+
             gridPane.setHgap(dim/3);
             gridPane.setVgap(dim/10);
+            Assistant card = cards.get(i);
             if (cards.contains(AssistantType.index(i))){
                 img.setOpacity(0.5);
             }
+            else{
+                btAssistant.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent e) {
+                    assistantChoice = card;
+                    messages.setText("Hai scelto una carta");
+                    }
+                });
+            }
             if(i<5)
-                gridPane.add(img,i , 0);
+                gridPane.add(btAssistant,i , 0);
+
             else
-                gridPane.add(img,i-5 , 1);
+                gridPane.add(btAssistant,i-5 , 1);
             GridPane.setHalignment(img, HPos.CENTER);
             }
-        Button bt=new Button();
-        gridPane.add(bt,0,3);
+        Button bt=new Button("Select Assistant");
+        bt.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                /**TODO YANFENG
+                 * qui prendi la carta assistente (è nella variabile globale assistantChoice)
+                 */
+                messages.setText("Invio Carta");
+            }
+        });
+
+        gridPane.add(bt,4,3);
         //bt.setPadding(new Insets(0.5,0.5,0.5,0.5));
-        gridPane.setGridLinesVisible (true);
+        //gridPane.setGridLinesVisible (true);
         nodes.add(gridPane);
         root.getChildren().add(gridPane);
     }
 
+    @Override
+    public void listenerCallBack(ArrayList<Object> responses) {
+
+    }
+
+    @Override
+    public void responsesFromSender(ArrayList<Object> responses) throws IOException {
+
+    }
 }
