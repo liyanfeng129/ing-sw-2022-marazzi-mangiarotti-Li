@@ -41,6 +41,10 @@ public class Cloud implements Serializable {
         return students;
     }
 
+    /** TODO
+     * non funnziona
+     *
+     */
     public void setStudents(int [] students) throws EriantysExceptions
     {
         if(Arrays.stream(students).sum() != getSize())

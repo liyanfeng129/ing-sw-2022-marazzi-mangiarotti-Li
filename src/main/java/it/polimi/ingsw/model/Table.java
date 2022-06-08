@@ -242,5 +242,13 @@ public class Table implements Serializable {
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    public ArrayList<CharacterCard> getCharacterCards() {
+        return characterCards;
+    }
+
+    public void addCharacterCards(CharacterCard characterCards) {
+        this.characterCards.add(characterCards);
+    }
 }
 

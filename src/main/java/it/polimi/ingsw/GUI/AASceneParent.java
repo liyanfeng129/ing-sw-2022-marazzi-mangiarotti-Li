@@ -31,10 +31,12 @@ public abstract class AASceneParent {
     public void setUsername(String username) {
         this.username = username;
     }
+
     public void switchScene(Parent root, Event event) throws IOException {
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 

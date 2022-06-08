@@ -14,6 +14,7 @@ public class Character5 extends CharacterCard implements Serializable {
     public Character5() {
         super();
         setCoin(2);
+        setN_card(5);
         String msg = "Place a No Entry tile on an Island of your choice.\n" +
                 "The first time Mother Nature ends her movement\n" +
                 "there, put the No Entry tile back onto this card DO NOT\n" +

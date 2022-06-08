@@ -15,6 +15,7 @@ public class Character10 extends CharacterCard implements Serializable {
     public Character10() {
         super();
         setCoin(1);
+        setN_card(10);
         String msg = "You may exchange up to 2 Students between\n" +
                 "your Entrance and your Dining Room.";
         setMsg(msg);

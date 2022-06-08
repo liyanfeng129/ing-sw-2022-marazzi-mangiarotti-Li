@@ -21,7 +21,7 @@ public class HomeController extends AASceneParent {
 
     private ActionEvent currentEvent;
 
-    String name;
+    private String name;
 
     @FXML
     public void submit(ActionEvent event) {
