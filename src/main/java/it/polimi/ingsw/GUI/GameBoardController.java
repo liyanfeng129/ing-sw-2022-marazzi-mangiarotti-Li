@@ -619,6 +619,7 @@ public class GameBoardController extends AASceneParent {
         updateDiningRoomNoAction();
         updateWaitingRoomNoAction();
         updateProfessorNoAction();
+        showWallet(3);
     }
 
     public void showBoardAction() throws EriantysExceptions{
@@ -1084,6 +1085,25 @@ public class GameBoardController extends AASceneParent {
 
         gridPane.add(bt,4,3);
         //bt.setPadding(new Insets(0.5,0.5,0.5,0.5));
+        //gridPane.setGridLinesVisible (true);
+        nodes.add(gridPane);
+        root.getChildren().add(gridPane);
+    }
+    public void showWallet(int wallet){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double dim = screenBounds.getMaxY()/(15);
+        double pos_x = screenBounds.getMaxX()-screenBounds.getMaxX()/7.5;
+        double pos_y =dim/3;
+        GridPane gridPane = new GridPane();
+        ImageView coin = new ImageView(new Image(getClass().getResourceAsStream("Image/white_tower.png")));
+        coin.setFitWidth(dim);
+        coin.setPreserveRatio(true);
+        gridPane.add(coin, 0, 0);
+        GridPane.setHalignment(coin, HPos.RIGHT);
+        //gridPane.setHgap(dim/3);
+        gridPane.setLayoutX(pos_x);
+        gridPane.setLayoutY(pos_y);
+        gridPane.add(new Text("x"+wallet), 1, 0);
         //gridPane.setGridLinesVisible (true);
         nodes.add(gridPane);
         root.getChildren().add(gridPane);
