@@ -9,12 +9,15 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 
@@ -31,7 +34,8 @@ public class GameBoardController extends AASceneParent {
     private int islandIndex;
     private int cloudIndex ;
     private Assistant assistantChoice;
-
+    final Delta dragDelta = new Delta();
+    class Delta { double x, y; }
 
     @FXML
     private AnchorPane root;
@@ -72,8 +76,7 @@ public class GameBoardController extends AASceneParent {
             @Override public void run() {
 
                 try {
-                    sHowGameDragStudent();
-                    if (game.isExpertMode()) updateCaracterNoAction();
+                    showGameDragStudent();
 
                 } catch (EriantysExceptions e) {
                     e.printStackTrace();
@@ -149,6 +152,11 @@ public class GameBoardController extends AASceneParent {
         updateDiningRoomNoAction();
         updateWaitingRoomNoAction();
         updateProfessorNoAction();
+        updateProfessorNoAction();
+        if (game.isExpertMode()) {
+            updateCharacterNoAction();
+            showWallet();
+        }
     }
     public void showBoardNoAction() throws EriantysExceptions{
         updateDiningRoomNoAction();
@@ -170,6 +178,10 @@ public class GameBoardController extends AASceneParent {
         double angle_;
         for(int i=0; i<table.getIslands().size();i++){
             ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
+            ImageView imgDragDrop = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
+
+            imgDragDrop.setFitWidth(screenBounds.getMaxY()/6);
+            imgDragDrop.setPreserveRatio(true);
 
             img_view.setFitWidth(screenBounds.getMaxY()/6);
             img_view.setPreserveRatio(true);
@@ -185,8 +197,64 @@ public class GameBoardController extends AASceneParent {
             pos_y =-r*Math.sin(Math.toRadians(angle_))*0.50+pos_y_center;
             img_view.setLayoutX(pos_x);
             img_view.setLayoutY(pos_y+30);
+
+
+            imgDragDrop.setLayoutX(pos_x);
+            imgDragDrop.setLayoutY(pos_y+30);
+
+            imgDragDrop.setOnDragOver(new EventHandler <DragEvent>() {
+                public void handle(DragEvent event) {
+                    //data is dragged over the target
+                    System.out.println("onDragOver");
+
+                    // accept it only if it is  not dragged from the same node
+                     //( and if it has a string data
+                    if (event.getGestureSource() != imgDragDrop &&
+                            event.getDragboard().hasString()) {
+                        // allow for both copying and moving, whatever user chooses
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+
+                    event.consume();
+                }
+            });
+
+            imgDragDrop.setOnDragEntered(new EventHandler <DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* the drag-and-drop gesture entered the target */
+                    System.out.println("onDragEntered");
+                    /* show to the user that it is an actual gesture target */
+                    if (event.getGestureSource() != imgDragDrop &&
+                            event.getDragboard().hasString()) {
+                        System.out.println("setOnDragEntered");
+                    }
+
+                    event.consume();
+                }
+            });
+
+            imgDragDrop.setOnDragDropped(new EventHandler <DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* data dropped */
+                    System.out.println("onDragDropped");
+                    /* if there is a string data on dragboard, read it and use it */
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    if (db.hasString()) {
+                        System.out.println("setOnDragDropped");
+                        success = true;
+                    }
+                    /* let the source know whether the string was successfully
+                     * transferred and used */
+                    event.setDropCompleted(success);
+
+                    event.consume();
+                }
+            });
+
             nodes.add(img_view);
             root.getChildren().add(img_view);
+
 
             GridPane(pos_x,pos_y,game.getTable().getIslands().get(i).getStudents());
                 int size=game.getTable().getIslands().get(i).getSize();
@@ -208,7 +276,9 @@ public class GameBoardController extends AASceneParent {
                 nodes.add(MN_view);
                 root.getChildren().add(MN_view);
             }
-
+            imgDragDrop.setOpacity(0);
+            nodes.add(imgDragDrop);
+            root.getChildren().add(imgDragDrop);
 
         }
 
@@ -411,7 +481,7 @@ public class GameBoardController extends AASceneParent {
 
         }
     }
-    public void updateCaracterNoAction() throws EriantysExceptions{
+    public void updateCharacterNoAction() throws EriantysExceptions{
 
         List<CharacterCard> cards = game.getTable().getCharacters();
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -462,6 +532,9 @@ public class GameBoardController extends AASceneParent {
 
            bt.setLayoutY(pos_y);
            bt.setGraphic(img);
+
+
+
            bt.setOnAction(new EventHandler<ActionEvent>() {
                @Override public void handle(ActionEvent e) {
                    cardChoice = card;
@@ -475,6 +548,15 @@ public class GameBoardController extends AASceneParent {
 
 
            root.getChildren().add(bt);
+            if (!card.isFirstUse()){
+                ImageView coin = new ImageView(new Image(getClass().getResourceAsStream("Image/coin.png")));
+                coin.setFitWidth(screenBounds.getMaxY()/16);
+                coin.setPreserveRatio(true);
+                coin.setLayoutX((pos_max_x-screenBounds.getMaxY()/7.5)*1.01);
+                coin.setLayoutY(pos_y*1.01);
+                root.getChildren().add(coin);
+
+            }
        }
 
     }
@@ -594,20 +676,13 @@ public class GameBoardController extends AASceneParent {
 
 
     }
-    public void showWallet(){
-        /**TODO ALESSIO
-         * mettere le monete
-         */
-
-
-    }
 
 
 
 
     //Drag Student and choose character
 
-    public void sHowGameDragStudent() throws EriantysExceptions {
+    public void showGameDragStudent() throws EriantysExceptions {
 
         switcBoardController(true);
 
@@ -617,9 +692,12 @@ public class GameBoardController extends AASceneParent {
         updateIslandsNoAction();
         updateCloudsNoAction();
         updateDiningRoomNoAction();
-        updateWaitingRoomNoAction();
+        updateWaitingRoomAction();
         updateProfessorNoAction();
-        showWallet(3);
+        if (game.isExpertMode()) {
+            updateCharacterNoAction();
+            showWallet();
+        }
     }
 
     public void showBoardAction() throws EriantysExceptions{
@@ -666,6 +744,9 @@ public class GameBoardController extends AASceneParent {
         int[] waitingRoom = pb.getWaitingRoom();
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double bt_pos_x ;
+        double bt_pos_y;
+
         double pos_x ;
         double pos_y = screenBounds.getHeight()-70;
         int cont =0;
@@ -683,15 +764,7 @@ public class GameBoardController extends AASceneParent {
             for (int j =0;j<waitingRoom[i];j++) {
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
 
-                board.add(img);
-                if (board_name==name){
 
-                    /**TODO ALESSIO
-                     * bisogna aggiungere a img ondrag action
-                     */
-                }
-
-                nodes.add(img);
                 img.setFitWidth(screenBounds.getMaxY()/(33.333));
                 img.setFitHeight(screenBounds.getMaxY()/(33.333));
                 img.setPreserveRatio(true);
@@ -719,25 +792,48 @@ public class GameBoardController extends AASceneParent {
                     cont +=1;
                 }
 
+
+                if (board_name==name){
+
+
+                    img.setOnDragDetected(new EventHandler <MouseEvent>() {
+                        public void handle(MouseEvent event) {
+                            /* drag was detected, start drag-and-drop gesture*/
+                            System.out.println("onDragDetected");
+
+                            /* allow any transfer mode */
+                            Dragboard db = img.startDragAndDrop(TransferMode.ANY);
+
+                            /* put a string on dragboard */
+                            ClipboardContent content = new ClipboardContent();
+                            content.putString("Hello!");
+                            db.setContent(content);
+
+                            event.consume();
+                        }
+                    });
+                    img.setOnDragDone(new EventHandler <DragEvent>() {
+                        public void handle(DragEvent event) {
+                            /* the drag-and-drop gesture ended */
+                            System.out.println("onDragDone");
+                            /* if the data was successfully moved, clear it */
+
+                            event.consume();
+                        }
+                    });
+
+                }
+                board.add(img);
+                nodes.add(img);
                 root.getChildren().add(img);
-
             }
-
-
         }
-
-
-
     }
 
 
-
-
-
-
-
     //Move MotherNature and choose character
-    public void showGameMoveMN() {
+    public void showGameMoveMN() throws EriantysExceptions {
+
 
         switcBoardController(false);
         addButtonCharacter();
@@ -747,6 +843,10 @@ public class GameBoardController extends AASceneParent {
         updateDiningRoomNoAction();
         updateWaitingRoomNoAction();
         updateProfessorNoAction();
+        if (game.isExpertMode()) {
+            updateCharacterNoAction();
+            showWallet();
+        }
     }
 
     public void updateIslandsAction(){
@@ -820,7 +920,7 @@ public class GameBoardController extends AASceneParent {
 
 
     //Chose Cloud and choose character
-    public void showGamePickCloud()  {
+    public void showGamePickCloud() throws EriantysExceptions {
 
         switcBoardController(false);
         addButtonCharacter();
@@ -830,6 +930,10 @@ public class GameBoardController extends AASceneParent {
         updateDiningRoomNoAction();
         updateWaitingRoomNoAction();
         updateProfessorNoAction();
+        if (game.isExpertMode()) {
+            updateCharacterNoAction();
+            showWallet();
+        }
     }
 
     public void updateCloudsAction(){
@@ -1089,13 +1193,18 @@ public class GameBoardController extends AASceneParent {
         nodes.add(gridPane);
         root.getChildren().add(gridPane);
     }
-    public void showWallet(int wallet){
+
+    public void showWallet(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+
+        int wallet = player.getWallet().getSaving();
         double dim = screenBounds.getMaxY()/(15);
-        double pos_x = screenBounds.getMaxX()-screenBounds.getMaxX()/7.5;
+        double pos_x =screenBounds.getMaxX()*5/6;
         double pos_y =dim/3;
         GridPane gridPane = new GridPane();
-        ImageView coin = new ImageView(new Image(getClass().getResourceAsStream("Image/white_tower.png")));
+        ImageView coin = new ImageView(new Image(getClass().getResourceAsStream("Image/coin.png")));
         coin.setFitWidth(dim);
         coin.setPreserveRatio(true);
         gridPane.add(coin, 0, 0);
