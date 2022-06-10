@@ -220,19 +220,9 @@ public class UpdateReceiver extends Thread {
             else
                 System.out.println(responses.get(0));
         }
-        else if (userName=="endgame"){
+        else if (game.getLastCommand().getUsername().equals("endgame")){
             Command command = game.getLastCommand();
             command.getData();
-            ArrayList<Object> messages = new ArrayList<>();
-            ArrayList<Object> responses = new ArrayList<>();
-            messages.add(Config.COMMAND_EXECUTE);
-            messages.add(userName);
-            messages.add(command);
-            responses = responseFromServer(messages);
-            if(responses.get(0).equals(Config.COMMAND_EXECUTE_SUC))
-                System.out.println("Command executed");
-            else
-                System.out.println(responses.get(0));
         }
     }
     private  void clearScreen()

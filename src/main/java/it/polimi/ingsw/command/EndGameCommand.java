@@ -24,12 +24,14 @@ public class EndGameCommand extends Command implements Serializable {
 
     @Override
     public void getData() throws EriantysExceptions {
+        for (int i=0;i<winners.size();i++){
+            System.out.println("winner is " + winners.get(i));
+        }
         setDataGathered(true);
     }
 
     @Override
     public boolean execute(Game game) throws EriantysExceptions {
-        setMsg(String.format("Winner is : %s", winners.get(0)));
         return true;
     }
 }
