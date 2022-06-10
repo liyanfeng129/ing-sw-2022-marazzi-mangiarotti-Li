@@ -28,9 +28,11 @@ class EndGameStateTest {
             table=new Table();
             game.setTable(table);
             game.startGame();
-            game.getPlayers().get(0).getPlayerBoard().moveTower(-8);
+            game.getPlayers().get(0).getPlayerBoard().moveTower(-6);
+            //game.getPlayers().get(1).getPlayerBoard().moveTower(-6);
+            //System.out.println(game.getPlayers().get(1));
+            //game.getPlayers().get(0).getPlayerBoard().moveTower(-6);
             state.generateCommand();
-            state.executeCommand();
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
