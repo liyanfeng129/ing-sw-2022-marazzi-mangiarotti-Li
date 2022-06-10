@@ -35,7 +35,7 @@ public class EndGameState extends State implements Serializable {
         int[] players = new int[getGame().getN_Player()];
         //System.out.println(getGame().getPlayers().get(1).getName());
         ArrayList<String> winners = new ArrayList<>();
-        Integer[] max_n_professor = new Integer[getGame().getN_Player()];
+        Integer[] max_n_professor;
         int maxNumOfTower = 0;
         int max3 = 0;
         //calcolo vincitore se player finisce torri
@@ -59,6 +59,10 @@ public class EndGameState extends State implements Serializable {
                     winners.add(getGame().getPlayers().get(i).getName());
             }
             if (winners.size() >1) {
+                max_n_professor=new Integer[winners.size()];
+                for (int i=0;i<winners.size();i++){
+                    max_n_professor[i]=0;
+                }
                 //caso piu giocatori con stesso numero torre
                 for (int i = 0; i < winners.size(); i++) {
                     if (getGame().findPlayerByName(winners.get(i)).getMage() == getGame().getProfessors().getList_professors()[0])
@@ -72,6 +76,14 @@ public class EndGameState extends State implements Serializable {
                     if (getGame().findPlayerByName(winners.get(i)).getMage() == getGame().getProfessors().getList_professors()[4])
                         max_n_professor[i]++;
                 }
+                /*int max_prof=max_n_professor[0];
+                for (int i=0;i<winners.size();i++){
+                    if(max_n_professor[i]>max_prof)
+                        max_prof=max_n_professor[i];
+                }
+                */
+
+                //funzione figa ma non funzionante
                 List<Integer> max_number = Arrays.asList(max_n_professor);
                 int max_prof = max_number.indexOf(Collections.max(max_number));
 
@@ -90,6 +102,6 @@ public class EndGameState extends State implements Serializable {
         }
 
         // }
-        return new EndGameCommand(cliClient, getGame(), "endgame");
+        return new EndGameCommand(cliClient, getGame(),winners, "endgame");
     }
 }
