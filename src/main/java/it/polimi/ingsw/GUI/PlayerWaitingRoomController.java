@@ -23,30 +23,26 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class PlayerWaitingRoomController extends AASceneParent implements Initializable {
+public class PlayerWaitingRoomController extends AASceneParent  {
     @FXML
     private AnchorPane root;
 
     @FXML
     private void initialize(){
 
-        //if(getInfo().getGame().getPlayers().get(0).getName().equals(getInfo().getUserName()))
-        if(true)
-            showButton();
-        setPlayerLabel();
-
-
-        /*
         Platform.runLater(new Runnable() {
 
             @Override public void run() {
-                    if (getInfo().getGame().getPlayers().get(0).getName().equals(getUsername()))
-                         showButton();
+                //getInfo().getGame().getPlayers().get(0).getName().equals(getUsername())
+                if (true) {
+                    setPlayerLabel();
+                    addButton();
+                }
+
 
             }
         });
 
-        */
     }
 
    @FXML
@@ -71,27 +67,27 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
                game.getN_Player()-game.getPlayers().size()
        );
         */
-       PlayerLabel.setText(" nimabi");
+       PlayerLabel.setText(" a");
 
    }
 
+    public void addButton(){
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
-   public void showButton(){
+        Button bt = new Button();
+        bt.setText("StartNewGame");
+        bt.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+        bt.setLayoutY(screenBounds.getMaxY()*2/3 -50);
+        bt.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+                /**TODO YANFENG
+                 * Qui gli fai fare quello che vuoi
+                 */
+            }
+        });
+        root.getChildren().add(bt);
 
-       Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-       Button bt = new Button();
-       bt.setText("Start Game");
-       bt.setOnAction(new EventHandler<ActionEvent>() {
-           @Override public void handle(ActionEvent e) {
-               /**TODO YANFENG
-                * Qui gli fai fare quello che vuoi
-                */
-           }
-       });
-       bt.setLayoutX(screenBounds.getMaxX()*2/3);
-       bt.setLayoutY(screenBounds.getMaxY()*2/3);
-       root.getChildren().add(bt);
-   }
+    }
 
 
 
@@ -110,11 +106,12 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
     public void responsesFromSender(ArrayList<Object> responses) throws IOException {
 
     }
-
+    /**
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(true)
             //showButton();
         setPlayerLabel();
     }
+    */
 }
