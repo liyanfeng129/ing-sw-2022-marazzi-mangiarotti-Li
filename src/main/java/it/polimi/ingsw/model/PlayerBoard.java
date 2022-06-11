@@ -86,11 +86,8 @@ public class PlayerBoard implements Serializable {
         this.profHolder[prof] = occupy;
     }
 
-    public void moveTower(int n) throws EriantysExceptions
+    public void moveTower(int n)
     {
-        if(n_tower+n < 0 || n_tower +n > n_tower)
-            throw new InnerExceptions.InvalidTowerNumberException("Invalid tower number exception!");
-
         n_tower += n;
     }
 

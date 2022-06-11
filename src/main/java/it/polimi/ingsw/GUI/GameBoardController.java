@@ -242,6 +242,9 @@ public class GameBoardController extends AASceneParent {
                     boolean success = false;
                     if (db.hasString()) {
                         System.out.println("setOnDragDropped");
+                        /**TODO YANFENG
+                         * qui puoi prendere l'isola su cui si è trascinnato uno studente e lo studente
+                         */
                         success = true;
                     }
                     /* let the source know whether the string was successfully
@@ -359,6 +362,72 @@ public class GameBoardController extends AASceneParent {
                 root.getChildren().add(img);
 
             }
+
+
+            Pane paneDrop = new Pane ();
+            paneDrop.setPrefWidth(screenBounds.getMaxY()/2);
+            paneDrop.setStyle("-fx-background-color: #F0FFFF" );
+            paneDrop.setPrefHeight(screenBounds.getMaxY()-screenBounds.getMaxY()*2/3);
+            paneDrop.setLayoutY(screenBounds.getMaxY()*2/3);
+            paneDrop.setLayoutX(screenBounds.getMaxY()/9.5);
+            paneDrop.setOpacity(0);
+
+            paneDrop.setOnDragEntered(new EventHandler <DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* the drag-and-drop gesture entered the target */
+                    System.out.println("onDragEntered");
+                    /* show to the user that it is an actual gesture target */
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        System.out.println("setOnDragEntered");
+                    }
+
+                    event.consume();
+                }
+            });
+            paneDrop.setOnDragOver(new EventHandler <DragEvent>() {
+                public void handle(DragEvent event) {
+                    //data is dragged over the target
+                    System.out.println("onDragOver");
+
+                    // accept it only if it is  not dragged from the same node
+                    //( and if it has a string data
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        // allow for both copying and moving, whatever user chooses
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+
+                    event.consume();
+                }
+            });
+
+            paneDrop.setOnDragDropped(new EventHandler <DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* data dropped */
+                    System.out.println("onDragDropped");
+                    /* if there is a string data on dragboard, read it and use it */
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    if (db.hasString()) {
+                        System.out.println("setOnDragDropped");
+                        /**TODO YANFENG
+                         * qui puoi prendere l'isola su cui si è trascinnato uno studente e lo studente
+                         */
+                        success = true;
+                    }
+                    /* let the source know whether the string was successfully
+                     * transferred and used */
+                    event.setDropCompleted(success);
+
+                    event.consume();
+                }
+            });
+            nodes.add(paneDrop);
+            root.getChildren().add(paneDrop);
+
+
+
         }
 
 

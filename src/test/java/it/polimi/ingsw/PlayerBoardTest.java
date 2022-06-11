@@ -84,11 +84,7 @@ class PlayerBoardTest {
             fail();
         }
         assertEquals(8,pb.getN_tower());
-        try {
             pb.moveTower(-2);
-        } catch (EriantysExceptions e) {
-            fail();
-        }
         assertEquals(6,pb.getN_tower());
     }
     @Test
@@ -103,11 +99,7 @@ class PlayerBoardTest {
         } catch (EriantysExceptions e) {
             fail();
         }
-        try {
             pb.moveTower(+1);
-        } catch (EriantysExceptions e) {
-            e.printStackTrace();
-        }
     }
     /*
     secondo me non serve

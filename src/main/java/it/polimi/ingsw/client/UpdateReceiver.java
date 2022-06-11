@@ -220,7 +220,7 @@ public class UpdateReceiver extends Thread {
             else
                 System.out.println(responses.get(0));
         }
-        else if (userName=="endgame"){
+        else if (game.getLastCommand().getUsername().equals("endgame")){
             Command command = game.getLastCommand();
             command.getData();
         }

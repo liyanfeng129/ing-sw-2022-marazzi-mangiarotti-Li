@@ -142,9 +142,7 @@ public class Game implements Serializable {
                         p.getPb().setWaitingRoom(table.getBag().draw(9));
                         p.setWallet(new Wallet());
                     }
-
                 }
-
                 if(n_Player == 2 && !expertMode)
                 {
                     for(int i = 0; i < n_Player; i++)
