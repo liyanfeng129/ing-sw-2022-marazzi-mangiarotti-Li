@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -22,7 +23,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class PlayerWaitingRoomController extends AASceneParent implements Initializable {
-
+    @FXML
+    private AnchorPane root;
 
     @FXML
     private void initialize(){
@@ -70,6 +72,7 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
        });
        bt.setLayoutX(screenBounds.getMaxX()*2/3);
        bt.setLayoutY(screenBounds.getMaxY()*2/3);
+       root.getChildren().add(bt);
    }
 
 
