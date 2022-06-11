@@ -113,8 +113,9 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+       System.out.println("sono nel initialize di override");
         if(true)
-            //showButton();
+            showButton();
         setPlayerLabel();
     }
 }
