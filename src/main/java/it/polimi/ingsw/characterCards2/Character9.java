@@ -13,6 +13,7 @@ public class Character9 extends CharacterCard implements Serializable {
     public Character9() {
         super();
         setCoin(3);
+        setN_card(9);
         String msg = "Choose a color of Student: during the influence\n" +
                 "calculation this turn, that color adds no influence.";
         setMsg(msg);

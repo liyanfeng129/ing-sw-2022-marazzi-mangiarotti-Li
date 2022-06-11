@@ -14,6 +14,7 @@ public class Character1 extends CharacterCard implements Serializable {
     int island_pos = -1;
     public Character1(int [] students) {
         super();
+        setN_card(1);
         setCoin(1);
         String msg = "Take 1 Student from this card and place it on\n" +
                 "an Island of your choice. Then, draw a new Student\n" +

@@ -17,6 +17,7 @@ public class Character7 extends CharacterCard implements Serializable {
     public Character7(int [] students) {
         super();
         setCoin(1);
+        setN_card(7);
         String msg = "You may take up to 3 Students from this card\n" +
                 "and replace them with the same number of Students\n" +
                 "from your Entrance.";

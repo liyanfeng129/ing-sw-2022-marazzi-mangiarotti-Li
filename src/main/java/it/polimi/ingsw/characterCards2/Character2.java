@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Character2 extends CharacterCard implements Serializable {
     public Character2() {
         super();
+        setN_card(2);
         setCoin(2);
         String msg = "During this turn, you take control of any\n" +
                 "number of Professors even if you have the same\n" +

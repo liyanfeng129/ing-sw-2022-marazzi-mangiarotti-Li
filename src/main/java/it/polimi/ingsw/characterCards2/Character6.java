@@ -12,6 +12,7 @@ public class Character6 extends CharacterCard implements Serializable {
     public Character6() {
         super();
         setCoin(3);
+        setN_card(6);
         String msg = "When resolving a Conquering on an Island,\n" +
                 "Towers do not count towards influence.";
         setMsg(msg);

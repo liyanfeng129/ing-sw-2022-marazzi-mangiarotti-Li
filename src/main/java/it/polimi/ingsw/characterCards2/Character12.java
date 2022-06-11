@@ -13,6 +13,7 @@ public class Character12 extends CharacterCard implements Serializable {
     public Character12() {
         super();
         setCoin(3);
+        setN_card(12);
         String msg = "Choose a type of Student: every player\n" +
                 "(including yourself) must return 3 Students of that type\n" +
                 "from their Dining Room to the bag. If any player has\n" +
