@@ -30,9 +30,11 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
     @FXML
     private void initialize(){
 
-       // if(getInfo().getGame().getPlayers().get(0).getName().equals(getInfo().getUserName()))
-         //   showButton();
-       // setPlayerLabel();
+        //if(getInfo().getGame().getPlayers().get(0).getName().equals(getInfo().getUserName()))
+        if(true)
+            showButton();
+        setPlayerLabel();
+
 
         /*
         Platform.runLater(new Runnable() {
@@ -58,6 +60,7 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
         * se ne metti uno alla volta puoi fare
         * PlayerLabel.getText() + "\n" + new player stirng
         */
+       /*
        Game game = getInfo().getGame();
        String message = (game.getPlayers().get(0).equals(getInfo().getUserName())? "This is creator's game room, only he can start the game.\n" : "" )
                +String.format("Game mode: %s\n" +
@@ -67,8 +70,8 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
                game.getN_Player(),
                game.getN_Player()-game.getPlayers().size()
        );
-
-       PlayerLabel.setText(message);
+        */
+       PlayerLabel.setText(" nimabi");
 
    }
 
@@ -110,6 +113,8 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        if(true)
+            //showButton();
+        setPlayerLabel();
     }
 }
