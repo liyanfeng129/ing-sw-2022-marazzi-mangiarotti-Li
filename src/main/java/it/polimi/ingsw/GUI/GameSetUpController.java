@@ -27,8 +27,8 @@ public class GameSetUpController extends AASceneParent{
     protected void startEasy2(ActionEvent event) {
         System.out.println("Easy mode for 2 people");
         currentEvent = event;
-        Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_2).run());
-
+        //Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_2).run());
+        new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_2).run();
         // lobby Scene where is displayed player in waiting and eventually to start game
     }
     @FXML
@@ -89,9 +89,27 @@ public class GameSetUpController extends AASceneParent{
     }
 
     @FXML
-    protected void startExp2(ActionEvent event) {
+    protected void startExp2(ActionEvent event) throws IOException, EriantysExceptions {
+        Game game  = new Game(3,true,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,true,false));
+        game.addPlayers(new Player("ale", Mage.MAGE2,TowerColor.WHITE,3,false,false));
+        game.addPlayers(new Player("yan", Mage.MAGE3,TowerColor.GREY,3,false,false));
         System.out.println("Expert mode for 2 people");
         // lobby Scene where is displayed player in waiting and eventually to start game
+
+        FXMLLoader loader = new FXMLLoader(getClass(). getResource("PlayerWaitingRoom.fxml"));
+        Parent root = loader.load();
+        PlayerWaitingRoomController playerWaitingRoom = loader.getController();
+        getInfo().setGame(game);
+        playerWaitingRoom.setInfo(getInfo());
+        switchScene(root,event);
+
+        /*
+         FXMLLoader loader = new FXMLLoader(getClass().getResource("GameBoard.fxml"));
+        Parent root = loader.load();
+        GameBoardController controller = loader.getController();
+        controller.setGame(game);
+        switchScene(root, event);
+         */
     }
     @FXML
     protected void startExp3(ActionEvent event) {
@@ -100,26 +118,12 @@ public class GameSetUpController extends AASceneParent{
     }
     @FXML
     protected void back(ActionEvent event) throws IOException {
-
-        /*
-        Parent root = FXMLLoader.load(getClass(). getResource("start_load.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        System.out.println("back");
-
-         */
-
-
         FXMLLoader loader = new FXMLLoader(getClass(). getResource("start_load.fxml"));
         Parent root = loader.load();
         StartLoadController startLoad = loader.getController();
         startLoad.setInfo(getInfo());
         switchScene(root,event);
         System.out.println("back");
-
-
     }
 
     @Override
@@ -129,12 +133,15 @@ public class GameSetUpController extends AASceneParent{
 
     @Override
     public void responsesFromSender(ArrayList<Object> responses) throws IOException {
-        if(responses.get(0).equals(Config.CREATE_EXPERT_GAME_FOR_2_SUC))
+        System.out.println("sono in response from sender di gamesetup");
+        if(responses.get(0).equals(Config.CREATE_NORMAL_GAME_FOR_2_SUC))
         {
             Game game = (Game) responses.get(1);
+            System.out.println(game.toString());
             FXMLLoader loader = new FXMLLoader(getClass(). getResource("PlayerWaitingRoom.fxml"));
             Parent root = loader.load();
             PlayerWaitingRoomController playerWaitingRoom = loader.getController();
+            getInfo().setGame(game);
             playerWaitingRoom.setInfo(getInfo());
             switchScene(root,currentEvent);
         }

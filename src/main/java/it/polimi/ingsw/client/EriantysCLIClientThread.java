@@ -303,7 +303,7 @@ public class EriantysCLIClientThread extends Thread {
     private void showCreatorGameRoom(Game game)
     {
         clearScreen();
-        System.out.println("This is creator's game room, only he can start the game.");
+        System.out.println("This is creator's game room, only he can start the game.\n");
         System.out.println(String.format("Game mode: %s\n" +
                 "needs %d participant\n" +
                         "waiting for %d",

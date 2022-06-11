@@ -63,7 +63,7 @@ public class GuiMessageSender {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_NORMAL_GAME_FOR_2);
         messages.add(userName);
-        messages.add(false); //this is not CLi
+        messages.add(true); //this is CLi
         ArrayList<Object> responses = responseFromServer(messages);
 
         return responses;

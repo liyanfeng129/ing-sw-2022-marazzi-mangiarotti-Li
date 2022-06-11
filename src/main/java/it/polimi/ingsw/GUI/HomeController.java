@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.model.Config;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,7 +38,8 @@ public class HomeController extends AASceneParent {
                 // recezione input
                 setInfo(new GUIInfo()); // first creation of GUIInfo
                 getInfo().setUserName(name);
-                new GuiMessageSender(this,Config.USER_LOGGING).run();
+                //new GuiMessageSender(this,Config.USER_LOGGING).run();
+                Platform.runLater(()-> new GuiMessageSender(this,Config.USER_LOGGING).run());
 
             }
 

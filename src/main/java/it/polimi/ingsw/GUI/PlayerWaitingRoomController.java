@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.model.EriantysExceptions;
+import it.polimi.ingsw.model.Game;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,6 +30,11 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
     @FXML
     private void initialize(){
 
+       // if(getInfo().getGame().getPlayers().get(0).getName().equals(getInfo().getUserName()))
+         //   showButton();
+       // setPlayerLabel();
+
+        /*
         Platform.runLater(new Runnable() {
 
             @Override public void run() {
@@ -38,7 +44,7 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
             }
         });
 
-
+        */
     }
 
    @FXML
@@ -52,8 +58,17 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
         * se ne metti uno alla volta puoi fare
         * PlayerLabel.getText() + "\n" + new player stirng
         */
-       String PlayersNames = "";
-       PlayerLabel.setText(PlayersNames);
+       Game game = getInfo().getGame();
+       String message = (game.getPlayers().get(0).equals(getInfo().getUserName())? "This is creator's game room, only he can start the game.\n" : "" )
+               +String.format("Game mode: %s\n" +
+                       "needs %d participant\n" +
+                       "waiting for %d",
+               (game.isExpertMode()? "expert" : "normal"),
+               game.getN_Player(),
+               game.getN_Player()-game.getPlayers().size()
+       );
+
+       PlayerLabel.setText(message);
 
    }
 
