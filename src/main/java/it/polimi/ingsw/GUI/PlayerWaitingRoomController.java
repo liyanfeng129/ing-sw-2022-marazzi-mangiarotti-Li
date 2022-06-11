@@ -33,11 +33,11 @@ public class PlayerWaitingRoomController extends AASceneParent  {
         Platform.runLater(new Runnable() {
 
             @Override public void run() {
-                //getInfo().getGame().getPlayers().get(0).getName().equals(getUsername())
-                if (true) {
-                    setPlayerLabel();
+                PlayerLabel.setText("nimashile\n sabbi \n qusiba\n");
+                //setPlayerLabel();
+                if (getInfo().getGame().getPlayers().get(0).getName().equals(getUsername()))
                     addButton();
-                }
+
 
 
             }
@@ -56,7 +56,7 @@ public class PlayerWaitingRoomController extends AASceneParent  {
         * se ne metti uno alla volta puoi fare
         * PlayerLabel.getText() + "\n" + new player stirng
         */
-       /*
+
        Game game = getInfo().getGame();
        String message = (game.getPlayers().get(0).equals(getInfo().getUserName())? "This is creator's game room, only he can start the game.\n" : "" )
                +String.format("Game mode: %s\n" +
@@ -66,8 +66,8 @@ public class PlayerWaitingRoomController extends AASceneParent  {
                game.getN_Player(),
                game.getN_Player()-game.getPlayers().size()
        );
-        */
-       PlayerLabel.setText(" a");
+
+       PlayerLabel.setText(message);
 
    }
 
@@ -106,12 +106,5 @@ public class PlayerWaitingRoomController extends AASceneParent  {
     public void responsesFromSender(ArrayList<Object> responses) throws IOException {
 
     }
-    /**
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(true)
-            //showButton();
-        setPlayerLabel();
-    }
-    */
+
 }
