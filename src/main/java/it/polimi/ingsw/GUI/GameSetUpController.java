@@ -5,27 +5,30 @@ import it.polimi.ingsw.characterCards2.Character12;
 import it.polimi.ingsw.characterCards2.Character2;
 import it.polimi.ingsw.characterCards2.Character8;
 import it.polimi.ingsw.model.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class GameSetUpController extends AASceneParent {
-
-
-
-
-
+public class GameSetUpController extends AASceneParent{
+    private ActionEvent currentEvent;
     @FXML
     protected void startEasy2(ActionEvent event) {
         System.out.println("Easy mode for 2 people");
+        currentEvent = event;
+        Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_2).run());
+
         // lobby Scene where is displayed player in waiting and eventually to start game
     }
     @FXML
@@ -97,12 +100,26 @@ public class GameSetUpController extends AASceneParent {
     }
     @FXML
     protected void back(ActionEvent event) throws IOException {
+
+        /*
         Parent root = FXMLLoader.load(getClass(). getResource("start_load.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
         System.out.println("back");
+
+         */
+
+
+        FXMLLoader loader = new FXMLLoader(getClass(). getResource("start_load.fxml"));
+        Parent root = loader.load();
+        StartLoadController startLoad = loader.getController();
+        startLoad.setInfo(getInfo());
+        switchScene(root,event);
+        System.out.println("back");
+
+
     }
 
     @Override
@@ -111,7 +128,16 @@ public class GameSetUpController extends AASceneParent {
     }
 
     @Override
-    public void responsesFromSender(ArrayList<Object> responses) {
-
+    public void responsesFromSender(ArrayList<Object> responses) throws IOException {
+        if(responses.get(0).equals(Config.CREATE_EXPERT_GAME_FOR_2_SUC))
+        {
+            Game game = (Game) responses.get(1);
+            FXMLLoader loader = new FXMLLoader(getClass(). getResource("PlayerWaitingRoom.fxml"));
+            Parent root = loader.load();
+            PlayerWaitingRoomController playerWaitingRoom = loader.getController();
+            playerWaitingRoom.setInfo(getInfo());
+            switchScene(root,currentEvent);
+        }
     }
+
 }
