@@ -22,6 +22,5 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Button layoutX="1253.0" layoutY="738.0" mnemonicParsing="false" onAction="#startGame" prefHeight="79.0" prefWidth="129.0" text="StartGame" />
          </children>
 </AnchorPane>
