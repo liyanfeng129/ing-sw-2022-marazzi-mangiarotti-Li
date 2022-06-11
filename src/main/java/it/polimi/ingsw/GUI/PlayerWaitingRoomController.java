@@ -30,10 +30,16 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
     @FXML
     private void initialize(){
 
-        //if(getInfo().getGame().getPlayers().get(0).getName().equals(getInfo().getUserName()))
-        if(true)
-            showButton();
-        setPlayerLabel();
+        System.out.println("sono nel initialize di fai da te");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if(true)
+                    showButton();
+                setPlayerLabel();
+            }
+        });
+
 
 
         /*
@@ -113,9 +119,14 @@ public class PlayerWaitingRoomController extends AASceneParent implements Initia
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       System.out.println("sono nel initialize di override");
-        if(true)
-            showButton();
-        setPlayerLabel();
+        System.out.println("sono nel initialize override");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                setPlayerLabel();
+                if(true)
+                    showButton();
+            }
+        });
     }
 }
