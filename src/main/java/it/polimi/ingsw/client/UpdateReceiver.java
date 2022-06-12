@@ -27,6 +27,7 @@ public class UpdateReceiver extends Thread {
     private String serverAddress;
     private boolean receiverOn;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
     public UpdateReceiver(int portNumber,String userName,String serverAddress)
     {
         this.portNumber = portNumber;

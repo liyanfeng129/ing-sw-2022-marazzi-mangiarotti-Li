@@ -25,6 +25,7 @@ public class LoadGameController extends AASceneParent implements Initializable {
     private ListView<String> games;
     private String CurrGame;
     private ArrayList<String> roomName;
+    private ActionEvent currentEvent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -51,14 +52,16 @@ public class LoadGameController extends AASceneParent implements Initializable {
         System.out.println("back");
     }
 
+
+    /**
+     * Saving room name in gameInfo(), so GuiMessageSender can extract from this controller
+     * */
     @FXML
     protected void loadGame(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("game_started.fxml"));
-        Parent root = loader.load();
-        GameStartedController gameStarted = loader.getController();
-        gameStarted.setInfo(getInfo());
-        switchScene(root,event);
-        System.out.println("game_start");
+        currentEvent = event;
+        getInfo().setGameCreatorName(roomName.get(games.getSelectionModel().getSelectedIndex()));
+        Platform.runLater(()->new GuiMessageSender(this, Config.JOIN_ONE_GAME).run());
+        System.out.println("load_game_button_clicked");
     }
 
 
@@ -69,7 +72,7 @@ public class LoadGameController extends AASceneParent implements Initializable {
     }
 
     @Override
-    public void responsesFromSender(ArrayList<Object> responses) {
+    public void responsesFromSender(ArrayList<Object> responses) throws IOException {
         if(responses.get(0).equals(Config.SHOW_EXISTING_GAMES_SUC))
         {
             ArrayList<Game> gameList = (ArrayList<Game>) responses.get(1);
@@ -89,9 +92,10 @@ public class LoadGameController extends AASceneParent implements Initializable {
         }
         else if(responses.get(0).equals(Config.JOIN_ONE_GAME_SUC))
         {
-            /**
-             * TODO
-             * */
+            Game game = (Game) responses.get(1);
+            getInfo().setGame(game);
+            switchScene((Stage) ((Node)currentEvent.getSource()).getScene().getWindow(),FxmlNames.PLAYER_WAITING_Room);
+            System.out.println("LoadGame to PlayerWaitingRoom");
         }
         else
         {

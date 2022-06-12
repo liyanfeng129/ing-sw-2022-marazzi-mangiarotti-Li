@@ -18,29 +18,17 @@ public class StartLoadController extends AASceneParent {
 
     @FXML
     protected void newGame(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("game_set_up.fxml"));
-        Parent root = loader.load();
-        GameSetUpController gameSetUp = loader.getController();
-        gameSetUp.setInfo(getInfo());
-        switchScene(root,event);
+        switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(),FxmlNames.GAME_SET_UP);
         System.out.println("new game");
     }
     @FXML
     protected void loadGame(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("load_game.fxml"));
-        Parent root = loader.load();
-        LoadGameController loadGame = loader.getController();
-        loadGame.setInfo(getInfo());
-        switchScene(root,event);
+        switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(), FxmlNames.LOAD_GAME);
         System.out.println("loadGame");
     }
     @FXML
     protected void back(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
-        Parent root = loader.load();
-        HomeController home = loader.getController();
-        home.setInfo(getInfo());
-        switchScene(root,event);
+        switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(), FxmlNames.HOME);
         System.out.println("back");
     }
 

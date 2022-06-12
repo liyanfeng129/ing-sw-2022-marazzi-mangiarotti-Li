@@ -2,6 +2,7 @@ package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.view.Cli;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -46,8 +47,13 @@ import java.util.stream.Collectors;
         private List<Node> nodes= new ArrayList<>();
         private List<Node> board= new ArrayList<>();
 
-        private String name="leo";
-        private String board_name = name;
+    /** TODO LEO
+     * rimuovere leo
+     *
+     * rimuovere il test in gameSetUpController
+     */
+    private String name;
+    private String board_name;
 
 
         public void setGame (Game game){
@@ -60,11 +66,15 @@ import java.util.stream.Collectors;
 
             Platform.runLater(new Runnable() {
                 @Override public void run() {
-                    String fase = "endgame";
+                    String fase = "updateGame";
                     try {
+                        name = getInfo().getUserName();
+                        game = getInfo().getGame();
+                        board_name = getInfo().getUserName();
+                        System.out.println("name: "+name+"\n board: "+board_name);
                         showGame(fase);
 
-                    } catch (EriantysExceptions e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -85,42 +95,42 @@ import java.util.stream.Collectors;
              *
              */
 
-            game.getTable().getIslands().remove(game.getTable().getIsland(0));
-            game.getTable().getIsland(1).setMotherNature(true);
-            game.getTable().getClouds().get(0).setCloudStudent(new int[]{1,0,2,0,0});
-            game.getTable().getClouds().get(1).setCloudStudent(new int[]{1,1,1,0,0});
-            game.getTable().getClouds().get(2).setCloudStudent(new int[]{2,1,0,0,0});
-            game.getTable().getIsland(game.getTable().getIslands().size()/2).addStudent(2);
-            game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(1);
-            game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(3);
-            game.getTable().getIsland(5).setTower(TowerColor.BLACK);
-            game.getTable().getIsland(3).setTower(TowerColor.WHITE);
-            game.getTable().getIsland(7).setTower(TowerColor.GREY);
-            /**TODO YANFENG
-             * in base al turno del giocatore puoi fare
-             *
-             *  showGameNoAction() è per il solo aggiornamento (chi non sta giocando )
-             *
-             * gli altri sono per ci gioca
-             *
-             * showGameDragStudent per muovere studente o selezionanre la carta
-             *
-             * showGameMoveMN per muovere MN o selezionare carta
-             *
-             * showGamePickCloud per prendere cloud o selezionare carta
-             *
-             * se vuoi anche mandare dei messaggi fai
-             *
-             * messages.setText("msg") dopo aver fatto queste cose
-             *
-             * showAssistant(); per far vedere gli assitenti
-             *
-             * devi togliere lo showGameNoAction qui sotto ricordatelo
-             */
-            showGameNoAction();
+        game.getTable().getIslands().remove(game.getTable().getIsland(0));
+        game.getTable().getIsland(1).setMotherNature(true);
+        game.getTable().getClouds().get(0).setCloudStudent(new int[]{1,0,2,0,0});
+        game.getTable().getClouds().get(1).setCloudStudent(new int[]{1,1,1,0,0});
+        game.getTable().getClouds().get(2).setCloudStudent(new int[]{2,1,0,0,0});
+        game.getTable().getIsland(game.getTable().getIslands().size()/2).addStudent(2);
+        game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(1);
+        game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(3);
+        game.getTable().getIsland(5).setTower(TowerColor.BLACK);
+        game.getTable().getIsland(3).setTower(TowerColor.WHITE);
+        game.getTable().getIsland(7).setTower(TowerColor.GREY);
+        /**TODO YANFENG
+         * in base al turno del giocatore puoi fare
+         *
+         *  showGameNoAction() è per il solo aggiornamento (chi non sta giocando )
+         *
+         * gli altri sono per ci gioca
+         *
+         * showGameDragStudent per muovere studente o selezionanre la carta
+         *
+         * showGameMoveMN per muovere MN o selezionare carta
+         *
+         * showGamePickCloud per prendere cloud o selezionare carta
+         *
+         * se vuoi anche mandare dei messaggi fai
+         *
+         * messages.setText("msg") dopo aver fatto queste cose
+         *
+         * showAssistant(); per far vedere gli assitenti
+         *
+         * devi togliere lo showGameNoAction qui sotto ricordatelo
+         */
+        //showGameNoAction();
 
 
-        }
+    }
 
         /**
          *

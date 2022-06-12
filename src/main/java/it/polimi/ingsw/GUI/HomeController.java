@@ -5,9 +5,11 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,14 +61,10 @@ public class HomeController extends AASceneParent {
         if(responses.get(0).equals(Config.USER_LOGGED) || responses.get(0).equals(Config.USER_CREATED_AND_LOGGED))
         {
             System.out.println(responses.get(0));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("start_load.fxml"));
-            Parent root = loader.load();
-
-            StartLoadController startLoad = loader.getController();
-            startLoad.setInfo(getInfo()); // passing data from this stage to the next stage
-
-            switchScene(root, currentEvent);
-
+            //initialize guiListener
+            getInfo().setListener(new GuiListener(getInfo().getListeningPortNumber(),getInfo().getUserName(),getInfo().getServerAddress()));
+            switchScene((Stage) myLabel.getScene().getWindow(), FxmlNames.START_LOAD);
+            //switchScene((Stage) ((Node)currentEvent.getSource()).getScene().getWindow(), FxmlNames.START_LOAD);
             System.out.println(getUsername());
         }
         else
