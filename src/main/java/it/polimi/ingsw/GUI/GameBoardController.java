@@ -2,6 +2,7 @@ package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.view.Cli;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -55,8 +56,8 @@ public class GameBoardController extends AASceneParent {
      *
      * rimuovere il test in gameSetUpController
      */
-    private String name = "leo";
-    private String board_name = name;
+    private String name;
+    private String board_name;
 
 
     public void setGame (Game game){
@@ -76,9 +77,13 @@ public class GameBoardController extends AASceneParent {
             @Override public void run() {
 
                 try {
+                    name = getInfo().getUserName();
+                    game = getInfo().getGame();
+                    board_name = getInfo().getUserName();
+                    System.out.println("name: "+name+"\n board: "+board_name);
                     showGameDragStudent();
 
-                } catch (EriantysExceptions e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -131,7 +136,7 @@ public class GameBoardController extends AASceneParent {
          *
          * devi togliere lo showGameNoAction qui sotto ricordatelo
          */
-        showGameNoAction();
+        //showGameNoAction();
 
 
     }
@@ -323,7 +328,7 @@ public class GameBoardController extends AASceneParent {
         String pink = "Image/student_pink.png";
         String color;
 
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
         PlayerBoard pb = player.getPlayerBoard();
 
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -440,7 +445,7 @@ public class GameBoardController extends AASceneParent {
         String pink = "Image/student_pink.png";
         String color;
 
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
         PlayerBoard pb = player.getPlayerBoard();
         int[] waitingRoom = pb.getWaitingRoom();
 
@@ -505,7 +510,7 @@ public class GameBoardController extends AASceneParent {
         String pink = "Image/teacher_pink.png";
         String color;
 
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
         Mage mage = player.getMage();
         Mage[] prof = game.getProfessors().getList_professors();
 
@@ -631,7 +636,7 @@ public class GameBoardController extends AASceneParent {
     }
     public void updateTowerNoAction(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
         double pos_x= screenBounds.getMaxY()/(1.848);
         Double pos_y = screenBounds.getMaxY()/1.5;
         PlayerBoard pb = player.getPlayerBoard();
@@ -687,7 +692,7 @@ public class GameBoardController extends AASceneParent {
         bt.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 int index_player;
-                Player curr_player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+                Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
                 index_player = game.getPlayers().indexOf(curr_player);
                 if (index_player+1 == game.getPlayers().size())
                     index_player = 0;
@@ -808,7 +813,7 @@ public class GameBoardController extends AASceneParent {
         String pink = "Image/student_pink.png";
         String color;
 
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
         PlayerBoard pb = player.getPlayerBoard();
         int[] waitingRoom = pb.getWaitingRoom();
 
@@ -862,7 +867,7 @@ public class GameBoardController extends AASceneParent {
                 }
 
 
-                if (board_name==name){
+                if (board_name.equals(name)){
 
 
                     img.setOnDragDetected(new EventHandler <MouseEvent>() {
@@ -1266,7 +1271,7 @@ public class GameBoardController extends AASceneParent {
     public void showWallet(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
-        Player player = game.getPlayers().stream().filter(p -> p.getName()==board_name).collect(Collectors.toList()).get(0);
+        Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
 
         int wallet = player.getWallet().getSaving();
         double dim = screenBounds.getMaxY()/(15);

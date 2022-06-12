@@ -11,6 +11,16 @@ public class GUIInfo
     private  String gameCreatorName = "";
     private  int listeningPortNumber;
     private Game game;
+    private GuiListener listener;
+
+    public GuiListener getListener() {
+        return listener;
+    }
+
+    public void setListener(GuiListener listener) {
+        this.listener = listener;
+    }
+
     public GUIInfo() {
         listeningPortNumber = new Random().nextInt(65353);
     }
@@ -53,6 +63,18 @@ public class GUIInfo
 
     public void setGameCreatorName(String gameCreatorName) {
         this.gameCreatorName = gameCreatorName;
+    }
+
+    @Override
+    public String toString() {
+        return "GUIInfo{" +
+                "serverAddress='" + serverAddress + '\'' +
+                ", userName='" + userName + '\'' +
+                ", gameCreatorName='" + gameCreatorName + '\'' +
+                ", listeningPortNumber=" + listeningPortNumber +
+                ", game=" + game +
+                ", listener=" + listener +
+                '}';
     }
 }
 

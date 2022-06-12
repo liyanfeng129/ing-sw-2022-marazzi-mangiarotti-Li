@@ -48,6 +48,10 @@ public class GuiMessageSender {
                 case Config.JOIN_ONE_GAME:
                     responses = joinOneGame(caller.getInfo().getGameCreatorName(),caller.getInfo().getUserName());
                     caller.responsesFromSender(responses);
+                    break;
+                case Config.GAME_START:
+                    responses = startGame(caller.getInfo().getUserName());
+                    caller.responsesFromSender(responses);
                 default:
             }
         }
@@ -56,6 +60,15 @@ public class GuiMessageSender {
 
         }
     }
+
+    private ArrayList<Object> startGame(String userName) {
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.GAME_START);
+        messages.add(userName);
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
+    }
+
 
     private ArrayList<Object> createNormalGameFor2()
     {

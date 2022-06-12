@@ -76,6 +76,7 @@ public class GameSetUpController extends AASceneParent{
         //
 
 
+        /*
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("GameBoard.fxml"));
         Parent root = loader.load();
@@ -83,7 +84,9 @@ public class GameSetUpController extends AASceneParent{
         GameBoardController controller = loader.getController();
         controller.setGame(game);
 
-        switchScene(root, event);
+         */
+        getInfo().setGame(game);
+        switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(), FxmlNames.GAME_BOARD );
 
 
     }
@@ -99,14 +102,9 @@ public class GameSetUpController extends AASceneParent{
     }
     @FXML
     protected void back(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass(). getResource("start_load.fxml"));
-        Parent root = loader.load();
-        StartLoadController startLoad = loader.getController();
-        startLoad.setInfo(getInfo());
-        switchScene(root,event);
+        switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(), FxmlNames.START_LOAD);
         System.out.println("back");
     }
-
     @Override
     public void listenerCallBack(ArrayList<Object> responses) {
 
@@ -118,13 +116,8 @@ public class GameSetUpController extends AASceneParent{
         if(responses.get(0).equals(Config.CREATE_NORMAL_GAME_FOR_2_SUC))
         {
             Game game = (Game) responses.get(1);
-            System.out.println(game.toString());
-            FXMLLoader loader = new FXMLLoader(getClass(). getResource("PlayerWaitingRoom.fxml"));
-            Parent root = loader.load();
-            PlayerWaitingRoomController playerWaitingRoom = loader.getController();
             getInfo().setGame(game);
-            playerWaitingRoom.setInfo(getInfo());
-            switchScene(root,currentEvent);
+            switchScene((Stage) ((Node)currentEvent.getSource()).getScene().getWindow(),FxmlNames.PLAYER_WAITING_Room);
         }
     }
 

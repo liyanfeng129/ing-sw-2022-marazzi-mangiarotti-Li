@@ -1,6 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import javafx.event.Event;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,15 +33,24 @@ public abstract class AASceneParent {
         this.username = username;
     }
 
-    public void switchScene(Parent root, Event event) throws IOException {
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+    /**
+     * @param fxmlName is the graphic that is about to be displayed
+     * @param stage is current stage which is about to be changed
+     *              this method switches pages
+     * */
+    public void switchScene(Stage stage, String fxmlName) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlName));
+        Parent root = loader.load();
+        AASceneParent aaSceneParent = loader.getController();
+        aaSceneParent.setInfo(getInfo());
+        this.stage = stage;
         scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setFullScreen(true);
-        stage.show();
+        this.stage.setScene(scene);
+        this.stage.setFullScreen(true);
+        this.stage.show();
     }
 
-    public abstract void listenerCallBack(ArrayList<Object> responses);
+    public abstract void listenerCallBack(ArrayList<Object> responses) throws IOException;
 
     public abstract void responsesFromSender(ArrayList<Object> responses) throws IOException;
 
