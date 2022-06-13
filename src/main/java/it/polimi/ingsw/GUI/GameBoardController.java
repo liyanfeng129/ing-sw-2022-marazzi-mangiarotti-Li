@@ -553,7 +553,10 @@ import java.util.stream.Collectors;
             GridPane gridPane = new GridPane();
             gridPane.setLayoutX(0);
             gridPane.setLayoutY(screenBounds.getMinY()/3);
-            List<Assistant> cards = game.getPlayers().get(0).getHand().getList_cards();
+
+            Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
+            List<Assistant> cards = curr_player.getHand().getList_cards();
+            List<Assistant> allCards = new Hand(curr_player.getMage()).getList_cards();
             for(int i =0;i<10; i++) {
                 String img_file;
                 switch (i) {
@@ -584,7 +587,11 @@ import java.util.stream.Collectors;
                     case 8:
                         img_file = "Image/Assistente_9.png";
                         break;
+                    case 9:
+                        img_file = "Image/Assistente_10.png";
+                        break;
                     default:
+                        System.out.println("errore negli assistant");
                         img_file = "Image/Assistente_10.png";
                         break;
                 }
@@ -598,9 +605,12 @@ import java.util.stream.Collectors;
 
                 gridPane.setHgap(dim/3);
                 gridPane.setVgap(dim/10);
-                Assistant card = cards.get(i);
-                if (cards.contains(AssistantType.index(i))){
+                Assistant card = allCards.get(i);
+                AssistantType type = allCards.get(i).getType();
+                if (cards.stream().filter(cd->cd.getType().equals(type)).collect(Collectors.toList()).isEmpty()){
                     img.setOpacity(0.5);
+                    btAssistant.setOpacity(0.5);
+                    btAssistant.setDisable(true);
                 }
                 else{
                     btAssistant.setOnAction(new EventHandler<ActionEvent>() {
@@ -1129,7 +1139,7 @@ import java.util.stream.Collectors;
         public void showWallet(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
-            Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
+            Player player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
 
             int wallet = player.getWallet().getSaving();
             double dim = screenBounds.getMaxY()/(15);
