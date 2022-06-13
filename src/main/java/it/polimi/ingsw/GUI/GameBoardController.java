@@ -1,9 +1,14 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.characterCards2.CharacterCard;
+import it.polimi.ingsw.command.GetAssistantCommand;
+import it.polimi.ingsw.command.MoveMotherNatureCommand;
+import it.polimi.ingsw.command.MoveStudentFromWaitingRoomCommand;
+import it.polimi.ingsw.command.SelectCloudCommand;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.Cli;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -63,81 +68,84 @@ import java.util.stream.Collectors;
 
         @FXML
         private void initialize(){
-
             Platform.runLater(new Runnable() {
                 @Override public void run() {
-                    String fase = "updateGame";
                     try {
+                        initConfig();
                         name = getInfo().getUserName();
                         game = getInfo().getGame();
                         board_name = getInfo().getUserName();
-                        System.out.println("name: "+name+"\n board: "+board_name);
-                        showGame(fase);
+                        update();
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             });
+        }
+        protected void initConfig()
+        {
+            getInfo().getListener().setCaller(this);
+            Task task = new Task<Void>() {
+                @Override public Void call() {
+                    //getInfo().getListener().start(); // running listener
+                    System.out.println("Running: "+ getInfo().getListener().toString());
+                    return null;
+                }
+            };
+            System.out.println(getInfo().getListener().toString());
+            new Thread(task).start();
+        }
+
+        protected void update()throws EriantysExceptions
+        {
+            removeGame();
+            if(game.getLastCommand().getUsername().equals(name))
+            {
+                if(game.getLastCommand() instanceof GetAssistantCommand)
+                    showGame("Assistants");
+                if(game.getLastCommand() instanceof MoveMotherNatureCommand)
+                    showGame("MoveMN");
+                if(game.getLastCommand() instanceof MoveStudentFromWaitingRoomCommand)
+                    showGame("MoveStudents");
+                if(game.getLastCommand() instanceof SelectCloudCommand)
+                    showGame("SelectCloud");
+            }
+            else
+                showGame("updateGame");
+
+            /**TODO YANFENG
+             * in base al turno del giocatore puoi fare
+             *
+             *  showGameNoAction() è per il solo aggiornamento (chi non sta giocando )
+             *
+             * gli altri sono per ci gioca
+             *
+             * showGameDragStudent per muovere studente o selezionanre la carta
+             *
+             * showGameMoveMN per muovere MN o selezionare carta
+             *
+             * showGamePickCloud per prendere cloud o selezionare carta
+             *
+             * se vuoi anche mandare dei messaggi fai
+             *
+             * messages.setText("msg") dopo aver fatto queste cose
+             *
+             * showAssistant(); per far vedere gli assitenti
+             *
+             * devi togliere lo showGameNoAction qui sotto ricordatelo
+             */
+
 
 
         }
-
-
-
-
-
-        protected void update()throws EriantysExceptions {
-            removeGame();
-
-            /**TODO YANFENG
-             * assegnare game aggiornato
-             *
-             */
-
-        game.getTable().getIslands().remove(game.getTable().getIsland(0));
-        game.getTable().getIsland(1).setMotherNature(true);
-        game.getTable().getClouds().get(0).setCloudStudent(new int[]{1,0,2,0,0});
-        game.getTable().getClouds().get(1).setCloudStudent(new int[]{1,1,1,0,0});
-        game.getTable().getClouds().get(2).setCloudStudent(new int[]{2,1,0,0,0});
-        game.getTable().getIsland(game.getTable().getIslands().size()/2).addStudent(2);
-        game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(1);
-        game.getTable().getIsland(game.getTable().getIslands().size()/3).addStudent(3);
-        game.getTable().getIsland(5).setTower(TowerColor.BLACK);
-        game.getTable().getIsland(3).setTower(TowerColor.WHITE);
-        game.getTable().getIsland(7).setTower(TowerColor.GREY);
-        /**TODO YANFENG
-         * in base al turno del giocatore puoi fare
-         *
-         *  showGameNoAction() è per il solo aggiornamento (chi non sta giocando )
-         *
-         * gli altri sono per ci gioca
-         *
-         * showGameDragStudent per muovere studente o selezionanre la carta
-         *
-         * showGameMoveMN per muovere MN o selezionare carta
-         *
-         * showGamePickCloud per prendere cloud o selezionare carta
-         *
-         * se vuoi anche mandare dei messaggi fai
-         *
-         * messages.setText("msg") dopo aver fatto queste cose
-         *
-         * showAssistant(); per far vedere gli assitenti
-         *
-         * devi togliere lo showGameNoAction qui sotto ricordatelo
-         */
-        //showGameNoAction();
-
-
-    }
 
         /**
          *
          * @param fase può essese di 4 tipi:
          *             1) Assistants: per far vedere gli assistenti
          *             2) updateGame
-         *             3) MoveSudents
+         *             3) MoveStudents
          *             4) MoveMN
          *             5) SelectCloud
          */
@@ -150,7 +158,7 @@ import java.util.stream.Collectors;
                     showAssistant(); break;
                 case "updateGame":
                     showGameNoAction();break;
-                case "MoveSudents":
+                case "MoveStudents":
                     showGameDragStudent();break;
                 case "MoveMN":
                     showGameMoveMN();break;
@@ -1144,7 +1152,20 @@ import java.util.stream.Collectors;
 
         @Override
         public void listenerCallBack(ArrayList<Object> responses) {
-
+            if(responses.get(0).equals(Config.GAME_UPDATED))
+            {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            game = (Game) responses.get(1);
+                            update();
+                        } catch (EriantysExceptions e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
         }
 
         @Override

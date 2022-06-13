@@ -162,7 +162,6 @@ public class PlayerWaitingRoomController extends AASceneParent  {
             case Config.GAME_UPDATED:
                 System.out.println("PlayerWaitingRoom: Game_Update, go to game Board");
                 game = (Game) responses.get(1);
-                getInfo().getListener().setReceiverOn(false);
                 getInfo().setGame(game);
                 Platform.runLater(new Runnable() {
                     @Override

@@ -34,4 +34,5 @@ public class EndGameCommand extends Command implements Serializable {
     public boolean execute(Game game) throws EriantysExceptions {
         return true;
     }
+
 }
