@@ -602,10 +602,10 @@ import java.util.stream.Collectors;
                 gridPane.setHgap(dim/3);
                 gridPane.setVgap(dim/10);
                 Assistant card = allCards.get(i);
-                /** da sistemare **/
-                if (!cards.contains(AssistantType.index(i))){
+                if (!cards.contains(allCards.get(i))){
                     img.setOpacity(0.5);
                     btAssistant.setOpacity(0.5);
+                    btAssistant.setDisable(false);
                 }
                 else{
                     btAssistant.setOnAction(new EventHandler<ActionEvent>() {
