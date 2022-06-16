@@ -45,7 +45,9 @@ public class GetAssistantCommand extends Command implements Serializable {
             assistant = assistants.get(choice-1);
             setDataGathered(true);
         }
+
     }
+
 
     @Override
     public boolean execute(Game game) throws EriantysExceptions {
@@ -64,5 +66,16 @@ public class GetAssistantCommand extends Command implements Serializable {
         }
         else
             return false;
+    }
+
+    @Override
+    public String GUIGetData(ArrayList<Object> inputs) {
+        Assistant temp = (Assistant) inputs.get(0);
+        for(Assistant as : playedCard)
+            if( as.getNum() == temp.getNum())
+                return Config.GUI_GET_ASSISTANT_REPEATING;
+        assistant = temp;
+        setDataGathered(true);
+        return Config.GUI_COMMAND_GETDATA_SUC;
     }
 }

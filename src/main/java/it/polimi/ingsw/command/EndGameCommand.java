@@ -35,4 +35,10 @@ public class EndGameCommand extends Command implements Serializable {
         return true;
     }
 
+    @Override
+    public String GUIGetData(ArrayList<Object> inputs) {
+
+        return null;
+    }
+
 }

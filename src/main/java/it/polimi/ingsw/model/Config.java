@@ -42,6 +42,8 @@ public class Config {
     public static final String SHOW_RESUMABLE_GAMES_SUC = "get resumable games";
     public static final String JOIN_RESUMABLE_GAME = "join a resumable game";
     public static final String JOIN_RESUMABLE_GAME_SUC = "join a resumable game successfully";
+    public static final String GUI_GET_ASSISTANT_REPEATING = "Card already played";
+    public static final String GUI_COMMAND_GETDATA_SUC = "GUI OK";
 
 
     public static final String UPDATE = "UPDATE";

@@ -39,7 +39,7 @@ public class GuiListener extends Thread{
             while(receiverOn)
             {
                 update = updateReceiver.accept();
-                System.out.println(caller.toString() + "listening");
+                System.out.println(caller.getInfo().getUserName() + "listening");
                 oos = new ObjectOutputStream(update.getOutputStream());
                 ois=new ObjectInputStream(update.getInputStream());
                 ArrayList<Object> updates = (ArrayList<Object>) ois.readObject();
@@ -57,29 +57,6 @@ public class GuiListener extends Thread{
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void updateReceived(ArrayList<Object> messages) throws EriantysExceptions {
-        String msg = (String) messages.get(0);
-        System.out.println(dateFormat.format(new Date()));
-        switch (msg)
-        {
-            case Config.UPDATE_CREATOR_WAITING_ROOM :
-                //updateCreatorGameRoom((Game) messages.get(1));
-                break;
-            case Config.UPDATE_OTHER_WAITING_ROOM:
-                //updateOtherPlayerGameRoom((Game) messages.get(1));
-                break;
-            case Config.UPDATE_CREATOR_WAITING_ROOM_FOR_OLD_GAME:
-                //updateCreatorOldGameRoom((Game) messages.get(1));
-                break;
-            case Config.UPDATE_OTHER_WAITING_ROOM_FOR_OLD_GAME:
-               // updateOtherPlayerOldGameRoom((Game) messages.get(1));
-                break;
-            case Config.GAME_UPDATED:
-               // gameUpdate((Game) messages.get(1));
-                break;
         }
     }
 

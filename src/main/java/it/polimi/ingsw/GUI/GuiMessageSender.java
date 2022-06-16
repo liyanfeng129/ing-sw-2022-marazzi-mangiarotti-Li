@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.Config;
 import javafx.application.Platform;
 
@@ -52,13 +53,28 @@ public class GuiMessageSender {
                 case Config.GAME_START:
                     responses = startGame(caller.getInfo().getUserName());
                     caller.responsesFromSender(responses);
+                    break;
+                case Config.COMMAND_EXECUTE:
+                    responses = commandExecute(caller.getInfo().getUserName(), caller.getInfo().getCommand());
+                    caller.responsesFromSender(responses);
+                    break;
                 default:
             }
         }
         catch (Exception e)
         {
-
+            e.printStackTrace();
         }
+    }
+
+    private ArrayList<Object> commandExecute(String userName, Command command) {
+        ArrayList<Object> messages = new ArrayList<>();
+        ArrayList<Object> responses = new ArrayList<>();
+        messages.add(Config.COMMAND_EXECUTE);
+        messages.add(userName);
+        messages.add(command);
+        responses = responseFromServer(messages);
+        return responses;
     }
 
     private ArrayList<Object> startGame(String userName) {

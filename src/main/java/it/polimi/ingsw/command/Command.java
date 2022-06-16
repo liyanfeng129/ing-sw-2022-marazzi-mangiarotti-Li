@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public abstract class Command implements Serializable {
     private boolean dataGathered;
@@ -24,6 +25,7 @@ public abstract class Command implements Serializable {
     public abstract void undo(Game game) throws EriantysExceptions;
     public abstract void  getData() throws EriantysExceptions;
     public abstract boolean execute(Game game) throws EriantysExceptions;
+    public abstract String GUIGetData(ArrayList<Object> inputs);
     public boolean isDataGathered() {
         return dataGathered;
     }

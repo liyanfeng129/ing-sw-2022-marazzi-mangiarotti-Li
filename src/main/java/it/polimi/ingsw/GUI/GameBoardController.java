@@ -1,10 +1,7 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.characterCards2.CharacterCard;
-import it.polimi.ingsw.command.GetAssistantCommand;
-import it.polimi.ingsw.command.MoveMotherNatureCommand;
-import it.polimi.ingsw.command.MoveStudentFromWaitingRoomCommand;
-import it.polimi.ingsw.command.SelectCloudCommand;
+import it.polimi.ingsw.command.*;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.Cli;
 import javafx.application.Platform;
@@ -100,6 +97,7 @@ import java.util.stream.Collectors;
         protected void update()throws EriantysExceptions
         {
             removeGame();
+            messages.setText(game.getExecutedCommand().getMsg());// displaying the previous action done by player
             if(game.getLastCommand().getUsername().equals(name))
             {
                 if(game.getLastCommand() instanceof GetAssistantCommand)
@@ -155,16 +153,23 @@ import java.util.stream.Collectors;
 
             switch (fase) {
                 case "Assistants":
+                    System.out.println("GameBoard : show Assistant");
                     showAssistant(); break;
                 case "updateGame":
-                    showGameNoAction();break;
+                    System.out.println("GameBoard : show game no action");
+                    showGameNoAction();
+                    break;
                 case "MoveStudents":
+                    System.out.println("GameBoard : moveStudents");
                     showGameDragStudent();break;
                 case "MoveMN":
+                    System.out.println("GameBoard : moveMN");
                     showGameMoveMN();break;
                 case "SelectCloud":
+                    System.out.println("GameBoard : SelectCloud");
                     showGamePickCloud();break;
                 case "endgame":
+                    System.out.println("GameBoard : end game");
                     endGame();break;
             }
         }
@@ -616,7 +621,7 @@ import java.util.stream.Collectors;
                     btAssistant.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
                             assistantChoice = card;
-                            messages.setText("Hai scelto una carta");
+                            messages.setText("Hai scelto una carta: "+ card.toString());
                         }
                     });
                 }
@@ -628,13 +633,21 @@ import java.util.stream.Collectors;
                 GridPane.setHalignment(img, HPos.CENTER);
             }
 
-
+            AASceneParent aaSceneParent = this;
             Button bt=new Button("Select Assistant");
             bt.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
                     /**TODO YANFENG
                      * qui prendi la carta assistente (è nella variabile globale assistantChoice)
                      */
+                    Command command = game.getLastCommand();
+                    ArrayList<Object> inputs = new ArrayList<>();
+                    inputs.add(assistantChoice);
+                    if(command.GUIGetData(inputs).equals(Config.GUI_COMMAND_GETDATA_SUC))
+                    {
+                        getInfo().setCommand(command);
+                       Platform.runLater( ()-> new GuiMessageSender(aaSceneParent,Config.COMMAND_EXECUTE).run());
+                    }
                     messages.setText("Invio Carta");
                 }
             });
@@ -1164,6 +1177,7 @@ import java.util.stream.Collectors;
         public void listenerCallBack(ArrayList<Object> responses) {
             if(responses.get(0).equals(Config.GAME_UPDATED))
             {
+                System.out.println(name+ " Game board listener call back: game updating");
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -1180,6 +1194,7 @@ import java.util.stream.Collectors;
 
         @Override
         public void responsesFromSender(ArrayList<Object> responses){
-
+            if(responses.get(0).equals(Config.COMMAND_EXECUTE_SUC))
+                System.out.println(name+" command executed successfully");
         }
     }

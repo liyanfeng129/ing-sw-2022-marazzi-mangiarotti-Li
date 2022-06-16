@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.state.TakeCloudState;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -59,6 +60,11 @@ public class SelectCloudCommand extends Command implements Serializable{
         c.emptyCloud();
         setMsg(String.format("Player %s took cloud %d", getUsername(), cloud + 1));
         return true;
+    }
+
+    @Override
+    public String GUIGetData(ArrayList<Object> inputs) {
+        return null;
     }
 }
 

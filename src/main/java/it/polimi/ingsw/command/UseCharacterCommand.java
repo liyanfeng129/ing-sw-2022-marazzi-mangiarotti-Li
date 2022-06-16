@@ -4,6 +4,7 @@ import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class UseCharacterCommand extends Command implements Serializable {
     private CharacterCard card;
@@ -30,5 +31,10 @@ public class UseCharacterCommand extends Command implements Serializable {
     public boolean execute(Game game) throws EriantysExceptions {
         Player p = game.findPlayerByName(getUsername());
         return  card.useCard(game,p);
+    }
+
+    @Override
+    public String GUIGetData(ArrayList<Object> inputs) {
+        return null;
     }
 }

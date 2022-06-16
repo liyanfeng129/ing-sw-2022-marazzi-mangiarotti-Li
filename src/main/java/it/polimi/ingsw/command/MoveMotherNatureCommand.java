@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MoveMotherNatureCommand extends Command implements Serializable {
@@ -52,5 +53,10 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String GUIGetData(ArrayList<Object> inputs) {
+        return null;
     }
 }

@@ -9,6 +9,7 @@ import it.polimi.ingsw.state.ActionState;
 import it.polimi.ingsw.view.Cli;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MoveStudentFromWaitingRoomCommand extends Command implements Serializable {
@@ -132,6 +133,11 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                 ((ActionState)game.getGameState()).setCharacterIndex(characterIndex);
             }
         return true;
+    }
+
+    @Override
+    public String GUIGetData(ArrayList<Object> inputs) {
+        return null;
     }
 
     private boolean normalExecute(Game game) throws EriantysExceptions {

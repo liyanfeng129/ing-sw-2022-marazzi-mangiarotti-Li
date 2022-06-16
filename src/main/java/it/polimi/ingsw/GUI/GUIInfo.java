@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.Game;
 
 import java.util.Random;
@@ -12,6 +13,15 @@ public class GUIInfo
     private  int listeningPortNumber;
     private Game game;
     private GuiListener listener;
+    private Command command;
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
 
     public GuiListener getListener() {
         return listener;
