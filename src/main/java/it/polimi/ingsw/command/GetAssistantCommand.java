@@ -24,6 +24,11 @@ public class GetAssistantCommand extends Command implements Serializable {
 
     }
 
+    /**
+     * Getting data from player's keyboard
+     * puts assistant card chosen
+     * void because after calling getData, it ensures command can collect correctly everything it occurs
+     * */
     public void getData() {
         if(isCliClient())
         {
@@ -68,13 +73,22 @@ public class GetAssistantCommand extends Command implements Serializable {
             return false;
     }
 
+    /**
+     * @param inputs
+     * inputs.get(0) : type Assistant
+     * @return
+     * Config.GUI_GET_ASSISTANT_REPEATING : when this card is already used
+     * Config.GUI_COMMAND_GETDATA_SUC: card is used and saved in this class
+     * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {
         Assistant temp = (Assistant) inputs.get(0);
         for(Assistant as : playedCard)
             if( as.getNum() == temp.getNum())
                 return Config.GUI_GET_ASSISTANT_REPEATING;
-        assistant = temp;
+        for (Assistant as : assistants)
+            if(temp.getType().equals(as.getType()))
+                assistant = as; // assistant has to one in assistants ( they should have same reference)
         setDataGathered(true);
         return Config.GUI_COMMAND_GETDATA_SUC;
     }
