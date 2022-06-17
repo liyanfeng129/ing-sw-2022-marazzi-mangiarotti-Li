@@ -637,7 +637,7 @@ import java.util.stream.Collectors;
             Button bt=new Button("Select Assistant");
             bt.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
-                    /**TODO YANFENG
+                    /**TODO YANFENG BUTTON SELECT ASSISTANT
                      * qui prendi la carta assistente (è nella variabile globale assistantChoice)
                      */
                     Command command = game.getLastCommand();
@@ -915,6 +915,7 @@ import java.util.stream.Collectors;
                             /**TODO YANFENG
                              * qui puoi prendere l'isola su cui si è trascinnato uno studente e lo studente
                              */
+                            System.out.println(db.getString());
                             success = true;
                         }
                         /* let the source know whether the string was successfully
@@ -1196,5 +1197,7 @@ import java.util.stream.Collectors;
         public void responsesFromSender(ArrayList<Object> responses){
             if(responses.get(0).equals(Config.COMMAND_EXECUTE_SUC))
                 System.out.println(name+" command executed successfully");
+            if(responses.get(0).equals(Config.GUI_GET_ASSISTANT_REPEATING))
+                 messages.setText("This card is already used please select another one.");
         }
     }

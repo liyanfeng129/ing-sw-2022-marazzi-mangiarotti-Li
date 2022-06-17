@@ -1,10 +1,7 @@
 package it.polimi.ingsw.command;
 
 import it.polimi.ingsw.characterCards2.CharacterCard;
-import it.polimi.ingsw.model.EriantysExceptions;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.SType;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.state.ActionState;
 import it.polimi.ingsw.view.Cli;
 
@@ -135,9 +132,19 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
         return true;
     }
 
+    /**
+     * @param inputs
+     * inputs.get(0) : student int
+     * inputs.get(1) : moveToIsland boolean
+     * inputs.get(2) : island_pos int
+     * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {
-        return null;
+        student = (int) inputs.get(0);
+        moveToIsland = (boolean) inputs.get(1);
+        if(moveToIsland)
+            island_pos = (int) inputs.get(2);
+        return Config.GUI_COMMAND_GETDATA_SUC;
     }
 
     private boolean normalExecute(Game game) throws EriantysExceptions {
