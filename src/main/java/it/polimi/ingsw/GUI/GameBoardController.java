@@ -264,7 +264,7 @@ import java.util.stream.Collectors;
             double angle_;
             for(int i=0; i<table.getIslands().size();i++){
                 ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
-
+                nodes.add(img_view);
                 img_view.setFitWidth(screenBounds.getMaxY()/6);
                 img_view.setPreserveRatio(true);
 
@@ -278,12 +278,14 @@ import java.util.stream.Collectors;
                     pos_x = -r*Math.cos(Math.toRadians(angle_))+pos_x_center;
                 pos_y =-r*Math.sin(Math.toRadians(angle_))*0.50+pos_y_center;
                 Button bt = new Button();
+                nodes.add(bt);
                 bt.setLayoutX(pos_x);
                 bt.setLayoutY(pos_y+30);
                 bt.setGraphic(img_view);
                 bt.setBackground(null);
 
                 ImageView imgDragDrop = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
+                nodes.add(imgDragDrop);
                 imgDragDrop.setFitWidth(screenBounds.getMaxY()/6);
                 imgDragDrop.setPreserveRatio(true);
 
@@ -360,7 +362,6 @@ import java.util.stream.Collectors;
                 }
 
 
-                nodes.add(bt);
                 root.getChildren().add(bt);
 
                 /** Adds students to island */
@@ -382,19 +383,18 @@ import java.util.stream.Collectors;
                 /** Adds mother nature*/
                 if (table.getIslands().get(i).getMotherNature()){
                     ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
+                    nodes.add(MN_view);
                     MN_view.setFitWidth(screenBounds.getMaxY()/18);
                     MN_view.setFitHeight(screenBounds.getMaxY()/18);
                     MN_view.setPreserveRatio(true);
                     MN_view.setLayoutX(pos_x+screenBounds.getMaxY()/25.7);
                     MN_view
                             .setLayoutY(pos_y+screenBounds.getMaxY()/36);
-                    nodes.add(MN_view);
                     root.getChildren().add(MN_view);
                 }
 
                 if (!Action){
                     imgDragDrop.setOpacity(0);
-                    nodes.add(imgDragDrop);
                     root.getChildren().add(imgDragDrop);
                 }
             }
@@ -415,6 +415,7 @@ import java.util.stream.Collectors;
                 else
                     img = "image/cloud_card.png";
                 ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream(img)));
+                nodes.add(img_view);
                 img_view.setFitWidth(screenBounds.getMaxY()/6);
                 img_view.setPreserveRatio(true);
                 img_view.setLayoutX(pos_x);
@@ -423,6 +424,7 @@ import java.util.stream.Collectors;
 
                 if(Action) {
                     Button bt = new Button();
+                    nodes.add(bt);
                     bt.setGraphic(img_view);
                     bt.setBackground(null);
                     Cloud cloudPicked = game.getTable().getClouds().get(i);
@@ -442,8 +444,6 @@ import java.util.stream.Collectors;
                 root.getChildren().add(node);
 
                 GridPane(pos_x,pos_y-20,game.getTable().getClouds().get(i).getStudents());
-
-                nodes.add(node);
                 pos_x +=screenBounds.getMaxY()/6;
             }
         }
@@ -486,7 +486,9 @@ import java.util.stream.Collectors;
                         img_file = "Image/CarteTOT_front12.jpg";break;
                 }
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
+                nodes.add(img);
                 Button bt = new Button();
+                nodes.add(bt);
                 img.setFitWidth(screenBounds.getMaxY()/8);
                 img.setPreserveRatio(true);
                 bt.setLayoutX(pos_max_x-screenBounds.getMaxY()/7.5);
@@ -516,6 +518,7 @@ import java.util.stream.Collectors;
                 root.getChildren().add(bt);
                 if (!card.isFirstUse()){
                     ImageView coin = new ImageView(new Image(getClass().getResourceAsStream("Image/coin.png")));
+                    nodes.add(coin);
                     coin.setFitWidth(screenBounds.getMaxY()/16);
                     coin.setPreserveRatio(true);
                     coin.setLayoutX((pos_max_x-screenBounds.getMaxY()/7.5)*1.01);
@@ -530,6 +533,8 @@ import java.util.stream.Collectors;
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
             Button bt = new Button();
+            nodes.add(bt);
+
             bt.setText("Use Character");
             bt.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
             bt.setLayoutY(screenBounds.getMaxY()*2/3 -50);
@@ -548,7 +553,7 @@ import java.util.stream.Collectors;
                         messages.setText("Invio Carta");
                 }
             });
-            nodes.add(bt);
+
 
         }
 
@@ -556,6 +561,7 @@ import java.util.stream.Collectors;
         public void showAssistant(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             GridPane gridPane = new GridPane();
+            nodes.add(gridPane);
             gridPane.setLayoutX(0);
             gridPane.setLayoutY(screenBounds.getMinY()/3);
 
@@ -601,8 +607,10 @@ import java.util.stream.Collectors;
                         break;
                 }
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
+
                 double dim=screenBounds.getMaxY()/7;
-                Button btAssistant=new Button();
+                Button btAssistant =new Button();
+                nodes.add(btAssistant);
                 img.setFitWidth(dim);
                 img.setPreserveRatio(true);
                 btAssistant.setGraphic(img);
@@ -635,6 +643,7 @@ import java.util.stream.Collectors;
 
             AASceneParent aaSceneParent = this;
             Button bt=new Button("Select Assistant");
+            nodes.add(bt);
             bt.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
                     /**TODO YANFENG BUTTON SELECT ASSISTANT
@@ -653,7 +662,6 @@ import java.util.stream.Collectors;
             });
 
             gridPane.add(bt,4,3);
-            nodes.add(gridPane);
             root.getChildren().add(gridPane);
         }
 
@@ -661,11 +669,15 @@ import java.util.stream.Collectors;
         public void switcBoardController(Boolean Action){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             HBox bar = new HBox();
+            nodes.add(bar);
             ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("Image/PLANCIA_GIOCO.png")));
+            nodes.add(img_view);
             img_view.setFitHeight(screenBounds.getMaxY()/3);
             img_view.setPreserveRatio(true);
             VBox vbox = new VBox();
+            nodes.add(vbox);
             Button bt = new Button();
+            nodes.add(bt);
             bt.setText("Switch Board");
 
             bt.setOnAction(new EventHandler<ActionEvent>() {
@@ -698,14 +710,18 @@ import java.util.stream.Collectors;
             vbox.getChildren().add(bt);
 
             StackPane stackPane = new StackPane();
+            nodes.add(stackPane);
             VBox vbox_messages = new VBox();
+            nodes.add(vbox_messages);
             Label fixlabel = new Label();
+            nodes.add(fixlabel);
             fixlabel.setText("MESSAGES:");
             Label label = messages;
             vbox_messages.getChildren().add(fixlabel);
             vbox_messages.getChildren().add(label);
 
             Pane rect = new Pane();
+            nodes.add(rect);
             rect.setPrefHeight(screenBounds.getMaxY()/3);
             rect.setPrefWidth(screenBounds.getMaxX()-img_view.getLayoutBounds().getWidth());
             rect.setStyle("-fx-background-color: #F0FFFF" );
@@ -752,6 +768,7 @@ import java.util.stream.Collectors;
                     color = green;
                 for (int j =0;j<waitingRoom[i];j++) {
                     ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                    nodes.add(img);
 
 
                     img.setFitWidth(screenBounds.getMaxY()/(33.333));
@@ -811,7 +828,6 @@ import java.util.stream.Collectors;
 
                     }
                     board.add(img);
-                    nodes.add(img);
                     root.getChildren().add(img);
                 }
             }
@@ -866,6 +882,7 @@ import java.util.stream.Collectors;
 
 
                 Pane paneDrop = new Pane ();
+                nodes.add(paneDrop);
                 paneDrop.setPrefWidth(screenBounds.getMaxY()/2);
                 paneDrop.setStyle("-fx-background-color: #F0FFFF" );
                 paneDrop.setPrefHeight(screenBounds.getMaxY()-screenBounds.getMaxY()*2/3);
@@ -925,7 +942,6 @@ import java.util.stream.Collectors;
                         event.consume();
                     }
                 });
-                nodes.add(paneDrop);
                 root.getChildren().add(paneDrop);
 
 
@@ -942,6 +958,7 @@ import java.util.stream.Collectors;
             PlayerBoard pb = player.getPlayerBoard();
             TowerColor color ;
             GridPane gridPane = new GridPane();
+            nodes.add(gridPane);
             double dim = screenBounds.getMaxY() / (60);
             gridPane.setHgap(dim / 3);
             gridPane.setVgap(dim / 7.5);
@@ -969,7 +986,6 @@ import java.util.stream.Collectors;
                     gridPane.add(img,0,i);
                 else
                     gridPane.add(img,1,i-1);
-                nodes.add(gridPane);
                 board.add(gridPane);
 
 
