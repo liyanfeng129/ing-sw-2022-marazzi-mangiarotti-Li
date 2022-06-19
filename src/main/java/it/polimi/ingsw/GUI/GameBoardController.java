@@ -311,6 +311,7 @@ import java.util.stream.Collectors;
                         }
                     });
 
+                    AASceneParent aaSceneParent = this;
                     imgDragDrop.setOnDragDropped(new EventHandler <DragEvent>() {
                         public void handle(DragEvent event) {
                             /* data dropped */
@@ -324,9 +325,19 @@ import java.util.stream.Collectors;
                                 inputs.add(Integer.parseInt(db.getString()));
                                 inputs.add(true);
                                 inputs.add(position);
-                                /**TODO YANFENG
+                                /**TODO YANFENG DROP STUDENT ON ISLAND
                                  * qui prendi le informazioni per spostare gli stucdenti su un isola
                                  */
+                                Command command = game.getLastCommand();
+                                String msg = command.GUIGetData(inputs);
+                                if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
+                                {
+                                    getInfo().setCommand(command);
+                                    Platform.runLater( () -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                }
+                                else
+                                    messages.setText(msg);
+
                                 success = true;
                             }
                             /* let the source know whether the string was successfully
@@ -902,7 +913,7 @@ import java.util.stream.Collectors;
                         event.consume();
                     }
                 });
-
+                AASceneParent aaSceneParent = this;
                 paneDrop.setOnDragDropped(new EventHandler <DragEvent>() {
                     public void handle(DragEvent event) {
                         /* data dropped */
@@ -912,12 +923,21 @@ import java.util.stream.Collectors;
                         boolean success = false;
                         if (db.hasString()) {
                             System.out.println("setOnDragDropped");
-                            /**TODO YANFENG
-                             * qui puoi prendere l'isola su cui si è trascinnato uno studente e lo studente
+                            /**TODO YANFENG DROP STUDENT ON STUDENT HOLDER
+                             * drop student on your student holder
                              */
                             ArrayList<Object> inputs = new ArrayList<>();
                             inputs.add(Integer.parseInt(db.getString()));
                             inputs.add(false);
+                            Command command = game.getLastCommand();
+                            String msg = command.GUIGetData(inputs);
+                            if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
+                            {
+                                getInfo().setCommand(command);
+                                Platform.runLater( () -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            }
+                            else
+                                messages.setText(msg);
 
                             success = true;
                         }

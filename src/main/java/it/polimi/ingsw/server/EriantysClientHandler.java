@@ -516,7 +516,7 @@ public class EriantysClientHandler extends Thread{
     private synchronized  void object2FileJason(String fileName, Object ob)
     {
         String absolutePathToProject = new File("").getAbsolutePath();
-        String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
         Gson gson = new Gson();
         try(FileWriter writer = new FileWriter(absolutePathToProject+pathFromContentRoot+fileName))
         {
@@ -531,7 +531,7 @@ public class EriantysClientHandler extends Thread{
     private synchronized Object fileJason2Object(String fileName, Class ob)
     {
         String absolutePathToProject = new File("").getAbsolutePath();
-        String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
         Gson gson = new Gson();
         try (Reader reader = new FileReader(absolutePathToProject+pathFromContentRoot+fileName)) {
 
@@ -548,7 +548,7 @@ public class EriantysClientHandler extends Thread{
     public synchronized Object fileBin2Object(String fileName)
     {
         String absolutePathToProject = new File("").getAbsolutePath();
-        String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
         try
         {
             FileInputStream fi = new FileInputStream(new File(absolutePathToProject+pathFromContentRoot+fileName));
@@ -566,7 +566,7 @@ public class EriantysClientHandler extends Thread{
     public synchronized void Object2fileBin(String fileName, Object ob)
     {
         String absolutePathToProject = new File("").getAbsolutePath();
-        String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
         try
         {
             FileOutputStream f = new FileOutputStream(new File(absolutePathToProject+pathFromContentRoot+fileName));

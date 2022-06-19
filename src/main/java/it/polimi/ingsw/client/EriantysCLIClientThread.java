@@ -515,7 +515,7 @@ public class EriantysCLIClientThread extends Thread {
         try
         {
             String absolutePathToProject = new File("").getAbsolutePath();
-            String pathFromContentRoot = "\\src\\main\\java\\it\\polimi\\ingsw\\storage\\";
+            String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
             File file=new File(absolutePathToProject+pathFromContentRoot+fileName);    //creates a new file instance
             FileReader fr=new FileReader(file);   //reads the file
             BufferedReader br=new BufferedReader(fr);  //creates a buffering character input stream
