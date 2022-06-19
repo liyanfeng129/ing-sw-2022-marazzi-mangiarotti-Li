@@ -49,11 +49,6 @@ import java.util.stream.Collectors;
         private List<Node> nodes= new ArrayList<>();
         private List<Node> board= new ArrayList<>();
 
-    /** TODO LEO
-     * rimuovere leo
-     *
-     * rimuovere il test in gameSetUpController
-     */
     private String name;
     private String board_name;
 
@@ -111,30 +106,6 @@ import java.util.stream.Collectors;
             }
             else
                 showGame("updateGame");
-
-            /**TODO YANFENG
-             * in base al turno del giocatore puoi fare
-             *
-             *  showGameNoAction() è per il solo aggiornamento (chi non sta giocando )
-             *
-             * gli altri sono per ci gioca
-             *
-             * showGameDragStudent per muovere studente o selezionanre la carta
-             *
-             * showGameMoveMN per muovere MN o selezionare carta
-             *
-             * showGamePickCloud per prendere cloud o selezionare carta
-             *
-             * se vuoi anche mandare dei messaggi fai
-             *
-             * messages.setText("msg") dopo aver fatto queste cose
-             *
-             * showAssistant(); per far vedere gli assitenti
-             *
-             * devi togliere lo showGameNoAction qui sotto ricordatelo
-             */
-
-
 
         }
 
@@ -291,13 +262,14 @@ import java.util.stream.Collectors;
 
                 imgDragDrop.setLayoutX(pos_x);
                 imgDragDrop.setLayoutY(pos_y+30);
-
+                int position;
 
                 if (Action){
+                    position = i;
                     Island islandSelected = game.getTable().getIsland(i);
                     bt.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
-                            islandChoice = islandSelected;
+                            islandChoice = islandSelected; // oppure position è la pisizione
                             /**TODO YANFENG
                              * in islandChoice trovi l'isola scelta pe muovere madre natura
                              */
@@ -307,6 +279,7 @@ import java.util.stream.Collectors;
 
                 }
                 else{
+                    position = i;
                     imgDragDrop.setOnDragOver(new EventHandler <DragEvent>() {
                         public void handle(DragEvent event) {
                             //data is dragged over the target
@@ -347,8 +320,12 @@ import java.util.stream.Collectors;
                             boolean success = false;
                             if (db.hasString()) {
                                 System.out.println("setOnDragDropped");
+                                ArrayList<Object> inputs = new ArrayList<>();
+                                inputs.add(Integer.parseInt(db.getString()));
+                                inputs.add(true);
+                                inputs.add(position);
                                 /**TODO YANFENG
-                                 * qui puoi prendere l'isola su cui si è trascinnato uno studente e lo studente
+                                 * qui prendi le informazioni per spostare gli stucdenti su un isola
                                  */
                                 success = true;
                             }
@@ -799,18 +776,28 @@ import java.util.stream.Collectors;
                     }
 
 
+
                     if (board_name.equals(name) && Action){
                         img.setOnDragDetected(new EventHandler <MouseEvent>() {
                             public void handle(MouseEvent event) {
                                 /* drag was detected, start drag-and-drop gesture*/
-                                System.out.println("onDragDetected");
-
                                 /* allow any transfer mode */
                                 Dragboard db = img.startDragAndDrop(TransferMode.ANY);
 
                                 /* put a string on dragboard */
                                 ClipboardContent content = new ClipboardContent();
-                                content.putString("Hello!");
+                                String student;
+                                if ( img.getImage().getUrl().contains("red"))
+                                    student ="0";
+                                else if ( img.getImage().getUrl().contains("yellow"))
+                                    student ="1";
+                                else if ( img.getImage().getUrl().contains("pink"))
+                                    student ="2";
+                                else if ( img.getImage().getUrl().contains("blu"))
+                                    student ="3";
+                                else
+                                    student ="4";
+                                content.putString(student);
                                 db.setContent(content);
 
                                 event.consume();
@@ -818,10 +805,6 @@ import java.util.stream.Collectors;
                         });
                         img.setOnDragDone(new EventHandler <DragEvent>() {
                             public void handle(DragEvent event) {
-                                /* the drag-and-drop gesture ended */
-                                System.out.println("onDragDone");
-                                /* if the data was successfully moved, clear it */
-
                                 event.consume();
                             }
                         });
@@ -932,7 +915,10 @@ import java.util.stream.Collectors;
                             /**TODO YANFENG
                              * qui puoi prendere l'isola su cui si è trascinnato uno studente e lo studente
                              */
-                            System.out.println(db.getString());
+                            ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(Integer.parseInt(db.getString()));
+                            inputs.add(false);
+
                             success = true;
                         }
                         /* let the source know whether the string was successfully
