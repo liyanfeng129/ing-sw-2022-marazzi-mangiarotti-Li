@@ -69,6 +69,7 @@ import java.util.stream.Collectors;
                         board_name = getInfo().getUserName();
                         update();
 
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -166,7 +167,6 @@ import java.util.stream.Collectors;
             showTowers();
             showProfessors();
             showIslands(false);
-            addButtonCharacter();
 
 
 
@@ -174,6 +174,7 @@ import java.util.stream.Collectors;
             showDiningRoom();
             showWaitingRoom(true);
             if (game.isExpertMode()) {
+                addButtonCharacter();
                 showCharacter();
                 showWallet();
             }
@@ -183,7 +184,7 @@ import java.util.stream.Collectors;
 
 
             switcBoardController(false);
-            addButtonCharacter();
+
             showTowers();
             showIslands(true);
             showClouds(false);
@@ -191,6 +192,7 @@ import java.util.stream.Collectors;
             showWaitingRoom(false);
             showProfessors();
             if (game.isExpertMode()) {
+                addButtonCharacter();
                 showCharacter();
                 showWallet();
             }
@@ -199,7 +201,6 @@ import java.util.stream.Collectors;
         public void showGamePickCloud() throws EriantysExceptions {
 
             switcBoardController(false);
-            addButtonCharacter();
             showTowers();
 
             showIslands(false);
@@ -209,6 +210,7 @@ import java.util.stream.Collectors;
             showWaitingRoom(false);
             showProfessors();
             if (game.isExpertMode()) {
+                addButtonCharacter();
                 showCharacter();
                 showWallet();
             }
@@ -269,7 +271,8 @@ import java.util.stream.Collectors;
                     Island islandSelected = game.getTable().getIsland(i);
                     bt.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
-                            islandChoice = islandSelected; // oppure position è la pisizione
+                            ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(position);
                             /**TODO YANFENG MOVE MN
                              * in islandChoice trovi l'isola scelta pe muovere madre natura
                              */
@@ -415,13 +418,14 @@ import java.util.stream.Collectors;
                     nodes.add(bt);
                     bt.setGraphic(img_view);
                     bt.setBackground(null);
-                    Cloud cloudPicked = game.getTable().getClouds().get(i);
+                    int cloud_pos = i;
                     bt.setLayoutX(pos_x);
                     bt.setLayoutY(pos_y);
                     bt.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent e) {
-                            cloudChoice = cloudPicked;
+                            ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(cloud_pos);
                             /**TODO YANFENG TAKE CLOUD
                              * in cloudIndex trovi la posizione dell'isola
                              */
@@ -789,6 +793,7 @@ import java.util.stream.Collectors;
 
 
                     if (board_name.equals(name) && Action){
+                        String student = ""+i;
                         img.setOnDragDetected(new EventHandler <MouseEvent>() {
                             public void handle(MouseEvent event) {
                                 /* drag was detected, start drag-and-drop gesture*/
@@ -797,17 +802,7 @@ import java.util.stream.Collectors;
 
                                 /* put a string on dragboard */
                                 ClipboardContent content = new ClipboardContent();
-                                String student;
-                                if ( img.getImage().getUrl().contains("red"))
-                                    student ="0";
-                                else if ( img.getImage().getUrl().contains("yellow"))
-                                    student ="1";
-                                else if ( img.getImage().getUrl().contains("pink"))
-                                    student ="2";
-                                else if ( img.getImage().getUrl().contains("blu"))
-                                    student ="3";
-                                else
-                                    student ="4";
+
                                 content.putString(student);
                                 db.setContent(content);
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 public class Config {
     public static final int NSTUDENTSINBAG = 120;
-    public static final String PATH_FROM_CONTENT_ROOT = "\\src\\main\\resources\\it\\polimi\\ingsw\\storage\\";
+    public static final String PATH_FROM_CONTENT_ROOT = "/src/main/resources/it/polimi/ingsw/storage/";
     public static final String GAME_OVER = "Game is closing for some reason";
     public static final String USER_LOGGED = "userLogged";
     public static final String USER_CREATED_AND_LOGGED = "userCreatedAndLogged";
