@@ -270,7 +270,7 @@ import java.util.stream.Collectors;
                     bt.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
                             islandChoice = islandSelected; // oppure position è la pisizione
-                            /**TODO YANFENG
+                            /**TODO YANFENG MOVE MN
                              * in islandChoice trovi l'isola scelta pe muovere madre natura
                              */
                             messages.setText("hai selezionnato l'isola");
@@ -422,7 +422,7 @@ import java.util.stream.Collectors;
                         @Override
                         public void handle(ActionEvent e) {
                             cloudChoice = cloudPicked;
-                            /**TODO YANFENG
+                            /**TODO YANFENG TAKE CLOUD
                              * in cloudIndex trovi la posizione dell'isola
                              */
                         }
@@ -529,7 +529,7 @@ import java.util.stream.Collectors;
             root.getChildren().add(bt);
             bt.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
-                    /**TODO YANFENG
+                    /**TODO YANFENG PLAY CHARACTER
                      * qui prendi la carta e la mandi al server
                      * ricordati di settare a null cardChoice una volta preso l'input
                      *

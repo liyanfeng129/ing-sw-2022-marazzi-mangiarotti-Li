@@ -62,9 +62,20 @@ public class SelectCloudCommand extends Command implements Serializable{
         return true;
     }
 
+    /**
+     * @param inputs
+     * inputs.get(0) cloud_index : int
+     * @return
+     * Config.GUI_COMMAND_GETDATA_SUC: if ok
+     * Config.GUI_COMMAND_GETDATA_SUC: if cloud chosen is an empty cloud
+     * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {
-        return null;
+        int cloud = (int) inputs.get(0);
+        if(Arrays.stream(getGame().getTable().getClouds().get(cloud).getStudents()).sum() == 0)
+            return Config.GUI_EMPTY_CLOUD;
+        this.cloud = cloud;
+        return Config.GUI_COMMAND_GETDATA_SUC;
     }
 }
 

@@ -59,9 +59,9 @@ public class EriantysServer {
 
     private static void logOutAll()
     {
-        Users userList = (Users) fileJason2Object("users.jason", Users.class);
+        Users userList = (Users) fileJason2Object("users.json", Users.class);
         userList.logOutAll();
-       object2FileJason("users.jason", userList);
+       object2FileJason("users.json", userList);
     }
 
     private static synchronized Object fileJason2Object(String fileName, Class ob)

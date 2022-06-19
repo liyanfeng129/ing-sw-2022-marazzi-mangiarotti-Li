@@ -452,9 +452,9 @@ public class EriantysClientHandler extends Thread{
     }
 
     private synchronized String logOutUser(String userName) throws EriantysExceptions, IOException {
-        Users userList = (Users) fileJason2Object("users.jason", Users.class);
+        Users userList = (Users) fileJason2Object("users.json", Users.class);
         userList.logOutUser(userName);
-        object2FileJason("users.jason", userList);
+        object2FileJason("users.json", userList);
         try
         {
             Game g = findGameForPlayer(userName);
@@ -479,13 +479,13 @@ public class EriantysClientHandler extends Thread{
 
     private synchronized String logging(String userName, String address, int port) throws EriantysExceptions
     {
-        Users users = (Users) fileJason2Object("users.jason", Users.class);
+        Users users = (Users) fileJason2Object("users.json", Users.class);
         if(users.contains(userName))
         {
             if(!users.getUser(userName).isLogged()) //this user is not logged
             {
                 users.logUser(userName);
-                object2FileJason("users.jason", users);
+                object2FileJason("users.json", users);
                 boolean subDuplicate = false;
                 for(Subscriber sub : subs)
                     if(sub.getUserName().equals(userName))
@@ -507,7 +507,7 @@ public class EriantysClientHandler extends Thread{
         else // this user is just added in usersList and logged
         {
             users.addUser(userName, true);
-            object2FileJason("users.jason", users);
+            object2FileJason("users.json", users);
             //out.println(Config.USER_CREATED_AND_LOGGED);
             return Config.USER_CREATED_AND_LOGGED;
         }

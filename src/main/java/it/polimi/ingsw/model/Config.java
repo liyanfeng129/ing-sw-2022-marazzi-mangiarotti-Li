@@ -45,7 +45,8 @@ public class Config {
     public static final String JOIN_RESUMABLE_GAME_SUC = "join a resumable game successfully";
     public static final String GUI_GET_ASSISTANT_REPEATING = "Card already played";
     public static final String GUI_COMMAND_GETDATA_SUC = "GUI OK";
-
+    public static final String GUI_WRONG_STEPS = "Please select a valid island to move your mother nature";
+    public static final String GUI_EMPTY_CLOUD = "Cloud is empty, please try again.";
 
     public static final String UPDATE = "UPDATE";
     public static final String REQ_ASSISTANT = "REQ_ASSISTANT";

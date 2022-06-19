@@ -1,5 +1,6 @@
 package it.polimi.ingsw.command;
 
+import it.polimi.ingsw.model.Config;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
@@ -55,8 +56,20 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
         return false;
     }
 
+    /**
+     * @param inputs
+     * inputs.get(0) steps: int (selected island position - island position where lands mother nature)
+     * @return
+     * Config.GUI_COMMAND_GETDATA_SUC  if ok
+     * Config.GUI_WRONG_STEPS if ko
+     * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {
-        return null;
+        int steps = (int) inputs.get(0);
+        if(steps > maxSteps)
+            return Config.GUI_WRONG_STEPS;
+        this.steps = steps;
+        setDataGathered(true);
+        return Config.GUI_COMMAND_GETDATA_SUC;
     }
 }
