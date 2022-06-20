@@ -40,9 +40,9 @@ import java.util.stream.Collectors;
         private AnchorPane root;
         protected static String red = "Image/student_red.png";
         protected static String yellow = "Image/student_yellow.png";
+        protected static String pink = "Image/student_pink.png";
         protected static String blue = "Image/student_blue.png";
         protected static String green = "Image/student_green.png";
-        protected static String pink = "Image/student_pink.png";
 
 
         private CharacterCard cardChoice = null;
@@ -731,9 +731,9 @@ import java.util.stream.Collectors;
         public void showWaitingRoom(Boolean Action){
             String red = "Image/student_red.png";
             String yellow = "Image/student_yellow.png";
+            String pink = "Image/student_pink.png";
             String blue = "Image/student_blue.png";
             String green = "Image/student_green.png";
-            String pink = "Image/student_pink.png";
             String color;
 
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
@@ -824,9 +824,9 @@ import java.util.stream.Collectors;
         public void showDiningRoom(){
             String red = "Image/student_red.png";
             String yellow = "Image/student_yellow.png";
+            String pink = "Image/student_pink.png";
             String blue = "Image/student_blue.png";
             String green = "Image/student_green.png";
-            String pink = "Image/student_pink.png";
             String color;
 
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
@@ -998,9 +998,9 @@ import java.util.stream.Collectors;
         public void showProfessors(){
             String red = "Image/teacher_red.png";
             String yellow = "Image/teacher_yellow.png";
+            String pink = "Image/teacher_pink.png";
             String blue = "Image/teacher_blue.png";
             String green = "Image/teacher_green.png";
-            String pink = "Image/teacher_pink.png";
             String color;
 
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
@@ -1056,9 +1056,9 @@ import java.util.stream.Collectors;
 
             ImageView red_student = new ImageView(new Image(getClass().getResourceAsStream(red)));
             ImageView yellow_student = new ImageView(new Image(getClass().getResourceAsStream(yellow)));
+            ImageView pink_student = new ImageView(new Image(getClass().getResourceAsStream(pink)));
             ImageView blue_student = new ImageView(new Image(getClass().getResourceAsStream(blue)));
             ImageView green_student = new ImageView(new Image(getClass().getResourceAsStream(green)));
-            ImageView pink_student = new ImageView(new Image(getClass().getResourceAsStream(pink)));
             GridPane gridPane = new GridPane();
             //island_student.setMaxSize(10,10);
             //island_student.setPreserveRatio(true);
@@ -1082,11 +1082,11 @@ import java.util.stream.Collectors;
             gridPane.add(new Text(""+students[0]), 1, 0);
             gridPane.add(yellow_student, 0, 1);
             gridPane.add(new Text(""+students[1]), 1, 1);
-            gridPane.add(blue_student, 0, 2);
+            gridPane.add(pink_student, 0, 2);
             gridPane.add(new Text(""+students[2]), 1, 2);
-            gridPane.add(green_student, 0, 3);
+            gridPane.add(blue_student, 0, 3);
             gridPane.add(new Text(""+students[3]), 1, 3);
-            gridPane.add(pink_student, 0, 4);
+            gridPane.add(green_student, 0, 4);
             gridPane.add(new Text(""+students[4]), 1, 4);
             //island_student.setGridLinesVisible (true);
 
