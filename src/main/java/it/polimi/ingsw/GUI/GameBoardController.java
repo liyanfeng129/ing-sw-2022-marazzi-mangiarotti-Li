@@ -224,7 +224,7 @@ import java.util.stream.Collectors;
         }
 
         // tavolo gioco
-        public void showIslands(Boolean Action){
+        public void showIslands(Boolean Action) throws EriantysExceptions {
             Table table = game.getTable();
 
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -264,25 +264,36 @@ import java.util.stream.Collectors;
 
                 imgDragDrop.setLayoutX(pos_x);
                 imgDragDrop.setLayoutY(pos_y+30);
-                int position;
-
+                int steps;
+                AASceneParent aaSceneParent = this;
                 if (Action){
-                    position = i;
-                    Island islandSelected = game.getTable().getIsland(i);
+                    int mn_pos = game.getTable().getMotherNatureIndex();
+                    steps = i - mn_pos ;
+                    System.out.println(String.format("mn_pos: %d\n" +
+                            "island_index: %d\n" +
+                            "steps: %d", mn_pos,i,steps));
                     bt.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
                             ArrayList<Object> inputs = new ArrayList<>();
-                            inputs.add(position);
+                            inputs.add(steps);
                             /**TODO YANFENG MOVE MN
                              * in islandChoice trovi l'isola scelta pe muovere madre natura
                              */
-                            messages.setText("hai selezionnato l'isola");
+                            Command command = game.getLastCommand();
+                            String msg = command.GUIGetData(inputs);
+                            if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
+                            {
+                                getInfo().setCommand(command);
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE));
+                            }
+                            else if(msg.equals(Config.GUI_WRONG_STEPS))
+                                messages.setText(msg);
                         }
                     });
 
                 }
                 else{
-                    position = i;
+                    steps = i;
                     imgDragDrop.setOnDragOver(new EventHandler <DragEvent>() {
                         public void handle(DragEvent event) {
                             //data is dragged over the target
@@ -314,7 +325,6 @@ import java.util.stream.Collectors;
                         }
                     });
 
-                    AASceneParent aaSceneParent = this;
                     imgDragDrop.setOnDragDropped(new EventHandler <DragEvent>() {
                         public void handle(DragEvent event) {
                             /* data dropped */
@@ -327,7 +337,7 @@ import java.util.stream.Collectors;
                                 ArrayList<Object> inputs = new ArrayList<>();
                                 inputs.add(Integer.parseInt(db.getString()));
                                 inputs.add(true);
-                                inputs.add(position);
+                                inputs.add(steps);
                                 /**TODO YANFENG DROP STUDENT ON ISLAND
                                  * qui prendi le informazioni per spostare gli stucdenti su un isola
                                  */
@@ -421,6 +431,7 @@ import java.util.stream.Collectors;
                     int cloud_pos = i;
                     bt.setLayoutX(pos_x);
                     bt.setLayoutY(pos_y);
+                    AASceneParent aaSceneParent = this;
                     bt.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent e) {
@@ -429,6 +440,15 @@ import java.util.stream.Collectors;
                             /**TODO YANFENG TAKE CLOUD
                              * in cloudIndex trovi la posizione dell'isola
                              */
+                            Command command = game.getLastCommand();
+                            String msg = command.GUIGetData(inputs);
+                            if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
+                            {
+                                getInfo().setCommand(command);
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent,Config.COMMAND_EXECUTE));
+                            }
+                            else if(msg.equals(Config.GUI_EMPTY_CLOUD))
+                                messages.setText(msg);
                         }
                     });
                     node = bt;
@@ -644,12 +664,15 @@ import java.util.stream.Collectors;
                     Command command = game.getLastCommand();
                     ArrayList<Object> inputs = new ArrayList<>();
                     inputs.add(assistantChoice);
-                    if(command.GUIGetData(inputs).equals(Config.GUI_COMMAND_GETDATA_SUC))
+                    String msg = command.GUIGetData(inputs);
+                    if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
                     {
                         getInfo().setCommand(command);
                        Platform.runLater( ()-> new GuiMessageSender(aaSceneParent,Config.COMMAND_EXECUTE).run());
                     }
-                    messages.setText("Invio Carta");
+                    else if(msg.equals(Config.GUI_GET_ASSISTANT_REPEATING))
+                        messages.setText(msg);
+
                 }
             });
 
