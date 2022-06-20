@@ -66,7 +66,7 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {
         int steps = (int) inputs.get(0);
-        if(steps > maxSteps)
+        if(steps > maxSteps || steps < 1)
             return Config.GUI_WRONG_STEPS;
         this.steps = steps;
         setDataGathered(true);

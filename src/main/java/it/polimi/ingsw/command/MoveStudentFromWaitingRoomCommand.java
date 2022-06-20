@@ -144,6 +144,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
         moveToIsland = (boolean) inputs.get(1);
         if(moveToIsland)
             island_pos = (int) inputs.get(2);
+        setDataGathered(true);
         return Config.GUI_COMMAND_GETDATA_SUC;
     }
 

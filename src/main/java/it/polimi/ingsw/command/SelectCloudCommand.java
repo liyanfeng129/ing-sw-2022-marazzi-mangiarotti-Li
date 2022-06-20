@@ -75,6 +75,7 @@ public class SelectCloudCommand extends Command implements Serializable{
         if(Arrays.stream(getGame().getTable().getClouds().get(cloud).getStudents()).sum() == 0)
             return Config.GUI_EMPTY_CLOUD;
         this.cloud = cloud;
+        setDataGathered(true);
         return Config.GUI_COMMAND_GETDATA_SUC;
     }
 }
