@@ -25,16 +25,17 @@ public class Assistant implements Serializable {
         return type;
     }
 
+    /* non li usiamo mai
     public void setType(AssistantType type) {
         this.type = type;
     }
 
-    public Mage getMage() {
-        return mage;
-    }
-
     public void setMage(Mage mage) {
         this.mage = mage;
+    }
+*/
+    public Mage getMage() {
+        return mage;
     }
 
     @Override

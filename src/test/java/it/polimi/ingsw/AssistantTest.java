@@ -16,11 +16,14 @@ class AssistantTest {
     }
     @Test
     public void test_getNum(){
-        assertEquals(AssistantType.Card_1.getNum(),assistant.getNum());
+        assertEquals(1,assistant.getNum());
     }
     @Test
     public void test_getSteps(){
-        assertEquals(AssistantType.Card_1.getSteps(),assistant.getSteps());
+        assertEquals(1,assistant.getSteps());
     }
-
+    @Test
+    public void test_Mage(){
+        assertEquals(Mage.MAGE1,assistant.getMage());
+    }
 }
