@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import java.io.IOException;
@@ -217,10 +218,24 @@ import java.util.stream.Collectors;
         }
 
         public void endGame(){
-            /**TODO LEO
-             * aggiungre la schermata di fine partita
-             */
-            removeGame();
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            double pos_x_center =screenBounds.getMaxX()/2 -300; //650
+            double pos_y_center =screenBounds.getMaxY()*1/3;
+
+            ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/game_over.png")));
+            nodes.add(img_view);
+            img_view.setFitWidth(screenBounds.getMaxY()*0.7);
+            img_view.setPreserveRatio(true);
+            img_view.setLayoutX(pos_x_center);
+            img_view.setLayoutY(pos_y_center-150);
+
+            Label winner = new Label("The winner is: " );//+ game.getPlayers().get(0).getName()
+            winner.setFont(new Font("Arial", 27));
+            winner.setLayoutX(pos_x_center);
+            winner.setLayoutY(pos_y_center+100);
+
+            root.getChildren().add(img_view);
+            root.getChildren().add(winner);
         }
 
         // tavolo gioco
