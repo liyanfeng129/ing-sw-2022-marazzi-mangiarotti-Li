@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.Cli;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -52,6 +53,11 @@ public class Character6 extends CharacterCard implements Serializable {
              * */
         }
         return true;
+    }
+
+    @Override
+    public String GUIGetData(ArrayList<Object> inputs) throws EriantysExceptions {
+        return null;
     }
 
     @Override

@@ -279,27 +279,38 @@ import java.util.stream.Collectors;
 
                 imgDragDrop.setLayoutX(pos_x);
                 imgDragDrop.setLayoutY(pos_y+30);
-                int steps;
                 AASceneParent aaSceneParent = this;
+                int island_index = i;
                 if (Action){
-                    int mn_pos = game.getTable().getMotherNatureIndex();
-                    steps = i - mn_pos ;
-                    System.out.println(String.format("mn_pos: %d\n" +
-                            "island_index: %d\n" +
-                            "steps: %d", mn_pos,i,steps));
+                    int finalIsland_index1 = island_index;
                     bt.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
+                            int mn_pos = 0;
+                            try {
+                                mn_pos = game.getTable().getMotherNatureIndex();
+                            } catch (EriantysExceptions ex) {
+                                ex.printStackTrace();
+                            }
+                            int steps = finalIsland_index1 - mn_pos ;
+                            System.out.println(String.format("mn_pos: %d\n" +
+                                    "island_index: %d\n" +
+                                    "steps: %d", mn_pos, finalIsland_index1,steps));
                             ArrayList<Object> inputs = new ArrayList<>();
                             inputs.add(steps);
                             /**TODO YANFENG MOVE MN
                              * in islandChoice trovi l'isola scelta pe muovere madre natura
                              */
                             Command command = game.getLastCommand();
-                            String msg = command.GUIGetData(inputs);
+                            String msg = null;
+                            try {
+                                msg = command.GUIGetData(inputs);
+                            } catch (EriantysExceptions ex) {
+                                ex.printStackTrace();
+                            }
                             if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
                             {
                                 getInfo().setCommand(command);
-                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE));
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
                             }
                             else if(msg.equals(Config.GUI_WRONG_STEPS))
                                 messages.setText(msg);
@@ -308,7 +319,7 @@ import java.util.stream.Collectors;
 
                 }
                 else{
-                    steps = i;
+                    island_index = i;
                     imgDragDrop.setOnDragOver(new EventHandler <DragEvent>() {
                         public void handle(DragEvent event) {
                             //data is dragged over the target
@@ -340,6 +351,7 @@ import java.util.stream.Collectors;
                         }
                     });
 
+                    int finalIsland_index = island_index;
                     imgDragDrop.setOnDragDropped(new EventHandler <DragEvent>() {
                         public void handle(DragEvent event) {
                             /* data dropped */
@@ -352,12 +364,17 @@ import java.util.stream.Collectors;
                                 ArrayList<Object> inputs = new ArrayList<>();
                                 inputs.add(Integer.parseInt(db.getString()));
                                 inputs.add(true);
-                                inputs.add(steps);
+                                inputs.add(finalIsland_index);
                                 /**TODO YANFENG DROP STUDENT ON ISLAND
                                  * qui prendi le informazioni per spostare gli stucdenti su un isola
                                  */
                                 Command command = game.getLastCommand();
-                                String msg = command.GUIGetData(inputs);
+                                String msg = null;
+                                try {
+                                    msg = command.GUIGetData(inputs);
+                                } catch (EriantysExceptions e) {
+                                    e.printStackTrace();
+                                }
                                 if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
                                 {
                                     getInfo().setCommand(command);
@@ -456,11 +473,16 @@ import java.util.stream.Collectors;
                              * in cloudIndex trovi la posizione dell'isola
                              */
                             Command command = game.getLastCommand();
-                            String msg = command.GUIGetData(inputs);
+                            String msg = null;
+                            try {
+                                msg = command.GUIGetData(inputs);
+                            } catch (EriantysExceptions ex) {
+                                ex.printStackTrace();
+                            }
                             if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
                             {
                                 getInfo().setCommand(command);
-                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent,Config.COMMAND_EXECUTE));
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent,Config.COMMAND_EXECUTE).run());
                             }
                             else if(msg.equals(Config.GUI_EMPTY_CLOUD))
                                 messages.setText(msg);
@@ -679,7 +701,12 @@ import java.util.stream.Collectors;
                     Command command = game.getLastCommand();
                     ArrayList<Object> inputs = new ArrayList<>();
                     inputs.add(assistantChoice);
-                    String msg = command.GUIGetData(inputs);
+                    String msg = null;
+                    try {
+                        msg = command.GUIGetData(inputs);
+                    } catch (EriantysExceptions ex) {
+                        ex.printStackTrace();
+                    }
                     if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
                     {
                         getInfo().setCommand(command);
@@ -963,7 +990,12 @@ import java.util.stream.Collectors;
                             inputs.add(Integer.parseInt(db.getString()));
                             inputs.add(false);
                             Command command = game.getLastCommand();
-                            String msg = command.GUIGetData(inputs);
+                            String msg = null;
+                            try {
+                                msg = command.GUIGetData(inputs);
+                            } catch (EriantysExceptions e) {
+                                e.printStackTrace();
+                            }
                             if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
                             {
                                 getInfo().setCommand(command);
