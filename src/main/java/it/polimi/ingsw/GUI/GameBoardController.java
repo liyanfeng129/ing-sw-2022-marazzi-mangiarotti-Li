@@ -1,5 +1,7 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.characterCards2.Character1;
+import it.polimi.ingsw.characterCards2.Character7;
 import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.command.*;
 import it.polimi.ingsw.model.*;
@@ -69,6 +71,7 @@ import java.util.stream.Collectors;
                         game = getInfo().getGame();
                         board_name = getInfo().getUserName();
                         update();
+                        showCharacter1((Character1)game.getTable().getCharacters().get(0), true);
 
 
                     } catch (Exception e) {
@@ -563,7 +566,6 @@ import java.util.stream.Collectors;
 
 
 
-
                 root.getChildren().add(bt);
                 if (!card.isFirstUse()){
                     ImageView coin = new ImageView(new Image(getClass().getResourceAsStream("Image/coin.png")));
@@ -794,11 +796,7 @@ import java.util.stream.Collectors;
             root.getChildren().add(bar);
         }
         public void showWaitingRoom(Boolean Action){
-            String red = "Image/student_red.png";
-            String yellow = "Image/student_yellow.png";
-            String pink = "Image/student_pink.png";
-            String blue = "Image/student_blue.png";
-            String green = "Image/student_green.png";
+
             String color;
 
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
@@ -1260,6 +1258,108 @@ import java.util.stream.Collectors;
             nodes.add(gridPane);
             root.getChildren().add(gridPane);
         }
+
+/**
+        public void getCharacterInput(Character1 card){
+
+            switch (card.getN_card()) {
+                case 1:
+                    showCharacter1(card,1,2, true);break;
+                case 3:
+                    showCard3(card, Nodes, root,action);break;
+                case 5:
+                    showCard5(card, Nodes, root,action);break;
+                case 7:
+                    showCard7(card, Nodes, root,action);break;
+                case 9:
+                    showCard9(card, Nodes, root,action);break;
+                case 10:
+                    showCard10(card, Nodes, root,action);break;
+                case 11:
+                    showCard11(card, Nodes, root,action);break;
+                default:
+                    showCard12(card, Nodes, root,action);break;
+            }
+        }
+
+*/
+        public void showCharacter1(Character1 card,Boolean Action){
+
+            int pos = game.getTable().getCharacters().indexOf(card);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            GridPane grid  = new GridPane();
+
+            ImageView imgSize = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front12.jpg")));
+            imgSize.setFitWidth(screenBounds.getMaxY()/8);
+            imgSize.setPreserveRatio(true);
+
+
+            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxX()/8);
+            grid.setLayoutY(imgSize.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
+            int[] students = card.getStudents();
+            String color;
+            int itemPositioned=0;
+
+            for(int i=0;i<5;i++){
+                String student =""+i;
+
+                if (i==3)
+                    color = blue;
+                else if (i==2)
+                    color = pink;
+                else if (i==1)
+                    color = yellow;
+                else if (i==0)
+                    color = red;
+                else
+                    color = green;
+
+                for (int j =0;j<students[i];j++) {
+
+                    ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                    img.setFitWidth(screenBounds.getMaxY()/32);
+                    img.setPreserveRatio(true);
+                    nodes.add(img);
+                    if (Action)
+                    {
+                        img.setOnDragDetected(new EventHandler<MouseEvent>() {
+                            public void handle(MouseEvent event) {
+                                /* drag was detected, start drag-and-drop gesture*/
+                                /* allow any transfer mode */
+                                Dragboard db = img.startDragAndDrop(TransferMode.ANY);
+
+                                /* put a string on dragboard */
+                                ClipboardContent content = new ClipboardContent();
+
+                                content.putString(student);
+                                db.setContent(content);
+                                event.consume();
+                            }
+                        });
+                    }
+                    img.setOnDragDone(new EventHandler <DragEvent>() {
+                        public void handle(DragEvent event) {
+                            event.consume();
+                        }
+                    });
+
+                    if (itemPositioned==0)
+                        grid.add(img,0,0);
+                    else if (itemPositioned==1)
+                        grid.add(img,0,1);
+                    else if (itemPositioned==2)
+                        grid.add(img,1,0);
+                    else
+                        grid.add(img,1,1);
+
+                    itemPositioned++;
+                }
+
+            }
+            root.getChildren().add(grid);
+        }
+
 
         @Override
         public void listenerCallBack(ArrayList<Object> responses) {
