@@ -121,7 +121,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
 
     @Override
     public boolean execute(Game game) throws EriantysExceptions {
-        if(!characterCardUsed || characterCardExecuted)
+        if(!characterCardUsed || characterCardExecuted) // if character is not used or it has been executed
             return normalExecute(game);
         else
             if(game.getGameState() instanceof ActionState)
@@ -134,18 +134,45 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
 
     /**
      * @param inputs
-     * inputs.get(0) : student int
-     * inputs.get(1) : moveToIsland boolean
-     * inputs.get(2) : island_pos int
+     * inputs.get(0) : useCharacter boolean
+     *      true -> inputs.get(1): characterIndex int
+     *
+     *      false -> inputs.get(1) : student int
+     *               inputs.get(2) : moveToIsland boolean
+     *               inputs.get(3) : island_pos int
      * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {
-        student = (int) inputs.get(0);
-        moveToIsland = (boolean) inputs.get(1);
-        if(moveToIsland)
-            island_pos = (int) inputs.get(2);
-        setDataGathered(true);
-        return Config.GUI_COMMAND_GETDATA_SUC;
+        boolean useCharacter = (boolean) inputs.get(0);
+        if(!useCharacter)
+        {
+            student = (int) inputs.get(1);
+            moveToIsland = (boolean) inputs.get(2);
+            if(moveToIsland)
+                island_pos = (int) inputs.get(3);
+            setDataGathered(true);
+            return Config.GUI_COMMAND_GETDATA_SUC;
+        }
+        else {
+            if(!characterCardUsed)
+            {
+                int characterIndex = (int) inputs.get(1);
+                int coin = getGame().getTurnList().get(getGame().getGameState().getPhase()).getWallet().getSaving();
+                if (getGame().getTable().getCharacters().get(characterIndex).getCoin() < coin)
+                    return Config.GUI_NOT_ENOUGH_COIN;
+                else
+                {
+                    this.characterIndex = characterIndex;
+                    characterCardUsed = true;
+                    setDataGathered(true);
+                    return Config.GUI_COMMAND_GETDATA_SUC;
+                }
+            }
+            else
+                return Config.GUI_CHARACTER_ALREADY_USED;
+
+        }
+
     }
 
     private boolean normalExecute(Game game) throws EriantysExceptions {
