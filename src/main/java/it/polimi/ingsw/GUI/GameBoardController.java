@@ -37,6 +37,7 @@ import java.util.stream.Collectors;
         private Cloud cloudChoice;
         private Island islandChoice;
         private Assistant assistantChoice;
+        private boolean characterData = false;
 
 
         @FXML
@@ -71,7 +72,7 @@ import java.util.stream.Collectors;
                         game = getInfo().getGame();
                         board_name = getInfo().getUserName();
                         update();
-                        showCharacter1((Character1)game.getTable().getCharacters().get(0), true);
+                        getCharacterInput((Character1)game.getTable().getCharacters().get(0));
 
 
                     } catch (Exception e) {
@@ -365,28 +366,34 @@ import java.util.stream.Collectors;
                             if (db.hasString()) {
                                 System.out.println("setOnDragDropped");
                                 ArrayList<Object> inputs = new ArrayList<>();
-                                inputs.add(Integer.parseInt(db.getString()));
-                                inputs.add(true);
-                                inputs.add(finalIsland_index);
-                                /**TODO YANFENG DROP STUDENT ON ISLAND
-                                 * qui prendi le informazioni per spostare gli stucdenti su un isola
-                                 */
-                                Command command = game.getLastCommand();
-                                String msg = null;
-                                try {
-                                    msg = command.GUIGetData(inputs);
-                                } catch (EriantysExceptions e) {
-                                    e.printStackTrace();
-                                }
-                                if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
-                                {
-                                    getInfo().setCommand(command);
-                                    Platform.runLater( () -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                                }
-                                else
-                                    messages.setText(msg);
+                                if(characterData) {
+                                    inputs.add(Integer.parseInt(db.getString()));
+                                    inputs.add(true);
+                                    inputs.add(finalIsland_index);
+                                    Command command = game.getLastCommand();
+                                    String msg = null;
+                                    try {
+                                        msg = command.GUIGetData(inputs);
+                                    } catch (EriantysExceptions e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                        getInfo().setCommand(command);
+                                        Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                    } else
+                                        messages.setText(msg);
 
-                                success = true;
+                                    success = true;
+                                }
+                                else{
+                                    /**TODO YANFENG DROP STUDENT ON ISLAND
+                                     * qui prendi le informazioni per spostare gli stucdenti su un isola per character1
+                                     */
+                                    inputs.add(Integer.parseInt(db.getString()));
+                                    inputs.add(finalIsland_index);
+
+
+                                }
                             }
                             /* let the source know whether the string was successfully
                              * transferred and used */
@@ -592,6 +599,7 @@ import java.util.stream.Collectors;
             root.getChildren().add(bt);
             bt.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
+                    ArrayList<Object> inputs = new ArrayList<>();
                     /**TODO YANFENG PLAY CHARACTER
                      * qui prendi la carta e la mandi al server
                      * ricordati di settare a null cardChoice una volta preso l'input
@@ -600,8 +608,12 @@ import java.util.stream.Collectors;
                      */
                     if (cardChoice ==null)
                         messages.setText("Seleziona una carta");
-                    else
+                    else {
+                        inputs.add(true);
+                        inputs.add(game.getTable().getCharacterCards().indexOf(cardChoice));
+
                         messages.setText("Invio Carta");
+                    }
                 }
             });
 
@@ -1259,30 +1271,34 @@ import java.util.stream.Collectors;
             root.getChildren().add(gridPane);
         }
 
-/**
-        public void getCharacterInput(Character1 card){
+
+        public void getCharacterInput(CharacterCard card) throws EriantysExceptions {
 
             switch (card.getN_card()) {
                 case 1:
-                    showCharacter1(card,1,2, true);break;
+                    showCharacter1((Character1)card,true);
+                    characterData=true;
+                    showIslands(false);
+                    characterData=false;
+                    break;
                 case 3:
-                    showCard3(card, Nodes, root,action);break;
+                    break;
                 case 5:
-                    showCard5(card, Nodes, root,action);break;
+                    break;
                 case 7:
-                    showCard7(card, Nodes, root,action);break;
+                    break;
                 case 9:
-                    showCard9(card, Nodes, root,action);break;
+                    break;
                 case 10:
-                    showCard10(card, Nodes, root,action);break;
+                    break;
                 case 11:
-                    showCard11(card, Nodes, root,action);break;
+                    break;
                 default:
-                    showCard12(card, Nodes, root,action);break;
+                    break;
             }
         }
 
-*/
+
         public void showCharacter1(Character1 card,Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1295,7 +1311,7 @@ import java.util.stream.Collectors;
             imgSize.setPreserveRatio(true);
 
 
-            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxX()/8);
+            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
             grid.setLayoutY(imgSize.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
             int[] students = card.getStudents();
             String color;
