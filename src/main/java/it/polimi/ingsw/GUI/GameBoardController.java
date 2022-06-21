@@ -72,7 +72,6 @@ import java.util.stream.Collectors;
                         game = getInfo().getGame();
                         board_name = getInfo().getUserName();
                         update();
-                        getCharacterInput((Character1)game.getTable().getCharacters().get(0));
 
 
                     } catch (Exception e) {
