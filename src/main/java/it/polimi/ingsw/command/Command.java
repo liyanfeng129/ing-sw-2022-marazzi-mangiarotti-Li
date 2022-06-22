@@ -26,7 +26,7 @@ public abstract class Command implements Serializable {
     public abstract void undo(Game game) throws EriantysExceptions;
     public abstract void  getData() throws EriantysExceptions;
     public abstract boolean execute(Game game) throws EriantysExceptions;
-    public abstract String GUIGetData(ArrayList<Object> inputs);
+    public abstract String GUIGetData(ArrayList<Object> inputs) throws EriantysExceptions;
     public boolean isDataGathered() {
         return dataGathered;
     }

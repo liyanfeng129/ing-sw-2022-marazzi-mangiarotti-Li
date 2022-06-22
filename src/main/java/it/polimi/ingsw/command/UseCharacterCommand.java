@@ -34,7 +34,16 @@ public class UseCharacterCommand extends Command implements Serializable {
     }
 
     @Override
-    public String GUIGetData(ArrayList<Object> inputs) {
-        return null;
+    public String GUIGetData(ArrayList<Object> inputs) throws EriantysExceptions {
+        inputs.add(getGame());
+        return card.GUIGetData(inputs);
+    }
+
+    public CharacterCard getCard() {
+        return card;
+    }
+
+    public void setCard(CharacterCard card) {
+        this.card = card;
     }
 }

@@ -42,6 +42,10 @@ public class GuiMessageSender {
                     responses = createNormalGameFor2();
                     caller.responsesFromSender(responses);
                     break;
+                case Config.CREATE_EXPERT_GAME_FOR_2:
+                    responses = createExpertGameFor2();
+                    caller.responsesFromSender(responses);
+                    break;
                 case Config.SHOW_EXISTING_GAMES:
                     responses = getExistingGames();
                     caller.responsesFromSender(responses);

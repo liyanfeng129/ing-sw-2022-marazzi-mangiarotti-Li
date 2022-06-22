@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.Cli;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -72,6 +73,21 @@ public class Character5 extends CharacterCard implements Serializable {
              * */
         }
         return true;
+    }
+
+    /**
+     * @param inputs
+     * inputs.get(0) island_pos : int
+     *
+     * inputs.get(1) game : Game
+     * */
+    @Override
+    public String GUIGetData(ArrayList<Object> inputs) throws EriantysExceptions {
+        island_pos = (int) inputs.get(0);
+        Game game = (Game) inputs.get(1);
+        setDataGathered(true);
+        game.getLastCommand().setDataGathered(true);
+        return Config.GUI_COMMAND_GETDATA_SUC;
     }
 
     @Override

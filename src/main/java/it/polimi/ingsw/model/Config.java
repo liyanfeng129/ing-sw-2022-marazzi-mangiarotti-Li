@@ -66,6 +66,6 @@ public class Config {
     public static final String END_GAME = "END_GAME";
 
 
-
-
+    public static final String GUI_CHARACTER_ALREADY_USED = "character card already used in this turn";
+    public static final String GUI_NOT_ENOUGH_COIN = "You don't have enough coin to use this card";
 }

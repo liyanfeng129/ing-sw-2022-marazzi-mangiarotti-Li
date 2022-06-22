@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public abstract class CharacterCard implements Serializable {
     private int coin;
@@ -20,6 +21,7 @@ public abstract class CharacterCard implements Serializable {
     public abstract boolean useCard(Game game, Player player) throws EriantysExceptions;
     public abstract boolean undoEffect(Game game, Player player) throws EriantysExceptions;
     public abstract boolean getData(Game game, boolean isCliClient)throws EriantysExceptions;
+    public abstract String GUIGetData(ArrayList<Object> inputs) throws EriantysExceptions;
     public abstract String name();
 
     public int getCoin() {
