@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
         private Cloud cloudChoice;
         private Island islandChoice;
         private Assistant assistantChoice;
-        private boolean characterData = false;
+        private int characterData = 0;
 
 
         @FXML
@@ -80,8 +80,7 @@ import java.util.stream.Collectors;
                 }
             });
         }
-        protected void initConfig()
-        {
+        protected void initConfig() {
             getInfo().getListener().setCaller(this);
             Task task = new Task<Void>() {
                 @Override public Void call() {
@@ -94,8 +93,7 @@ import java.util.stream.Collectors;
             new Thread(task).start();
         }
 
-        protected void update()throws EriantysExceptions
-        {
+        protected void update()throws EriantysExceptions {
             removeGame();
             messages.setText(game.getExecutedCommand().getMsg());// displaying the previous action done by player
             if(game.getLastCommand().getUsername().equals(name))
@@ -296,34 +294,51 @@ import java.util.stream.Collectors;
                     bt.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
                             int mn_pos = 0;
-                            try {
-                                mn_pos = game.getTable().getMotherNatureIndex();
-                            } catch (EriantysExceptions ex) {
-                                ex.printStackTrace();
+                            if (characterData==0) {
+                                try {
+                                    mn_pos = game.getTable().getMotherNatureIndex();
+                                } catch (EriantysExceptions ex) {
+                                    ex.printStackTrace();
+                                }
+                                int steps = finalIsland_index1 - mn_pos;
+                                System.out.println(String.format("mn_pos: %d\n" +
+                                        "island_index: %d\n" +
+                                        "steps: %d", mn_pos, finalIsland_index1, steps));
+                                ArrayList<Object> inputs = new ArrayList<>();
+                                inputs.add(steps);
+                                /**TODO YANFENG MOVE MN
+                                 * in islandChoice trovi l'isola scelta pe muovere madre natura
+                                 */
+                                    Command command = game.getLastCommand();
+                                    String msg = null;
+                                    try {
+                                        msg = command.GUIGetData(inputs);
+                                    } catch (EriantysExceptions ex) {
+                                        ex.printStackTrace();
+                                    }
+                                    if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                        getInfo().setCommand(command);
+                                        Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                    } else if (msg.equals(Config.GUI_WRONG_STEPS))
+                                        messages.setText(msg);
+
+
                             }
-                            int steps = finalIsland_index1 - mn_pos ;
-                            System.out.println(String.format("mn_pos: %d\n" +
-                                    "island_index: %d\n" +
-                                    "steps: %d", mn_pos, finalIsland_index1,steps));
-                            ArrayList<Object> inputs = new ArrayList<>();
-                            inputs.add(steps);
-                            /**TODO YANFENG MOVE MN
-                             * in islandChoice trovi l'isola scelta pe muovere madre natura
-                             */
-                            Command command = game.getLastCommand();
-                            String msg = null;
-                            try {
-                                msg = command.GUIGetData(inputs);
-                            } catch (EriantysExceptions ex) {
-                                ex.printStackTrace();
+                            else if(characterData==3){
+                                /**TODO YANFENG prendi input per character 3
+                                 */
+                                ArrayList<Object> inputs = new ArrayList<>();
+                                inputs.add(finalIsland_index1);
+
+
                             }
-                            if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
-                            {
-                                getInfo().setCommand(command);
-                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            else if(characterData==5){
+                                /**TODO YANFENG prendi input per character 5
+                                 */
+                                ArrayList<Object> inputs = new ArrayList<>();
+                                inputs.add(finalIsland_index1);
+
                             }
-                            else if(msg.equals(Config.GUI_WRONG_STEPS))
-                                messages.setText(msg);
                         }
                     });
 
@@ -375,7 +390,7 @@ import java.util.stream.Collectors;
                             if (db.hasString()) {
                                 System.out.println("setOnDragDropped");
                                 ArrayList<Object> inputs = new ArrayList<>();
-                                if(characterData) {
+                                if(characterData==1) {
                                     inputs.add(false); // not using character
                                     inputs.add(Integer.parseInt(db.getString())); // student type
                                     inputs.add(true); // student goes to island
@@ -544,28 +559,28 @@ import java.util.stream.Collectors;
                     case 1:
                         img_file = "Image/CarteTOT_front1.jpg";break;
                     case 2:
-                        img_file = "Image/CarteTOT_front2.jpg";break;
+                        img_file = "Image/CarteTOT_front12.jpg";break;
 
                     case 3:
-                        img_file = "Image/CarteTOT_front3.jpg";break;
+                        img_file = "Image/CarteTOT_front2.jpg";break;
                     case 4:
-                        img_file = "Image/CarteTOT_front4.jpg";break;
+                        img_file = "Image/CarteTOT_front3.jpg";break;
                     case 5:
-                        img_file = "Image/CarteTOT_front5.jpg";break;
+                        img_file = "Image/CarteTOT_front4.jpg";break;
                     case 6:
-                        img_file = "Image/CarteTOT_front6.jpg";break;
+                        img_file = "Image/CarteTOT_front5.jpg";break;
                     case 7:
-                        img_file = "Image/CarteTOT_front7.jpg";break;
+                        img_file = "Image/CarteTOT_front6.jpg";break;
                     case 8:
-                        img_file = "Image/CarteTOT_front8.jpg";break;
+                        img_file = "Image/CarteTOT_front7.jpg";break;
                     case 9:
-                        img_file = "Image/CarteTOT_front9.jpg";break;
+                        img_file = "Image/CarteTOT_front8.jpg";break;
                     case 10:
-                        img_file = "Image/CarteTOT_front10.jpg";break;
+                        img_file = "Image/CarteTOT_front9.jpg";break;
                     case 11:
-                        img_file = "Image/CarteTOT_front11.jpg";break;
+                        img_file = "Image/CarteTOT_front10.jpg";break;
                     default:
-                        img_file = "Image/CarteTOT_front12.jpg";break;
+                        img_file = "Image/CarteTOT_front11.jpg";break;
                 }
                 ImageView img = new ImageView(new Image(getClass().getResourceAsStream(img_file)));
                 nodes.add(img);
@@ -606,6 +621,28 @@ import java.util.stream.Collectors;
                     coin.setLayoutY(pos_y*1.01);
                     root.getChildren().add(coin);
 
+                }
+
+                switch (card.getN_card()) {
+                    case 1:
+                        showCharacter1((Character1)card,false);
+                        break;
+                    case 3:
+                        showCharacter3((Character3)card,false);
+                        break;
+                    case 5:
+                        showCharacter5((Character5)card,false);
+                        break;
+                    case 7:
+                        break;
+                    case 9:
+                        break;
+                    case 10:
+                        break;
+                    case 11:
+                        break;
+                    default:
+                        break;
                 }
             }
 
@@ -1315,24 +1352,49 @@ import java.util.stream.Collectors;
             switch (card.getN_card()) {
                 case 1:
                     showCharacter1((Character1)card,true);
-                    characterData=true;
+                    characterData=1;
                     showIslands(false);
-                    characterData=false;
+                    characterData=0;
                     break;
                 case 3:
+                    showCharacter3((Character3)card,true);
+                    characterData=3;
+                    //showIslands(true);
+                    characterData=0;
                     break;
                 case 5:
+                    showCharacter5((Character5)card,true);
+                    characterData=5;
+                    //showIslands(true);
+                    characterData=0;
                     break;
                 case 7:
+                    showCharacter1((Character1)card,true);
+                    characterData=7;
+                    showIslands(false);
+                    characterData=0;
                     break;
                 case 9:
+                    showCharacter1((Character1)card,true);
+                    characterData=9;
+                    showIslands(false);
+                    characterData=0;
                     break;
                 case 10:
+                    showCharacter1((Character1)card,true);
+                    characterData=10;
+                    showIslands(false);
+                    characterData=0;
                     break;
                 case 11:
+                    showCharacter1((Character1)card,true);
+                    characterData=11;
+                    showIslands(false);
+                    characterData=0;
                     break;
                 default:
-                    break;
+                    System.out.println("Error");
+                   //TODO Eccezione
             }
         }
 
@@ -1342,15 +1404,21 @@ import java.util.stream.Collectors;
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
+
             GridPane grid  = new GridPane();
-
-            ImageView imgSize = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front12.jpg")));
-            imgSize.setFitWidth(screenBounds.getMaxY()/8);
-            imgSize.setPreserveRatio(true);
-
+            nodes.add(grid);
+            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front1.jpg")));
+            imgCard.setFitWidth(screenBounds.getMaxY()/8);
+            imgCard.setPreserveRatio(true);
+            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
+            if(Action){
+                nodes.add(imgCard);
+                root.getChildren().add(imgCard);
+            }
 
             grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            grid.setLayoutY(imgSize.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
+            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/15);
             int[] students = card.getStudents();
             String color;
             int itemPositioned=0;
@@ -1411,6 +1479,49 @@ import java.util.stream.Collectors;
                 }
 
             }
+            root.getChildren().add(grid);
+        }
+
+        public void showCharacter3(Character3 card,Boolean Action){
+            int pos = game.getTable().getCharacters().indexOf(card);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front2.jpg")));
+            imgCard.setFitWidth(screenBounds.getMaxY()/8);
+            imgCard.setPreserveRatio(true);
+            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
+            if(Action){
+                nodes.add(imgCard);
+                root.getChildren().add(imgCard);
+            }
+        }
+
+        public void showCharacter5(Character5 card,Boolean Action){
+            int pos = game.getTable().getCharacters().indexOf(card);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+
+            GridPane grid  = new GridPane();
+            nodes.add(grid);
+            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front4.jpg")));
+            imgCard.setFitWidth(screenBounds.getMaxY()/8);
+            imgCard.setPreserveRatio(true);
+            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
+            if(Action){
+                nodes.add(imgCard);
+                root.getChildren().add(imgCard);
+            }
+
+            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/15);
+
+            ImageView noEntryTyle = new ImageView(new Image(getClass().getResourceAsStream("Image/deny_island_icon.png")));
+            noEntryTyle.setFitWidth(screenBounds.getMaxY()/20);
+            noEntryTyle.setPreserveRatio(true);
+            grid.add(noEntryTyle,0,0);
+            grid.add(new Text(""+card.getNo_entry_tile()),1,0);
+            nodes.add(grid);
             root.getChildren().add(grid);
         }
 
