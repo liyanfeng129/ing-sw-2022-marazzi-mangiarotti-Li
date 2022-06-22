@@ -94,6 +94,9 @@ public class GameSetUpController extends AASceneParent{
     @FXML
     protected void startExp2(ActionEvent event) throws IOException, EriantysExceptions {
         System.out.println("Expert mode for 2 people");
+        currentEvent = event;
+        Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_EXPERT_GAME_FOR_2).run());
+
     }
     @FXML
     protected void startExp3(ActionEvent event) {
@@ -113,11 +116,15 @@ public class GameSetUpController extends AASceneParent{
     @Override
     public void responsesFromSender(ArrayList<Object> responses) throws IOException {
         System.out.println("sono in response from sender di gamesetup");
-        if(responses.get(0).equals(Config.CREATE_NORMAL_GAME_FOR_2_SUC))
+        String msg = (String) responses.get(0);
+        switch(msg)
         {
-            Game game = (Game) responses.get(1);
-            getInfo().setGame(game);
-            switchScene((Stage) ((Node)currentEvent.getSource()).getScene().getWindow(),FxmlNames.PLAYER_WAITING_Room);
+            case Config.CREATE_NORMAL_GAME_FOR_2_SUC:
+            case Config.CREATE_EXPERT_GAME_FOR_2_SUC:
+                Game game = (Game) responses.get(1);
+                getInfo().setGame(game);
+                switchScene((Stage) ((Node)currentEvent.getSource()).getScene().getWindow(),FxmlNames.PLAYER_WAITING_Room);
+                break;
         }
     }
 

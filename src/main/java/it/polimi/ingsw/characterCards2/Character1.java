@@ -90,7 +90,7 @@ public class Character1 extends CharacterCard implements Serializable {
      * @param inputs
      * inputs.get(0) = student: int
      * inputs.get(1) = island_index: int
-     *  easy
+     *
      * inputs.get(2) = game : Game
      * */
     @Override

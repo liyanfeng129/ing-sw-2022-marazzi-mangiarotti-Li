@@ -1,6 +1,6 @@
 package it.polimi.ingsw.GUI;
 
-import it.polimi.ingsw.characterCards2.Character1;
+import it.polimi.ingsw.characterCards2.*;
 import it.polimi.ingsw.characterCards2.Character7;
 import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.command.*;
@@ -108,6 +108,13 @@ import java.util.stream.Collectors;
                     showGame("MoveStudents");
                 if(game.getLastCommand() instanceof SelectCloudCommand)
                     showGame("SelectCloud");
+                if(game.getLastCommand() instanceof UseCharacterCommand)
+                {
+                    CharacterCard card = ((UseCharacterCommand) game.getLastCommand()).getCard();
+                    getCharacterInput(card);
+
+                }
+
             }
             else
                 showGame("updateGame");
@@ -357,6 +364,9 @@ import java.util.stream.Collectors;
                     int finalIsland_index = island_index;
                     imgDragDrop.setOnDragDropped(new EventHandler <DragEvent>() {
                         public void handle(DragEvent event) {
+                            /**TODO YANFENG DROP STUDENT ON ISLAND
+                             *
+                             */
                             /* data dropped */
                             System.out.println("onDragDropped");
                             /* if there is a string data on dragboard, read it and use it */
@@ -366,8 +376,9 @@ import java.util.stream.Collectors;
                                 System.out.println("setOnDragDropped");
                                 ArrayList<Object> inputs = new ArrayList<>();
                                 if(characterData) {
-                                    inputs.add(Integer.parseInt(db.getString()));
-                                    inputs.add(true);
+                                    inputs.add(false); // not using character
+                                    inputs.add(Integer.parseInt(db.getString())); // student type
+                                    inputs.add(true); // student goes to island
                                     inputs.add(finalIsland_index);
                                     Command command = game.getLastCommand();
                                     String msg = null;
@@ -385,11 +396,24 @@ import java.util.stream.Collectors;
                                     success = true;
                                 }
                                 else{
-                                    /**TODO YANFENG DROP STUDENT ON ISLAND
+                                    /**TODO YANFENG DROP STUDENT ON ISLAND (Character 1)
                                      * qui prendi le informazioni per spostare gli stucdenti su un isola per character1
                                      */
                                     inputs.add(Integer.parseInt(db.getString()));
                                     inputs.add(finalIsland_index);
+                                    Command command = game.getLastCommand();
+                                    try {
+                                        String msg = command.GUIGetData(inputs);
+                                        if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
+                                        {
+                                            getInfo().setCommand(command);
+                                            Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                        }
+                                        else
+                                            messages.setText(msg);
+                                    } catch (EriantysExceptions e) {
+                                        e.printStackTrace();
+                                    }
 
 
                                 }
@@ -596,6 +620,7 @@ import java.util.stream.Collectors;
             bt.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
             bt.setLayoutY(screenBounds.getMaxY()*2/3 -50);
             root.getChildren().add(bt);
+            AASceneParent aaSceneParent = this;
             bt.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
                     ArrayList<Object> inputs = new ArrayList<>();
@@ -610,8 +635,21 @@ import java.util.stream.Collectors;
                     else {
                         inputs.add(true);
                         inputs.add(game.getTable().getCharacterCards().indexOf(cardChoice));
+                        cardChoice = null;
+                        Command command = game.getLastCommand();
+                        try {
+                            String msg = command.GUIGetData(inputs);
+                            if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
+                            {
+                                getInfo().setCommand(command);
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            }
+                            else
+                                  messages.setText(msg);
 
-                        messages.setText("Invio Carta");
+                        } catch (EriantysExceptions ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
             });
@@ -725,7 +763,7 @@ import java.util.stream.Collectors;
                         getInfo().setCommand(command);
                        Platform.runLater( ()-> new GuiMessageSender(aaSceneParent,Config.COMMAND_EXECUTE).run());
                     }
-                    else if(msg.equals(Config.GUI_GET_ASSISTANT_REPEATING))
+                    else
                         messages.setText(msg);
 
                 }
@@ -996,8 +1034,9 @@ import java.util.stream.Collectors;
                              * drop student on your student holder
                              */
                             ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(false); // not using character card
                             inputs.add(Integer.parseInt(db.getString()));
-                            inputs.add(false);
+                            inputs.add(false); // student doesn't go to island
                             Command command = game.getLastCommand();
                             String msg = null;
                             try {

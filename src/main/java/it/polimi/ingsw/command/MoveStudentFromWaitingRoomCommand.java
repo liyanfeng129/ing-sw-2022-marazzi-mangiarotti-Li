@@ -158,7 +158,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
             {
                 int characterIndex = (int) inputs.get(1);
                 int coin = getGame().getTurnList().get(getGame().getGameState().getPhase()).getWallet().getSaving();
-                if (getGame().getTable().getCharacters().get(characterIndex).getCoin() < coin)
+                if (getGame().getTable().getCharacters().get(characterIndex).getCoin() >= coin)
                     return Config.GUI_NOT_ENOUGH_COIN;
                 else
                 {

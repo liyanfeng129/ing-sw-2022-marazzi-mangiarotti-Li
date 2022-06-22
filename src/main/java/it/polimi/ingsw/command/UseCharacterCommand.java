@@ -38,4 +38,12 @@ public class UseCharacterCommand extends Command implements Serializable {
         inputs.add(getGame());
         return card.GUIGetData(inputs);
     }
+
+    public CharacterCard getCard() {
+        return card;
+    }
+
+    public void setCard(CharacterCard card) {
+        this.card = card;
+    }
 }
