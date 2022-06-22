@@ -95,6 +95,7 @@ import java.util.stream.Collectors;
         }
 
         protected void update()throws EriantysExceptions {
+            characterData=0;
             removeGame();
             messages.setText(game.getExecutedCommand().getMsg());// displaying the previous action done by player
             if(game.getLastCommand().getUsername().equals(name))
@@ -391,7 +392,7 @@ import java.util.stream.Collectors;
                             if (db.hasString()) {
                                 System.out.println("setOnDragDropped");
                                 ArrayList<Object> inputs = new ArrayList<>();
-                                if(characterData==1) {
+                                if(characterData==0) {
                                     inputs.add(false); // not using character
                                     inputs.add(Integer.parseInt(db.getString())); // student type
                                     inputs.add(true); // student goes to island
@@ -1386,43 +1387,36 @@ import java.util.stream.Collectors;
                     showCharacter1((Character1)card,true);
                     characterData=1;
                     showIslands(false);
-                    characterData=0;
                     break;
                 case 3:
                     showCharacter3((Character3)card,true);
                     characterData=3;
-                    //showIslands(true);
-                    characterData=0;
+                    showIslands(true);
                     break;
                 case 5:
                     showCharacter5((Character5)card,true);
                     characterData=5;
-                    //showIslands(true);
-                    characterData=0;
+                    showIslands(true);
                     break;
                 case 7:
                     showCharacter1((Character1)card,true);
                     characterData=7;
                     showIslands(false);
-                    characterData=0;
                     break;
                 case 9:
                     showCharacter1((Character1)card,true);
                     characterData=9;
                     showIslands(false);
-                    characterData=0;
                     break;
                 case 10:
                     showCharacter1((Character1)card,true);
                     characterData=10;
                     showIslands(false);
-                    characterData=0;
                     break;
                 case 11:
                     showCharacter1((Character1)card,true);
                     characterData=11;
                     showIslands(false);
-                    characterData=0;
                     break;
                 default:
                     System.out.println("Error");

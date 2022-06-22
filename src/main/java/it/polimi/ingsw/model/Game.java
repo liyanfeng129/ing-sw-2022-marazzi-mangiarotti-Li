@@ -115,7 +115,7 @@ public class Game implements Serializable {
                      * I character devono essere genereali
                      */
                     characterCards.add(new Character5());
-                    characterCards.add(new Character7(table.getBag().draw(6)));
+                    characterCards.add(new Character1(table.getBag().draw(4)));
                     characterCards.add(new Character11(table.getBag().draw(4)));
 
                     this.table.tableInit(clouds,characterCards);
