@@ -350,7 +350,6 @@ import java.util.stream.Collectors;
                     imgDragDrop.setOnDragOver(new EventHandler <DragEvent>() {
                         public void handle(DragEvent event) {
                             //data is dragged over the target
-                            System.out.println("onDragOver");
 
                             // accept it only if it is  not dragged from the same node
                             //( and if it has a string data
@@ -693,7 +692,8 @@ import java.util.stream.Collectors;
         }
 
         // assistenti
-        public void showAssistant(){
+        public void showAssistant() throws EriantysExceptions {
+            showGameNoAction();
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             GridPane gridPane = new GridPane();
             nodes.add(gridPane);
@@ -1077,7 +1077,6 @@ import java.util.stream.Collectors;
                 paneDrop.setOnDragOver(new EventHandler <DragEvent>() {
                     public void handle(DragEvent event) {
                         //data is dragged over the target
-                        System.out.println("onDragOver");
 
                         // accept it only if it is  not dragged from the same node
                         //( and if it has a string data
