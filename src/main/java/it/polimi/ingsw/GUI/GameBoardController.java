@@ -32,10 +32,11 @@ import java.util.stream.Collectors;
     public class GameBoardController extends AASceneParent {
 
         private Label messages = new Label();
+        private Label servermessages = new Label();
 
         private Game game;
-        private Cloud cloudChoice;
-        private Island islandChoice;
+        private Cloud cloudChoice; // non credo venga usata
+        private Island islandChoice; // non credo venga usata
         private Assistant assistantChoice;
         private int characterData = 0;
 
@@ -634,14 +635,10 @@ import java.util.stream.Collectors;
                         showCharacter5((Character5)card,false);
                         break;
                     case 7:
-                        break;
-                    case 9:
-                        break;
-                    case 10:
-                        break;
-                    case 11:
+                        showCharacter7((Character7)card,false);
                         break;
                     default:
+                        showCharacter11((Character11) card,false);
                         break;
                 }
             }
@@ -766,7 +763,7 @@ import java.util.stream.Collectors;
                     btAssistant.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
                             assistantChoice = card;
-                            messages.setText("Hai scelto una carta: "+ card.toString());
+                            messages.setText("you have chosen : "+ card.toString());
                         }
                     });
                 }
@@ -835,7 +832,8 @@ import java.util.stream.Collectors;
                     else
                         index_player +=1;
                     board_name = game.getPlayers().get(index_player).getName();
-                    messages.setText("you are watching "+board_name+ " board"+"to swich play the ShowOpponentBoard button");
+                    messages.setText("you are watching "+board_name + "'s board"+"\n"
+                                     +"to switch play the ShowOpponentBoard button");
                     removeBoard();
 
                     if (Action) {
@@ -868,17 +866,51 @@ import java.util.stream.Collectors;
             Pane rect = new Pane();
             nodes.add(rect);
             rect.setPrefHeight(screenBounds.getMaxY()/3);
-            rect.setPrefWidth(screenBounds.getMaxX()-img_view.getLayoutBounds().getWidth());
+            rect.setPrefWidth((screenBounds.getMaxX()-img_view.getLayoutBounds().getWidth())/2);
             rect.setStyle("-fx-background-color: #F0FFFF" );
-
             stackPane.getChildren().add(rect);
             stackPane.getChildren().add(vbox_messages);
             vbox.getChildren().add(stackPane);
+
+
+            //server label
+            VBox vbox2 = new VBox();
+            nodes.add(vbox2);
+            Button btPadding = new Button();
+            btPadding.setVisible(false);
+            nodes.add(btPadding);
+            btPadding.setText(" ");
+            vbox2.getChildren().add(btPadding);
+            StackPane stackPaneServer = new StackPane();
+            nodes.add(stackPaneServer);
+            VBox vboxmessagesServer = new VBox();
+            nodes.add(vboxmessagesServer);
+            Label fixlabelServer = new Label();
+            nodes.add(fixlabelServer);
+            fixlabelServer.setText("SERVER MESSAGES:");
+            Label labelServer = servermessages;
+            vboxmessagesServer.getChildren().add(fixlabelServer);
+            vboxmessagesServer.getChildren().add(labelServer);
+            Pane rect2 = new Pane();
+            nodes.add(rect2);
+            rect2.setPrefHeight(screenBounds.getMaxY()/3);
+            rect2.setPrefWidth((screenBounds.getMaxX()-img_view.getLayoutBounds().getWidth())/2);
+            rect2.setStyle("-fx-background-color: #eaeaea" );
+
+            stackPaneServer.getChildren().add(rect2);
+            stackPaneServer.getChildren().add(vboxmessagesServer);
+            vbox2.getChildren().add(stackPaneServer);
+
+
+
+
+
 
             bar.setLayoutX(0);
             bar.setLayoutY(screenBounds.getMaxY()*2/3);
             bar.getChildren().add(img_view);
             bar.getChildren().add(vbox);
+            bar.getChildren().add(vbox2);
             root.getChildren().add(bar);
         }
         public void showWaitingRoom(Boolean Action){
@@ -1418,7 +1450,7 @@ import java.util.stream.Collectors;
             }
 
             grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/15);
+            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10);
             int[] students = card.getStudents();
             String color;
             int itemPositioned=0;
@@ -1514,7 +1546,7 @@ import java.util.stream.Collectors;
             }
 
             grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/15);
+            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10);
 
             ImageView noEntryTyle = new ImageView(new Image(getClass().getResourceAsStream("Image/deny_island_icon.png")));
             noEntryTyle.setFitWidth(screenBounds.getMaxY()/20);
@@ -1525,6 +1557,174 @@ import java.util.stream.Collectors;
             root.getChildren().add(grid);
         }
 
+        public void showCharacter7(Character7 card,Boolean Action){
+
+            int pos = game.getTable().getCharacters().indexOf(card);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+
+            GridPane grid  = new GridPane();
+            nodes.add(grid);
+            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front6.jpg")));
+            imgCard.setFitWidth(screenBounds.getMaxY()/8);
+            imgCard.setPreserveRatio(true);
+            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
+            if(Action){
+                nodes.add(imgCard);
+                root.getChildren().add(imgCard);
+            }
+
+            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10);
+            int[] students = card.getStudents();
+            String color;
+            int itemPositioned=0;
+
+            for(int i=0;i<5;i++){
+                String student =""+i;
+
+                if (i==3)
+                    color = blue;
+                else if (i==2)
+                    color = pink;
+                else if (i==1)
+                    color = yellow;
+                else if (i==0)
+                    color = red;
+                else
+                    color = green;
+
+                for (int j =0;j<card.getCard_students()[i];j++) {
+
+                    ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                    img.setFitWidth(screenBounds.getMaxY()/32);
+                    img.setPreserveRatio(true);
+                    nodes.add(img);
+                    if (Action)
+                    {
+                        img.setOnDragDetected(new EventHandler<MouseEvent>() {
+                            public void handle(MouseEvent event) {
+                                /* drag was detected, start drag-and-drop gesture*/
+                                /* allow any transfer mode */
+                                Dragboard db = img.startDragAndDrop(TransferMode.ANY);
+
+                                /* put a string on dragboard */
+                                ClipboardContent content = new ClipboardContent();
+
+                                content.putString(student);
+                                db.setContent(content);
+                                event.consume();
+                            }
+                        });
+                    }
+                    img.setOnDragDone(new EventHandler <DragEvent>() {
+                        public void handle(DragEvent event) {
+                            event.consume();
+                        }
+                    });
+
+                    if (itemPositioned==0)
+                        grid.add(img,0,0);
+                    else if (itemPositioned==1)
+                        grid.add(img,0,1);
+                    else if (itemPositioned==2)
+                        grid.add(img,1,0);
+                    else if(itemPositioned==3)
+                        grid.add(img,1,1);
+                    else if(itemPositioned==4)
+                        grid.add(img,2,0);
+                    else
+                        grid.add(img,2,1);
+
+                    itemPositioned++;
+                }
+
+            }
+            root.getChildren().add(grid);
+        }
+        public void showCharacter11(Character11 card,Boolean Action){
+
+            int pos = game.getTable().getCharacters().indexOf(card);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+
+            GridPane grid  = new GridPane();
+            nodes.add(grid);
+            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front10.jpg")));
+            imgCard.setFitWidth(screenBounds.getMaxY()/8);
+            imgCard.setPreserveRatio(true);
+            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
+            if(Action){
+                nodes.add(imgCard);
+                root.getChildren().add(imgCard);
+            }
+
+            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10);
+            int[] students = card.getStudents();
+            String color;
+            int itemPositioned=0;
+
+            for(int i=0;i<5;i++){
+                String student =""+i;
+
+                if (i==3)
+                    color = blue;
+                else if (i==2)
+                    color = pink;
+                else if (i==1)
+                    color = yellow;
+                else if (i==0)
+                    color = red;
+                else
+                    color = green;
+
+                for (int j =0;j<students[i];j++) {
+
+                    ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                    img.setFitWidth(screenBounds.getMaxY()/32);
+                    img.setPreserveRatio(true);
+                    nodes.add(img);
+                    if (Action)
+                    {
+                        img.setOnDragDetected(new EventHandler<MouseEvent>() {
+                            public void handle(MouseEvent event) {
+                                /* drag was detected, start drag-and-drop gesture*/
+                                /* allow any transfer mode */
+                                Dragboard db = img.startDragAndDrop(TransferMode.ANY);
+
+                                /* put a string on dragboard */
+                                ClipboardContent content = new ClipboardContent();
+
+                                content.putString(student);
+                                db.setContent(content);
+                                event.consume();
+                            }
+                        });
+                    }
+                    img.setOnDragDone(new EventHandler <DragEvent>() {
+                        public void handle(DragEvent event) {
+                            event.consume();
+                        }
+                    });
+
+                    if (itemPositioned==0)
+                        grid.add(img,0,0);
+                    else if (itemPositioned==1)
+                        grid.add(img,0,1);
+                    else if (itemPositioned==2)
+                        grid.add(img,1,0);
+                    else
+                        grid.add(img,1,1);
+
+                    itemPositioned++;
+                }
+
+            }
+            root.getChildren().add(grid);
+        }
 
         @Override
         public void listenerCallBack(ArrayList<Object> responses) {

@@ -148,5 +148,9 @@ public class Character7 extends CharacterCard implements Serializable {
         for(int i = 0; i < 5; i++)
             this.card_students[i] -= students[i];;
     }
+
+    public int[] getCard_students() {
+        return card_students;
+    }
 }
 
