@@ -3,6 +3,8 @@ package it.polimi.ingsw.command;
 import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.state.ActionState;
+import it.polimi.ingsw.state.MoveMotherNatureState;
+import it.polimi.ingsw.state.TakeCloudState;
 import it.polimi.ingsw.view.Cli;
 
 import java.io.Serializable;
@@ -60,9 +62,9 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                                 else
                                     if (!(choice<0 || choice>2)) {
                                         characterIndex = choice;
-                                        if (getGame().getTable().getCharacters().get(characterIndex).getCoin() < coin) {
+                                        if (getGame().getTable().getCharacters().get(characterIndex).getCoin() > coin) {
                                             System.out.println("not enough money");
-                                            continue;
+                                            choice=-1;
                                         }
                                     }
                             } while (choice<0 || choice>2);
@@ -168,18 +170,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
 
                 //aggiungo coin
                 if(getGame().isExpertMode()) {
-                    if (p.getPb().getDiningRoom()[student] == 3 && p.getPb().getCoin3()[student] == false) {
-                        p.getWallet().addCoin(1);
-                        p.getPb().setCoin3(student);
-                    }
-                    if (p.getPb().getDiningRoom()[student] == 6 && p.getPb().getCoin6()[student] == false) {
-                        p.getWallet().addCoin(1);
-                        p.getPb().setCoin6(student);
-                    }
-                    if (p.getPb().getDiningRoom()[student] == 9 && p.getPb().getCoin9()[student] == false) {
-                        p.getWallet().addCoin(1);
-                        p.getPb().setCoin9(student);
-                    }
+                    addCoin(p);
                 }
                 p.getPb().takeStudentFromWaitingRoom(student);
                 ((ActionState) game.getGameState()).setOnIsland(moveToIsland);

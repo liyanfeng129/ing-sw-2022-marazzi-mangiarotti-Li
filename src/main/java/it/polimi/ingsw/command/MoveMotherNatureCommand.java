@@ -1,9 +1,13 @@
 package it.polimi.ingsw.command;
 
+import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.model.Config;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.state.ActionState;
+import it.polimi.ingsw.state.MoveMotherNatureState;
+import it.polimi.ingsw.view.Cli;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,11 +16,16 @@ import java.util.Scanner;
 public class MoveMotherNatureCommand extends Command implements Serializable {
     private int steps;
     private int maxSteps;
+    private int characterIndex = -1;
+    private boolean characterCardUsed;
+    private boolean characterCardExecuted;
 
 
-    public MoveMotherNatureCommand(boolean isCliClient, Game game, String username,int maxSteps) {
+    public MoveMotherNatureCommand(boolean isCliClient, Game game, String username,int maxSteps,boolean characterCardUsed,boolean characterCardExecuted) {
         super(isCliClient, game, username);
         this.maxSteps = maxSteps;
+        this.characterCardUsed = characterCardUsed;
+        this.characterCardExecuted = characterCardExecuted;
     }
 
 
@@ -24,8 +33,55 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
     public void undo(Game game) {
 
     }
+    public void getData() {
+        if (!isDataGathered()) {
+            if (isCliClient()) {
+                if(getGame().isExpertMode() && !characterCardUsed) {
+                    int coin = getGame().getTurnList().get(getGame().getGameState().getPhase()).getWallet().getSaving();
+                    int choice;
+                    int quit=0;
+                    System.out.println("Digit 10 if you want to use a character");
+                    if (new Scanner(System.in).nextInt() == 10) {
+                        /*
+                        which character do you want to use
+                        get this character
+                        * */
+                        Cli c = new Cli();
+                        for (CharacterCard card : getGame().getTable().getCharacters())
+                            c.show_character(card);
+                        do {
+                            System.out.println("Choose form 1 to 3, 10 to quit");
+                            choice = new Scanner(System.in).nextInt() - 1;
+                            if(choice==9) {
+                                quit=1;
+                                break;
+                            }
+                            else
+                            if (!(choice<0 || choice>2)) {
+                                characterIndex = choice;
+                                if (getGame().getTable().getCharacters().get(characterIndex).getCoin() > coin) {
+                                    System.out.println("not enough money");
+                                    choice=-1;
+                                }
+                            }
+                        } while (choice<0 || choice>2);
+                        if(quit!=1)
+                            characterCardUsed = true;
+                        else
+                            getDataForMoveMotherNature();
+                    } else
+                        getDataForMoveMotherNature();
+                }
+                else
+                {
+                    getDataForMoveMotherNature();
+                }
+            }
+        }
+        setDataGathered(true);
+    }
 
-    public void  getData()
+    public void  getDataForMoveMotherNature()
     {
         if(!isDataGathered())
         {
@@ -44,9 +100,20 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
             }
         }
     }
-
     @Override
     public boolean execute(Game game) throws EriantysExceptions {
+        if(!characterCardUsed || characterCardExecuted)
+            return normalExecute(game);
+        else
+        if(game.getGameState() instanceof MoveMotherNatureState)
+        {
+            ((MoveMotherNatureState)game.getGameState()).setCharacterCardUsed(characterCardUsed);
+            ((MoveMotherNatureState)game.getGameState()).setCharacterIndex(characterIndex);
+        }
+        return true;
+    }
+
+    public boolean normalExecute(Game game) throws EriantysExceptions {
         if(isDataGathered())
         {
             game.getTable().moveMotherNature(steps);
@@ -55,6 +122,7 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
         }
         return false;
     }
+
 
     /**
      * @param inputs

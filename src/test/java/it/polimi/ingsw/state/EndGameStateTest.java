@@ -43,10 +43,10 @@ class EndGameStateTest {
     @Test
     public void test_endgame1(){
         game.setN_Player(2);
-        state=new MoveMotherNatureState(game,0);
+        state=new MoveMotherNatureState(game,0,false,false);
         try {
-            new MoveMotherNatureState(game,0).setGameEnded(true);
-            new MoveMotherNatureState(game,0).setCan(true);
+            new MoveMotherNatureState(game,0,false,false).setGameEnded(true);
+            new MoveMotherNatureState(game,0,false,false).setCan(true);
             game.addPlayers(p2);
             table=new Table();
             game.setTable(table);

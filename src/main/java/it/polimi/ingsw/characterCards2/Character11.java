@@ -35,6 +35,7 @@ public class Character11 extends CharacterCard implements Serializable {
         player.getWallet().removeCoin(card.getCoin());
         game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: one %s student has been moved to dining room",
                 player.getName(),this.name(), this.getCoin() ,SType.values()[student_color].name()));
+        addCoin(player);
         if(card.isFirstUse())
             card.setFirstUse(false);
         return true;

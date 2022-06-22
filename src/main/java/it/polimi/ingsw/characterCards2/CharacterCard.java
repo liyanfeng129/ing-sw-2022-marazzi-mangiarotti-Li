@@ -61,4 +61,21 @@ public abstract class CharacterCard implements Serializable {
     public void setN_card(int n_card) {
         N_card = n_card;
     }
+
+    public void addCoin(Player p){
+        for (int i=0;i<5;i++) {
+            if (p.getPb().getDiningRoom()[i] >= 3 && p.getPb().getCoin3()[i] == false) {
+                p.getWallet().addCoin(1);
+                p.getPb().setCoin3(i);
+            }
+            if (p.getPb().getDiningRoom()[i] >= 6 && p.getPb().getCoin6()[i] == false) {
+                p.getWallet().addCoin(1);
+                p.getPb().setCoin6(i);
+            }
+            if (p.getPb().getDiningRoom()[i] >= 9 && p.getPb().getCoin9()[i] == false) {
+                p.getWallet().addCoin(1);
+                p.getPb().setCoin9(i);
+            }
+        }
+    }
 }

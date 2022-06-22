@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 public class TakeCloudState extends State implements Serializable {
     private boolean can=false;
+    private int characterIndex = -1;
 
     public TakeCloudState(Game game, int phase) {
         super(game, phase);

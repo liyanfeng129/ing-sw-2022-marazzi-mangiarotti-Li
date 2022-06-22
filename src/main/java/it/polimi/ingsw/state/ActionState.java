@@ -56,7 +56,7 @@ public class ActionState extends State implements Serializable {
                 }
             }
             if (canChangeState()) {
-                getGame().changeGameState(new MoveMotherNatureState(getGame(), getPhase()));
+                getGame().changeGameState(new MoveMotherNatureState(getGame(), getPhase(),characterCardExecuted,characterCardUsed));
             }
             getGame().removeCommand();
             getGame().addCommand(getGame().getGameState().generateCommand());

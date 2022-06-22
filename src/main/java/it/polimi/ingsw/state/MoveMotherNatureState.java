@@ -1,8 +1,11 @@
 package it.polimi.ingsw.state;
 
 import it.polimi.ingsw.characterCards2.Character5;
+import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.command.MoveMotherNatureCommand;
+import it.polimi.ingsw.command.MoveStudentFromWaitingRoomCommand;
+import it.polimi.ingsw.command.UseCharacterCommand;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.InnerExceptions;
@@ -14,8 +17,13 @@ public class MoveMotherNatureState extends State implements Serializable {
     private int maxSteps;
     private boolean can=false;
     private boolean GameEnded=false;
-    public MoveMotherNatureState(Game game, int phase) {
+    private int characterIndex = -1;
+    private boolean characterCardUsed;
+    private boolean characterCardExecuted;
+    public MoveMotherNatureState(Game game, int phase,boolean characterCardExecuted,boolean characterCardUsed) {
         super(game, phase);
+        this.characterCardUsed = characterCardUsed;
+        this.characterCardExecuted = characterCardExecuted;
     }
 
     @Override
@@ -59,6 +67,10 @@ public class MoveMotherNatureState extends State implements Serializable {
                 card5.takeEntryTile();
             }
             setCan(true);
+            if (getGame().getLastCommand() instanceof UseCharacterCommand) {
+                characterCardExecuted = true;
+                getGame().setUsedCharacter((UseCharacterCommand) getGame().getLastCommand());
+            }
             if (canChangeState()) {
                 if (!isGameEnded()) {
                     getGame().changeGameState(new TakeCloudState(getGame(), getPhase()));
@@ -76,10 +88,20 @@ public class MoveMotherNatureState extends State implements Serializable {
     public Command generateCommand() throws EriantysExceptions {
         if(!canChangeState())
         {
-            int maxSteps = getGame().getTurnList().get(getPhase()).getHand().getLastPlayedCard();
-            String userName = getGame().getTurnList().get(getPhase()).getName();
-            boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
-            return new MoveMotherNatureCommand(cliClient,getGame(),userName,maxSteps);
+            if(!characterCardExecuted && characterCardUsed)
+            {
+                String userName = getGame().getTurnList().get(getPhase()).getName();
+                boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
+                CharacterCard card = getGame().getTable().getCharacters().get(characterIndex);
+                return new UseCharacterCommand(cliClient,getGame(),userName,card);
+            }
+            else
+            {
+                int maxSteps = getGame().getTurnList().get(getPhase()).getHand().getLastPlayedCard();
+                String userName = getGame().getTurnList().get(getPhase()).getName();
+                boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
+                return new MoveMotherNatureCommand(cliClient,getGame(),userName,maxSteps,characterCardUsed, characterCardExecuted);
+            }
         }
         throw new InnerExceptions.PlanningStateError("cannot generate command.");
     }
@@ -98,6 +120,13 @@ public class MoveMotherNatureState extends State implements Serializable {
 
     public void setGameEnded(boolean gameEnded) {
         GameEnded = gameEnded;
+    }
+    public boolean isCharacterCardUsed() {
+        return characterCardUsed;
+    }
+
+    public void setCharacterCardUsed(boolean characterCardUsed) {
+        this.characterCardUsed = characterCardUsed;
     }
 }
 
