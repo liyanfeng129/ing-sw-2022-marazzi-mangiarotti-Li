@@ -41,9 +41,16 @@ public class MoveMotherNatureState extends State implements Serializable {
 
     @Override
     public void executeCommand() throws EriantysExceptions {
-        if(getGame().getLastCommand().execute(getGame()));
+        if(!getGame().getLastCommand().execute(getGame()))
+            throw new InnerExceptions.NoMotherNatureException("Cannot execute command in moveMotherNatureState.");
+        int MN_pos=getGame().getTable().getMotherNatureIndex();
+        if(!characterCardUsed || characterCardExecuted) // if character has not been used or character has been executed
         {
-            int MN_pos=getGame().getTable().getMotherNatureIndex();
+            // means that command executed was moveMotherNatureCommand
+            getGame().getTable().mergeIsland();
+            if (getGame().getTable().getIslands().size() <= 3) {
+                setGameEnded(true);
+            }
             if(!getGame().getTable().getIsland(MN_pos).isNoEntryTiles()) {
                 Player player = getGame().getTable().getPlayerMaxInfluence(getGame());
                 //condizione endGame finite torri in pb
@@ -54,10 +61,6 @@ public class MoveMotherNatureState extends State implements Serializable {
                             //devo passargli anche chi ha vinto?
                         }
                     }
-                    getGame().getTable().mergeIsland();
-                    if (getGame().getTable().getIslands().size() <= 3) {
-                        setGameEnded(true);
-                    }
                 }
             }
             else{
@@ -67,21 +70,22 @@ public class MoveMotherNatureState extends State implements Serializable {
                 card5.takeEntryTile();
             }
             setCan(true);
-            if (getGame().getLastCommand() instanceof UseCharacterCommand) {
-                characterCardExecuted = true;
-                getGame().setUsedCharacter((UseCharacterCommand) getGame().getLastCommand());
-            }
-            if (canChangeState()) {
-                if (!isGameEnded()) {
-                    getGame().changeGameState(new TakeCloudState(getGame(), getPhase()));
-                }
-                else{
-                    getGame().changeGameState(new EndGameState(getGame(), getPhase()));
-                }
-            }
-            getGame().removeCommand();
-            getGame().addCommand(getGame().getGameState().generateCommand());
         }
+        if (getGame().getLastCommand() instanceof UseCharacterCommand)  // command executed was useCharacterCommand
+        {
+            characterCardExecuted = true;
+            getGame().setUsedCharacter((UseCharacterCommand) getGame().getLastCommand());
+        }
+        if (canChangeState()) {
+            if (!isGameEnded()) {
+                getGame().changeGameState(new TakeCloudState(getGame(), getPhase()));
+            }
+            else{
+                getGame().changeGameState(new EndGameState(getGame(), getPhase()));
+            }
+        }
+        getGame().removeCommand();
+        getGame().addCommand(getGame().getGameState().generateCommand());
     }
 
     @Override
@@ -127,6 +131,13 @@ public class MoveMotherNatureState extends State implements Serializable {
 
     public void setCharacterCardUsed(boolean characterCardUsed) {
         this.characterCardUsed = characterCardUsed;
+    }
+    public int getCharacterIndex() {
+        return characterIndex;
+    }
+
+    public void setCharacterIndex(int characterIndex) {
+        this.characterIndex = characterIndex;
     }
 }
 

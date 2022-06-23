@@ -43,6 +43,9 @@ public class ActionState extends State implements Serializable {
     @Override
     public void executeCommand() throws EriantysExceptions {
         if (getGame().getLastCommand().execute(getGame())) {
+            /**TODO ALE DOMANDA
+             * se il commando eseguito e' un useCharacterCommand, esiste una carta che dopo il suo utilizzo scatta il condizione di end game
+             * */
             if (endGame)
                 getGame().changeGameState(new EndGameState(getGame(), 0));
             else {

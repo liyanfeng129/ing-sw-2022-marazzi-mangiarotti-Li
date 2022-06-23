@@ -5,7 +5,6 @@ import it.polimi.ingsw.characterCards2.Character7;
 import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.command.*;
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.Cli;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -24,7 +23,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +31,7 @@ import java.util.stream.Collectors;
     public class GameBoardController extends AASceneParent {
 
         private Label messages = new Label();
-        private Label servermessages = new Label();
+        private Label tips = new Label();
 
         private Game game;
         private Cloud cloudChoice; // non credo venga usata
@@ -98,27 +97,44 @@ import java.util.stream.Collectors;
             characterData=0;
             removeGame();
             messages.setText(game.getExecutedCommand().getMsg());// displaying the previous action done by player
+            String action = "";
             if(game.getLastCommand().getUsername().equals(name))
             {
                 if(game.getLastCommand() instanceof GetAssistantCommand)
+                {
                     showGame("Assistants");
+                    action = "select assistant card.";
+                }
                 if(game.getLastCommand() instanceof MoveMotherNatureCommand)
+                {
                     showGame("MoveMN");
+                    action = "select an island to move the mother nature on it";
+                }
                 if(game.getLastCommand() instanceof MoveStudentFromWaitingRoomCommand)
+                {
                     showGame("MoveStudents");
+                    action = "Click and hold on a student in your waiting room and then drag it to an island or to your student holder";
+                }
                 if(game.getLastCommand() instanceof SelectCloudCommand)
+                {
                     showGame("SelectCloud");
+                    action = "choose a cloud by click on it";
+                }
                 if(game.getLastCommand() instanceof UseCharacterCommand)
                 {
                     CharacterCard card = ((UseCharacterCommand) game.getLastCommand()).getCard();
                     getCharacterInput(card);
+                    action = "follow the tips";
 
                 }
-
+                String tipsMsg = String.format("%s should %s", name, action);
+                tips.setText(tipsMsg);
             }
             else
+            {
                 showGame("updateGame");
-
+                tips.setText("Wait for other player finishes his turn.");
+            }
         }
 
         /**
@@ -331,15 +347,36 @@ import java.util.stream.Collectors;
                                  */
                                 ArrayList<Object> inputs = new ArrayList<>();
                                 inputs.add(finalIsland_index1);
-
-
+                                Command command = game.getLastCommand();
+                                String msg = " ";
+                                try {
+                                    msg = command.GUIGetData(inputs);
+                                } catch (EriantysExceptions ex) {
+                                    ex.printStackTrace();
+                                }
+                                if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                    getInfo().setCommand(command);
+                                    Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                } else
+                                    messages.setText(msg);
                             }
                             else if(characterData==5){
                                 /**TODO YANFENG prendi input per character 5
                                  */
                                 ArrayList<Object> inputs = new ArrayList<>();
                                 inputs.add(finalIsland_index1);
-
+                                Command command = game.getLastCommand();
+                                String msg = " ";
+                                try {
+                                    msg = command.GUIGetData(inputs);
+                                } catch (EriantysExceptions ex) {
+                                    ex.printStackTrace();
+                                }
+                                if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                    getInfo().setCommand(command);
+                                    Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                } else
+                                    messages.setText(msg);
                             }
                         }
                     });
@@ -888,8 +925,8 @@ import java.util.stream.Collectors;
             nodes.add(vboxmessagesServer);
             Label fixlabelServer = new Label();
             nodes.add(fixlabelServer);
-            fixlabelServer.setText("SERVER MESSAGES:");
-            Label labelServer = servermessages;
+            fixlabelServer.setText("Tips");
+            Label labelServer = tips;
             vboxmessagesServer.getChildren().add(fixlabelServer);
             vboxmessagesServer.getChildren().add(labelServer);
             Pane rect2 = new Pane();
@@ -1380,7 +1417,7 @@ import java.util.stream.Collectors;
 
 
         public void getCharacterInput(CharacterCard card) throws EriantysExceptions {
-
+            tips.setText(card.getMsg());
             switch (card.getN_card()) {
                 case 1:
                     showCharacter1((Character1)card,true);

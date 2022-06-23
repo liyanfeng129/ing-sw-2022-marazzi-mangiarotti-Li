@@ -8,7 +8,6 @@ import java.io.Serializable;
 public abstract class State implements Serializable {
    private Game game;
    private int phase;
-   private int characterIndex = -1;
 
    public State(Game game,int phase)
    {
@@ -36,11 +35,5 @@ public abstract class State implements Serializable {
     public abstract boolean canChangeState() throws EriantysExceptions;
     public abstract void executeCommand() throws EriantysExceptions;
     public abstract Command generateCommand() throws EriantysExceptions;
-    public int getCharacterIndex() {
-        return characterIndex;
-    }
 
-    public void setCharacterIndex(int characterIndex) {
-        this.characterIndex = characterIndex;
-    }
 }
