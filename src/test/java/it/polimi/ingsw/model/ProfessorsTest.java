@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,8 +17,8 @@ class ProfessorsTest {
     public void setup() throws EriantysExceptions {
 
         prof=new Professors();
-       // p1=new Player("Alessio", Mage.MAGE1,TowerColor.BLACK,2,false);
-        //p2=new Player("Leonardo",Mage.MAGE2,TowerColor.WHITE,2,false);
+        p1=new Player("alessio",Mage.MAGE1,TowerColor.BLACK,2,true);
+        p2=new Player("Leonardo",Mage.MAGE2,TowerColor.WHITE,2,true);
         try {
             p1.getPlayerBoard().setDiningRoom(new int[]{1, 3, 2, 1, 2});
         } catch (EriantysExceptions e) {

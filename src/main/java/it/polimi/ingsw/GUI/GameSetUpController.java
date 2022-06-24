@@ -39,9 +39,9 @@ public class GameSetUpController extends AASceneParent{
 
         //bisogna passargli il game
 
-        Game game  = new Game(3,true,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,true,false));
-        game.addPlayers(new Player("ale", Mage.MAGE2,TowerColor.WHITE,3,false,false));
-        game.addPlayers(new Player("yan", Mage.MAGE3,TowerColor.GREY,3,false,false));
+        Game game  = new Game(3,true,new Player("leo", Mage.MAGE1,TowerColor.BLACK,3,false));
+        game.addPlayers(new Player("ale", Mage.MAGE2,TowerColor.WHITE,3,false));
+        game.addPlayers(new Player("yan", Mage.MAGE3,TowerColor.GREY,3,false));
 
         Player player = game.getPlayers().stream().filter(p -> p.getName()=="leo").collect(Collectors.toList()).get(0);
         player.getPlayerBoard().setDiningRoom(new int[]{10, 10, 10, 1, 10});

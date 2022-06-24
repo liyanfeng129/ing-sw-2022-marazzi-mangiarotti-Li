@@ -13,7 +13,7 @@ public class StartTurn implements Phase{
             int ClouSize = game.getTable().getClouds().get(0).getSize();
             for (int i = 0; i < game.getTable().getClouds().size(); i++) {
 
-                game.getTable().getClouds().get(i).setCloudStudent(game.getTable().getBag().draw(ClouSize));
+                game.getTable().getClouds().get(i).setCloudStudents(game.getTable().getBag().draw(ClouSize));
             }
             turn.setState(new PianificationState());
         }

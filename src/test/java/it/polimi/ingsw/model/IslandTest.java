@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Island;
 import it.polimi.ingsw.model.TowerColor;
@@ -43,5 +43,12 @@ class IslandTest {
     public void test_size(){
         island.IncreasingSize(1);
         assertEquals(2,island.getSize());
+    }
+    @Test
+    public void test_noEntryYile(){
+        island.setNoEntryTiles(true);
+        assertTrue(island.isNoEntryTiles());
+        island.setNoEntryTiles(false);
+        assertFalse(island.isNoEntryTiles());
     }
 }

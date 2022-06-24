@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +18,8 @@ class GameTest {
     private Cli cli ;
     @BeforeEach
     public void setup() throws EriantysExceptions {
-        p1=new Player("Alessio", Mage.MAGE1,TowerColor.BLACK,2,false,true);
-        p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,2,false,true);
+        p1=new Player("Alessio", Mage.MAGE1,TowerColor.BLACK,2,true);
+        p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,2,true);
         game=new Game(2,false,p1);
         Egame=new Game(2,true,p1);
     }

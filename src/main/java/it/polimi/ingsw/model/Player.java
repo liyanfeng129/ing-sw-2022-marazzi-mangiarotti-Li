@@ -15,7 +15,7 @@ public class Player implements Serializable {
 
 
     //non sarebbe meglio fare new pb invece che passargli una pb?
-    public Player(String name, Mage mage, TowerColor towerColor,int n_Player, boolean leader, boolean cliClient) {
+    public Player(String name, Mage mage, TowerColor towerColor,int n_Player, boolean cliClient) {
         this.name = name;
         this.mage = mage;
         this.cliClient = cliClient;
@@ -27,14 +27,9 @@ public class Player implements Serializable {
             this.pb = new PlayerBoard(8,towerColor,7);
         if (n_Player ==3)
             this.pb = new PlayerBoard(6,towerColor,9);
-        if (n_Player ==4 && leader == true)
-            this.pb = new PlayerBoard(8,towerColor,7);
-        if (n_Player ==4 && leader == false)
-            this.pb = new PlayerBoard(0,towerColor,7);
         this.towerColor = towerColor;
         hand = new Hand(mage);
         update = false;
-
     }
 
     public Player(String name)

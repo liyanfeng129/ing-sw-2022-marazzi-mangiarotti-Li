@@ -34,6 +34,7 @@ public class Character11 extends CharacterCard implements Serializable {
         card.takeStudent(student_color);
         card.addStudent(temp);
         player.getWallet().removeCoin(card.getCoin());
+        game.getProfessors().assignProfessor(game.getPlayers());
         game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: one %s student has been moved to dining room",
                 player.getName(),this.name(), this.getCoin() ,SType.values()[student_color].name()));
         addCoin(player);
