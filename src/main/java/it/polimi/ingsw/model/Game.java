@@ -171,16 +171,6 @@ public class Game implements Serializable {
                     for(int i = 0; i< players.size(); i++)
                         this.players.get(i).getPb().setWaitingRoom(table.getBag().draw(9));
                 }
-                if(n_Player == 4 && !expertMode)
-                {
-                    for(int i = 0; i < n_Player; i++)
-                    {
-                        Cloud cloud = new Cloud();
-                        cloud.setCloud(3); // era 4? mi sembra fosse 3
-                        clouds.add(cloud);
-                    }
-                    table.tableInit(clouds,null);
-                }
                 this.gameStarted = true;
                 this.gameState = new PlanningState(this, 0);
                 this.turnList = players;
@@ -211,7 +201,7 @@ public class Game implements Serializable {
     }
 
     public void addPlayers(Player player) throws EriantysExceptions {
-        if(players.size()>n_Player)
+        if(players.size()>=n_Player)
             throw new InnerExceptions.InvalidPlayerNumberException("too many players");
             players.add(player);
     }

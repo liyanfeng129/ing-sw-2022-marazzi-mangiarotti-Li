@@ -37,9 +37,9 @@ class PlayerTest {
         player.setPb(pb);
         assertEquals(pb,player.getPb());
 
-        assertEquals(3,player.getWallet().getSaving());
+        assertEquals(1,player.getWallet().getSaving());
         player1.setWallet(new Wallet());
-        assertEquals(3,player1.getWallet().getSaving());
+        assertEquals(1,player1.getWallet().getSaving());
 
         player.setUpdate(true);
         assertTrue(player.isUpdate());
