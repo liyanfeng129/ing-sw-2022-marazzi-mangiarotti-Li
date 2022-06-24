@@ -1426,6 +1426,25 @@ import java.util.stream.Collectors;
                     characterData=1;
                     showGameNoActionNoCharacter(false);
                     break;
+                case 2:
+                case 4:
+                case 6:
+                case 8:
+                case 12:
+                    ArrayList<Object> inputs = new ArrayList<>();
+                    Command command = game.getLastCommand();
+                    String msg = " ";
+                    try {
+                        msg = command.GUIGetData(inputs);
+                    } catch (EriantysExceptions ex) {
+                        ex.printStackTrace();
+                    }
+                    if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                        getInfo().setCommand(command);
+                        Platform.runLater(() -> new GuiMessageSender(this, Config.COMMAND_EXECUTE).run());
+                    } else
+                        messages.setText(msg);
+                    break;
                 case 3:
                     showCharacter3((Character3)card,true);
                     characterData=3;
@@ -1747,6 +1766,7 @@ import java.util.stream.Collectors;
                     if (Action)
                     {
                         final int studentFinal = i;
+                        AASceneParent aaSceneParent = this;
                         button.setOnAction(new EventHandler<ActionEvent>() {
                             @Override public void handle(ActionEvent e) {
                                 ArrayList<Object> inputs = new ArrayList<>();
@@ -1754,6 +1774,19 @@ import java.util.stream.Collectors;
                                 System.out.println(studentFinal);
                                 /**TODO YANFENG input characte 11
                                  */
+                                Command command = game.getLastCommand();
+                                String msg = " ";
+                                try {
+                                    msg = command.GUIGetData(inputs);
+                                } catch (EriantysExceptions ex) {
+                                    ex.printStackTrace();
+                                }
+                                if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                    getInfo().setCommand(command);
+                                    Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                } else
+                                    messages.setText(msg);
+
                             }
                         });
                     }
@@ -1816,6 +1849,7 @@ import java.util.stream.Collectors;
                 nodes.add(student);
 
                 final int studentFinal = i;
+                AASceneParent aaSceneParent = this;
                 student.setOnAction(new EventHandler<ActionEvent>() {
                     @Override public void handle(ActionEvent e) {
 
@@ -1824,6 +1858,18 @@ import java.util.stream.Collectors;
                         inputs.add(studentFinal);
                         /**TODO YANFENG input characte 9
                          */
+                        Command command = game.getLastCommand();
+                        String msg = " ";
+                        try {
+                            msg = command.GUIGetData(inputs);
+                        } catch (EriantysExceptions ex) {
+                            ex.printStackTrace();
+                        }
+                        if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                            getInfo().setCommand(command);
+                            Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                        } else
+                            messages.setText(msg);
                     }
 
 
