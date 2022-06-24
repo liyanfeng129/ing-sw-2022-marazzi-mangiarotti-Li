@@ -67,6 +67,11 @@ import java.util.stream.Collectors;
             Platform.runLater(new Runnable() {
                 @Override public void run() {
                     try {
+                        Player p = new Player("leo",Mage.MAGE1,TowerColor.BLACK,2,false);
+                        Game game_ = new Game(2,false,p);
+                        game_.addPlayers(new Player("fra",Mage.MAGE2,TowerColor.GREY,2,false));
+                        game = game_;
+                        showIslands(false);
                         initConfig();
                         name = getInfo().getUserName();
                         game = getInfo().getGame();
@@ -307,10 +312,20 @@ import java.util.stream.Collectors;
                 imgDragDrop.setLayoutX(pos_x);
                 imgDragDrop.setLayoutY(pos_y+30);
                 AASceneParent aaSceneParent = this;
+
+                Button Click = new Button();
+                nodes.add(Click);
+                Click.setLayoutX(pos_x);
+                Click.setLayoutY(pos_y+30);
+                imgDragDrop.setOpacity(0);
+                Click.setGraphic(imgDragDrop);
+                Click.setStyle("-fx-border-color:transparent;");
+                Click.setStyle("-fx-background-color:transparent;");
+
                 int island_index = i;
                 if (Action){
                     int finalIsland_index1 = island_index;
-                    bt.setOnAction(new EventHandler<ActionEvent>() {
+                    Click.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
                             int mn_pos = 0;
                             if (characterData==0) {
@@ -320,6 +335,10 @@ import java.util.stream.Collectors;
                                     ex.printStackTrace();
                                 }
                                 int steps = finalIsland_index1 - mn_pos;
+                                if (steps<0) {
+                                    steps = finalIsland_index1 + table.getIslands().size() - mn_pos;
+                                }
+
                                 System.out.println(String.format("mn_pos: %d\n" +
                                         "island_index: %d\n" +
                                         "steps: %d", mn_pos, finalIsland_index1, steps));
@@ -514,10 +533,14 @@ import java.util.stream.Collectors;
                 }
 
                 if (!Action){
-                    imgDragDrop.setOpacity(0);
                     root.getChildren().add(imgDragDrop);
                 }
+                else{
+                    Click.setOpacity(0);
+                    root.getChildren().add(Click);
+                }
             }
+
         }
         public void showClouds(Boolean Action){
             Table table = game.getTable();
