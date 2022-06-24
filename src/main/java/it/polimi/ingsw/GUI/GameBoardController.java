@@ -296,7 +296,8 @@ import java.util.stream.Collectors;
                 bt.setLayoutX(pos_x);
                 bt.setLayoutY(pos_y+30);
                 bt.setGraphic(img_view);
-                bt.setBackground(null);
+                bt.setStyle("-fx-border-color:transparent;");
+                bt.setStyle("-fx-background-color:transparent;");
 
                 ImageView imgDragDrop = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
                 nodes.add(imgDragDrop);
@@ -545,7 +546,8 @@ import java.util.stream.Collectors;
                     Button bt = new Button();
                     nodes.add(bt);
                     bt.setGraphic(img_view);
-                    bt.setBackground(null);
+                    bt.setStyle("-fx-border-color:transparent;");
+                    bt.setStyle("-fx-background-color:transparent;");
                     int cloud_pos = i;
                     bt.setLayoutX(pos_x);
                     bt.setLayoutY(pos_y);
@@ -674,7 +676,7 @@ import java.util.stream.Collectors;
                     case 7:
                         showCharacter7((Character7)card,false);
                         break;
-                    default:
+                    case 11:
                         showCharacter11((Character11) card,false);
                         break;
                 }
@@ -1422,37 +1424,56 @@ import java.util.stream.Collectors;
                 case 1:
                     showCharacter1((Character1)card,true);
                     characterData=1;
-                    showIslands(false);
+                    showGameNoActionNoCharacter(false);
+                    break;
+                case 2:
+                case 4:
+                case 6:
+                case 8:
+                case 12:
+                    ArrayList<Object> inputs = new ArrayList<>();
+                    Command command = game.getLastCommand();
+                    String msg = " ";
+                    try {
+                        msg = command.GUIGetData(inputs);
+                    } catch (EriantysExceptions ex) {
+                        ex.printStackTrace();
+                    }
+                    if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                        getInfo().setCommand(command);
+                        Platform.runLater(() -> new GuiMessageSender(this, Config.COMMAND_EXECUTE).run());
+                    } else
+                        messages.setText(msg);
                     break;
                 case 3:
                     showCharacter3((Character3)card,true);
                     characterData=3;
-                    showIslands(true);
+                    showGameNoActionNoCharacter(true);
                     break;
                 case 5:
                     showCharacter5((Character5)card,true);
                     characterData=5;
-                    showIslands(true);
+                    showGameNoActionNoCharacter(true);
                     break;
                 case 7:
                     showCharacter1((Character1)card,true);
                     characterData=7;
-                    showIslands(false);
+                    showGameNoActionNoCharacter(false);
                     break;
                 case 9:
-                    showCharacter1((Character1)card,true);
+                    showCharacter9((Character9)card,true);
                     characterData=9;
-                    showIslands(false);
+                    showGameNoActionNoCharacter(false);
                     break;
                 case 10:
                     showCharacter1((Character1)card,true);
                     characterData=10;
-                    showIslands(false);
+                    showGameNoActionNoCharacter(false);
                     break;
                 case 11:
-                    showCharacter1((Character1)card,true);
+                    showCharacter11((Character11)card,true);
+                    showGameNoActionNoCharacter(false);
                     characterData=11;
-                    showIslands(false);
                     break;
                 default:
                     System.out.println("Error");
@@ -1543,7 +1564,6 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
-
         public void showCharacter3(Character3 card,Boolean Action){
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1557,7 +1577,6 @@ import java.util.stream.Collectors;
                 root.getChildren().add(imgCard);
             }
         }
-
         public void showCharacter5(Character5 card,Boolean Action){
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1586,7 +1605,6 @@ import java.util.stream.Collectors;
             nodes.add(grid);
             root.getChildren().add(grid);
         }
-
         public void showCharacter7(Character7 card,Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1673,6 +1691,27 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
+        public void showCharacter9(Character9 card,Boolean Action){
+
+            int pos = game.getTable().getCharacters().indexOf(card);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front8.jpg")));
+            imgCard.setFitWidth(screenBounds.getMaxY()/8);
+            imgCard.setPreserveRatio(true);
+            double posY =imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150;
+            double posX =screenBounds.getMaxX()-screenBounds.getMaxY()/7.5;
+
+            imgCard.setLayoutX(posX);
+            imgCard.setLayoutY(posY);
+            if(Action){
+                nodes.add(imgCard);
+                root.getChildren().add(imgCard);
+            }
+
+            chooseColor(posY*1.1,posX*0.8);
+
+        }
         public void showCharacter11(Character11 card,Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1690,9 +1729,10 @@ import java.util.stream.Collectors;
                 nodes.add(imgCard);
                 root.getChildren().add(imgCard);
             }
-
-            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10);
+            double posx = screenBounds.getMaxX()-screenBounds.getMaxY()/7.5;
+            double posy = imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10;
+            grid.setLayoutX(posx);
+            grid.setLayoutY(posy);
             int[] students = card.getStudents();
             String color;
             int itemPositioned=0;
@@ -1716,38 +1756,49 @@ import java.util.stream.Collectors;
                     ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
                     img.setFitWidth(screenBounds.getMaxY()/32);
                     img.setPreserveRatio(true);
-                    nodes.add(img);
+                    Button button = new Button();
+                    button.setGraphic(img);
+                    button.setMaxWidth(screenBounds.getMaxY()/32);
+                    button.setStyle("-fx-border-color:transparent;");
+                    button.setStyle("-fx-background-color:transparent;");
+
+                    nodes.add(button);
                     if (Action)
                     {
-                        img.setOnDragDetected(new EventHandler<MouseEvent>() {
-                            public void handle(MouseEvent event) {
-                                /* drag was detected, start drag-and-drop gesture*/
-                                /* allow any transfer mode */
-                                Dragboard db = img.startDragAndDrop(TransferMode.ANY);
+                        final int studentFinal = i;
+                        AASceneParent aaSceneParent = this;
+                        button.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override public void handle(ActionEvent e) {
+                                ArrayList<Object> inputs = new ArrayList<>();
+                                inputs.add(studentFinal);
+                                System.out.println(studentFinal);
+                                /**TODO YANFENG input characte 11
+                                 */
+                                Command command = game.getLastCommand();
+                                String msg = " ";
+                                try {
+                                    msg = command.GUIGetData(inputs);
+                                } catch (EriantysExceptions ex) {
+                                    ex.printStackTrace();
+                                }
+                                if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                    getInfo().setCommand(command);
+                                    Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                } else
+                                    messages.setText(msg);
 
-                                /* put a string on dragboard */
-                                ClipboardContent content = new ClipboardContent();
-
-                                content.putString(student);
-                                db.setContent(content);
-                                event.consume();
                             }
                         });
                     }
-                    img.setOnDragDone(new EventHandler <DragEvent>() {
-                        public void handle(DragEvent event) {
-                            event.consume();
-                        }
-                    });
 
                     if (itemPositioned==0)
-                        grid.add(img,0,0);
+                        grid.add(button,0,0);
                     else if (itemPositioned==1)
-                        grid.add(img,0,1);
+                        grid.add(button,0,1);
                     else if (itemPositioned==2)
-                        grid.add(img,1,0);
+                        grid.add(button,1,0);
                     else
-                        grid.add(img,1,1);
+                        grid.add(button,1,1);
 
                     itemPositioned++;
                 }
@@ -1755,6 +1806,88 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
+
+        public void showGameNoActionNoCharacter(Boolean IsalndAction) throws EriantysExceptions {
+            switcBoardController(false);
+            showTowers();
+            showProfessors();
+            showIslands(IsalndAction);
+            showClouds(false);
+            showDiningRoom();
+            showWaitingRoom(false);
+            if (game.isExpertMode()) {
+                showWallet();
+            }
+        }
+
+
+        public void chooseColor(double positionY,double positionX){
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            GridPane grid = new GridPane();
+            String color;
+
+
+            for (int i=0; i<5;i++){
+                Button student = new Button();
+                if (i==3)
+                    color = blue;
+                else if (i==2)
+                    color = pink;
+                else if (i==1)
+                    color = yellow;
+                else if (i==0)
+                    color = red;
+                else
+                    color = green;
+                ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                img.setFitWidth(screenBounds.getMaxY()/32);
+                img.setPreserveRatio(true);
+                student.setMaxWidth(screenBounds.getMaxY()/32);
+                student.setStyle("-fx-border-color:transparent;");
+                student.setStyle("-fx-background-color:transparent;");
+                student.setGraphic(img);
+                nodes.add(student);
+
+                final int studentFinal = i;
+                AASceneParent aaSceneParent = this;
+                student.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent e) {
+
+
+                        ArrayList<Object> inputs = new ArrayList<>();
+                        inputs.add(studentFinal);
+                        /**TODO YANFENG input characte 9
+                         */
+                        Command command = game.getLastCommand();
+                        String msg = " ";
+                        try {
+                            msg = command.GUIGetData(inputs);
+                        } catch (EriantysExceptions ex) {
+                            ex.printStackTrace();
+                        }
+                        if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                            getInfo().setCommand(command);
+                            Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                        } else
+                            messages.setText(msg);
+                    }
+
+
+                });
+                grid.add(student,i,0);
+            }
+
+            VBox vbox =new VBox();
+            vbox.setLayoutX(positionX);
+            vbox.setLayoutY(positionY);
+
+            vbox.getChildren().add(grid);
+            vbox.getChildren().add(new Text("click a student to select the student color"));
+            root.getChildren().add(vbox);
+        }
+
+
+
 
         @Override
         public void listenerCallBack(ArrayList<Object> responses) {

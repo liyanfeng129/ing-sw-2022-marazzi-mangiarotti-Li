@@ -55,10 +55,16 @@ public class Character4 extends CharacterCard implements Serializable {
         }
         return true;
     }
-
+    /**
+     * @param inputs
+     * inputs.get(0) game : Game
+     * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) throws EriantysExceptions {
-        return null;
+        Game game = (Game) inputs.get(0);
+        setDataGathered(true);
+        game.getLastCommand().setDataGathered(true);
+        return Config.GUI_COMMAND_GETDATA_SUC;
     }
 
     @Override
