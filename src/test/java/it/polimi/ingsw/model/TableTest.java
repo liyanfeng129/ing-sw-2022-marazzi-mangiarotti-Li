@@ -71,10 +71,60 @@ class TableTest {
         game.getTable().getIsland(0).addStudent(0);
         game.getTable().getIsland(0).addStudent(1);
         game.getTable().getIsland(0).addStudent(2);
-        assertArrayEquals(new int[]{3, 1,0,0}, table.getInfluence(game,prof));
+        assertArrayEquals(new int[]{3, 1,0}, game.getTable().getInfluence(game,prof));
         assertEquals(p1,game.getTable().getPlayerMaxInfluence(game));
-
-
-
+    }
+    @Test
+    public void test_influenceCard8() throws EriantysExceptions {
+        Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,true);
+        Player p2=new Player("leo",Mage.MAGE2,TowerColor.BLACK,2,true);
+        Game game = new Game(2,true,p1);
+        game.addPlayers(p2);
+        game.getTable().getIsland(0).setMotherNature(true);
+        Professors prof=new Professors();
+        prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE});
+        game.getTable().getIsland(0).setTower(TowerColor.WHITE);
+        p1.getPb().moveTower(-1);
+        game.getTable().getIsland(0).addStudent(0);
+        game.getTable().getIsland(0).addStudent(1);
+        game.getTable().getIsland(0).addStudent(2);
+        assertArrayEquals(new int[]{2, 1,0}, game.getTable().getInfluence(game,prof));
+        game.getTable().setCard8(p2.getName());
+        assertEquals(p2,game.getTable().getPlayerMaxInfluence(game));
+        assertEquals(TowerColor.BLACK,p2.getTowerColor());
+        assertEquals(8,p1.getPb().getN_tower());
+        assertEquals(7,p2.getPb().getN_tower());
+    }
+    @Test
+    public void test_influenceCard6() throws EriantysExceptions {
+        Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,true);
+        Player p2=new Player("leo",Mage.MAGE2,TowerColor.BLACK,2,true);
+        Game game = new Game(2,true,p1);
+        game.addPlayers(p2);
+        game.getTable().getIsland(0).setMotherNature(true);
+        game.getTable().getIsland(0).setTower(TowerColor.WHITE);
+        Professors prof=new Professors();
+        prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE});
+        game.getTable().setCard6(true);
+        game.getTable().getIsland(0).addStudent(0);
+        game.getTable().getIsland(0).addStudent(1);
+        game.getTable().getIsland(0).addStudent(2);
+        assertArrayEquals(new int[]{1, 1,0}, game.getTable().getInfluence(game,prof));
+    }
+    @Test
+    public void test_influenceCard9() throws EriantysExceptions {
+        Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,true);
+        Player p2=new Player("leo",Mage.MAGE2,TowerColor.BLACK,2,true);
+        Game game = new Game(2,true,p1);
+        game.addPlayers(p2);
+        game.getTable().getIsland(0).setMotherNature(true);
+        game.getTable().getIsland(0).setTower(TowerColor.WHITE);
+        Professors prof=new Professors();
+        prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE});
+        game.getTable().setCard9(0);
+        game.getTable().getIsland(0).addStudent(0);
+        game.getTable().getIsland(0).addStudent(1);
+        game.getTable().getIsland(0).addStudent(2);
+        assertArrayEquals(new int[]{1, 1,0}, game.getTable().getInfluence(game,prof));
     }
 }

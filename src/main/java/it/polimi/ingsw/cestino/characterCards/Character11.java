@@ -1,46 +1,39 @@
-package it.polimi.ingsw.characterCards;
+package it.polimi.ingsw.cestino.characterCards;
 
 import it.polimi.ingsw.model.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Character1 implements CharacterBehavior, Serializable {
+public class Character11 implements CharacterBehavior {
+
     private int coin;
-    private String msg;
     private boolean firstUse;
+    private String msg ;
     private int students[]= new int[5];
 
-    public Character1(Game game) throws EriantysExceptions {
-        msg = "Take 1 Student from this card and place it on\n" +
-                "an Island of your choice. Then, draw a new Student\n" +
-                "from the Bag and place it on this card.";
 
-        Bag bag  = game.getTable().getBag();
+    public Character11(Game game) throws EriantysExceptions {
 
-        coin = 1;
+        msg = "Take 1 Student from this card and place it in\n" +
+                "your Dining Room. Then, draw a new Student from the\n" +
+                "Bag and place it on this card.";
+        coin = 2;
         firstUse = false;
-        students = bag.draw(4);
-        this.students = students;
+        students = game.getTable().getBag().draw(4);
 
     }
 
     @Override
     public void useCharacter(Game game, Player user, Island island, int colore, int[] students) throws EriantysExceptions {
-
         if (!this.firstUse){
             this.firstUse = true;
         }
-        Bag bag  = game.getTable().getBag();
-        island.addStudent(colore);
-        int temp [] = bag.draw(1);
-
+        user.getPlayerBoard().addStudentToHolder(colore);
+        int[] temp=game.getTable().getBag().draw(1);
         for(int i = 0 ; i < students.length; i++){
             this.students[i] = this.students[i] + temp[i];
         }
-
     }
-
     @Override
     public ArrayList getInfo() throws EriantysExceptions{
         ArrayList<Object> Attributes = new ArrayList<Object>();
@@ -51,10 +44,6 @@ public class Character1 implements CharacterBehavior, Serializable {
         return Attributes;
     }
 
-
-
-
-
     public int getCoin() {
         return coin;
     }
@@ -63,20 +52,20 @@ public class Character1 implements CharacterBehavior, Serializable {
         this.coin = coin;
     }
 
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
     public boolean isFirstUse() {
         return firstUse;
     }
 
     public void setFirstUse(boolean firstUse) {
         this.firstUse = firstUse;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public int[] getStudents() {

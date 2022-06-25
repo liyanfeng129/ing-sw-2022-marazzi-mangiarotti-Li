@@ -1,22 +1,26 @@
-package it.polimi.ingsw.characterCards;
+package it.polimi.ingsw.cestino.characterCards;
 
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class Character8 implements CharacterBehavior{
+public class Character5 implements CharacterBehavior {
 
     private int coin;
     private boolean firstUse;
     private String msg ;
+    private int NoEntryTiles;
 
 
-    public Character8(Game game) throws EriantysExceptions {
+    public Character5(Game game) throws EriantysExceptions {
 
-        msg = "During the influence calculation this turn, you\n" +
-                "count as having 2 more influence.";
+        msg = "Place a No Entry tile on an Island of your choice.\n" +
+                "The first time Mother Nature ends her movement\n" +
+                "there, put the No Entry tile back onto this card DO NOT\n" +
+                "calculate influence on that Island, or place any Towers.";
         coin = 2;
         firstUse = false;
+        NoEntryTiles=4;
 
     }
 
@@ -25,15 +29,19 @@ public class Character8 implements CharacterBehavior{
         if (!this.firstUse){
             this.firstUse = true;
         }
-        game.getTable().setCard8(user.getName());
-        //stesso problema carta 6
+        int pos=game.getTable().getIslands().indexOf(island);
+        game.getTable().getIsland(pos).setNoEntryTiles(true);
+        NoEntryTiles--;
+        //bisogna aggiungere che se ce questa carta non si calcola influenza e merge
     }
+
     @Override
     public ArrayList getInfo() throws EriantysExceptions{
         ArrayList<Object> Attributes = new ArrayList<Object>();
         Attributes.add(this.getMsg());
         Attributes.add(this.getCoin());
         Attributes.add(this.isFirstUse());
+        Attributes.add(this.getNoEntryTiles());
         return Attributes;
     }
 
@@ -60,4 +68,13 @@ public class Character8 implements CharacterBehavior{
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+    public int getNoEntryTiles() {
+        return NoEntryTiles;
+    }
+
+    public void setNoEntryTiles(int noEntryTiles) {
+        NoEntryTiles = noEntryTiles;
+    }
 }
+

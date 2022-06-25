@@ -1,6 +1,9 @@
-package it.polimi.ingsw.state;
+package it.polimi.ingsw;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.state.EndGameState;
+import it.polimi.ingsw.state.MoveMotherNatureState;
+import it.polimi.ingsw.state.State;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

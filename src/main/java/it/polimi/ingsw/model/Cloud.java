@@ -8,12 +8,22 @@ public class Cloud implements Serializable {
     private int size;
     private int[] students;
 
+    /**
+     * Constructor of Cloud
+     * initialize the size at 0
+     * initialize the students on the cloud a 0
+     */
     public Cloud()
     {
         this.size = 0;
         this.students = new int[5];
     }
 
+    /**
+     * set the size of the cloud
+     * @param size size of the cloud
+     * @throws EriantysExceptions if the size is not allowed in the game
+     */
     public  void setCloud(int size) throws EriantysExceptions
     {
         if(size==3 || size== 4)
@@ -21,6 +31,10 @@ public class Cloud implements Serializable {
         else
             throw new InnerExceptions.NotValidCloudSizeException("Cloud size is not valid");
     }
+
+    /**
+     * set number of student on the cloud a 0
+     */
     public void emptyCloud()
     {
         for( int i = 0; i < students.length; i++)
@@ -30,6 +44,11 @@ public class Cloud implements Serializable {
     public int getSize() {
         return size;
     }
+
+    /**
+     * get the students on the cloud
+     * @return an array with the students on the cloud
+     */
     public int[] getStudents() {
         return students;
     }
@@ -37,6 +56,12 @@ public class Cloud implements Serializable {
     /** TODO
      * non funnziona
      *
+     */
+
+    /**
+     * set the students on the cloud
+     * @param students the student to be put on the cloud
+     * @throws EriantysExceptions if number of students is different from the size of the cloud
      */
     public void setCloudStudents(int [] students) throws EriantysExceptions
     {

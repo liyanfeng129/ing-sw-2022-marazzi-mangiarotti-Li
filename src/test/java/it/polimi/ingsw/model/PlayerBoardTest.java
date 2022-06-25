@@ -42,6 +42,8 @@ class PlayerBoardTest {
             fail();
         }
         assertArrayEquals(new int[]{0, 1, 1, 1, 2},pb.getWaitingRoom());
+        pb.setMaxStudentsInWaiting(7);
+        assertEquals(7,pb.getMaxStudentsInWaiting());
     }
     @Test
     public void test_pbNotValidStudentException(){
@@ -100,6 +102,39 @@ class PlayerBoardTest {
             fail();
         }
             pb.moveTower(+1);
+    }
+    @Test
+    public void test_addCloudToWaiting() throws EriantysExceptions {
+        pb.addCloudToWaitingRoom(new int[]{0, 1, 2, 0, 0});
+        assertArrayEquals(new int[]{0, 1, 2, 0, 0},pb.getWaitingRoom());
+    }
+    @Test
+    public void test_CharacterCard() {
+        pb.addStudentsToDiningRoom(new int[]{0, 1, 2, 0, 0});
+        try {
+            pb.takeStudentFromHolder(2);
+        } catch (InnerExceptions.NegativeValue e) {
+            e.printStackTrace();
+        }
+        assertArrayEquals(new int[]{0, 1, 1, 0, 0},pb.getDiningRoom());
+        try {
+            pb.takeStudentFromHolder(0);
+        } catch (InnerExceptions.NegativeValue e) {
+            e.printStackTrace();
+        }
+        pb.removeStudentFromDiningRoom(new int[]{0, 1, 1, 0, 0});
+        assertArrayEquals(new int[]{0, 0, 0, 0, 0},pb.getDiningRoom());
+        pb.addStudentsToWaitingRoom(new int[]{2, 0, 0, 1, 0});
+        assertArrayEquals(new int[]{2, 0, 0, 1, 0},pb.getWaitingRoom());
+        pb.removeStudentFromWaitingRoom(new int[]{2, 0, 0, 1, 0});
+        assertArrayEquals(new int[]{0, 0, 0, 0, 0},pb.getWaitingRoom());
+        pb.setCoin3(0);
+        assertArrayEquals(new boolean[]{true, false, false, false, false},pb.getCoin3());
+        pb.setCoin6(2);
+        assertTrue(pb.getCoin6()[2]);
+        pb.setCoin9(4);
+        assertTrue(pb.getCoin9()[4]);
+
     }
     /*
     secondo me non serve

@@ -13,6 +13,11 @@ public enum AssistantType implements Serializable {
     private int Num;
     private int Steps;
 
+    /**
+     * constructor of AssistantType
+     * @param Num the value of the AssistantType(from 1 to 10)
+     * @param Steps the number of steps allowed by this AssistantType(from 1 to 5)
+     */
     private AssistantType(int Num, int Steps) {
         this.Num = Num ;
         this.Steps = Steps ;

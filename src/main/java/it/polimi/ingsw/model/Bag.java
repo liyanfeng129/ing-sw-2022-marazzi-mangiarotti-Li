@@ -11,6 +11,10 @@ public class Bag implements Serializable {
     private  int[] students;
     private int N_students;
 
+    /**
+     * constructor of Bag
+     * initialize the bag with 130 students,26 of each color
+     */
     public Bag()
     {
         this.students = new int[] {26, 26, 26, 26, 26};
@@ -33,9 +37,15 @@ public class Bag implements Serializable {
         N_students = n_students;
     }
 
+    /**
+     * get all the students left in the bag
+     * @return the students in the bag
+     */
     public int[] getBag() {
         return students;
     }
+
+
     public void setBag_test(){
         students[0]=1;
     }
@@ -47,7 +57,13 @@ public class Bag implements Serializable {
         students[4]=1;
 
     }
-    public int[] bagSet1() throws EriantysExceptions /** bagSet1() takes out 2 students of each kind */
+
+    /**
+     * bagSet1() takes out 2 students of each kind
+     * @return 2 students of each color
+     * @throws EriantysExceptions if there are not enought students left
+     */
+    public int[] bagSet1() throws EriantysExceptions
     {
         int temp[] = {2,2,2,2,2};
 
@@ -59,14 +75,12 @@ public class Bag implements Serializable {
         return temp;
     }
 
-
-
-
-    /** Extract randomly n students from bag
-     *  @throws InnerExceptions.NotEnoughStudentsInBagException
-     *  if there aren't n students in bag for extraction
-     * */
-
+    /**
+     * Extract randomly n students from bag
+     * @param n number of students to be extracted
+     * @return an array of students extracted from the bag
+     * @throws EriantysExceptions  if there aren't n enought students in bag for extraction
+     */
     public synchronized int[] draw(int n) throws EriantysExceptions
     {
         int drawn_students[] = {0,0,0,0,0};
@@ -136,6 +150,11 @@ public class Bag implements Serializable {
         }
         return drawn_students;
     }
+
+    /**
+     * add one student to the bag
+     * @param color the color of the student added in the bag
+     */
     public void addStudentToBag(int color){
         students[color]++;
     }

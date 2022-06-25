@@ -26,7 +26,13 @@ public class Game implements Serializable {
     private UseCharacterCommand usedCharacter = null;
     private String gameStartingTime;
 
-    //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
+    /**
+     * constructor of Game
+     * @param n_Player initialioze the number of player in this game
+     * @param expertMode initialize the type of this game
+     * @param creator initialize the player who started this game
+     * @throws EriantysExceptions if constructor of tsble throw an exception
+     */
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
         this.n_Player = n_Player;
         this.expertMode = expertMode;
@@ -36,11 +42,22 @@ public class Game implements Serializable {
         this.gameStarted = false;
 
     }
+
+    /**
+     * TODO yan
+     * non so a cosa serva,spiegalo te
+     */
     public Game()
     {
 
     }
 
+    /**
+     * find the player selected among all the players in game
+     * @param name the name of the player this method has to find
+     * @return the player which name belong to
+     * @throws EriantysExceptions if there is no player with this name in game
+     */
     public synchronized Player findPlayerByName(String name) throws EriantysExceptions
     {
         for(Player p : players)
@@ -49,25 +66,47 @@ public class Game implements Serializable {
         throw new InnerExceptions.NoSuchUserException("Player not found");
     }
 
+    /**
+     * get the command in last position in ArrayList commands
+     * @return the command in last position in arrayList commands
+     */
     public synchronized Command getLastCommand()
     {
         return this.commands.get(commands.size()-1);
     }
+
+    /**
+     * delete command in last position of ArrayList commands and set this command
+     * @param command the command to be setted in last position
+     */
     public synchronized void setLastCommand(Command command)
     {
         this.commands.remove(commands.size()-1);
         this.commands.add(command);
     }
+
+    /**
+     * remove first command from ArrayList commnad if the size of commnads is >= 2
+     */
     public synchronized void removeCommand()
     {
         if(commands.size() >= 2)
             this.commands.remove(0);
     }
+
+    /**
+     * get the command to be executed
+     * @return the command in first position in ArrayList commands
+     */
     public synchronized Command getExecutedCommand()
     {
         return commands.get(0);
     }
 
+    /**
+     * add a command in ArrayList commands
+     * @param command the command to be added
+     */
     public synchronized void addCommand(Command command) { commands.add(command); }
 
     public synchronized State getGameState()
@@ -80,7 +119,9 @@ public class Game implements Serializable {
         this.gameState = state;
     }
 
-
+    /**
+     * @return in which order the players have to make a play in this turn
+     */
     public synchronized ArrayList<Player> getTurnList() {
         return turnList;
     }
@@ -95,7 +136,11 @@ public class Game implements Serializable {
         return table;
     }
 
-    //secondo me manca un exception nel caso in cui i giocatori avessero lo stesso colore di torre
+    /**
+     * this method is called to start the game
+     * this method initialize cloud and character according to the type and number of player of the game
+     * @throws EriantysExceptions if the number of players in the game is not allowed by the rules
+     */
     public void startGame() throws EriantysExceptions {
         ArrayList<Cloud> clouds = new ArrayList<>();
         ArrayList<CharacterCard> characterCards = new ArrayList<>();
@@ -200,14 +245,23 @@ public class Game implements Serializable {
         return players;
     }
 
+    /**
+     * add a player in the game
+     * @param player the player to be added
+     * @throws EriantysExceptions if the max number of players for this game is already reached
+     */
     public void addPlayers(Player player) throws EriantysExceptions {
         if(players.size()>=n_Player)
             throw new InnerExceptions.InvalidPlayerNumberException("too many players");
             players.add(player);
     }
-
+    /**
+     * add a player in the TurnList
+     * @param player the player to be added
+     * @throws EriantysExceptions if the max number of players in this turn is already reached
+     */
     public void addPlayerToTurnList(Player player) throws EriantysExceptions {
-        if(players.size()>n_Player)
+        if(players.size()>=n_Player)
             throw new InnerExceptions.InvalidPlayerNumberException("too many players");
         turnList.add(player);
     }
@@ -260,9 +314,9 @@ public class Game implements Serializable {
         this.commands = commands;
     }
 
-    public void setGameState(State gameState) {
+    /*public void setGameState(State gameState) {
         this.gameState = gameState;
-    }
+    }*/
 
     public UseCharacterCommand getUsedCharacter() {
         return usedCharacter;

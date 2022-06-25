@@ -1,10 +1,10 @@
-package it.polimi.ingsw.characterCards;
+package it.polimi.ingsw.cestino.characterCards;
 
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class Character10 implements CharacterBehavior{
+public class Character10 implements CharacterBehavior {
 
     private int coin;
     private boolean firstUse;

@@ -75,6 +75,7 @@ public class PlayerBoard implements Serializable {
 
 
     //secondo me non servono, ho un array a parte che mi dice chi ha i professori
+    /*
     public Boolean[] getProfHolder() {
         return profHolder;
     }
@@ -84,7 +85,7 @@ public class PlayerBoard implements Serializable {
     public void setProf(int prof, boolean occupy)
     {
         this.profHolder[prof] = occupy;
-    }
+    }*/
 
     public void moveTower(int n)
     {
@@ -113,18 +114,10 @@ public class PlayerBoard implements Serializable {
         this.diningRoom[student] ++;
     }
 
-    public  void takeStudentFromHolder(int student)
-    {
+    public  void takeStudentFromHolder(int student) throws InnerExceptions.NegativeValue {
+        if(this.diningRoom[student]==0)
+            throw new InnerExceptions.NegativeValue("Not Enought student");
         this.diningRoom[student] --;
-    }
-
-
-    public TowerColor getTower() {
-        return tower;
-    }
-
-    public void setTower(TowerColor tower) {
-        this.tower = tower;
     }
 
     public int getMaxStudentsInWaiting() {
@@ -142,13 +135,11 @@ public class PlayerBoard implements Serializable {
     }
 
     public void addStudentsToDiningRoom(int students[]){
-        for(int i = 0; i < 5; i++)
-            this.diningRoom[i] += students[i];
+        diningRoom=sumArray(diningRoom,students);
     }
 
     public void addStudentsToWaitingRoom(int students[]){
-        for(int i = 0; i < 5; i++)
-            this.waitingRoom[i] += students[i];
+        waitingRoom=sumArray(waitingRoom,students);
     }
 
     public void setMaxStudentsInWaiting(int maxStudentsInWaiting) {

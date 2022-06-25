@@ -1,45 +1,59 @@
-package it.polimi.ingsw.characterCards;
+package it.polimi.ingsw.cestino.characterCards;
 
 import it.polimi.ingsw.model.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Character7 implements CharacterBehavior{
-
+public class Character1 implements CharacterBehavior, Serializable {
     private int coin;
+    private String msg;
     private boolean firstUse;
     private int students[]= new int[5];
-    private String msg ;
 
+    public Character1(Game game) throws EriantysExceptions {
+        msg = "Take 1 Student from this card and place it on\n" +
+                "an Island of your choice. Then, draw a new Student\n" +
+                "from the Bag and place it on this card.";
 
-    public Character7(Game game) throws EriantysExceptions {
+        Bag bag  = game.getTable().getBag();
 
-        msg = "You may take up to 3 Students from this card\n" +
-                "and replace them with the same number of Students\n" +
-                "from your Entrance.";
         coin = 1;
         firstUse = false;
-        Bag bag  = game.getTable().getBag();
-        students = bag.draw(6);
+        students = bag.draw(4);
+        this.students = students;
 
     }
 
     @Override
     public void useCharacter(Game game, Player user, Island island, int colore, int[] students) throws EriantysExceptions {
+
         if (!this.firstUse){
             this.firstUse = true;
         }
+        Bag bag  = game.getTable().getBag();
+        island.addStudent(colore);
+        int temp [] = bag.draw(1);
 
-        //devo chiamare action phase1 o passare un array di 3 studenti
+        for(int i = 0 ; i < students.length; i++){
+            this.students[i] = this.students[i] + temp[i];
+        }
+
     }
+
     @Override
     public ArrayList getInfo() throws EriantysExceptions{
         ArrayList<Object> Attributes = new ArrayList<Object>();
         Attributes.add(this.getMsg());
         Attributes.add(this.getCoin());
         Attributes.add(this.isFirstUse());
+        Attributes.add(this.getStudents());
         return Attributes;
     }
+
+
+
+
 
     public int getCoin() {
         return coin;
@@ -47,6 +61,14 @@ public class Character7 implements CharacterBehavior{
 
     public void setCoin(int coin) {
         this.coin = coin;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public boolean isFirstUse() {
@@ -63,13 +85,5 @@ public class Character7 implements CharacterBehavior{
 
     public void setStudents(int[] students) {
         this.students = students;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 }

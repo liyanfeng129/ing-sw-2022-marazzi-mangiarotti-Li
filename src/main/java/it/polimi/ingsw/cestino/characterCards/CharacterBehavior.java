@@ -1,4 +1,4 @@
-package it.polimi.ingsw.characterCards;
+package it.polimi.ingsw.cestino.characterCards;
 
 import it.polimi.ingsw.model.*;
 

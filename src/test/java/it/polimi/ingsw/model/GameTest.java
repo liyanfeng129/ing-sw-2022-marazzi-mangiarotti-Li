@@ -4,10 +4,12 @@ import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.command.MoveMotherNatureCommand;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.state.MoveMotherNatureState;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import it.polimi.ingsw.view.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,12 +23,8 @@ class GameTest {
     private Player p2;
     private Player p3;
     private PlayerBoard pb;
-    private Table table;
     private Cli cli ;
     private ArrayList<Command> commands = new ArrayList<>();
-    private MoveMotherNatureCommand c1;
-    private MoveMotherNatureCommand c2;
-    private MoveMotherNatureState s1;
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<Player> turnList  = new ArrayList<Player>();
     @BeforeEach
@@ -40,12 +38,18 @@ class GameTest {
         Egame3=new Game(3,true,p3);
         gameServer=new Game();
     }
+    @AfterEach
+    public void tearDown(){
+        p1=null;
+        p2=null;
+        p3=null;
+        game=null;
+    }
     @Test
     public void test_game(){
         ArrayList<Player> temp = new ArrayList<Player>();
         temp.add(p1);
         temp.add(p2);
-        game.setN_Player(2);
         try {
             game.addPlayers(p2);
         } catch (EriantysExceptions e) {
@@ -60,8 +64,6 @@ class GameTest {
     @Test
     public void test_startGame(){
         try {
-            table=new Table();
-            game.setTable(table);
             game.addPlayers(p2);
             Egame.addPlayers(p2);
             p1=new Player("Alessio", Mage.MAGE1,TowerColor.BLACK,3,true);
@@ -78,10 +80,14 @@ class GameTest {
             e.printStackTrace();
         }
         assertTrue(game.isGameStarted());
+        assertEquals(2,game.getTable().getClouds().size());
+        assertEquals(3,game3.getTable().getClouds().size());
+        assertEquals(3, Arrays.stream(game.getTable().getClouds().get(0).getStudents()).sum());
+        assertEquals(4, Arrays.stream(game3.getTable().getClouds().get(0).getStudents()).sum());
         // secondo me manca una get cloud in table
         // assertEquals(3,game.getTable().getcloud(0).getsize();
-
     }
+
     @Test
     public void test_findPlayerByName(){
         try {
@@ -101,8 +107,8 @@ class GameTest {
     }
     @Test
     public void test_command(){
-        c1=new MoveMotherNatureCommand(true,game,"Alessio",2,false,false);
-        c2=new MoveMotherNatureCommand(true,game,"Yan",8,false,false);
+        MoveMotherNatureCommand c1 = new MoveMotherNatureCommand(true, game, "Alessio", 2, false, false);
+        MoveMotherNatureCommand c2 = new MoveMotherNatureCommand(true, game, "Yan", 8, false, false);
         game.addCommand(c1);
         assertEquals(c1,game.getLastCommand());
         game.setLastCommand(c2);
@@ -114,18 +120,19 @@ class GameTest {
     }
     @Test
     public void test_State(){
-        s1=new MoveMotherNatureState(game,0,false,false);
+        MoveMotherNatureState s1 = new MoveMotherNatureState(game, 0, false, false);
         game.changeGameState(s1);
         assertEquals(s1,game.getGameState());
         game.setTurnList(game.getPlayers());
+        try {
+            game.addPlayerToTurnList(p2);
+        } catch (EriantysExceptions e) {
+            e.printStackTrace();
+        }
         for (int i=0;i<game.getPlayers().size();i++){
             assertEquals(game.getPlayers().get(i),game.getTurnList().get(i));
         }
     }
-
-
-
-
 
     @Test
     public void test_incorrectNumberOfPlayer() {
@@ -135,5 +142,38 @@ class GameTest {
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
+    }
+    @Test
+    public void test_incorrectNumberOfPlayerInTurnList() {
+        try {
+            game.addPlayers(p1);
+            game.setTurnList(game.getPlayers());
+            game.addPlayerToTurnList(p2);
+        } catch (EriantysExceptions e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void test_gameStartingTime() {
+        game.setGameStartingTime("12.07");
+        assertEquals("12.07",game.getGameStartingTime());
+    }
+    @Test
+    public void test_serverGame() throws EriantysExceptions {
+        Table table = new Table();
+        gameServer.setN_Player(2);
+        gameServer.setExpertMode(false);
+        gameServer.setTable(table);
+        gameServer.setProfessors(new Professors());
+        gameServer.setGameStarted(false);
+        assertEquals(2,gameServer.getN_Player());
+        assertEquals(table,gameServer.getTable());
+        assertFalse(gameServer.isGameStarted());
+        assertFalse(gameServer.isExpertMode());
+        assertArrayEquals(new Professors(),gameServer.getProfessors());
+    }
+
+
+    private void assertArrayEquals(Professors professors, Professors professors1) {
     }
 }

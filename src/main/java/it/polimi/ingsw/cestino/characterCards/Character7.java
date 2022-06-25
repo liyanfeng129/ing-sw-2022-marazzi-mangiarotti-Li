@@ -1,25 +1,26 @@
-package it.polimi.ingsw.characterCards;
+package it.polimi.ingsw.cestino.characterCards;
 
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
 
-public class Character11 implements CharacterBehavior{
+public class Character7 implements CharacterBehavior {
 
     private int coin;
     private boolean firstUse;
-    private String msg ;
     private int students[]= new int[5];
+    private String msg ;
 
 
-    public Character11(Game game) throws EriantysExceptions {
+    public Character7(Game game) throws EriantysExceptions {
 
-        msg = "Take 1 Student from this card and place it in\n" +
-                "your Dining Room. Then, draw a new Student from the\n" +
-                "Bag and place it on this card.";
-        coin = 2;
+        msg = "You may take up to 3 Students from this card\n" +
+                "and replace them with the same number of Students\n" +
+                "from your Entrance.";
+        coin = 1;
         firstUse = false;
-        students = game.getTable().getBag().draw(4);
+        Bag bag  = game.getTable().getBag();
+        students = bag.draw(6);
 
     }
 
@@ -28,11 +29,8 @@ public class Character11 implements CharacterBehavior{
         if (!this.firstUse){
             this.firstUse = true;
         }
-        user.getPlayerBoard().addStudentToHolder(colore);
-        int[] temp=game.getTable().getBag().draw(1);
-        for(int i = 0 ; i < students.length; i++){
-            this.students[i] = this.students[i] + temp[i];
-        }
+
+        //devo chiamare action phase1 o passare un array di 3 studenti
     }
     @Override
     public ArrayList getInfo() throws EriantysExceptions{
@@ -40,7 +38,6 @@ public class Character11 implements CharacterBehavior{
         Attributes.add(this.getMsg());
         Attributes.add(this.getCoin());
         Attributes.add(this.isFirstUse());
-        Attributes.add(this.getStudents());
         return Attributes;
     }
 
@@ -60,19 +57,19 @@ public class Character11 implements CharacterBehavior{
         this.firstUse = firstUse;
     }
 
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
     public int[] getStudents() {
         return students;
     }
 
     public void setStudents(int[] students) {
         this.students = students;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

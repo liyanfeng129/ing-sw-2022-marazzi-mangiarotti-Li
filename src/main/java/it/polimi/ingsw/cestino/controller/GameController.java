@@ -1,4 +1,4 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.cestino.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Professors;

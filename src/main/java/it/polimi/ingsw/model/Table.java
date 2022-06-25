@@ -163,7 +163,7 @@ public class Table implements Serializable {
     }
 
     public int[] getInfluence(Game game, Professors prof) throws EriantysExceptions {
-        int[] influence= new int[4];
+        int[] influence= new int[3];
         for (int i = 0;i<5; i++) {
             if (game.getTable().getCard9() != i) {
                 if (prof.getList_professors()[i] == Mage.MAGE1)
@@ -172,8 +172,6 @@ public class Table implements Serializable {
                     influence[1] = influence[1] + game.getTable().getIsland(getMotherNatureIndex()).getStudents()[i];
                 if (prof.getList_professors()[i] == Mage.MAGE3)
                     influence[2] = influence[2] + game.getTable().getIsland(getMotherNatureIndex()).getStudents()[i];
-                if (prof.getList_professors()[i] == Mage.MAGE4)
-                    influence[3] = influence[3] + game.getTable().getIsland(getMotherNatureIndex()).getStudents()[i];
             }
         }
         if(!game.getTable().isCard6()) {
@@ -190,7 +188,7 @@ public class Table implements Serializable {
         int[] influence  = game.getTable().getInfluence(game, game.getProfessors());
         if (game.getTable().getCard8()!=null){
             for (int i=0;i<game.getN_Player();i++){
-                if (game.getTable().getCard8()==game.getPlayers().get(i).getName())
+                if (game.getTable().getCard8().equals(game.getPlayers().get(i).getName()))
                     influence[i]=influence[i]+2;
             }
         }
@@ -215,7 +213,7 @@ public class Table implements Serializable {
         int MN_pos=game.getTable().getMotherNatureIndex();
         int MN_island_size=game.getTable().getIsland(MN_pos).getSize();
         TowerColor Previous_TC = game.getTable().getIsland(MN_pos).getTower();
-        if (Previous_TC!=color && Previous_TC != TowerColor.NO_COLOR){
+        if (Previous_TC != null ){
             for (int i=0;i<game.getN_Player();i++){
                 if (game.getPlayers().get(i).getTowerColor()==Previous_TC)
                     game.getPlayers().get(i).getPlayerBoard().moveTower(+MN_island_size);
