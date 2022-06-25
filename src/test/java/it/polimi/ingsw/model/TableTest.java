@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +19,10 @@ class TableTest {
     @Test
     public void test_mergeIsland(){
         int temp[]=table.getIsland(0).getStudents();
-        table.getIsland(0).setTower(TowerColor.BLACK);
-        table.getIsland(1).setTower(TowerColor.BLACK);
-        table.getIsland(11).setTower(TowerColor.BLACK);
+        assertTrue(table.getIsland(0).getMotherNature());
+        table.getIsland(0).setTower(TowerColor.WHITE);
+        table.getIsland(1).setTower(TowerColor.WHITE);
+        table.getIsland(11).setTower(TowerColor.WHITE);
         table.getIsland(0).addStudent(3);
         temp[3]++;
         table.getIsland(11).addStudent(0);
@@ -58,8 +59,8 @@ class TableTest {
     @Test
     public void test_influence() throws EriantysExceptions {
 
-        Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,false,true);
-        Player p2=new Player("leo",Mage.MAGE2,TowerColor.BLACK,2,false,true);
+        Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,true);
+        Player p2=new Player("leo",Mage.MAGE2,TowerColor.BLACK,2,true);
         Game game = new Game(2,false,p1);
         game.addPlayers(p2);
         game.getTable().getIsland(0).setMotherNature(true);

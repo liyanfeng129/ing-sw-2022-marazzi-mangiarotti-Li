@@ -21,13 +21,6 @@ public class Cloud implements Serializable {
         else
             throw new InnerExceptions.NotValidCloudSizeException("Cloud size is not valid");
     }
-
-    //non era meglio prendere tutto l array?
-    public void setCloudStudent(int[] students)
-    {
-        this.students = students;
-    }
-
     public void emptyCloud()
     {
         for( int i = 0; i < students.length; i++)
@@ -45,7 +38,7 @@ public class Cloud implements Serializable {
      * non funnziona
      *
      */
-    public void setStudents(int [] students) throws EriantysExceptions
+    public void setCloudStudents(int [] students) throws EriantysExceptions
     {
         if(Arrays.stream(students).sum() != getSize())
             throw new InnerExceptions.NotValidStudentSizeException("Number of student is not valid");
@@ -58,7 +51,7 @@ public class Cloud implements Serializable {
         {
             Cloud temp = new Cloud();
             temp.setCloud(size);
-            temp.setStudents(students);
+            temp.setCloudStudents(students);
             return temp;
         }
         catch (Exception e)

@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.InnerExceptions;
@@ -16,21 +16,21 @@ class WalletTest {
     }
     @Test
     public void test_getWallet(){
-        assertEquals(3, wallet.getSaving());
+        assertEquals(1, wallet.getSaving());
     }
     @Test
     public void test_addCoin(){
         wallet.addCoin(2);
-        assertEquals(5, wallet.getSaving());
+        assertEquals(3, wallet.getSaving());
     }
     @Test
     public void test_removeCoin() throws EriantysExceptions {
         try {
-            wallet.removeCoin(2);
+            wallet.removeCoin(1);
         } catch (InnerExceptions.NegativeValue e) {
             e.printStackTrace();
         }
-        assertEquals(1, wallet.getSaving());
+        assertEquals(0, wallet.getSaving());
     }
     @Test
     public void test_removeCoin_NegativeValue_exception(){

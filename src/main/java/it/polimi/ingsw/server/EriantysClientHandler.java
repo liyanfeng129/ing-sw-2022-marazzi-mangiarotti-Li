@@ -402,37 +402,37 @@ public class EriantysClientHandler extends Thread{
             return "Cannot join a game where is full";
         if(game.getN_Player() == 2 && !game.isExpertMode())
         {
-            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,true,cliClient));
+            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,cliClient));
         }
         if(game.getN_Player() == 3 && !game.isExpertMode() && game.getPlayers().size() == 1)
         {
-            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,3,true,cliClient));
+            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,3,cliClient));
         }
         else if(game.getN_Player() == 3 && !game.isExpertMode() && game.getPlayers().size() == 2)
         {
-            game.addPlayers(new Player(player,Mage.MAGE3,TowerColor.GREY,3,true,cliClient));
+            game.addPlayers(new Player(player,Mage.MAGE3,TowerColor.GREY,3,cliClient));
         }
 
         if(game.getN_Player() == 2 && game.isExpertMode())
         {
-            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,true,cliClient));
+            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,cliClient));
         }
             return Config.JOIN_ONE_GAME_SUC;
     }
 
     private synchronized String createGameFor2(String userName, boolean cliClient) throws EriantysExceptions {
-        Game game = new Game(2, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,true,cliClient));
+        Game game = new Game(2, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,cliClient));
         games.add(game);
         return Config.CREATE_NORMAL_GAME_FOR_2_SUC;
     }
 
     private synchronized String createGameFor3(String userName, boolean cliClient) throws EriantysExceptions {
-        Game game = new Game(3, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,3,true,cliClient));
+        Game game = new Game(3, false, new Player(userName,Mage.MAGE1,TowerColor.BLACK,3,cliClient));
         games.add(game);
         return Config.CREATE_NORMAL_GAME_FOR_3_SUC;
     }
     private String createExpertGameFor2(String userName, boolean cliClient) throws EriantysExceptions {
-        Game game = new Game(2, true, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,true,cliClient));
+        Game game = new Game(2, true, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,cliClient));
         games.add(game);
         return Config.CREATE_EXPERT_GAME_FOR_2_SUC;
     }

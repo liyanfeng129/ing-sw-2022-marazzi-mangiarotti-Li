@@ -15,8 +15,8 @@ class EndGameStateTest {
 
     @BeforeEach
     public void setup() throws EriantysExceptions {
-        p1=new Player("Alessio", Mage.MAGE1,TowerColor.BLACK,2,false,true);
-        p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,2,false,true);
+        p1=new Player("Alessio", Mage.MAGE1,TowerColor.BLACK,2,true);
+        p2=new Player("Yan",Mage.MAGE2,TowerColor.WHITE,2,true);
         game=new Game(2,true,p1);
     }
     @Test
@@ -41,7 +41,7 @@ class EndGameStateTest {
         }
     }
     @Test
-    public void test_endgame1(){
+    public void test_endgame1() {
         game.setN_Player(2);
         state=new MoveMotherNatureState(game,0,false,false);
         try {

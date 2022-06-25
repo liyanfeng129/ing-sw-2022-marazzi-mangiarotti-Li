@@ -40,7 +40,7 @@ public class Table implements Serializable {
 
     public void initClouds() throws EriantysExceptions {
         for(int i = 0; i<clouds.size(); i++)
-            clouds.get(i).setStudents(bag.draw(clouds.get(i).getSize()));
+            clouds.get(i).setCloudStudents(bag.draw(clouds.get(i).getSize()));
     }
 
 

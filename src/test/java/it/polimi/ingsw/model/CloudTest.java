@@ -1,7 +1,5 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Cloud;
-import it.polimi.ingsw.model.EriantysExceptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,7 +52,7 @@ class CloudTest {
             fail();
         }
         try {
-            cloud.setStudents(new int[]{0, 1, 0, 1, 1});
+            cloud.setCloudStudents(new int[]{0, 1, 0, 1, 1});
         } catch (EriantysExceptions e) {
             fail();
         }
@@ -67,7 +65,7 @@ class CloudTest {
     public void test_NotValidStudentSizeException(){
         try {
             cloud.setCloud(3);
-            cloud.setStudents(new int[]{1, 2, 1, 0, 0});
+            cloud.setCloudStudents(new int[]{1, 2, 1, 0, 0});
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }

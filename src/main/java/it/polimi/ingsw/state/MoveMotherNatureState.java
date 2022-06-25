@@ -47,10 +47,6 @@ public class MoveMotherNatureState extends State implements Serializable {
         if(!characterCardUsed || characterCardExecuted) // if character has not been used or character has been executed
         {
             // means that command executed was moveMotherNatureCommand
-            getGame().getTable().mergeIsland();
-            if (getGame().getTable().getIslands().size() <= 3) {
-                setGameEnded(true);
-            }
             if(!getGame().getTable().getIsland(MN_pos).isNoEntryTiles()) {
                 Player player = getGame().getTable().getPlayerMaxInfluence(getGame());
                 //condizione endGame finite torri in pb
@@ -58,8 +54,11 @@ public class MoveMotherNatureState extends State implements Serializable {
                     for (int i = 0; i < getGame().getN_Player(); i++) {
                         if (getGame().getPlayers().get(i).getPlayerBoard().getN_tower() <= 0) {
                             setGameEnded(true);
-                            //devo passargli anche chi ha vinto?
                         }
+                    }
+                    getGame().getTable().mergeIsland();
+                    if (getGame().getTable().getIslands().size() <= 3) {
+                        setGameEnded(true);
                     }
                 }
             }

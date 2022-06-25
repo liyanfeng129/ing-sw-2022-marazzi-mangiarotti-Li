@@ -19,6 +19,6 @@ public class Wallet implements Serializable {
         Saving=Saving-n;
     }
     public Wallet(){
-        this.Saving=3;
+        this.Saving=1;
     }
 }
