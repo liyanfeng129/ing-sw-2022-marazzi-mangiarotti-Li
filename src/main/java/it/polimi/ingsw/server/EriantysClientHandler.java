@@ -326,11 +326,6 @@ public class EriantysClientHandler extends Thread{
 
 
     private void gameUpdate(Game game) throws InterruptedException, IOException {
-        /*
-        for(Player p : game.getPlayers())
-            p.setUpdate(true);
-
-         */
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
@@ -458,7 +453,7 @@ public class EriantysClientHandler extends Thread{
         try
         {
             Game g = findGameForPlayer(userName);
-            removeSubs(g);
+            notifySubs_closingServer_removeSubs(g);
             games.remove(g);
         }
         catch (InnerExceptions.NoSuchUserException e)
@@ -603,11 +598,10 @@ public class EriantysClientHandler extends Thread{
         throw new InnerExceptions.NoSuchUserException("This player is not in any game.");
     }
 
-    private void removeSubs(Game game) throws IOException {
+    private void notifySubs_GameOver(Game game) throws IOException {
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
-
                 for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
                 {
                     Subscriber sub = ite.next();
@@ -617,6 +611,26 @@ public class EriantysClientHandler extends Thread{
                         ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
                         ArrayList<Object> msg = new ArrayList<>();
                         msg.add(Config.GAME_OVER);
+                        oos.writeObject(msg);
+                    }
+                }
+
+            }
+    }
+
+    private void notifySubs_closingServer_removeSubs(Game game) throws IOException {
+        for(Player p : game.getPlayers())
+            synchronized (subs)
+            {
+                for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
+                {
+                    Subscriber sub = ite.next();
+                    if(sub.getUserName().equals(p.getName()))
+                    {
+                        Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                        ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
+                        ArrayList<Object> msg = new ArrayList<>();
+                        msg.add(Config.SERVER_CLOSE);
                         oos.writeObject(msg);
                         ite.remove();
                     }

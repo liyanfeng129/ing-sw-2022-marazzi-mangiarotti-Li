@@ -5,12 +5,14 @@ import it.polimi.ingsw.model.Config;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.Cli;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,14 +28,42 @@ public class UpdateReceiver extends Thread {
     private String userName;
     private String serverAddress;
     private boolean receiverOn;
+    private EriantysCLIClientThread EriantysClient;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-    public UpdateReceiver(int portNumber,String userName,String serverAddress)
+    public UpdateReceiver(int portNumber,String userName,String serverAddress, EriantysCLIClientThread eriantysClient)
     {
         this.portNumber = portNumber;
         this.userName = userName;
         this.serverAddress =serverAddress;
         this.receiverOn = true;
+        this.EriantysClient = eriantysClient;
+        /**
+         * TODO YAN CLIENT PING SERVER TIMEOUT
+         * */
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    while (true)
+                    {
+                        if(false)
+                        {
+                            receiverOn = false;
+                            update.close();
+                        }
+                    }
+
+                } catch (IOException e) {
+                    if(e instanceof SocketException)
+                        System.out.println("Something went wrong with server");
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
     }
 
     public void run()
@@ -50,18 +80,27 @@ public class UpdateReceiver extends Thread {
                 if(updates.get(0).equals(Config.GAME_OVER))
                 {
                     receiverOn = false;
-                    System.out.println("Game is closing.");
+                    System.out.println("Game Over");
+                    EriantysClient.start();
+                }
+                else if(updates.get(0).equals(Config.SERVER_CLOSE))
+                {
+                    receiverOn = false;
+                    System.out.println("Server shut down.");
+                    new EriantysCLIClientThread().start();
                 }
                 else
                     updateReceived(updates);
             }
             updateReceiver.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (EriantysExceptions e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            if(e instanceof SocketException)
+            {
+                System.out.println("Something went wrong with server");
+                new EriantysCLIClientThread().start();
+            }
+            else
+                e.printStackTrace();
         }
     }
 

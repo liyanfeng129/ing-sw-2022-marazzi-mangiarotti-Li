@@ -19,6 +19,7 @@ public class EriantysCLIClientThread extends Thread {
     private  String userName = "";
     private  int listeningPortNumber;
     private UpdateReceiver ur = null;
+    private boolean logged = false;
     private  void loggingMenu() throws InterruptedException, UnknownHostException {
         clearScreen();
         String response;
@@ -48,12 +49,13 @@ public class EriantysCLIClientThread extends Thread {
 
             }
             while(response.equals(Config.USER_ALREADY_LOGGED));
-            ur = new UpdateReceiver(listeningPortNumber,userName,serverAddress);
+            ur = new UpdateReceiver(listeningPortNumber,userName,serverAddress,this);
             ur.start();
+            logged = true;
             lobbyMenu();
         }
     }
-    private void lobbyMenu() throws InterruptedException, UnknownHostException {
+    public void lobbyMenu() throws InterruptedException, UnknownHostException {
         /**
          * 1. Create a new game for 2 players
          * 2. Create a new game for 3 players
@@ -245,17 +247,21 @@ public class EriantysCLIClientThread extends Thread {
 
     public void run() {
         // TODO Auto-generated method stub
+        System.out.println("EriantysCliClientThread starts running");
         try
         {
             onClientClose();
             //connectTOServer();
-            loggingMenu();
-            //lobbyMenu();
+            if(!logged)
+                loggingMenu();
+            else
+                 lobbyMenu();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+        System.out.println("EriantysCliClientThread stops running");
     }
 
     private ArrayList<Object> createNormalGameFor2()

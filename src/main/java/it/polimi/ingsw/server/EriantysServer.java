@@ -17,6 +17,32 @@ import it.polimi.ingsw.model.*;
 
 
 public class EriantysServer {
+    /**
+     * TODO YAN MANAGER AFK (AWAY FROM KEYBOARD)
+     * IDEA: For updateReceiver start due thread
+     *       1 for receive update from game server,
+     *       throws timeOutException after 60s
+     *       because other player is in AFK
+     *
+     *       2 for take ping signal from game server
+     *       to prove client is still listening
+     *       game server can throw IOException when failing connection with client
+     *       means one player is offline so game server has to notify other players and
+     *       then close the game
+     * */
+
+    /**
+     * TODO YAN AUTO SAVE GAME
+     * IDEA: Every time that the game has been modified, save the whole game to file
+     *       then send the newest game to each player
+     *
+     *       steps:
+     *       1. file -> object
+     *       2. find previous version of this game
+     *       3. replace it with newest version
+     *       4. object -> file
+     *       5. notify player
+     * */
     static ArrayList<Game> games = new ArrayList<>();
     static ArrayList<Game> oldGames = new ArrayList<>();
     static ArrayList<Subscriber> subs = new ArrayList<>();
@@ -140,21 +166,9 @@ public class EriantysServer {
         {
             public void run()
             {
-                ArrayList<Game> oldGames = null;
+                saveGames();
                 try
                 {
-                    oldGames = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
-                } catch (Exception e) {
-                }
-
-                try
-                {
-                    if(oldGames == null)
-                        oldGames = new ArrayList<>();
-                    for(Game g : games)
-                        if(g.isGameStarted())
-                            oldGames.add(g);
-                    Object2fileBin("gameRecord.bin",oldGames);
                     for(Subscriber sub : subs)
                     {
                         System.out.println(String.format("closing %s's connection\n " +
@@ -162,7 +176,7 @@ public class EriantysServer {
                         Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
                         ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
                         ArrayList<Object> msg = new ArrayList<>();
-                        msg.add(Config.GAME_OVER);
+                        msg.add(Config.SERVER_CLOSE);
                         oos.writeObject(msg);
                     }
                     logOutAll();
@@ -174,5 +188,21 @@ public class EriantysServer {
             }
         });
     }
+
+    /**
+     * get gameRecord and turn it into an object then ad new games to it and then save to file
+     * */
+    private static void saveGames()
+    {
+        ArrayList<Game> oldGames = null;
+        oldGames = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
+        if(oldGames == null)
+            oldGames = new ArrayList<>();
+        for(Game g : games)
+            if(g.isGameStarted())
+                oldGames.add(g);
+        Object2fileBin("gameRecord.bin",oldGames);
+    }
+
 
 }
