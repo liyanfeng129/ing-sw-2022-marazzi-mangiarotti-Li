@@ -25,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +39,8 @@ import java.util.stream.Collectors;
         private Island islandChoice; // non credo venga usata
         private Assistant assistantChoice;
         private int characterData = 0;
+        private int[] characterRoomExcange=new int[]{0,0,0,0,0};
+        private int[] characterCardExcange=new int[]{0,0,0,0,0};
 
 
         @FXML
@@ -1110,7 +1113,7 @@ import java.util.stream.Collectors;
                 }
             }
 
-            if (Action) {
+            if (Action || characterData ==0) {
 
 
                 Pane paneDrop = new Pane();
@@ -1476,7 +1479,7 @@ import java.util.stream.Collectors;
                     showGameNoActionNoCharacter(true);
                     break;
                 case 7:
-                    showCharacter1((Character1)card,true);
+                    showCharacter7((Character7)card,true);
                     characterData=7;
                     showGameNoActionNoCharacter(false);
                     break;
@@ -1826,6 +1829,177 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
+
+        public void waitingRoomToExchange(int Card){
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            Pane paneDrop = new Pane();
+            nodes.add(paneDrop);
+            paneDrop.setStyle("-fx-background-color: #FFFFFF");
+            paneDrop.setPrefWidth(screenBounds.getMaxX() / 4);
+            paneDrop.setPrefHeight(screenBounds.getMaxY()/10);
+            paneDrop.setLayoutY(screenBounds.getMaxY() * 3 / 5);
+            paneDrop.setLayoutX(screenBounds.getMaxX() / 3);
+
+            paneDrop.setOnDragEntered(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* the drag-and-drop gesture entered the target */
+                    System.out.println("onDragEntered");
+                    /* show to the user that it is an actual gesture target */
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        System.out.println("setOnDragEntered");
+                    }
+
+                    event.consume();
+                }
+            });
+            paneDrop.setOnDragOver(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    //data is dragged over the target
+
+                    // accept it only if it is  not dragged from the same node
+                    //( and if it has a string data
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        // allow for both copying and moving, whatever user chooses
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+
+                    event.consume();
+                }
+            });
+            AASceneParent aaSceneParent = this;
+            paneDrop.setOnDragDropped(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* data dropped */
+                    System.out.println("onDragDropped");
+                    /* if there is a string data on dragboard, read it and use it */
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    if (db.hasString()) {
+                        System.out.println("setOnDragDropped");
+                        /**TODO leo aggiungi un character da scambiare solo a determinate condizioni
+                         * drop student on your student holder
+                         */
+
+
+                    }
+                    /* let the source know whether the string was successfully
+                     * transferred and used */
+                    event.setDropCompleted(success);
+
+                    event.consume();
+                }
+            });
+            root.getChildren().add(paneDrop);
+
+        }
+        public void cardToExchange(int Card){
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            Pane paneDrop = new Pane();
+            nodes.add(paneDrop);
+            paneDrop.setStyle("-fx-background-color: #FFFFFF");
+            paneDrop.setPrefWidth(screenBounds.getMaxX() / 4);
+            paneDrop.setPrefHeight(screenBounds.getMaxY()/10);
+            paneDrop.setLayoutY(screenBounds.getMaxY() * 3 / 5);
+            paneDrop.setLayoutX(screenBounds.getMaxX() / 3);
+
+            paneDrop.setOnDragEntered(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* the drag-and-drop gesture entered the target */
+                    System.out.println("onDragEntered");
+                    /* show to the user that it is an actual gesture target */
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        System.out.println("setOnDragEntered");
+                    }
+
+                    event.consume();
+                }
+            });
+            paneDrop.setOnDragOver(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    //data is dragged over the target
+
+                    // accept it only if it is  not dragged from the same node
+                    //( and if it has a string data
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        // allow for both copying and moving, whatever user chooses
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+
+                    event.consume();
+                }
+            });
+            AASceneParent aaSceneParent = this;
+            paneDrop.setOnDragDropped(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
+                    /* data dropped */
+                    System.out.println("onDragDropped");
+                    /* if there is a string data on dragboard, read it and use it */
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    if (db.hasString()) {
+                        System.out.println("setOnDragDropped");
+                        if(Arrays.stream(characterCardExcange).sum()<Arrays.stream(curr_player.getPlayerBoard().getWaitingRoom()).sum()){
+                            /**TODO leo aggiungi un character da scambiare solo a determinate condizioni
+                             * drop student on your student holder
+                             */
+                        }
+                        else{
+                            messages.setText("You don't have enauth students");
+                        }
+
+
+
+                    }
+                    /* let the source know whether the string was successfully
+                     * transferred and used */
+                    event.setDropCompleted(success);
+
+                    event.consume();
+                }
+            });
+            root.getChildren().add(paneDrop);
+
+        }
+        public void buttonToFinish(int Card){
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            Button bt = new Button();
+            nodes.add(bt);
+
+            bt.setText("Exchange Students");
+            bt.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
+            bt.setLayoutY(screenBounds.getMaxY()*2/3 -50);
+            root.getChildren().add(bt);
+            AASceneParent aaSceneParent = this;
+            bt.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    ArrayList<Object> inputs = new ArrayList<>();
+                    if(Arrays.stream(characterCardExcange).sum()==Arrays.stream(characterRoomExcange).sum()){
+                        /**TODO YANFENG PLAY CHARACTER 10
+                         * qui prendi la carta e la mandi al server
+                         * ricordati di settare a null cardChoice una volta preso l'input
+                         *
+                         * carta in cardChoice
+                         */
+                    }
+                    else{
+                        messages.setText("You have to exchange the " +"\n"+
+                                "same amount of students");
+                    }
+                }
+            });
+
+
+
+        }
+
 
         public void showGameNoActionNoCharacter(Boolean IsalndAction) throws EriantysExceptions {
             switcBoardController(false);
