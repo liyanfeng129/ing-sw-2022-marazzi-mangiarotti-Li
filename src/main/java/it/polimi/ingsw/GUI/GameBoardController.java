@@ -184,7 +184,7 @@ import java.util.stream.Collectors;
             showProfessors();
             showIslands(false);
             showClouds(false);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(false);
             if (game.isExpertMode()) {
                 showCharacter();
@@ -198,12 +198,12 @@ import java.util.stream.Collectors;
             switcBoardController(true);
             showTowers();
             showProfessors();
-            showIslands(false);
+            showIslands(true);
 
 
 
             showClouds(false);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(true);
             if (game.isExpertMode()) {
                 addButtonCharacter();
@@ -220,7 +220,7 @@ import java.util.stream.Collectors;
             showTowers();
             showIslands(true);
             showClouds(false);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(false);
             showProfessors();
             if (game.isExpertMode()) {
@@ -238,7 +238,7 @@ import java.util.stream.Collectors;
             showIslands(false);
 
             showClouds(true);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(false);
             showProfessors();
             if (game.isExpertMode()) {
@@ -900,13 +900,13 @@ import java.util.stream.Collectors;
                     removeBoard();
 
                     if (Action) {
-                        showDiningRoom();
+                        showDiningRoom(true);
                         showTowers();
                         showProfessors();
                         showWaitingRoom(true);
                     }
                     else {
-                        showDiningRoom();
+                        showDiningRoom(false);
                         showTowers();
                         showProfessors();
                         showWaitingRoom(false);
@@ -1065,7 +1065,7 @@ import java.util.stream.Collectors;
                 }
             }
         }
-        public void showDiningRoom(){
+        public void showDiningRoom(Boolean Action){
             String red = "Image/student_red.png";
             String yellow = "Image/student_yellow.png";
             String pink = "Image/student_pink.png";
@@ -1079,51 +1079,50 @@ import java.util.stream.Collectors;
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double pos_x = screenBounds.getMaxY()/(6.92);
             double pos_y ;
-            for(int i =0; i<5;i++){
-                for(int j=0; j<pb.getDiningRoom()[i];j++){
-                    if (i==3) {
+            for(int i =0; i<5;i++) {
+                for (int j = 0; j < pb.getDiningRoom()[i]; j++) {
+                    if (i == 3) {
                         color = blue;
-                        pos_y = screenBounds.getMaxY()/(1.078);
-                    }
-                    else if (i==2) {
+                        pos_y = screenBounds.getMaxY() / (1.078);
+                    } else if (i == 2) {
                         color = pink;
-                        pos_y = screenBounds.getMaxY()/(1.147);
-                    }
-                    else if (i==1) {
+                        pos_y = screenBounds.getMaxY() / (1.147);
+                    } else if (i == 1) {
                         color = yellow;
-                        pos_y = screenBounds.getMaxY()/(1.225);
-                    }
-                    else if (i==0) {
+                        pos_y = screenBounds.getMaxY() / (1.225);
+                    } else if (i == 0) {
                         color = red;
-                        pos_y = screenBounds.getMaxY()/(1.313);
-                    }
-                    else {
+                        pos_y = screenBounds.getMaxY() / (1.313);
+                    } else {
                         color = green;
-                        pos_y = screenBounds.getMaxY()/(1.41);
+                        pos_y = screenBounds.getMaxY() / (1.41);
                     }
                     ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
                     board.add(img);
                     nodes.add(img);
-                    img.setFitWidth(screenBounds.getMaxY()/(33.333));
-                    img.setFitHeight(screenBounds.getMaxY()/(33.333));
+                    img.setFitWidth(screenBounds.getMaxY() / (33.333));
+                    img.setFitHeight(screenBounds.getMaxY() / (33.333));
                     img.setPreserveRatio(true);
-                    img.setLayoutX(pos_x + j*(screenBounds.getMaxY()/(27.74)));
+                    img.setLayoutX(pos_x + j * (screenBounds.getMaxY() / (27.74)));
                     img.setLayoutY(pos_y);
                     root.getChildren().add(img);
 
                 }
+            }
+
+            if (Action) {
 
 
-                Pane paneDrop = new Pane ();
+                Pane paneDrop = new Pane();
                 nodes.add(paneDrop);
-                paneDrop.setPrefWidth(screenBounds.getMaxY()/2);
-                paneDrop.setStyle("-fx-background-color: #F0FFFF" );
-                paneDrop.setPrefHeight(screenBounds.getMaxY()-screenBounds.getMaxY()*2/3);
-                paneDrop.setLayoutY(screenBounds.getMaxY()*2/3);
-                paneDrop.setLayoutX(screenBounds.getMaxY()/9.5);
+                paneDrop.setPrefWidth(screenBounds.getMaxY() / 2);
+                paneDrop.setStyle("-fx-background-color: #F0FFFF");
+                paneDrop.setPrefHeight(screenBounds.getMaxY() - screenBounds.getMaxY() * 2 / 3);
+                paneDrop.setLayoutY(screenBounds.getMaxY() * 2 / 3);
+                paneDrop.setLayoutX(screenBounds.getMaxY() / 9.5);
                 paneDrop.setOpacity(0);
 
-                paneDrop.setOnDragEntered(new EventHandler <DragEvent>() {
+                paneDrop.setOnDragEntered(new EventHandler<DragEvent>() {
                     public void handle(DragEvent event) {
                         /* the drag-and-drop gesture entered the target */
                         System.out.println("onDragEntered");
@@ -1136,7 +1135,7 @@ import java.util.stream.Collectors;
                         event.consume();
                     }
                 });
-                paneDrop.setOnDragOver(new EventHandler <DragEvent>() {
+                paneDrop.setOnDragOver(new EventHandler<DragEvent>() {
                     public void handle(DragEvent event) {
                         //data is dragged over the target
 
@@ -1152,7 +1151,7 @@ import java.util.stream.Collectors;
                     }
                 });
                 AASceneParent aaSceneParent = this;
-                paneDrop.setOnDragDropped(new EventHandler <DragEvent>() {
+                paneDrop.setOnDragDropped(new EventHandler<DragEvent>() {
                     public void handle(DragEvent event) {
                         /* data dropped */
                         System.out.println("onDragDropped");
@@ -1175,12 +1174,10 @@ import java.util.stream.Collectors;
                             } catch (EriantysExceptions e) {
                                 e.printStackTrace();
                             }
-                            if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
-                            {
+                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
                                 getInfo().setCommand(command);
-                                Platform.runLater( () -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                            }
-                            else
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            } else
                                 messages.setText(msg);
 
                             success = true;
@@ -1193,10 +1190,10 @@ import java.util.stream.Collectors;
                     }
                 });
                 root.getChildren().add(paneDrop);
-
-
-
             }
+
+
+
 
 
         }
@@ -1836,7 +1833,7 @@ import java.util.stream.Collectors;
             showProfessors();
             showIslands(IsalndAction);
             showClouds(false);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(false);
             if (game.isExpertMode()) {
                 showWallet();
