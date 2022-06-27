@@ -1,0 +1,29 @@
+1) in fase di login se cerco le partite a cui fare login, faccio back e poi torno alla schermata non vedo più le partite
+
+2) Se chiudo la schermata o faccio back uscendo dal gioco (quindi mi richiede di fare log in)  bisogna far disconnetter il giocatore
+
+3) I character non si possono giocare sempre in  gui (non so in cli)
+
+4) Manca la possibilità di creare delle partite gui gui esperte
+
+5)  aggiungere character 7/10 solo lago server
+
+6)  aggiungere endgame (solo lato server)
+
+7) Fare che i character vengano scelti casualmente
+
+8) riorganizzare le cartelle
+
+9) javadoc: gui, server, comand, character
+
+10)Uml finaoe
+
+11) controllare che ci siano tutti idocumenti necessari su github
+
+12) la scelta tra gui e cli deve essere fatta via cli prima di partire
+
+13) collegare il server ip nella parte di log in
+
+14) sistemare la grafica del login
+
+15) fare testing
