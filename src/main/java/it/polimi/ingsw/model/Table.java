@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.characterCards2.CharacterCard;
+import it.polimi.ingsw.characterCards2.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.Random;
 public class Table implements Serializable {
     private ArrayList<Island> Islands;
     private ArrayList<Cloud> clouds;
+    private ArrayList<CharacterCard> AllCharacterCards;
     private ArrayList<CharacterCard> characterCards;
     private Bag bag;
     private boolean card6;
@@ -40,12 +41,10 @@ public class Table implements Serializable {
     /**
      * call a method to initialize characters card and clouds
      * @param clouds
-     * @param characterCards
      * @throws EriantysExceptions if initIsland or initClouds throw an exception
      */
-    public void tableInit(ArrayList<Cloud> clouds, ArrayList<CharacterCard> characterCards) throws EriantysExceptions {
+    public void tableInit(ArrayList<Cloud> clouds) throws EriantysExceptions {
         this.clouds = clouds;
-        this.characterCards = characterCards;
         initIslands();
         initClouds();
     }
@@ -59,6 +58,34 @@ public class Table implements Serializable {
             clouds.get(i).setCloudStudents(bag.draw(clouds.get(i).getSize()));
     }
 
+    /**
+     * initialize 3 random character
+     * @throws EriantysExceptions if there are not enough students in bag
+     */
+    public void initCharacter() throws EriantysExceptions {
+        int dim=12;
+        ArrayList<CharacterCard> AllCharacterCards = new ArrayList<>();
+        AllCharacterCards.add(new Character1(getBag().draw(4)));
+        AllCharacterCards.add(new Character2());
+        AllCharacterCards.add(new Character3());
+        AllCharacterCards.add(new Character4());
+        AllCharacterCards.add(new Character5());
+        AllCharacterCards.add(new Character6());
+        AllCharacterCards.add(new Character7(getBag().draw(6)));
+        AllCharacterCards.add(new Character8());
+        AllCharacterCards.add(new Character9());
+        AllCharacterCards.add(new Character10());
+        AllCharacterCards.add(new Character11(getBag().draw(4)));
+        AllCharacterCards.add(new Character12());
+        Random rand = new Random();
+        for(int i=0;i<3;i++) {
+            int random = rand.nextInt(dim);
+            characterCards.add(AllCharacterCards.get(random));
+            dim--;
+            System.out.println(random);
+        }
+
+    }
     /**
      * initialize the island for the start of the game
      * add one random student each island except island 0 and 6

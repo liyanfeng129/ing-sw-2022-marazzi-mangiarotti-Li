@@ -159,11 +159,12 @@ public class Game implements Serializable {
                     /** TODO
                      * I character devono essere genereali
                      */
-                    characterCards.add(new Character10());
-                    characterCards.add(new Character7(table.getBag().draw(6)));
-                    characterCards.add(new Character11(table.getBag().draw(4)));
+                    table.initCharacter();
+                    characterCards.add(table.getCharacters().get(0));
+                    characterCards.add(table.getCharacters().get(1));
+                    characterCards.add(table.getCharacters().get(2));
 
-                    this.table.tableInit(clouds,characterCards);
+                    this.table.tableInit(clouds);
                     for(int i = 0; i< players.size(); i++)
                     {
                         Player p =   this.players.get(i);
@@ -179,11 +180,12 @@ public class Game implements Serializable {
                         cloud.setCloud(4);
                         clouds.add(cloud);
                     }
-                    characterCards.add(new Character7(table.getBag().draw(6)));
-                    characterCards.add(new Character11(table.getBag().draw(4)));
-                    characterCards.add(new Character12());
+                    table.initCharacter();
+                    characterCards.add(table.getCharacters().get(0));
+                    characterCards.add(table.getCharacters().get(1));
+                    characterCards.add(table.getCharacters().get(2));
 
-                    this.table.tableInit(clouds,characterCards);
+                    this.table.tableInit(clouds);
                     for(int i = 0; i< players.size(); i++)
                     {
                         Player p =   this.players.get(i);
@@ -199,7 +201,7 @@ public class Game implements Serializable {
                         cloud.setCloud(3);
                         clouds.add(cloud);
                     }
-                    this.table.tableInit(clouds,null);
+                    this.table.tableInit(clouds);
                     for(int i = 0; i< players.size(); i++)
                         this.players.get(i).getPb().setWaitingRoom(table.getBag().draw(7));
                 }
@@ -212,7 +214,7 @@ public class Game implements Serializable {
                         cloud.setCloud(4);
                         clouds.add(cloud);
                     }
-                    table.tableInit(clouds,null);
+                    table.tableInit(clouds);
                     for(int i = 0; i< players.size(); i++)
                         this.players.get(i).getPb().setWaitingRoom(table.getBag().draw(9));
                 }
