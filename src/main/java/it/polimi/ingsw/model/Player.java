@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import java.io.Serializable;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Player implements Serializable {
     private String name;
@@ -14,7 +13,16 @@ public class Player implements Serializable {
     private boolean cliClient;
 
 
-    //non sarebbe meglio fare new pb invece che passargli una pb?
+    /**
+     * constructo of class Player
+     * initialize wallet of the player
+     * initialize the correct playerBoard of the player based on the number of player in game
+     * @param name initialize name of the player
+     * @param mage initialize mage of the player
+     * @param towerColor initialize towerColor of the player
+     * @param n_Player initialize number of player
+     * @param cliClient initialize if is a match on cli or on GUI
+     */
     public Player(String name, Mage mage, TowerColor towerColor,int n_Player, boolean cliClient) {
         this.name = name;
         this.mage = mage;
@@ -32,6 +40,11 @@ public class Player implements Serializable {
         update = false;
     }
 
+    /**
+     * TODO
+     * non ho idea di cosa serva
+     * @param name
+     */
     public Player(String name)
     {
         this.name = name;
@@ -59,15 +72,11 @@ public class Player implements Serializable {
     public Mage getMage() {
         return mage;
     }
-    public void assignTower(TowerColor color){
+    public void assignTowerColor(TowerColor color){
         this.towerColor=color;
     }
     public TowerColor getTowerColor(){
         return towerColor;
-    }
-
-    public PlayerBoard getPlayerBoard() {
-        return pb;
     }
 
     public Wallet getWallet() {

@@ -20,13 +20,13 @@ public class ActionPhase1 implements Phase{
             //ricevo messaggio msg_list =
             Player player = (Player) msg_list.get(1);
             student=(Integer) msg_list.get(2);
-            player.getPlayerBoard().takeStudentFromWaitingRoom(student);
+            player.getPb().takeStudentFromWaitingRoom(student);
             //mando messaggio dove mandarlo
             //ricevo messaggio msg_list=
             if((String)msg_list.get(0)=="ISLAND")
                 game.getTable().getIslands().get((Integer) msg_list.get(2)).addStudent(student);
             else {
-                player.getPlayerBoard().addStudentToHolder(student);
+                player.getPb().addStudentToDiningRoom(student);
             }
         }
         turn.setState(new ActionPhase2());

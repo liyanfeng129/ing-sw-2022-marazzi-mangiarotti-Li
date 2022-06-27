@@ -24,8 +24,8 @@ public class Character4 implements CharacterBehavior {
         if (!this.firstUse){
             this.firstUse = true;
         }
-        int max_step=user.getHand().getLastPlayedCard()+2;
-        user.getHand().setLastPlayedCard(max_step);
+        int max_step=user.getHand().getLastStepsAssistant()+2;
+        user.getHand().setLastStepsAssistant(max_step);
     }
     @Override
     public ArrayList getInfo() throws EriantysExceptions{

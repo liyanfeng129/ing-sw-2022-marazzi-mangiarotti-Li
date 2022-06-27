@@ -40,7 +40,7 @@ public class EndGameState extends State implements Serializable {
         int max3 = 0;
         //calcolo vincitore se player finisce torri
         for (int i = 0; i < getGame().getN_Player(); i++) {
-            if (getGame().getPlayers().get(i).getPlayerBoard().getN_tower() == 0)
+            if (getGame().getPlayers().get(i).getPb().getN_tower() == 0)
                 winners.add(getGame().getPlayers().get(i).getName());
         }
 
@@ -49,13 +49,13 @@ public class EndGameState extends State implements Serializable {
 
         //caso nessuno finisce torri,controllo chi ne ha di piu
         if (winners.size() == 0) {
-            int min=getGame().getPlayers().get(0).getPlayerBoard().getN_tower();
+            int min=getGame().getPlayers().get(0).getPb().getN_tower();
             for (int i = 0; i < getGame().getN_Player(); i++) {
-                    if (getGame().getPlayers().get(i).getPlayerBoard().getN_tower()<=min)
-                        min=getGame().getPlayers().get(i).getPlayerBoard().getN_tower();
+                    if (getGame().getPlayers().get(i).getPb().getN_tower()<=min)
+                        min=getGame().getPlayers().get(i).getPb().getN_tower();
             }
             for (int i = 0; i < getGame().getN_Player(); i++) {
-                if (getGame().getPlayers().get(i).getPlayerBoard().getN_tower()==min)
+                if (getGame().getPlayers().get(i).getPb().getN_tower()==min)
                     winners.add(getGame().getPlayers().get(i).getName());
             }
             if (winners.size() >1) {

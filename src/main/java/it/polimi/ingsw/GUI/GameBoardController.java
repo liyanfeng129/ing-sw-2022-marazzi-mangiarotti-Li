@@ -508,8 +508,8 @@ import java.util.stream.Collectors;
 
                 /** Adds towers and size */
                 int size = game.getTable().getIslands().get(i).getSize();
-                if(game.getTable().getIslands().get(i).getTower()!=null) {
-                    TowerColor color = game.getTable().getIslands().get(i).getTower();
+                if(game.getTable().getIslands().get(i).getTowerColor()!=null) {
+                    TowerColor color = game.getTable().getIslands().get(i).getTowerColor();
                     TowerGridPane(pos_x,pos_y,size,color);
                 }
                 else
@@ -981,7 +981,7 @@ import java.util.stream.Collectors;
             String color;
 
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
-            PlayerBoard pb = player.getPlayerBoard();
+            PlayerBoard pb = player.getPb();
             int[] waitingRoom = pb.getWaitingRoom();
 
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1074,7 +1074,7 @@ import java.util.stream.Collectors;
             String color;
 
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
-            PlayerBoard pb = player.getPlayerBoard();
+            PlayerBoard pb = player.getPb();
 
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double pos_x = screenBounds.getMaxY()/(6.92);
@@ -1205,7 +1205,7 @@ import java.util.stream.Collectors;
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
             double pos_x= screenBounds.getMaxY()/(1.848);
             Double pos_y = screenBounds.getMaxY()/1.5;
-            PlayerBoard pb = player.getPlayerBoard();
+            PlayerBoard pb = player.getPb();
             TowerColor color ;
             GridPane gridPane = new GridPane();
             nodes.add(gridPane);

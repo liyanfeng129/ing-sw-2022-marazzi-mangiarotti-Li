@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.EriantysExceptions;
-import it.polimi.ingsw.model.PlayerBoard;
-import it.polimi.ingsw.model.Professors;
-import it.polimi.ingsw.model.TowerColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +27,7 @@ class PlayerBoardTest {
         }
         assertArrayEquals(new int[]{0, 1, 2, 1, 2},pb.getWaitingRoom());
         try {
-            pb.addStudentToHolder(1);
+            pb.addStudentToDiningRoom(1);
         } catch (EriantysExceptions e) {
             fail();
         }
@@ -63,7 +59,7 @@ class PlayerBoardTest {
             fail();
         }
         try {
-            pb.addStudentToHolder(2);
+            pb.addStudentToDiningRoom(2);
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
@@ -109,16 +105,16 @@ class PlayerBoardTest {
         assertArrayEquals(new int[]{0, 1, 2, 0, 0},pb.getWaitingRoom());
     }
     @Test
-    public void test_CharacterCard() {
+    public void test_CharacterCard() throws EriantysExceptions {
         pb.addStudentsToDiningRoom(new int[]{0, 1, 2, 0, 0});
         try {
-            pb.takeStudentFromHolder(2);
+            pb.takeStudentFromDiningRoom(2);
         } catch (InnerExceptions.NegativeValue e) {
             e.printStackTrace();
         }
         assertArrayEquals(new int[]{0, 1, 1, 0, 0},pb.getDiningRoom());
         try {
-            pb.takeStudentFromHolder(0);
+            pb.takeStudentFromDiningRoom(0);
         } catch (InnerExceptions.NegativeValue e) {
             e.printStackTrace();
         }

@@ -3,8 +3,6 @@ package it.polimi.ingsw.command;
 import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.state.ActionState;
-import it.polimi.ingsw.state.MoveMotherNatureState;
-import it.polimi.ingsw.state.TakeCloudState;
 import it.polimi.ingsw.view.Cli;
 
 import java.io.Serializable;
@@ -192,7 +190,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                 }
                 else
                 {
-                    p.getPb().addStudentToHolder(student);
+                    p.getPb().addStudentToDiningRoom(student);
                     setMsg(String.format("Player %s moved a %s student on his dining room.",getUsername(),SType.values()[student].name().toString()));
                 }
 

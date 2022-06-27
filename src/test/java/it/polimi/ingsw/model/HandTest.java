@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Assistant;
-import it.polimi.ingsw.model.AssistantType;
-import it.polimi.ingsw.model.Hand;
-import it.polimi.ingsw.model.Mage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,9 +41,9 @@ class HandTest {
     }
     @Test
     public void test_lastPlayedCard(){
-        hand.setLastPlayedCard(a1.getSteps());
+        hand.setLastStepsAssistant(a1.getSteps());
         hand.setLastValueAssistant(a1.getNum());
-        assertEquals(1,hand.getLastPlayedCard());
+        assertEquals(1,hand.getLastStepsAssistant());
         assertEquals(1,hand.getLastValueAssistant());
     }
 

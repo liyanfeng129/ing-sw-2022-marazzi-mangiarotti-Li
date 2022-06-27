@@ -7,9 +7,14 @@ public class Hand implements Serializable {
 
     private ArrayList<Assistant> List_cards;
     private int N_cards = 0;
-    private int LastPlayedCard;
+    private int LastStepsAssistant;
     private int LastValueAssistant;
 
+    /**
+     * constructor for class Hand
+     * initialize the mage who these assistants belong to
+     * @param mage owner of these assistants
+     */
     public Hand(Mage mage){
         this.List_cards= new ArrayList<Assistant>();
         setList_cards(mage);
@@ -26,6 +31,10 @@ public class Hand implements Serializable {
         return this.List_cards;
     }
 
+    /**
+     * set the assistants from 1 to 10
+     * @param mage owner of these assistants
+     */
     public void setList_cards(Mage mage) {
         for (int i=0 ;i<10;i++){
             this.List_cards.add(new Assistant(AssistantType.index(i),mage));
@@ -33,7 +42,10 @@ public class Hand implements Serializable {
         }
     }
 
-    //non ci drovebbe essere un exception?
+    /**
+     * remove the assistant card used in game from List_cards
+     * @param assistant the assistant to be removed
+     */
     public synchronized void use_cards(AssistantType assistant) {
         for (int i=0;i<N_cards;i++)
             if(List_cards.get(i).getType() == assistant)
@@ -44,12 +56,13 @@ public class Hand implements Serializable {
         N_cards = List_cards.size();
     }
 
-    public int getLastPlayedCard() {
-        return LastPlayedCard;
+
+    public int getLastStepsAssistant() {
+        return LastStepsAssistant;
     }
 
-    public void setLastPlayedCard(int lastPlayedCard) {
-        LastPlayedCard = lastPlayedCard;
+    public void setLastStepsAssistant(int lastStepsAssistant) {
+        this.LastStepsAssistant = lastStepsAssistant;
     }
 
     public int getLastValueAssistant() {
@@ -57,6 +70,6 @@ public class Hand implements Serializable {
     }
 
     public void setLastValueAssistant(int lastValueAssistant) {
-        LastValueAssistant = lastValueAssistant;
+        this.LastValueAssistant = lastValueAssistant;
     }
 }

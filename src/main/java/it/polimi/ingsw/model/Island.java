@@ -12,7 +12,9 @@ public class Island implements Serializable {
     private TowerColor towerColor;
     private boolean NoEntryTiles;
 
-
+    /**
+     * constructor for class Island
+     */
     public Island() {
 
         this.students = new int[5];
@@ -30,10 +32,18 @@ public class Island implements Serializable {
         return this.students;
     }
 
+    /**
+     * add a student to island
+     * @param color color of the student to be added
+     */
     public void addStudent(int color){
         this.students[color]++;
     }
 
+    /**
+     * sum an array of student to this island
+     * @param students array of student to be added
+     */
     public void mergeStudents(int[] students)
     {
         for(int i = 0; i < 5; i++)
@@ -42,18 +52,22 @@ public class Island implements Serializable {
 
     public boolean getMotherNature(){
         return this.mother_nature;
-    } // secondo me non serve
+    }
 
-    public void setMotherNature(boolean mother_nature){this.mother_nature = mother_nature; }// secondo me non serve
+    public void setMotherNature(boolean mother_nature){this.mother_nature = mother_nature; }
 
-    public void setTower(TowerColor towerColor){
+    public void setTowerColor(TowerColor towerColor){
         this.towerColor = towerColor;
     }
 
-    public TowerColor getTower() {
+    public TowerColor getTowerColor() {
         return this.towerColor;
     }
 
+    /**
+     * increase the size of this island
+     * @param size the size to be added at the current size of this island
+     */
     public void IncreasingSize(int size)
     {
         this.size = this.size + size;

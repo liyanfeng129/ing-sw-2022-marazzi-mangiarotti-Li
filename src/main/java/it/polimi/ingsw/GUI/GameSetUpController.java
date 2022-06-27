@@ -8,17 +8,11 @@ import it.polimi.ingsw.model.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class GameSetUpController extends AASceneParent{
@@ -44,25 +38,25 @@ public class GameSetUpController extends AASceneParent{
         game.addPlayers(new Player("yan", Mage.MAGE3,TowerColor.GREY,3,false));
 
         Player player = game.getPlayers().stream().filter(p -> p.getName()=="leo").collect(Collectors.toList()).get(0);
-        player.getPlayerBoard().setDiningRoom(new int[]{10, 10, 10, 1, 10});
-        player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{1, 1, 3, 1, 3}); // e se sono troppi ?
+        player.getPb().setDiningRoom(new int[]{10, 10, 10, 1, 10});
+        player.getPb().addStudentsToWaitingRoom(new int[]{1, 1, 3, 1, 3}); // e se sono troppi ?
 
         player = game.getPlayers().stream().filter(p -> p.getName()=="ale").collect(Collectors.toList()).get(0);
-        player.getPlayerBoard().setDiningRoom(new int[]{3, 5, 2, 10, 4});
-        player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{0, 1, 5, 1, 2}); // e se sono troppi ?
+        player.getPb().setDiningRoom(new int[]{3, 5, 2, 10, 4});
+        player.getPb().addStudentsToWaitingRoom(new int[]{0, 1, 5, 1, 2}); // e se sono troppi ?
 
         player = game.getPlayers().stream().filter(p -> p.getName()=="yan").collect(Collectors.toList()).get(0);
-        player.getPlayerBoard().setDiningRoom(new int[]{1, 1, 2, 2, 9});
-        player.getPlayerBoard().addStudentsToWaitingRoom(new int[]{2, 0, 0, 5, 2}); // e se sono troppi ?
+        player.getPb().setDiningRoom(new int[]{1, 1, 2, 2, 9});
+        player.getPb().addStudentsToWaitingRoom(new int[]{2, 0, 0, 5, 2}); // e se sono troppi ?
 
 
         game.getProfessors().assignProfessor(game.getPlayers());
         game.getTable().addCharacterCards(new Character12());
         game.getTable().addCharacterCards(new Character2());
         game.getTable().addCharacterCards(new Character8());
-        game.getTable().getIsland(5).setTower(TowerColor.BLACK);
-        game.getTable().getIsland(3).setTower(TowerColor.WHITE);
-        game.getTable().getIsland(7).setTower(TowerColor.GREY);
+        game.getTable().getIsland(5).setTowerColor(TowerColor.BLACK);
+        game.getTable().getIsland(3).setTowerColor(TowerColor.WHITE);
+        game.getTable().getIsland(7).setTowerColor(TowerColor.GREY);
         game.getTable().getIsland(7).setNoEntryTiles(true);
         game.getTable().getIsland(4).setNoEntryTiles(true);
         game.getTable().getIsland(0).setNoEntryTiles(true);

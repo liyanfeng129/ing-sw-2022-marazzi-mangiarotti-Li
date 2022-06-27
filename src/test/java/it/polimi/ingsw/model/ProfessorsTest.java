@@ -20,12 +20,12 @@ class ProfessorsTest {
         p1=new Player("alessio",Mage.MAGE1,TowerColor.BLACK,2,true);
         p2=new Player("Leonardo",Mage.MAGE2,TowerColor.WHITE,2,true);
         try {
-            p1.getPlayerBoard().setDiningRoom(new int[]{1, 3, 2, 1, 2});
+            p1.getPb().setDiningRoom(new int[]{1, 3, 2, 1, 2});
         } catch (EriantysExceptions e) {
             fail();
         }
         try {
-            p2.getPlayerBoard().setDiningRoom(new int[]{0, 3, 3, 2, 2});
+            p2.getPb().setDiningRoom(new int[]{0, 3, 3, 2, 2});
         } catch (EriantysExceptions e) {
             fail();
         }

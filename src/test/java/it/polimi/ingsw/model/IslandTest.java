@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Island;
-import it.polimi.ingsw.model.TowerColor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,8 +34,8 @@ class IslandTest {
     }
     @Test
     public void test_tower(){
-        island.setTower(TowerColor.BLACK);
-        assertEquals(TowerColor.BLACK,island.getTower());
+        island.setTowerColor(TowerColor.BLACK);
+        assertEquals(TowerColor.BLACK,island.getTowerColor());
     }
     @Test
     public void test_size(){

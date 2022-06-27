@@ -29,7 +29,7 @@ public class Character11 extends CharacterCard implements Serializable {
             throw new InnerExceptions.CharacterCardError("Cannot apply character effect because the lack of information.");
         Character11 card = (Character11) game.getTable().findCharacterCardByName(this.name());
         Bag bag  = game.getTable().getBag();
-        player.getPlayerBoard().addStudentToHolder(student_color);
+        player.getPb().addStudentToDiningRoom(student_color);
         int temp [] = bag.draw(1);
         card.takeStudent(student_color);
         card.addStudent(temp);

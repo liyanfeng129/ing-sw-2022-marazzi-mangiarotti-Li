@@ -29,10 +29,10 @@ public class Character10 extends CharacterCard implements Serializable {
         if(!isDataGathered())
             throw new InnerExceptions.CharacterCardError("Cannot apply character effect because the lack of information.");
         Character10 card = (Character10) game.getTable().findCharacterCardByName(this.name());
-        player.getPlayerBoard().removeStudentFromWaitingRoom(entrance_student);
-        player.getPlayerBoard().removeStudentFromDiningRoom(dining_students);
-        player.getPlayerBoard().addStudentsToDiningRoom(entrance_student);
-        player.getPlayerBoard().addStudentsToWaitingRoom(dining_students);
+        player.getPb().removeStudentFromWaitingRoom(entrance_student);
+        player.getPb().removeStudentFromDiningRoom(dining_students);
+        player.getPb().addStudentsToDiningRoom(entrance_student);
+        player.getPb().addStudentsToWaitingRoom(dining_students);
         player.getWallet().removeCoin(card.getCoin());
         game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: playerboard had changed",
                 player.getName(),this.name(), this.getCoin()));
@@ -65,7 +65,7 @@ public class Character10 extends CharacterCard implements Serializable {
                         System.out.println("4: Blue");
                         System.out.println("5: Green");
                         choice = new Scanner(System.in).nextInt() - 1;
-                    }while (player.getPlayerBoard().getWaitingRoom()[choice]-entrance_student[choice] == 0);
+                    }while (player.getPb().getWaitingRoom()[choice]-entrance_student[choice] == 0);
                     entrance_student[choice]++;
                     do {
                         System.out.println("Which student do you want to exchange, make sure that you have this student on your dining room");
@@ -76,7 +76,7 @@ public class Character10 extends CharacterCard implements Serializable {
                         System.out.println("5: Green");
                         choice = new Scanner(System.in).nextInt() - 1;
 
-                    }while (player.getPlayerBoard().getDiningRoom()[choice]-dining_students[choice] == 0);
+                    }while (player.getPb().getDiningRoom()[choice]-dining_students[choice] == 0);
                     dining_students[choice]++;
                     take_student++;
                 }

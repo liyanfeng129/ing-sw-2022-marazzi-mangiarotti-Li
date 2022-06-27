@@ -40,12 +40,12 @@ public class Character2 implements CharacterBehavior, Serializable {
         int assign=4;
         for(int i=0;i<5;i++){
             for (int j=0;j<players.size();j++){
-                if(players.get(j).getPlayerBoard().getDiningRoom()[i] >= max) {
-                    if(players.get(j).getPlayerBoard().getDiningRoom()[i] == max)
+                if(players.get(j).getPb().getDiningRoom()[i] >= max) {
+                    if(players.get(j).getPb().getDiningRoom()[i] == max)
                         tie=1;
                     else
                         tie=0;
-                    max = players.get(j).getPlayerBoard().getDiningRoom()[i];
+                    max = players.get(j).getPb().getDiningRoom()[i];
                     assign=j;
                 }
                 if(tie!=1)

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +30,7 @@ class PlayerTest {
         assertEquals(Mage.MAGE1,player1.getMage());
 
         assertEquals(TowerColor.BLACK,player.getTowerColor());
-        player1.assignTower(TowerColor.BLACK);
+        player1.assignTowerColor(TowerColor.BLACK);
         assertEquals(TowerColor.BLACK,player1.getTowerColor());
 
         player.setPb(pb);

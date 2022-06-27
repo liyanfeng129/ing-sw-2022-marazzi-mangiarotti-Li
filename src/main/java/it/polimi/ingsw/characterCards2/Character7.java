@@ -33,11 +33,11 @@ public class Character7 extends CharacterCard implements Serializable {
         if(!isDataGathered())
             throw new InnerExceptions.CharacterCardError("Cannot apply character effect because the lack of information.");
         Character7 card = (Character7) game.getTable().findCharacterCardByName(this.name());
-        waiting_room=player.getPlayerBoard().getWaitingRoom();
+        waiting_room=player.getPb().getWaitingRoom();
         card.removeStudent(students);
-        player.getPlayerBoard().removeStudentFromWaitingRoom(entrance_student);
+        player.getPb().removeStudentFromWaitingRoom(entrance_student);
         card.addStudent(entrance_student);
-        player.getPlayerBoard().addStudentsToWaitingRoom(students);
+        player.getPb().addStudentsToWaitingRoom(students);
         player.getWallet().removeCoin(card.getCoin());
         game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: entrance student have been replaced",
                 player.getName(),this.name(), this.getCoin() ,students));
@@ -71,7 +71,7 @@ public class Character7 extends CharacterCard implements Serializable {
                         System.out.println("5: Green");
                         choice = new Scanner(System.in).nextInt() - 1;
                     }
-                    while (player.getPlayerBoard().getWaitingRoom()[choice]-entrance_student[choice] == 0);
+                    while (player.getPb().getWaitingRoom()[choice]-entrance_student[choice] == 0);
                     entrance_student[choice]++;
                     do {
                         System.out.println("Which student do you want to exchange, make sure that there is this student on this card");

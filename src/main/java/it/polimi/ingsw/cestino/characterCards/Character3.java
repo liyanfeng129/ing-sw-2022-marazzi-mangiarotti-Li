@@ -32,7 +32,7 @@ public class Character3 implements CharacterBehavior, Serializable {
         game.getTable().getIsland(MN_temp).setMotherNature(true);
         for (int i = 0; i < game.getN_Player(); i++) {
             if (game.getTable().getPlayerMaxInfluence(game) == game.getPlayers().get(i))
-                game.getTable().getIsland(game.getTable().getMotherNatureIndex()).setTower(game.getPlayers().get(i).getTowerColor());
+                game.getTable().getIsland(game.getTable().getMotherNatureIndex()).setTowerColor(game.getPlayers().get(i).getTowerColor());
         }
         game.getTable().mergeIsland();
         //dove si sposta madre natura in caso di merge?

@@ -28,7 +28,7 @@ public class Character11 implements CharacterBehavior {
         if (!this.firstUse){
             this.firstUse = true;
         }
-        user.getPlayerBoard().addStudentToHolder(colore);
+        user.getPb().addStudentToDiningRoom(colore);
         int[] temp=game.getTable().getBag().draw(1);
         for(int i = 0 ; i < students.length; i++){
             this.students[i] = this.students[i] + temp[i];

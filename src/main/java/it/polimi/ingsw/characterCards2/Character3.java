@@ -1,12 +1,10 @@
 package it.polimi.ingsw.characterCards2;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.Cli;
 
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Character3 extends CharacterCard implements Serializable {
@@ -37,7 +35,7 @@ public class Character3 extends CharacterCard implements Serializable {
             game.getTable().getIsland(MN_temp).setMotherNature(true);
             for (int i = 0; i < game.getN_Player(); i++) {
                 if (game.getTable().getPlayerMaxInfluence(game) == game.getPlayers().get(i))
-                    game.getTable().getIsland(game.getTable().getMotherNatureIndex()).setTower(game.getPlayers().get(i).getTowerColor());
+                    game.getTable().getIsland(game.getTable().getMotherNatureIndex()).setTowerColor(game.getPlayers().get(i).getTowerColor());
             }
             game.getTable().mergeIsland();
             //dove si sposta madre natura in caso di merge?

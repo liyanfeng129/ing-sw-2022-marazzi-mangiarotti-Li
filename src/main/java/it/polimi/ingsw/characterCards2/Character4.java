@@ -1,13 +1,10 @@
 package it.polimi.ingsw.characterCards2;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.Cli;
 
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class Character4 extends CharacterCard implements Serializable {
     public Character4() {
@@ -26,8 +23,8 @@ public class Character4 extends CharacterCard implements Serializable {
             throw new InnerExceptions.CharacterCardError("Cannot apply character effect because the lack of information.");
         Character4 card = (Character4) game.getTable().findCharacterCardByName(this.name());
         player.getWallet().removeCoin(card.getCoin());
-        int max_steps = player.getHand().getLastPlayedCard();
-        player.getHand().setLastPlayedCard(max_steps + 2);
+        int max_steps = player.getHand().getLastStepsAssistant();
+        player.getHand().setLastStepsAssistant(max_steps + 2);
         game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: you have 2 extra steps",
                 player.getName(), this.name(), this.getCoin()));
         if (card.isFirstUse())
@@ -38,8 +35,8 @@ public class Character4 extends CharacterCard implements Serializable {
     @Override
     public boolean undoEffect(Game game, Player player) throws EriantysExceptions {
         //penso serva solo per la grafica,in teorian e inutile
-        int max_steps = player.getHand().getLastPlayedCard();
-        player.getHand().setLastPlayedCard(max_steps - 2);
+        int max_steps = player.getHand().getLastStepsAssistant();
+        player.getHand().setLastStepsAssistant(max_steps - 2);
         return true;
     }
 

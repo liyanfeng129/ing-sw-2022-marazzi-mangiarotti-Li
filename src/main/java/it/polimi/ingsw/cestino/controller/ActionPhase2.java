@@ -17,7 +17,7 @@ public class ActionPhase2 implements Phase {
         //settower del colore di chi ha influenza piu alta
         int MN_pos = game.getTable().getMotherNatureIndex();
         TowerColor color=game.getTable().getPlayerMaxInfluence(game).getTowerColor();
-        game.getTable().getIsland(MN_pos).setTower(color);
+        game.getTable().getIsland(MN_pos).setTowerColor(color);
         game.getTable().mergeIsland();
         if(game.getTable().getIslands().size() <=3)
             turn.setState(new EndGame());

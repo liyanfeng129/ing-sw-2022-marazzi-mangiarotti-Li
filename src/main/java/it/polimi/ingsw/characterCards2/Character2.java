@@ -1,13 +1,10 @@
 package it.polimi.ingsw.characterCards2;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.Cli;
 
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class Character2 extends CharacterCard implements Serializable {
     public Character2() {
@@ -27,7 +24,7 @@ public class Character2 extends CharacterCard implements Serializable {
             throw new InnerExceptions.CharacterCardError("Cannot apply character effect because the lack of information.");
         Character2 card = (Character2) game.getTable().findCharacterCardByName(this.name());
         for (int i = 0; i < 5; i++) {
-            player.getPlayerBoard().addStudentToHolder(i);
+            player.getPb().addStudentToDiningRoom(i);
         }
         //non so se ci voglia o no
         game.getProfessors().assignProfessor(game.getPlayers());
@@ -42,7 +39,7 @@ public class Character2 extends CharacterCard implements Serializable {
     @Override
     public boolean undoEffect(Game game, Player player) throws EriantysExceptions {
         for (int i = 0; i < 5; i++) {
-            player.getPlayerBoard().takeStudentFromHolder(i);
+            player.getPb().takeStudentFromDiningRoom(i);
         }
         game.getProfessors().assignProfessor(game.getPlayers());
         return true;

@@ -1,12 +1,10 @@
 package it.polimi.ingsw.characterCards2;
 
 import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.view.Cli;
 
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Character12 extends CharacterCard implements Serializable {
@@ -32,11 +30,11 @@ public class Character12 extends CharacterCard implements Serializable {
 
         for (int i = 0; i < game.getN_Player(); i++) {
             int j=0;
-            while (game.getPlayers().get(i).getPlayerBoard().getDiningRoom()[student_color]>0){
+            while (game.getPlayers().get(i).getPb().getDiningRoom()[student_color]>0){
                 if(j==3)
                     break;
                 else
-                    game.getPlayers().get(i).getPlayerBoard().takeStudentFromHolder(student_color);
+                    game.getPlayers().get(i).getPb().takeStudentFromDiningRoom(student_color);
                     bag.addStudentToBag(student_color);
                     j++;
             }

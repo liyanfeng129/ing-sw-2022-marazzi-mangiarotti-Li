@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,19 +9,15 @@ class TableTest {
     private Table table;
     @BeforeEach
     public void setup(){
-        try {
-            table=new Table();
-        } catch (EriantysExceptions e) {
-            fail();
-        }
+        table=new Table();
     }
     @Test
     public void test_mergeIsland(){
         int temp[]=table.getIsland(0).getStudents();
         assertTrue(table.getIsland(0).getMotherNature());
-        table.getIsland(0).setTower(TowerColor.WHITE);
-        table.getIsland(1).setTower(TowerColor.WHITE);
-        table.getIsland(11).setTower(TowerColor.WHITE);
+        table.getIsland(0).setTowerColor(TowerColor.WHITE);
+        table.getIsland(1).setTowerColor(TowerColor.WHITE);
+        table.getIsland(11).setTowerColor(TowerColor.WHITE);
         table.getIsland(0).addStudent(3);
         temp[3]++;
         table.getIsland(11).addStudent(0);
@@ -66,7 +61,7 @@ class TableTest {
         game.getTable().getIsland(0).setMotherNature(true);
         Professors prof=new Professors();
         prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE});
-        game.getTable().getIsland(0).setTower(TowerColor.WHITE);
+        game.getTable().getIsland(0).setTowerColor(TowerColor.WHITE);
         game.getTable().getIsland(0).addStudent(0);
         game.getTable().getIsland(0).addStudent(0);
         game.getTable().getIsland(0).addStudent(1);
@@ -83,7 +78,7 @@ class TableTest {
         game.getTable().getIsland(0).setMotherNature(true);
         Professors prof=new Professors();
         prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE});
-        game.getTable().getIsland(0).setTower(TowerColor.WHITE);
+        game.getTable().getIsland(0).setTowerColor(TowerColor.WHITE);
         p1.getPb().moveTower(-1);
         game.getTable().getIsland(0).addStudent(0);
         game.getTable().getIsland(0).addStudent(1);
@@ -102,7 +97,7 @@ class TableTest {
         Game game = new Game(2,true,p1);
         game.addPlayers(p2);
         game.getTable().getIsland(0).setMotherNature(true);
-        game.getTable().getIsland(0).setTower(TowerColor.WHITE);
+        game.getTable().getIsland(0).setTowerColor(TowerColor.WHITE);
         Professors prof=new Professors();
         prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE});
         game.getTable().setCard6(true);
@@ -118,7 +113,7 @@ class TableTest {
         Game game = new Game(2,true,p1);
         game.addPlayers(p2);
         game.getTable().getIsland(0).setMotherNature(true);
-        game.getTable().getIsland(0).setTower(TowerColor.WHITE);
+        game.getTable().getIsland(0).setTowerColor(TowerColor.WHITE);
         Professors prof=new Professors();
         prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE});
         game.getTable().setCard9(0);

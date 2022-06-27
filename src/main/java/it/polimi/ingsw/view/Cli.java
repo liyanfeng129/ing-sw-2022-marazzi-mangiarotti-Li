@@ -129,9 +129,9 @@ public class Cli {
         System.out.println(" ");
         for(int i=0; i<table.getIslands().size()/2;i++) {
             if (i==0)
-                System.out.print("Tower:"+table.getIslands().get(i).getTower() +"|");
+                System.out.print("Tower:"+table.getIslands().get(i).getTowerColor() +"|");
             else
-                System.out.print("Tower:"+table.getIslands().get(i).getTower() +"  |");
+                System.out.print("Tower:"+table.getIslands().get(i).getTowerColor() +"  |");
 
         }
         System.out.println(" ");
@@ -161,9 +161,9 @@ public class Cli {
         System.out.println(" ");
         for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++) {
             if (i==table.getIslands().size()/2)
-                System.out.print("Tower:"+table.getIslands().get(i).getTower() +"|");
+                System.out.print("Tower:"+table.getIslands().get(i).getTowerColor() +"|");
             else
-                System.out.print("Tower:"+table.getIslands().get(i).getTower() +"  |");
+                System.out.print("Tower:"+table.getIslands().get(i).getTowerColor() +"  |");
         }
         System.out.println(" ");
         for(int i=table.getIslands().size()/2; i<table.getIslands().size();i++){
@@ -214,7 +214,7 @@ public class Cli {
         System.out.println("Tower Color : "+ player.getTowerColor());
         if(player.getWallet()!=null)
             System.out.println("Wallet: "+ player.getWallet().getSaving());
-        show_playerboard(player.getPlayerBoard(),game,player);
+        show_playerboard(player.getPb(),game,player);
 
 
     }

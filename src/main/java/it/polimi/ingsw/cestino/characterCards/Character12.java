@@ -29,9 +29,9 @@ public class Character12 implements CharacterBehavior{
             this.firstUse = true;
         }
         for (int i=0;i< game.getN_Player();i++){
-            int DiningRoomStudents=game.getPlayers().get(i).getPlayerBoard().getDiningRoom()[colore];
+            int DiningRoomStudents=game.getPlayers().get(i).getPb().getDiningRoom()[colore];
             for (int j=0;j<3 && DiningRoomStudents>0;j++){
-                game.getPlayers().get(i).getPlayerBoard().takeStudentFromWaitingRoom(colore);
+                game.getPlayers().get(i).getPb().takeStudentFromWaitingRoom(colore);
             }
         }
     }

@@ -34,7 +34,7 @@ public class ActionState extends State implements Serializable {
     @Override
     public boolean canChangeState() throws EriantysExceptions {
         boolean can = false;
-        PlayerBoard pb = getGame().getTurnList().get(getPhase()).getPlayerBoard();
+        PlayerBoard pb = getGame().getTurnList().get(getPhase()).getPb();
         if(Arrays.stream(pb.getWaitingRoom()).sum() == pb.getMaxStudentsInWaiting() - numStudents )
             can = true;
         return can;
@@ -79,7 +79,7 @@ public class ActionState extends State implements Serializable {
             }
             else
             {
-                int[] waitingRoom = getGame().getTurnList().get(getPhase()).getPlayerBoard().getWaitingRoom();
+                int[] waitingRoom = getGame().getTurnList().get(getPhase()).getPb().getWaitingRoom();
                 String userName = getGame().getTurnList().get(getPhase()).getName();
                 boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
                 return new MoveStudentFromWaitingRoomCommand(waitingRoom,cliClient,getGame(),userName,characterCardUsed,characterCardExecuted);

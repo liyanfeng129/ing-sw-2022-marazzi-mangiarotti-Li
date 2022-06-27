@@ -4,7 +4,6 @@ import it.polimi.ingsw.characterCards2.Character5;
 import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.command.MoveMotherNatureCommand;
-import it.polimi.ingsw.command.MoveStudentFromWaitingRoomCommand;
 import it.polimi.ingsw.command.UseCharacterCommand;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
@@ -52,7 +51,7 @@ public class MoveMotherNatureState extends State implements Serializable {
                 //condizione endGame finite torri in pb
                 if (player != null) {
                     for (int i = 0; i < getGame().getN_Player(); i++) {
-                        if (getGame().getPlayers().get(i).getPlayerBoard().getN_tower() <= 0) {
+                        if (getGame().getPlayers().get(i).getPb().getN_tower() <= 0) {
                             setGameEnded(true);
                         }
                     }
@@ -100,7 +99,7 @@ public class MoveMotherNatureState extends State implements Serializable {
             }
             else
             {
-                int maxSteps = getGame().getTurnList().get(getPhase()).getHand().getLastPlayedCard();
+                int maxSteps = getGame().getTurnList().get(getPhase()).getHand().getLastStepsAssistant();
                 String userName = getGame().getTurnList().get(getPhase()).getName();
                 boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
                 return new MoveMotherNatureCommand(cliClient,getGame(),userName,maxSteps,characterCardUsed, characterCardExecuted);
