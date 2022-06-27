@@ -2045,7 +2045,7 @@ import java.util.stream.Collectors;
                     Dragboard db = event.getDragboard();
                     boolean success = false;
                     if (db.hasString() && db.getString().length()>1) {
-                        if(Arrays.stream(characterCardExcange).sum()<Arrays.stream(curr_player.getPlayerBoard().getWaitingRoom()).sum()){
+                        if(Arrays.stream(characterCardExcange).sum()<Arrays.stream(curr_player.getPb().getWaitingRoom()).sum()){
                             System.out.println("ho aggiunto uno studente da card");
                             int position = Integer.parseInt(""+db.getString().charAt(0));
                             characterCardExcange[position] ++;
@@ -2189,7 +2189,7 @@ import java.util.stream.Collectors;
         public boolean controllWaiting(){
             Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
             for(int i=0;i<5;i++){
-                if (curr_player.getPlayerBoard().getWaitingRoom()[i] < characterRoomExcange[i]){
+                if (curr_player.getPb().getWaitingRoom()[i] < characterRoomExcange[i]){
                     return false;
                 }
             }
