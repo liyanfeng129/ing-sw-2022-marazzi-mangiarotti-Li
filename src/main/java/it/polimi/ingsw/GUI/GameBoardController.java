@@ -24,7 +24,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,8 @@ import java.util.stream.Collectors;
         private Island islandChoice; // non credo venga usata
         private Assistant assistantChoice;
         private int characterData = 0;
+        private int[] characterRoomExcange=new int[]{0,0,0,0,0};
+        private int[] characterCardExcange=new int[]{0,0,0,0,0};
 
 
         @FXML
@@ -67,11 +71,19 @@ import java.util.stream.Collectors;
             Platform.runLater(new Runnable() {
                 @Override public void run() {
                     try {
+                        /**
                         Player p = new Player("leo",Mage.MAGE1,TowerColor.BLACK,2,false);
                         Game game_ = new Game(2,false,p);
                         game_.addPlayers(new Player("fra",Mage.MAGE2,TowerColor.GREY,2,false));
                         game = game_;
-                        showIslands(false);
+                        board_name= "leo";
+                        name = "leo";
+                        waitingRoomToExchange(3);
+                        cardToExchange(3);
+                        buttonToFinish(3);
+                        showGameNoAction();
+                         */
+
                         initConfig();
                         name = getInfo().getUserName();
                         game = getInfo().getGame();
@@ -184,7 +196,7 @@ import java.util.stream.Collectors;
             showProfessors();
             showIslands(false);
             showClouds(false);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(false);
             if (game.isExpertMode()) {
                 showCharacter();
@@ -203,7 +215,7 @@ import java.util.stream.Collectors;
 
 
             showClouds(false);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(true);
             if (game.isExpertMode()) {
                 addButtonCharacter();
@@ -220,7 +232,7 @@ import java.util.stream.Collectors;
             showTowers();
             showIslands(true);
             showClouds(false);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(false);
             showProfessors();
             if (game.isExpertMode()) {
@@ -238,7 +250,7 @@ import java.util.stream.Collectors;
             showIslands(false);
 
             showClouds(true);
-            showDiningRoom();
+            showDiningRoom(false);
             showWaitingRoom(false);
             showProfessors();
             if (game.isExpertMode()) {
@@ -900,13 +912,13 @@ import java.util.stream.Collectors;
                     removeBoard();
 
                     if (Action) {
-                        showDiningRoom();
+                        showDiningRoom(true);
                         showTowers();
                         showProfessors();
                         showWaitingRoom(true);
                     }
                     else {
-                        showDiningRoom();
+                        showDiningRoom(false);
                         showTowers();
                         showProfessors();
                         showWaitingRoom(false);
@@ -1065,7 +1077,7 @@ import java.util.stream.Collectors;
                 }
             }
         }
-        public void showDiningRoom(){
+        public void showDiningRoom(Boolean Action){
             String red = "Image/student_red.png";
             String yellow = "Image/student_yellow.png";
             String pink = "Image/student_pink.png";
@@ -1079,51 +1091,69 @@ import java.util.stream.Collectors;
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double pos_x = screenBounds.getMaxY()/(6.92);
             double pos_y ;
-            for(int i =0; i<5;i++){
-                for(int j=0; j<pb.getDiningRoom()[i];j++){
-                    if (i==3) {
+            for(int i =0; i<5;i++) {
+                for (int j = 0; j < pb.getDiningRoom()[i]; j++) {
+                    if (i == 3) {
                         color = blue;
-                        pos_y = screenBounds.getMaxY()/(1.078);
-                    }
-                    else if (i==2) {
+                        pos_y = screenBounds.getMaxY() / (1.078);
+                    } else if (i == 2) {
                         color = pink;
-                        pos_y = screenBounds.getMaxY()/(1.147);
-                    }
-                    else if (i==1) {
+                        pos_y = screenBounds.getMaxY() / (1.147);
+                    } else if (i == 1) {
                         color = yellow;
-                        pos_y = screenBounds.getMaxY()/(1.225);
-                    }
-                    else if (i==0) {
+                        pos_y = screenBounds.getMaxY() / (1.225);
+                    } else if (i == 0) {
                         color = red;
-                        pos_y = screenBounds.getMaxY()/(1.313);
-                    }
-                    else {
+                        pos_y = screenBounds.getMaxY() / (1.313);
+                    } else {
                         color = green;
-                        pos_y = screenBounds.getMaxY()/(1.41);
+                        pos_y = screenBounds.getMaxY() / (1.41);
                     }
                     ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
                     board.add(img);
                     nodes.add(img);
-                    img.setFitWidth(screenBounds.getMaxY()/(33.333));
-                    img.setFitHeight(screenBounds.getMaxY()/(33.333));
+                    String student = ""+i;
+                    if(characterData==10 && name ==board_name){
+                        img.setOnDragDetected(new EventHandler<MouseEvent>() {
+                            public void handle(MouseEvent event) {
+                                /* drag was detected, start drag-and-drop gesture*/
+                                /* allow any transfer mode */
+                                Dragboard db = img.startDragAndDrop(TransferMode.ANY);
+
+                                /* put a string on dragboard */
+                                ClipboardContent content = new ClipboardContent();
+
+                                content.putString(student+"C");
+                                db.setContent(content);
+                                event.consume();
+                            }
+                        });
+
+
+                    }
+                    img.setFitWidth(screenBounds.getMaxY() / (33.333));
+                    img.setFitHeight(screenBounds.getMaxY() / (33.333));
                     img.setPreserveRatio(true);
-                    img.setLayoutX(pos_x + j*(screenBounds.getMaxY()/(27.74)));
+                    img.setLayoutX(pos_x + j * (screenBounds.getMaxY() / (27.74)));
                     img.setLayoutY(pos_y);
                     root.getChildren().add(img);
 
                 }
+            }
+
+            if (Action || characterData ==0) {
 
 
-                Pane paneDrop = new Pane ();
+                Pane paneDrop = new Pane();
                 nodes.add(paneDrop);
-                paneDrop.setPrefWidth(screenBounds.getMaxY()/2);
-                paneDrop.setStyle("-fx-background-color: #F0FFFF" );
-                paneDrop.setPrefHeight(screenBounds.getMaxY()-screenBounds.getMaxY()*2/3);
-                paneDrop.setLayoutY(screenBounds.getMaxY()*2/3);
-                paneDrop.setLayoutX(screenBounds.getMaxY()/9.5);
+                paneDrop.setPrefWidth(screenBounds.getMaxY() / 2);
+                paneDrop.setStyle("-fx-background-color: #F0FFFF");
+                paneDrop.setPrefHeight(screenBounds.getMaxY() - screenBounds.getMaxY() * 2 / 3);
+                paneDrop.setLayoutY(screenBounds.getMaxY() * 2 / 3);
+                paneDrop.setLayoutX(screenBounds.getMaxY() / 9.5);
                 paneDrop.setOpacity(0);
 
-                paneDrop.setOnDragEntered(new EventHandler <DragEvent>() {
+                paneDrop.setOnDragEntered(new EventHandler<DragEvent>() {
                     public void handle(DragEvent event) {
                         /* the drag-and-drop gesture entered the target */
                         System.out.println("onDragEntered");
@@ -1136,7 +1166,7 @@ import java.util.stream.Collectors;
                         event.consume();
                     }
                 });
-                paneDrop.setOnDragOver(new EventHandler <DragEvent>() {
+                paneDrop.setOnDragOver(new EventHandler<DragEvent>() {
                     public void handle(DragEvent event) {
                         //data is dragged over the target
 
@@ -1152,7 +1182,7 @@ import java.util.stream.Collectors;
                     }
                 });
                 AASceneParent aaSceneParent = this;
-                paneDrop.setOnDragDropped(new EventHandler <DragEvent>() {
+                paneDrop.setOnDragDropped(new EventHandler<DragEvent>() {
                     public void handle(DragEvent event) {
                         /* data dropped */
                         System.out.println("onDragDropped");
@@ -1175,12 +1205,10 @@ import java.util.stream.Collectors;
                             } catch (EriantysExceptions e) {
                                 e.printStackTrace();
                             }
-                            if(msg.equals(Config.GUI_COMMAND_GETDATA_SUC))
-                            {
+                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
                                 getInfo().setCommand(command);
-                                Platform.runLater( () -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                            }
-                            else
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            } else
                                 messages.setText(msg);
 
                             success = true;
@@ -1193,10 +1221,10 @@ import java.util.stream.Collectors;
                     }
                 });
                 root.getChildren().add(paneDrop);
-
-
-
             }
+
+
+
 
 
         }
@@ -1447,7 +1475,7 @@ import java.util.stream.Collectors;
                 case 1:
                     showCharacter1((Character1)card,true);
                     characterData=1;
-                    showGameNoActionNoCharacter(false);
+                    showGameNoActionNoCharacter(false,false);
                     break;
                 case 2:
                 case 4:
@@ -1471,32 +1499,38 @@ import java.util.stream.Collectors;
                 case 3:
                     showCharacter3((Character3)card,true);
                     characterData=3;
-                    showGameNoActionNoCharacter(true);
+                    showGameNoActionNoCharacter(true,false);
                     break;
                 case 5:
                     showCharacter5((Character5)card,true);
                     characterData=5;
-                    showGameNoActionNoCharacter(true);
+                    showGameNoActionNoCharacter(true,false);
                     break;
                 case 7:
-                    showCharacter1((Character1)card,true);
                     characterData=7;
-                    showGameNoActionNoCharacter(false);
+                    showCharacter7((Character7)card,true);
+                    waitingRoomToExchange();
+                    cardToExchange();
+                    buttonToFinish(3,((Character7) card).getStudents());
+                    showGameNoActionNoCharacter(true,true);
                     break;
                 case 9:
-                    showCharacter9((Character9)card,true);
                     characterData=9;
-                    showGameNoActionNoCharacter(false);
+                    showCharacter9((Character9)card,true);
+                    showGameNoActionNoCharacter(false, false);
                     break;
                 case 10:
-                    showCharacter1((Character1)card,true);
                     characterData=10;
-                    showGameNoActionNoCharacter(false);
+                    showCharacter10((Character10)card,true);
+                    waitingRoomToExchange();
+                    cardToExchange();
+                    buttonToFinish(2,((Character7) card).getStudents());
+                    showGameNoActionNoCharacter(true,true);
                     break;
                 case 11:
-                    showCharacter11((Character11)card,true);
-                    showGameNoActionNoCharacter(false);
                     characterData=11;
+                    showCharacter11((Character11)card,true);
+                    showGameNoActionNoCharacter(false,false);
                     break;
                 default:
                     System.out.println("Error");
@@ -1683,7 +1717,7 @@ import java.util.stream.Collectors;
                                 /* put a string on dragboard */
                                 ClipboardContent content = new ClipboardContent();
 
-                                content.putString(student);
+                                content.putString(student+"C");
                                 db.setContent(content);
                                 event.consume();
                             }
@@ -1734,6 +1768,23 @@ import java.util.stream.Collectors;
 
             chooseColor(posY*1.1,posX*0.8);
 
+        }
+        public void showCharacter10(Character10 card,Boolean Action){
+            int pos = game.getTable().getCharacters().indexOf(card);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front9.jpg")));
+            imgCard.setFitWidth(screenBounds.getMaxY()/8);
+            imgCard.setPreserveRatio(true);
+            double posY =imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150;
+            double posX =screenBounds.getMaxX()-screenBounds.getMaxY()/7.5;
+
+            imgCard.setLayoutX(posX);
+            imgCard.setLayoutY(posY);
+            if(Action){
+                nodes.add(imgCard);
+                root.getChildren().add(imgCard);
+            }
         }
         public void showCharacter11(Character11 card,Boolean Action){
 
@@ -1830,14 +1881,329 @@ import java.util.stream.Collectors;
             root.getChildren().add(grid);
         }
 
-        public void showGameNoActionNoCharacter(Boolean IsalndAction) throws EriantysExceptions {
+        public void waitingRoomToExchange(){
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            VBox vBox = new VBox();
+            vBox.getChildren().add(new Text("Students from waiting room"));
+
+            StackPane stackPane = new StackPane();
+            HBox hBox = new HBox();
+
+            Pane paneDrop = new Pane();
+            paneDrop.setOpacity(0);
+            Pane paneBase = new Pane();
+            paneBase.setStyle("-fx-background-color: #FFFFFF");
+            paneBase.setPrefWidth(screenBounds.getMaxX() / 4);
+            paneBase.setPrefHeight(screenBounds.getMaxY()/20);
+
+
+            nodes.add(paneDrop);
+            paneDrop.setPrefWidth(screenBounds.getMaxX() / 4);
+            paneDrop.setPrefHeight(screenBounds.getMaxY()/20);
+            vBox.setLayoutY(screenBounds.getMaxY() * 3 / 5 -10);
+            vBox.setLayoutX(screenBounds.getMaxX() / 4 -100);
+
+            paneDrop.setOnDragEntered(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* the drag-and-drop gesture entered the target */
+                    System.out.println("onDragEntered");
+                    /* show to the user that it is an actual gesture target */
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        System.out.println("setOnDragEntered");
+                    }
+
+                    event.consume();
+                }
+            });
+            paneDrop.setOnDragOver(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    //data is dragged over the target
+
+                    // accept it only if it is  not dragged from the same node
+                    //( and if it has a string data
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        // allow for both copying and moving, whatever user chooses
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+
+                    event.consume();
+                }
+            });
+            AASceneParent aaSceneParent = this;
+            paneDrop.setOnDragDropped(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* data dropped */
+                    System.out.println("onDragDropped");
+                    /* if there is a string data on dragboard, read it and use it */
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    if (db.hasString() && db.getString().length()==1) {
+                        System.out.println("entra uno studente da waiting room");
+                        int position = Integer.parseInt(""+db.getString().charAt(0));
+                        characterRoomExcange[position] ++;
+                        waitingRoomToExchange();
+                        /**TODO leo aggiungi un character da scambiare solo a determinate condizioni
+                         * drop student on your student holder
+                         */
+                    }
+                    /* let the source know whether the string was successfully
+                     * transferred and used */
+                    event.setDropCompleted(success);
+
+                    event.consume();
+                }
+            });
+
+
+            for (int i=0;i<5;i++){
+                for (int j=0; j<characterRoomExcange[i];j++){
+                    String color;
+                    if (i==3)
+                        color = blue;
+                    else if (i==2)
+                        color = pink;
+                    else if (i==1)
+                        color = yellow;
+                    else if (i==0)
+                        color = red;
+                    else
+                        color = green;
+                    ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                    img.setFitWidth(screenBounds.getMaxY()/32);
+                    img.setPreserveRatio(true);
+                    hBox.getChildren().add(img);
+
+                }
+            }
+
+
+            stackPane.getChildren().add(paneBase);
+            stackPane.getChildren().add(hBox);
+            stackPane.getChildren().add(paneDrop);
+            vBox.getChildren().add(stackPane);
+            root.getChildren().add(vBox);
+
+        }
+        public void cardToExchange(){
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            VBox vBox = new VBox();
+            vBox.getChildren().add(new Text("Students from card"));
+            StackPane stackPane = new StackPane();
+            HBox hBox = new HBox();
+
+            Pane paneDrop = new Pane();
+            paneDrop.setOpacity(0);
+            Pane paneBase = new Pane();
+            paneBase.setStyle("-fx-background-color: #FFFFFF");
+            paneBase.setPrefWidth(screenBounds.getMaxX() / 4);
+            paneBase.setPrefHeight(screenBounds.getMaxY()/20);
+
+
+            nodes.add(paneDrop);
+            paneDrop.setPrefWidth(screenBounds.getMaxX() / 4);
+            paneDrop.setPrefHeight(screenBounds.getMaxY()/20);
+            vBox.setLayoutY(screenBounds.getMaxY() * 3 / 5 -10);
+            vBox.setLayoutX(screenBounds.getMaxX() / 2);
+
+            paneDrop.setOnDragEntered(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    /* the drag-and-drop gesture entered the target */
+                    System.out.println("onDragEntered");
+                    /* show to the user that it is an actual gesture target */
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        System.out.println("setOnDragEntered");
+                    }
+
+                    event.consume();
+                }
+            });
+            paneDrop.setOnDragOver(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    //data is dragged over the target
+
+                    // accept it only if it is  not dragged from the same node
+                    //( and if it has a string data
+                    if (event.getGestureSource() != paneDrop &&
+                            event.getDragboard().hasString()) {
+                        // allow for both copying and moving, whatever user chooses
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+
+                    event.consume();
+                }
+            });
+            AASceneParent aaSceneParent = this;
+            paneDrop.setOnDragDropped(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
+                    /* data dropped */
+                    /* if there is a string data on dragboard, read it and use it */
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+                    if (db.hasString() && db.getString().length()>1) {
+                        if(Arrays.stream(characterCardExcange).sum()<Arrays.stream(curr_player.getPlayerBoard().getWaitingRoom()).sum()){
+                            System.out.println("ho aggiunto uno studente da card");
+                            int position = Integer.parseInt(""+db.getString().charAt(0));
+                            characterCardExcange[position] ++;
+                            cardToExchange();
+
+                            /**TODO leo aggiungi un character da scambiare solo a determinate condizioni
+                             * drop student on your student holder
+                             */
+                        }
+                        else{
+                            messages.setText("You don't have enauth students");
+                        }
+
+
+
+                    }
+                    /* let the source know whether the string was successfully
+                     * transferred and used */
+                    event.setDropCompleted(success);
+
+                    event.consume();
+                }
+            });
+            for (int i=0;i<5;i++){
+                for (int j=0; j<characterCardExcange[i];j++){
+                    String color;
+                    if (i==3)
+                        color = blue;
+                    else if (i==2)
+                        color = pink;
+                    else if (i==1)
+                        color = yellow;
+                    else if (i==0)
+                        color = red;
+                    else
+                        color = green;
+                    ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                    img.setFitWidth(screenBounds.getMaxY()/32);
+                    img.setPreserveRatio(true);
+                    hBox.getChildren().add(img);
+
+                }
+            }
+
+
+
+            stackPane.getChildren().add(paneBase);
+            stackPane.getChildren().add(hBox);
+            stackPane.getChildren().add(paneDrop);
+
+            vBox.getChildren().add(stackPane);
+            root.getChildren().add(vBox);
+
+        }
+        public void buttonToFinish(int Card,int[] StudentCard){
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            Button bt = new Button();
+            nodes.add(bt);
+
+            bt.setText("Exchange Students");
+            bt.setLayoutX(screenBounds.getMaxX()*8/10 -20);
+            bt.setLayoutY(screenBounds.getMaxY()*2/3 -50);
+            root.getChildren().add(bt);
+            AASceneParent aaSceneParent = this;
+            bt.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    ArrayList<Object> inputs = new ArrayList<>();
+                    if(Arrays.stream(characterCardExcange).sum()==Arrays.stream(characterRoomExcange).sum()){
+                        if (controllCard(StudentCard) && controllWaiting()&& Arrays.stream(characterRoomExcange).sum()<Card){
+
+
+                            if (characterData==7){
+                                inputs.add(characterCardExcange);
+                                inputs.add(characterRoomExcange);
+                                /**TODO YANFENG PLAY CHARACTER 7
+                                 * qui prendi la carta e la mandi al server
+                                 *
+                                 * carta in cardChoice
+                                 */
+
+
+
+                                characterCardExcange = new int[] {0,0,0,0,0};
+                                characterRoomExcange = new int[] {0,0,0,0,0};
+                            }
+                            else{
+                                inputs.add(characterCardExcange);
+                                inputs.add(characterRoomExcange);
+                                /**TODO YANFENG PLAY CHARACTER 10
+                                 * qui prendi la carta e la mandi al server
+                                 *
+                                 * carta in cardChoice
+                                 */
+
+
+                                characterCardExcange = new int[] {0,0,0,0,0};
+                                characterRoomExcange = new int[] {0,0,0,0,0};
+                            }
+
+
+                        }
+                        else{
+                            System.out.println(controllCard(StudentCard));
+                            System.out.println(controllWaiting());
+                            System.out.println(Arrays.stream(characterRoomExcange).sum()<Card);
+                            messages.setText("the combination of student select" +"\n"+
+                                    "is wrong please retry ");
+                            characterCardExcange = new int[] {0,0,0,0,0};
+                            characterRoomExcange = new int[] {0,0,0,0,0};
+                            cardToExchange();
+                            waitingRoomToExchange();
+                        }
+
+                    }
+                    else{
+                        messages.setText("You have to exchange the " +"\n"+
+                                "same amount of students");
+                        characterCardExcange = new int[] {0,0,0,0,0};
+                        characterRoomExcange = new int[] {0,0,0,0,0};
+                        cardToExchange();
+                        waitingRoomToExchange();
+                    }
+                }
+            });
+
+
+
+        }
+
+
+
+        public boolean controllCard(int [] StudentCard) {
+            for (int i = 0; i < 5; i++) {
+                if (StudentCard[i] > characterCardExcange[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        public boolean controllWaiting(){
+            Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
+            for(int i=0;i<5;i++){
+                if (curr_player.getPlayerBoard().getWaitingRoom()[i] < characterRoomExcange[i]){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public void showGameNoActionNoCharacter(Boolean IsalndAction, Boolean waitingroomAction) throws EriantysExceptions {
             switcBoardController(false);
             showTowers();
             showProfessors();
             showIslands(IsalndAction);
             showClouds(false);
-            showDiningRoom();
-            showWaitingRoom(false);
+            showDiningRoom(false);
+            showWaitingRoom(waitingroomAction);
             if (game.isExpertMode()) {
                 showWallet();
             }

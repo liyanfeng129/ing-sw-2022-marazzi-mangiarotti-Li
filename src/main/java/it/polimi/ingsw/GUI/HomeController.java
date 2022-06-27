@@ -16,6 +16,9 @@ import java.util.ArrayList;
 
 public class HomeController extends AASceneParent {
     @FXML
+    private TextField ServerId;
+
+    @FXML
     private Label myLabel;
     @FXML
     private Label myMessage;
@@ -28,6 +31,11 @@ public class HomeController extends AASceneParent {
 
     @FXML
     public void submit(ActionEvent event) {
+        /**TODO YAN
+         * qui devi aggiungere nelle condizioni il caso in cui il server non è valido
+         */
+        String Server = ServerId.getText();
+
         try {
             currentEvent = event;
             name = myTextfield.getText();
