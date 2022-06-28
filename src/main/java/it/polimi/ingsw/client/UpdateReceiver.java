@@ -4,6 +4,7 @@ import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.Config;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.threads.AFKTrigger;
 import it.polimi.ingsw.view.Cli;
 
 import java.io.IOException;
@@ -17,8 +18,6 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class UpdateReceiver extends Thread {
-
-    public static final int RECEIVER_TIMEOUT = 60;
     public static final int AFK_TIMEOUT = 10;
     private int portNumber;
     private ObjectOutputStream oos;
@@ -54,6 +53,7 @@ public class UpdateReceiver extends Thread {
                         sleep(5000);
                         ArrayList<Object> messages = new ArrayList<>();
                         messages.add(Config.CLIENT_PING_SERVER);
+                        messages.add(userName);
                         ArrayList<Object> responses = responseFromServer(messages);
                         if(!responses.get(0).equals(Config.SERVER_IS_ON))
                         {
@@ -113,7 +113,20 @@ public class UpdateReceiver extends Thread {
                     new EriantysCLIClientThread().start();
                 }
                 else
-                    updateReceived(updates);
+                {
+                    new Thread(() -> {
+                        try {
+                            updateReceived(updates);
+                        } catch (EriantysExceptions e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                }
+
             }
             updateReceiver.close();
             pingServer.interrupt();
@@ -178,7 +191,6 @@ public class UpdateReceiver extends Thread {
                  * if within 60s receiver don't get update, someone is in afk
                  * close receiver
                  * */
-                updateReceiver.setSoTimeout(RECEIVER_TIMEOUT *1000);
                 if(g.getPlayers().get(0).getName().equals(userName))
                 {
                     if(akfTrigger.isAlive() ) {
@@ -323,10 +335,6 @@ public class UpdateReceiver extends Thread {
                     System.out.println("Command executed");
                 else
                     System.out.println(responses.get(0));
-            }
-            else
-            {
-                EriantysClient.clone().start();
             }
         }
         else if (game.getLastCommand().getUsername().equals("endgame")){

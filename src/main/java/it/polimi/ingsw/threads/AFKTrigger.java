@@ -1,5 +1,6 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.threads;
 
+import it.polimi.ingsw.client.UpdateReceiver;
 import it.polimi.ingsw.model.Config;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class AFKTrigger extends Thread{
     private String username;
     private Object lock = new Object();
     private UpdateReceiver ur;
-    AFKTrigger(int timeOut,String serverAddress,String username, UpdateReceiver ur)
+    public AFKTrigger(int timeOut, String serverAddress, String username, UpdateReceiver ur)
     {
         threadOn = true;
         count = 0;

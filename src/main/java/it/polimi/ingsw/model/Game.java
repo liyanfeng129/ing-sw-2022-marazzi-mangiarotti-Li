@@ -26,6 +26,16 @@ public class Game implements Serializable {
     private UseCharacterCommand usedCharacter = null;
     private String gameStartingTime;
 
+    public int getCountToTimeOut() {
+        return countToTimeOut;
+    }
+
+    public void setCountToTimeOut(int countToTimeOut) {
+        this.countToTimeOut = countToTimeOut;
+    }
+
+    private int countToTimeOut = 0;
+
     //secondo me ci vorrebbe un exception nel caso passo player con modalita di gioco diversa
     public Game(int n_Player, boolean expertMode, Player creator) throws EriantysExceptions {
         this.n_Player = n_Player;

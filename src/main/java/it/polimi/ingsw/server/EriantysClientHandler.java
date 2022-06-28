@@ -37,8 +37,6 @@ public class EriantysClientHandler extends Thread{
     public void run()
     {
         try {
-            //out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-            //in = new BufferedReader(new InputStreamReader(client.getInputStream()));
              oos = new ObjectOutputStream(client.getOutputStream());
              ois=new ObjectInputStream(client.getInputStream());
         } catch (IOException e) {
@@ -62,14 +60,6 @@ public class EriantysClientHandler extends Thread{
             System.out.println(dateFormat.format(new Date()));
             switch (request)
             {
-                case "Test_show all threads":
-                    Set<Thread> threads = Thread.getAllStackTraces().keySet();
-                    System.out.printf("%-15s \t %-15s \t %-15s \t %s\n", "Name", "State", "Priority", "isDaemon");
-                    for (Thread t : threads) {
-                        System.out.printf("%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());
-                    }
-                    oos.writeObject(responses);
-                    break;
                 case "Test_all_game_status":
                     responses.add(games);
                     responses.add(oldGames);
@@ -78,11 +68,18 @@ public class EriantysClientHandler extends Thread{
                     break;
 
                 case Config.CLIENT_PING_SERVER:
-                    System.out.println(client+"send a ping signal to server");
-                    responses.add(Config.SERVER_IS_ON);
-                    oos.writeObject(responses);
+                    //System.out.println(client+"send a ping signal to server");
+                    userName = (String) messages.get(1);
+                    Subscriber sub = findSubByName(userName);
+                    if(sub!=null)
+                    {
+                        sub.setCountToTimeOut(0);
+                        responses.add(Config.SERVER_IS_ON);
+                        oos.writeObject(responses);
+                    }
                     break;
                 case Config.CLIENT_AFK_NOTIFYING:
+                    System.out.println("Someone is in afk.");
                     userName = (String) messages.get(1);
                     game = findGameForPlayer(userName);
                     responses.add(Config.CLIENT_AFK_NOTIFYING_SUC);
@@ -285,7 +282,6 @@ public class EriantysClientHandler extends Thread{
                     oos.writeObject(responses);
                     games.add(game);
                     gameUpdate(game);
-                    
                     break;
                 case Config.COMMAND_EXECUTE:
                     System.out.println(client+"tries to execute a command");
@@ -297,37 +293,6 @@ public class EriantysClientHandler extends Thread{
 
                     oos.writeObject(responses);
                     gameUpdate(game);
-                    break;
-                case Config.LISTENING_FOR_UPDATE:
-                    System.out.println(client+" is listening for update");
-                    String name = (String) messages.get(1);
-                    player = findPlayerByName(name);
-                    while(!player.isUpdate())
-                    {
-                        sleep(1000);
-                    }
-                    responses = new ArrayList<>();
-                    if(!findGameForPlayer(name).isGameStarted()) // game hasn't started yet
-                    {
-                        if(findGameForPlayer(name).getPlayers().get(0).getName().equals(name))// this player is creator
-                        {
-                            System.out.println(player.getName()+"'s game room has been changed");
-                            responses.add(Config.UPDATE_CREATOR_WAITING_ROOM);
-                        }
-                        else
-                        {
-                            System.out.println(player.getName()+", the room he is in has been changed");
-                            responses.add(Config.UPDATE_OTHER_WAITING_ROOM);
-                        }
-                    }
-                    else // Game started
-                    {
-                        System.out.println(player.getName()+"'s game has been updated");
-                        responses.add(Config.GAME_UPDATED);
-                    }
-                    responses.add(findGameForPlayer(player.getName()));
-                    oos.writeObject(responses);
-                    player.setUpdate(false);
                     break;
                 default:
                     out.println("not ok, no option valid for this");
@@ -345,7 +310,10 @@ public class EriantysClientHandler extends Thread{
 
     private void gameUpdate(Game game) throws InterruptedException, IOException {
         if(game.isGameStarted())
+        {
             saveGame(game);
+            game.setCountToTimeOut(0);
+        }
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
@@ -514,10 +482,6 @@ public class EriantysClientHandler extends Thread{
                     ite.remove();
             }
         }
-        /**TODO
-         * Save the game to server
-         * */
-
         return Config.LOG_OUT_SUC;
     }
 
@@ -713,5 +677,16 @@ public class EriantysClientHandler extends Thread{
                    gameInfos.add(lightGame);
                 }
         return gameInfos;
+    }
+
+    private Subscriber findSubByName(String name)
+    {
+        for(Subscriber sub : subs)
+        {
+            if(sub.getUserName().equals(name))
+                return sub;
+        }
+
+        return null;
     }
 }

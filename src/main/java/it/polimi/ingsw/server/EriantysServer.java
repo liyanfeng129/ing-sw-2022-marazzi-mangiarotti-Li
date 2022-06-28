@@ -7,10 +7,12 @@ import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 
 import it.polimi.ingsw.model.*;
@@ -43,6 +45,7 @@ public class EriantysServer {
      *       4. object -> file
      *       5. notify player
      * */
+    static int AFKTimeOut = 10;
     static ArrayList<Game> games = new ArrayList<>();
     static ArrayList<Game> oldGames = new ArrayList<>();
     static ArrayList<Subscriber> subs = new ArrayList<>();
@@ -88,6 +91,50 @@ public class EriantysServer {
         Users userList = (Users) fileJason2Object("users.json", Users.class);
         userList.logOutAll();
        object2FileJason("users.json", userList);
+    }
+
+    private void checkSubs()
+    {
+        for(Subscriber sub : subs)
+            if(sub.getCountToTimeOut() > 7 )
+            {
+                new Thread(()->{
+                    try {
+                        logOutUser(sub.getUserName());
+                    } catch (EriantysExceptions e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            }
+    }
+
+    private void afkCheck()
+    {
+        ArrayList<Integer> gamesIndexToDelete = new ArrayList<>();
+        for(Game g : games)
+        {
+            synchronized (g)
+            {
+                /**
+                 * if game is started and for too long time there hasn't been a modification
+                 * */
+                if(g.isGameStarted() && g.getCountToTimeOut() > AFKTimeOut)
+                {
+                    gamesIndexToDelete.add(games.indexOf(g));
+                    new Thread(() -> {
+                        notifySubs_GameOver(g,"Game is over because someone is in AFK.");
+                    }).start();
+                }
+            }
+        }
+        if(gamesIndexToDelete.size() > 0)
+        {
+            synchronized (games)
+            {
+                for(int i : gamesIndexToDelete)
+                    games.remove(i);
+            }
+        }
     }
 
     private static synchronized Object fileJason2Object(String fileName, Class ob)
@@ -205,5 +252,67 @@ public class EriantysServer {
         Object2fileBin("gameRecord.bin",oldGames);
     }
 
+    private void notifySubs_GameOver(Game game,String message) {
+        for(Player p : game.getPlayers())
+            synchronized (subs)
+            {
+                for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
+                {
+                    Subscriber sub = ite.next();
+                    if(sub.getUserName().equals(p.getName()))
+                    {
+                        new Thread(()->{
+                            try {
+                                Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                                ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
+                                ArrayList<Object> msg = new ArrayList<>();
+                                msg.add(Config.GAME_OVER);
+                                msg.add(message);
+                                oos.writeObject(msg);
+                            }
+                            catch (Exception e)
+                            {
+                                if(e instanceof ConnectException)
+                                {
+                                    System.out.println(sub.getUserName()+" is out of reach");
 
+                                }
+                                else
+                                    e.printStackTrace();
+                            }
+                        }).start();
+                    }
+                }
+
+            }
+    }
+    private Game findGameForPlayer(String name)throws EriantysExceptions
+    {
+        for(Game game : games)
+            for(Player player : game.getPlayers())
+                if(player.getName().equals(name))
+                    return game;
+        throw new InnerExceptions.NoSuchUserException("This player is not in any game.");
+    }
+
+    private void logOutUser(String userName) throws EriantysExceptions {
+        Users userList = (Users) fileJason2Object("users.json", Users.class);
+        userList.logOutUser(userName);
+        object2FileJason("users.json", userList);
+        try
+        {
+            Game g = findGameForPlayer(userName);
+            notifySubs_GameOver(g, "Game is over, because one player is out of reach");
+            games.remove(g);
+        }
+        catch (InnerExceptions.NoSuchUserException e)
+        {
+            System.out.println(String.format("%s has no game associated logout success",userName));
+            for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();) {
+                Subscriber sub = ite.next();
+                if (sub.getUserName().equals(userName))
+                    ite.remove();
+            }
+        }
+    }
 }
