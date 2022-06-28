@@ -73,7 +73,10 @@ public class EriantysClientHandler extends Thread{
                     Subscriber sub = findSubByName(userName);
                     if(sub!=null)
                     {
-                        sub.setCountToTimeOut(0);
+                        synchronized (sub)
+                        {
+                            sub.updateLastAccessTime();
+                        }
                         responses.add(Config.SERVER_IS_ON);
                         oos.writeObject(responses);
                     }
@@ -312,9 +315,7 @@ public class EriantysClientHandler extends Thread{
         if(game.isGameStarted())
         {
             saveGame(game);
-            /**
-            game.setCountToTimeOut(0);
-             */
+            game.updateLastAccessTime();
         }
         for(Player p : game.getPlayers())
             synchronized (subs)

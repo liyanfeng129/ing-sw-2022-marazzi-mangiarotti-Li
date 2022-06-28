@@ -32,13 +32,7 @@ public class GameBoard extends Application {
         stage.setFullScreen(true);
         stage.setTitle("Eryantis");
         stage.setScene(scene);
-
-
-
-
-
         stage.show();
-
     }
 
     public static void main(String[] args) {

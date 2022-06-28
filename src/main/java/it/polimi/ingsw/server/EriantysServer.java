@@ -9,38 +9,17 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static java.lang.Thread.sleep;
+
 
 public class EriantysServer {
-    /**
-     * TODO YAN MANAGER AFK (AWAY FROM KEYBOARD)
-     * IDEA: For updateReceiver start due thread
-     *       1 for receive update from game server,
-     *       throws timeOutException after 60s
-     *       because other player is in AFK
-     *
-     *       2 for take ping signal from game server
-     *       to prove client is still listening
-     *       game server can throw IOException when failing connection with client
-     *       means one player is offline so game server has to notify other players and
-     *       then close the game
-     * */
-
-    /**
-     * TODO YAN AUTO SAVE GAME
-     * IDEA: Every time that the game has been modified, save the whole game to file
-     *       then send the newest game to each player
-     *
-     *       steps:
-     *       1. file -> object
-     *       2. find previous version of this game
-     *       3. replace it with newest version
-     *       4. object -> file
-     *       5. notify player
-     * */
     static int AFKTimeOut = 10;
+    static int pingNotResponseTimeOut = 10;
     static ArrayList<Game> games = new ArrayList<>();
     static ArrayList<Game> oldGames = new ArrayList<>();
     static ArrayList<Subscriber> subs = new ArrayList<>();
@@ -65,11 +44,35 @@ public class EriantysServer {
             System.out.println("Server ready");
 
 
+            new Thread(()->{
+                while (true)
+                {
+                    try {
+                        sleep(5000);
+                        afkCheck();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+            new Thread(()->{
+                while (true)
+                {
+                    try {
+                        sleep(5000);
+                        checkSubs();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
             while(true)
             {
                 // waiting for a client to connect1
                 client = server.accept();
-                System.out.println("Client connected: "+client);
+               // System.out.println("Client connected: "+client);
                 new EriantysClientHandler(client,games,subs,oldGames).start();
             }
 
@@ -88,10 +91,9 @@ public class EriantysServer {
         object2FileJason("users.json", userList);
     }
 
-    private void checkSubs()
-    {
+    private static void checkSubs() throws InterruptedException {
         for(Subscriber sub : subs)
-            if(sub.getCountToTimeOut() > 7 )
+            if(timeDiff(sub.getLastAccessTime(),LocalDateTime.now())>pingNotResponseTimeOut) //
             {
                 new Thread(()->{
                     try {
@@ -103,26 +105,34 @@ public class EriantysServer {
             }
     }
 
-    private void afkCheck()
-    {
+    /**
+     * Whenever a game has been updated, the local time variable inside game will be renewed
+     * so if a game has been to loong without modification means some player is away from keyboard
+     * */
+    private static void afkCheck() throws InterruptedException {
         ArrayList<Integer> gamesIndexToDelete = new ArrayList<>();
         for(Game g : games)
         {
             synchronized (g)
             {
-                /**
+                /*
                  * if game is started and for too long time there hasn't been a modification
                  *
-                if(g.isGameStarted() && g.getCountToTimeOut() > AFKTimeOut)
-                {
-                    gamesIndexToDelete.add(games.indexOf(g));
-                    new Thread(() -> {
-                        notifySubs_GameOver(g,"Game is over because someone is in AFK.");
-                    }).start();
-                }
                  */
+                if (g.isGameStarted())
+                {
+                    if(timeDiff(g.getLastAccessTime(), LocalDateTime.now()) > AFKTimeOut)
+                    {
+                        gamesIndexToDelete.add(games.indexOf(g));
+                        new Thread(() -> {
+                            notifySubs_GameOver(g,"Game is over because someone is in AFK.");
+                        }).start();
+                    }
+                }
+
             }
         }
+
         if(gamesIndexToDelete.size() > 0)
         {
             synchronized (games)
@@ -132,6 +142,11 @@ public class EriantysServer {
             }
         }
     }
+
+    public static int timeDiff(LocalDateTime t1, LocalDateTime t2) throws InterruptedException {
+        return (int) ChronoUnit.SECONDS.between(t1, t2);
+    }
+
 
     private static synchronized Object fileJason2Object(String fileName, Class ob)
     {
@@ -248,7 +263,7 @@ public class EriantysServer {
         Object2fileBin("gameRecord.bin",oldGames);
     }
 
-    private void notifySubs_GameOver(Game game,String message) {
+    private static void notifySubs_GameOver(Game game, String message) {
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
@@ -282,7 +297,7 @@ public class EriantysServer {
 
             }
     }
-    private Game findGameForPlayer(String name)throws EriantysExceptions
+    private static Game findGameForPlayer(String name)throws EriantysExceptions
     {
         for(Game game : games)
             for(Player player : game.getPlayers())
@@ -291,7 +306,7 @@ public class EriantysServer {
         throw new InnerExceptions.NoSuchUserException("This player is not in any game.");
     }
 
-    private void logOutUser(String userName) throws EriantysExceptions {
+    private static void logOutUser(String userName) throws EriantysExceptions {
         Users userList = (Users) fileJason2Object("users.json", Users.class);
         userList.logOutUser(userName);
         object2FileJason("users.json", userList);

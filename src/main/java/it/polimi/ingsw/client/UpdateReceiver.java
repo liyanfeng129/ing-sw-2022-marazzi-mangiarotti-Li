@@ -4,7 +4,6 @@ import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.Config;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.threads.AFKTrigger;
 import it.polimi.ingsw.view.Cli;
 
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class UpdateReceiver extends Thread {
-    public static final int AFK_TIMEOUT = 10;
     private int portNumber;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
@@ -30,8 +28,6 @@ public class UpdateReceiver extends Thread {
     private ServerSocket updateReceiver;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     private Thread pingServer;
-    private AFKTrigger akfTrigger;
-
     public UpdateReceiver(int portNumber,String userName,String serverAddress, EriantysCLIClientThread eriantysClient)
     {
         this.portNumber = portNumber;
@@ -39,9 +35,7 @@ public class UpdateReceiver extends Thread {
         this.serverAddress =serverAddress;
         this.receiverOn = true;
         this.EriantysClient = eriantysClient;
-        /**
-         * TODO YAN CLIENT PING SERVER TIMEOUT
-         * */
+
         pingServer = new Thread(){
             boolean threadOn = true;
             @Override
@@ -84,7 +78,6 @@ public class UpdateReceiver extends Thread {
             }
         };
 
-        akfTrigger = new AFKTrigger(AFK_TIMEOUT,serverAddress,userName,this);
     }
 
     public void run()
@@ -99,10 +92,11 @@ public class UpdateReceiver extends Thread {
                 ois=new ObjectInputStream(update.getInputStream());
                 ArrayList<Object> updates = (ArrayList<Object>) ois.readObject();
                 update.close();
+                String motivation = (String) updates.get(1);
                 if(updates.get(0).equals(Config.GAME_OVER))
                 {
                     receiverOn = false;
-                    System.out.println("Game Over");
+                    System.out.println(motivation);
                     EriantysClient.clone().start();
 
                 }
@@ -129,8 +123,7 @@ public class UpdateReceiver extends Thread {
 
             }
             updateReceiver.close();
-            pingServer.interrupt();
-            akfTrigger.isInterrupt();
+
         } catch (Exception e) {
             if(e instanceof SocketException)
             {
@@ -159,11 +152,6 @@ public class UpdateReceiver extends Thread {
                     e.printStackTrace();
                 }
             }
-            if(!pingServer.isInterrupted())
-                pingServer.interrupt();
-            if(!akfTrigger.isInterrupt())
-                akfTrigger.isInterrupt();
-
         }
     }
 
@@ -190,7 +178,7 @@ public class UpdateReceiver extends Thread {
                 /**
                  * if within 60s receiver don't get update, someone is in afk
                  * close receiver
-                 * */
+
                 if(g.getPlayers().get(0).getName().equals(userName))
                 {
                     if(akfTrigger.isAlive() ) {
@@ -198,6 +186,7 @@ public class UpdateReceiver extends Thread {
                     } else
                         akfTrigger.start();
                 }
+                 * */
                 gameUpdate(g);
                 break;
         }
@@ -323,7 +312,7 @@ public class UpdateReceiver extends Thread {
         {
             Command command = game.getLastCommand();
             command.getData();
-            if(receiverOn) // false -> closed by afkTrigger, user is stacked with getData
+            if(receiverOn) // false -> because you are in AFK , user is stacked with getData
             {
                 ArrayList<Object> messages = new ArrayList<>();
                 ArrayList<Object> responses = new ArrayList<>();
@@ -336,6 +325,8 @@ public class UpdateReceiver extends Thread {
                 else
                     System.out.println(responses.get(0));
             }
+            else
+                System.out.println("WHAT TOOK YOU SO LONG? Put some input to continue");
         }
         else if (game.getLastCommand().getUsername().equals("endgame")){
             Command command = game.getLastCommand();

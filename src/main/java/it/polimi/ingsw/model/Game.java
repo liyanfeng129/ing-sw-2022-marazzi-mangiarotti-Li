@@ -10,6 +10,7 @@ import it.polimi.ingsw.state.State;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -25,6 +26,7 @@ public class Game implements Serializable {
     private ArrayList<Player> turnList  = new ArrayList<Player>();
     private UseCharacterCommand usedCharacter = null;
     private String gameStartingTime;
+    LocalDateTime lastAccessTime;
 
     /**
      * constructor of Game
@@ -50,6 +52,15 @@ public class Game implements Serializable {
     public Game()
     {
 
+    }
+
+    public void updateLastAccessTime()
+    {
+        lastAccessTime = LocalDateTime.now();
+    }
+
+    public LocalDateTime getLastAccessTime() {
+        return lastAccessTime;
     }
 
     /**

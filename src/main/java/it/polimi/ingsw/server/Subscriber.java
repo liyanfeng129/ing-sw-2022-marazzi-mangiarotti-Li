@@ -1,25 +1,28 @@
 package it.polimi.ingsw.server;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class Subscriber implements Serializable {
     private String userName;
     private String IpAddress;
     private int portNumber;
-    private int countToTimeOut = 0;
-
-    public int getCountToTimeOut() {
-        return countToTimeOut;
-    }
-
-    public void setCountToTimeOut(int countToTimeOut) {
-        this.countToTimeOut = countToTimeOut;
-    }
+    LocalDateTime lastAccessTime;
 
     public Subscriber(String userName, String ipAddress, int portNumber) {
         this.userName = userName;
         IpAddress = ipAddress;
         this.portNumber = portNumber;
+        lastAccessTime = LocalDateTime.now();
+    }
+
+    public void updateLastAccessTime()
+    {
+        lastAccessTime = LocalDateTime.now();
+    }
+
+    public LocalDateTime getLastAccessTime() {
+        return lastAccessTime;
     }
 
     public String getUserName() {

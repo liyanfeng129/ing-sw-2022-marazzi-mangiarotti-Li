@@ -2126,6 +2126,18 @@ import java.util.stream.Collectors;
                                  *
                                  * carta in cardChoice
                                  */
+                                Command command = game.getLastCommand();
+                                String msg = " ";
+                                try {
+                                    msg = command.GUIGetData(inputs);
+                                } catch (EriantysExceptions ex) {
+                                    ex.printStackTrace();
+                                }
+                                if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                    getInfo().setCommand(command);
+                                    Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                } else
+                                    messages.setText(msg);
 
 
 
@@ -2140,7 +2152,18 @@ import java.util.stream.Collectors;
                                  *
                                  * carta in cardChoice
                                  */
-
+                                Command command = game.getLastCommand();
+                                String msg = " ";
+                                try {
+                                    msg = command.GUIGetData(inputs);
+                                } catch (EriantysExceptions ex) {
+                                    ex.printStackTrace();
+                                }
+                                if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                    getInfo().setCommand(command);
+                                    Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                                } else
+                                    messages.setText(msg);
 
                                 characterCardExcange = new int[] {0,0,0,0,0};
                                 characterRoomExcange = new int[] {0,0,0,0,0};
