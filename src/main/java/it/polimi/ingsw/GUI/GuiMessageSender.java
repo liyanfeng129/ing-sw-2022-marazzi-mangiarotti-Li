@@ -42,6 +42,10 @@ public class GuiMessageSender {
                     responses = createNormalGameFor2();
                     caller.responsesFromSender(responses);
                     break;
+                case Config.CREATE_NORMAL_GAME_FOR_3:
+                    responses = createNormalGameFor3();
+                    caller.responsesFromSender(responses);
+                    break;
                 case Config.CREATE_EXPERT_GAME_FOR_2:
                     responses = createExpertGameFor2();
                     caller.responsesFromSender(responses);
@@ -123,6 +127,7 @@ public class GuiMessageSender {
 
         return responses;
     }
+
 
     private ArrayList<Object> getExistingGames()
     {

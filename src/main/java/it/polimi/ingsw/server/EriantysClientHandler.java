@@ -76,6 +76,19 @@ public class EriantysClientHandler extends Thread{
                     responses.add(subs);
                     oos.writeObject(responses);
                     break;
+
+                case Config.CLIENT_PING_SERVER:
+                    System.out.println(client+"send a ping signal to server");
+                    responses.add(Config.SERVER_IS_ON);
+                    oos.writeObject(responses);
+                    break;
+                case Config.CLIENT_AFK_NOTIFYING:
+                    userName = (String) messages.get(1);
+                    game = findGameForPlayer(userName);
+                    responses.add(Config.CLIENT_AFK_NOTIFYING_SUC);
+                    oos.writeObject(responses);
+                    notifySubs_GameOver(game);
+                    break;
                 case Config.GET_NEWEST_GAME:
                     System.out.println(client+"tries to get a updated game");
                     userName = (String) messages.get(1);
@@ -157,6 +170,17 @@ public class EriantysClientHandler extends Thread{
                     userName = (String) messages.get(1);
                     cliClient = (boolean) messages.get(2);
                     msg = createExpertGameFor2(userName,cliClient);
+                    game = findGameForPlayer((String) messages.get(1));
+                    responses.add(msg);
+                    responses.add(game);
+                    oos.writeObject(responses);
+                    break;
+
+                case Config.CREATE_EXPERT_GAME_FOR_3:
+                    System.out.println(client+"tries to create a expert game for three");
+                    userName = (String) messages.get(1);
+                    cliClient = (boolean) messages.get(2);
+                    msg = createExpertGameFor3(userName,cliClient);
                     game = findGameForPlayer((String) messages.get(1));
                     responses.add(msg);
                     responses.add(game);
@@ -252,17 +276,11 @@ public class EriantysClientHandler extends Thread{
                     break;
                 case Config.GAME_OLD_START:
                     System.out.println(client+" wants to start an old game");
-                    userName = (String) messages.get(1);
+                    String gameStartingTime = (String) messages.get(1);
                     allOldGames = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
-                    Game oldGame = null;
-                    for(Game g : oldGames)
-                        if(g.getPlayers().get(0).getName().equals(userName))
-                            oldGame = g;
                     for(Game g : allOldGames)
-                        if(g.getPlayers().get(0).getName().equals(userName) && g.getGameStartingTime().equals(oldGame.getGameStartingTime()))
+                        if(g.getGameStartingTime().equals(gameStartingTime))
                             game = g;
-                    allOldGames.remove(game);
-                    Object2fileBin("gameRecord.bin",allOldGames);
                     responses.add(Config.GAME_OLD_START_SUC);
                     oos.writeObject(responses);
                     games.add(game);
@@ -326,6 +344,8 @@ public class EriantysClientHandler extends Thread{
 
 
     private void gameUpdate(Game game) throws InterruptedException, IOException {
+        if(game.isGameStarted())
+            saveGame(game);
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
@@ -377,6 +397,34 @@ public class EriantysClientHandler extends Thread{
             }
     }
     /**
+     * steps:
+     *      1. file -> object
+     *      2. find previous version of this game
+     *      3. replace it with newest version
+     *      4. object -> file
+     * */
+    private void saveGame(Game game)
+    {
+        ArrayList<Game> games = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
+        if(games == null) {
+            games = new ArrayList<>();
+        } else
+        {
+            for(Iterator<Game> ite = games.iterator(); ite.hasNext();)
+            {
+                Game g = ite.next();
+                if(g.getGameStartingTime().equals(game.getGameStartingTime()))
+                {
+                    games.remove(g);
+                    break;
+                }
+            }
+
+        }
+        games.add(game);
+        Object2fileBin("gameRecord.bin",games);
+    }
+    /**
      * TODO
      *
      * */
@@ -400,23 +448,19 @@ public class EriantysClientHandler extends Thread{
             return "Cannot join a started game";
         if(game.getPlayers().size() == game.getN_Player())
             return "Cannot join a game where is full";
-        if(game.getN_Player() == 2 && !game.isExpertMode())
+        if(game.getN_Player() == 2 )
         {
             game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,cliClient));
         }
-        if(game.getN_Player() == 3 && !game.isExpertMode() && game.getPlayers().size() == 1)
+        if(game.getN_Player() == 3 &&  game.getPlayers().size() == 1) // second player in a game for three
         {
             game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,3,cliClient));
         }
-        else if(game.getN_Player() == 3 && !game.isExpertMode() && game.getPlayers().size() == 2)
+        else if(game.getN_Player() == 3 && game.getPlayers().size() == 2) // third player in a game for three
         {
             game.addPlayers(new Player(player,Mage.MAGE3,TowerColor.GREY,3,cliClient));
         }
 
-        if(game.getN_Player() == 2 && game.isExpertMode())
-        {
-            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,cliClient));
-        }
             return Config.JOIN_ONE_GAME_SUC;
     }
 
@@ -435,6 +479,11 @@ public class EriantysClientHandler extends Thread{
         Game game = new Game(2, true, new Player(userName,Mage.MAGE1,TowerColor.BLACK,2,cliClient));
         games.add(game);
         return Config.CREATE_EXPERT_GAME_FOR_2_SUC;
+    }
+    private String createExpertGameFor3(String userName, boolean cliClient) throws EriantysExceptions {
+        Game game = new Game(3, true, new Player(userName,Mage.MAGE1,TowerColor.BLACK,3,cliClient));
+        games.add(game);
+        return Config.CREATE_EXPERT_GAME_FOR_3_SUC;
     }
 
     private synchronized ArrayList<Game> showGames()
@@ -616,6 +665,10 @@ public class EriantysClientHandler extends Thread{
                 }
 
             }
+        synchronized (games)
+        {
+            games.remove(game);
+        }
     }
 
     private void notifySubs_closingServer_removeSubs(Game game) throws IOException {
@@ -638,6 +691,11 @@ public class EriantysClientHandler extends Thread{
 
             }
     }
+    /**
+     * reduce started game content to just what's essential to identify its self
+     * without data for game playing
+     * lightning weight
+     * */
     private ArrayList<Game> buildGamesInfoForAPLayer(ArrayList<Game> games, String name) throws EriantysExceptions {
         ArrayList<Game> gameInfos = new ArrayList<>();
         for(Game game : games)

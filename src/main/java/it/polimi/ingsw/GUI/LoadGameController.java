@@ -44,12 +44,7 @@ public class LoadGameController extends AASceneParent implements Initializable {
 
     @FXML
     protected void back(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass(). getResource("start_load.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        System.out.println("back");
+        switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(),FxmlNames.START_LOAD);
     }
 
 
@@ -81,9 +76,10 @@ public class LoadGameController extends AASceneParent implements Initializable {
             for(Game g : gameList)
             {
                 roomName.add(g.getPlayers().get(0).getName());
-                games.getItems().add(String.format("%d. %s's game for %d, waiting for other %d.",
+                games.getItems().add(String.format("%d. %s's %s game for %d, waiting for other %d.",
                         i+1,
                         g.getPlayers().get(0).getName(),
+                        (g.isExpertMode()? "expert" : "normal"),
                         g.getN_Player(),
                         g.getN_Player()-g.getPlayers().size()
                 ));

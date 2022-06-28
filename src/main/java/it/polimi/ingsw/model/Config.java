@@ -68,5 +68,11 @@ public class Config {
 
     public static final String GUI_CHARACTER_ALREADY_USED = "character card already used in this turn";
     public static final String GUI_NOT_ENOUGH_COIN = "You don't have enough coin to use this card";
-    public static final Object SERVER_CLOSE = "Server is closing";
+    public static final String SERVER_CLOSE = "Server is closing";
+    public static final String CREATE_EXPERT_GAME_FOR_3_SUC = "Expert game for 3 created";
+    public static final String CREATE_EXPERT_GAME_FOR_3 = "try to create expert game for 3" ;
+    public static final String CLIENT_PING_SERVER = "Client ping server";
+    public static final String SERVER_IS_ON = "Server is on";
+    public static final String CLIENT_AFK_NOTIFYING = "Client is in AFK";
+    public static final Object CLIENT_AFK_NOTIFYING_SUC =  "Client AFK status is notified";
 }

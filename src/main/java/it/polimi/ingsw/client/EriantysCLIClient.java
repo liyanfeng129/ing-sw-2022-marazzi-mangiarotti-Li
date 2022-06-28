@@ -38,9 +38,6 @@ public class EriantysCLIClient {
             {
                 try
                 {
-
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

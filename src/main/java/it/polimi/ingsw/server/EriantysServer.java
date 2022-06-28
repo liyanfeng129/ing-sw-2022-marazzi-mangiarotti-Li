@@ -166,6 +166,7 @@ public class EriantysServer {
         {
             public void run()
             {
+                System.out.println("Server on close.");
                 saveGames();
                 try
                 {
