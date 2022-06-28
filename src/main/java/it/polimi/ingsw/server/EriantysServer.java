@@ -18,7 +18,7 @@ import static java.lang.Thread.sleep;
 
 
 public class EriantysServer {
-    static int AFKTimeOut = 10;
+    static int AFKTimeOut = 60;
     static int pingNotResponseTimeOut = 10;
     static ArrayList<Game> games = new ArrayList<>();
     static ArrayList<Game> oldGames = new ArrayList<>();
@@ -27,7 +27,7 @@ public class EriantysServer {
         // TODO Auto-generated method stub
         try
         {
-            onServerClose();
+            //onServerClose();
             //Create socket server
             ServerSocket server = new ServerSocket(12345);
 

@@ -88,9 +88,9 @@ public class GuiListener extends Thread{
                 ois=new ObjectInputStream(update.getInputStream());
                 ArrayList<Object> updates = (ArrayList<Object>) ois.readObject();
                 update.close();
-                String motivation = (String) updates.get(1);
                 if(updates.get(0).equals(Config.GAME_OVER))
                 {
+                    String motivation = (String) updates.get(1);
                     receiverOn = false;
                     System.out.println(motivation);
                 }

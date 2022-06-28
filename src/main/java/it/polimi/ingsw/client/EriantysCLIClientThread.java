@@ -269,7 +269,7 @@ public class EriantysCLIClientThread extends Thread {
         System.out.println("EriantysCliClientThread starts running");
         try
         {
-            onClientClose();
+            //onClientClose();
             //connectTOServer();
             if(!logged)
                 loggingMenu();

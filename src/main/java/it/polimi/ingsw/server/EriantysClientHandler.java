@@ -44,7 +44,7 @@ public class EriantysClientHandler extends Thread{
             e.printStackTrace();
         }
 
-        System.out.println(">> "+client.getInetAddress()+" is connected" +"\n");
+        //System.out.println(">> "+client.getInetAddress()+" is connected" +"\n");
 
         try
         {
@@ -57,7 +57,7 @@ public class EriantysClientHandler extends Thread{
             String gameStartedDate;
             ArrayList<Game> allOldGames;
             boolean cliClient;
-            System.out.println(dateFormat.format(new Date()));
+            //System.out.println(dateFormat.format(new Date()));
             switch (request)
             {
                 case "Test_all_game_status":

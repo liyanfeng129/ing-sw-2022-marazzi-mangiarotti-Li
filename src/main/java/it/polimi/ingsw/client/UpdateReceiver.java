@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.view.Cli;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -62,7 +63,7 @@ public class UpdateReceiver extends Thread {
                         System.out.println("Something went wrong with server");
                         receiverOn = false;
                     }
-                    else if(e instanceof ConnectException)
+                    else if(e instanceof ConnectException || e instanceof EOFException)
                     {
                         System.out.println("Cannot create connection with server");
                         receiverOn = false;
@@ -92,9 +93,9 @@ public class UpdateReceiver extends Thread {
                 ois=new ObjectInputStream(update.getInputStream());
                 ArrayList<Object> updates = (ArrayList<Object>) ois.readObject();
                 update.close();
-                String motivation = (String) updates.get(1);
                 if(updates.get(0).equals(Config.GAME_OVER))
                 {
+                    String motivation = (String) updates.get(1);
                     receiverOn = false;
                     System.out.println(motivation);
                     EriantysClient.clone().start();
@@ -138,6 +139,7 @@ public class UpdateReceiver extends Thread {
             }
             else if(e instanceof RuntimeException)
             {
+                e.printStackTrace();
                 System.out.println("AKF triggered");
                 EriantysClient.clone().start();
             }
