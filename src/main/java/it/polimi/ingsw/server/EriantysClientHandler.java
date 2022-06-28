@@ -66,7 +66,10 @@ public class EriantysClientHandler extends Thread{
                     responses.add(subs);
                     oos.writeObject(responses);
                     break;
-
+                case Config.TRY_TO_CONNECT:
+                    responses.add(Config.TRY_TO_CONNECT_SUC);
+                    oos.writeObject(responses);
+                    break;
                 case Config.CLIENT_PING_SERVER:
                     //System.out.println(client+"send a ping signal to server");
                     userName = (String) messages.get(1);
@@ -240,27 +243,7 @@ public class EriantysClientHandler extends Thread{
                     responses.add(res);
                     oos.writeObject(responses);
                     break;
-                case "try to connect":
-                    System.out.println(client+" trying to connect");
-                    out.println("ok, you are connected");
-                    break;
-                case "try to get a game":
-                    System.out.println(client+" testing for get a game");
-                    game = findGameForPlayer((String) messages.get(1));
-                    responses.add("ok");
-                    responses.add(game);
-                    oos.writeObject(responses);
-                    gameUpdate(game);
-                    break;
-                case "try to modify game":
-                    System.out.println(client+" testing for modifying game");
-                    game = findGameForPlayer((String) messages.get(1));
-                    game.setGameStarted(false);
-                    responses.add("ok");
-                    responses.add(game);
-                    oos.writeObject(responses);
-                    gameUpdate(game);
-                    break;
+
                 case Config.LOG_OUT:
                     System.out.println(client+" asking for logout");
                     responses.add(logOutUser((String) messages.get(1)));

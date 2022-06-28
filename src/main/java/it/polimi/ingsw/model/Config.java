@@ -74,5 +74,7 @@ public class Config {
     public static final String CLIENT_PING_SERVER = "Client ping server";
     public static final String SERVER_IS_ON = "Server is on";
     public static final String CLIENT_AFK_NOTIFYING = "Client is in AFK";
-    public static final Object CLIENT_AFK_NOTIFYING_SUC =  "Client AFK status is notified";
+    public static final String CLIENT_AFK_NOTIFYING_SUC =  "Client AFK status is notified";
+    public static final String TRY_TO_CONNECT = "try to create connection";
+    public static final String TRY_TO_CONNECT_SUC = "try to create connection successful";
 }

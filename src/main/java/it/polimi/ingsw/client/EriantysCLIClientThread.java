@@ -4,6 +4,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.*;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -29,7 +30,7 @@ public class EriantysCLIClientThread extends Thread {
 
     }
 
-    private  void loggingMenu() throws InterruptedException, UnknownHostException {
+    private  void loggingMenu() throws InterruptedException, IOException, ClassNotFoundException {
         clearScreen();
         String response;
         listeningPortNumber = new Random().nextInt(65353);
@@ -62,7 +63,7 @@ public class EriantysCLIClientThread extends Thread {
             lobbyMenu();
         }
     }
-    public void lobbyMenu() throws InterruptedException, UnknownHostException {
+    public void lobbyMenu() throws InterruptedException, IOException, ClassNotFoundException {
         ur = new UpdateReceiver(listeningPortNumber,userName,serverAddress,this);
         ur.start();
         /**
@@ -190,7 +191,7 @@ public class EriantysCLIClientThread extends Thread {
 
 
 
-    private void showResuableGames(ArrayList<Game> games) throws UnknownHostException, InterruptedException {
+    private void showResuableGames(ArrayList<Game> games) throws IOException, InterruptedException, ClassNotFoundException {
         clearScreen();
         int i = 0;
         ArrayList<String> roomName = new ArrayList<>();
@@ -246,7 +247,7 @@ public class EriantysCLIClientThread extends Thread {
         }
     }
 
-    private ArrayList<Object> joinOneResumaleGame(String roomName, String userName) {
+    private ArrayList<Object> joinOneResumaleGame(String roomName, String userName) throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.JOIN_RESUMABLE_GAME);
         messages.add(roomName);
@@ -256,7 +257,7 @@ public class EriantysCLIClientThread extends Thread {
         return responses;
     }
 
-    private ArrayList<Object> getJoinAbleResuableGames() {
+    private ArrayList<Object> getJoinAbleResuableGames() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.SHOW_RESUMABLE_GAMES);
         messages.add(userName);
@@ -270,9 +271,11 @@ public class EriantysCLIClientThread extends Thread {
         try
         {
             //onClientClose();
-            //connectTOServer();
             if(!logged)
+            {
+                connectTOServer();
                 loggingMenu();
+            }
             else
                 lobbyMenu();
         }
@@ -283,8 +286,7 @@ public class EriantysCLIClientThread extends Thread {
         System.out.println("EriantysCliClientThread stops running");
     }
 
-    private ArrayList<Object> createNormalGameFor2()
-    {
+    private ArrayList<Object> createNormalGameFor2() throws IOException, ClassNotFoundException {
 
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_NORMAL_GAME_FOR_2);
@@ -295,8 +297,7 @@ public class EriantysCLIClientThread extends Thread {
         return responses;
     }
 
-    private ArrayList<Object> createNormalGameFor3()
-    {
+    private ArrayList<Object> createNormalGameFor3() throws IOException, ClassNotFoundException {
 
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_NORMAL_GAME_FOR_3);
@@ -307,7 +308,7 @@ public class EriantysCLIClientThread extends Thread {
         return responses;
     }
 
-    private ArrayList<Object> createExpertGameFor2() {
+    private ArrayList<Object> createExpertGameFor2() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_EXPERT_GAME_FOR_2);
         messages.add(userName);
@@ -317,7 +318,7 @@ public class EriantysCLIClientThread extends Thread {
         return responses;
     }
 
-    private ArrayList<Object> createExpertGameFor3() {
+    private ArrayList<Object> createExpertGameFor3() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_EXPERT_GAME_FOR_3);
         messages.add(userName);
@@ -327,8 +328,7 @@ public class EriantysCLIClientThread extends Thread {
         return responses;
     }
 
-    private ArrayList<Object> getExistingGames()
-    {
+    private ArrayList<Object> getExistingGames() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.SHOW_EXISTING_GAMES);
         ArrayList<Object> responses = responseFromServer(messages);
@@ -368,7 +368,7 @@ public class EriantysCLIClientThread extends Thread {
         //  new UpdateListener(this,serverAddress,userName).start();
     }
 
-    private void showExistingGames(ArrayList<Game> games) throws InterruptedException, UnknownHostException {
+    private void showExistingGames(ArrayList<Game> games) throws InterruptedException, IOException, ClassNotFoundException {
         clearScreen();
         int i = 0;
         ArrayList<String> roomName = new ArrayList<>();
@@ -417,7 +417,7 @@ public class EriantysCLIClientThread extends Thread {
 
     }
 
-    private void getResumeableGames(ArrayList<Game> games) throws UnknownHostException, InterruptedException {
+    private void getResumeableGames(ArrayList<Game> games) throws IOException, InterruptedException, ClassNotFoundException {
         clearScreen();
         int i = 0;
         ArrayList<String> gameDates = new ArrayList<>();
@@ -467,8 +467,7 @@ public class EriantysCLIClientThread extends Thread {
 
     }
 
-    private ArrayList<Object> resumeAnOldGame(String gameStartedDate, String name)
-    {
+    private ArrayList<Object> resumeAnOldGame(String gameStartedDate, String name) throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.RELOAD_AN_OLD_GAME);
         messages.add(name);
@@ -476,8 +475,7 @@ public class EriantysCLIClientThread extends Thread {
         return responseFromServer(messages);
     }
 
-    private ArrayList<Object> joinOneGame(String creator, String player)
-    {
+    private ArrayList<Object> joinOneGame(String creator, String player) throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.JOIN_ONE_GAME);
         messages.add(creator);
@@ -488,8 +486,7 @@ public class EriantysCLIClientThread extends Thread {
     }
 
 
-    private String logOut()
-    {
+    private String logOut() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.LOG_OUT);
         messages.add(userName);
@@ -499,7 +496,7 @@ public class EriantysCLIClientThread extends Thread {
     }
 
 
-    private String loggingWithUserName() throws UnknownHostException {
+    private String loggingWithUserName() throws IOException, ClassNotFoundException {
         System.out.println("What's your username?");
         userName = new Scanner(System.in).nextLine();
         ArrayList<Object> messages = new ArrayList<>();
@@ -518,31 +515,16 @@ public class EriantysCLIClientThread extends Thread {
         System.out.println("Please insert ip address for connection to server:");
         serverAddress = new Scanner(System.in).nextLine();
 
-        Socket client;
 
-        String response = "";
         try {
-            // client = new Socket("192.168.8.196", 12345);
-            // client = new Socket(serverAddress, 12345);
-            client = new Socket("localhost", 12345);
-            System.out.println("Client ready.\n");
-            // Input stream
-            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            // Output stream
-            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-
-            //sending a message to server
-            out.println("try to connect");
-
-            response = in.readLine().substring(4);
-
-            System.out.println("message received is: "+response);
-            //close client
-            client.close();
-
+            ArrayList<Object> messages = new ArrayList<>();
+            messages.add(Config.TRY_TO_CONNECT);
+            ArrayList<Object> responses = responseFromServer(messages);
+            if(responses.get(0).equals(Config.TRY_TO_CONNECT_SUC))
+                System.out.println("Server is on");
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            if(e instanceof ConnectException)
             e.printStackTrace();
         }
     }
@@ -572,25 +554,15 @@ public class EriantysCLIClientThread extends Thread {
         }
     }
 
-    private ArrayList<Object> responseFromServer(ArrayList<Object> messages)
-    {
+    private ArrayList<Object> responseFromServer(ArrayList<Object> messages) throws IOException, ClassNotFoundException {
         ArrayList<Object> responses = new ArrayList<>();
-        try
-        {
-            Socket client = new Socket(serverAddress, 12345);
-            // Input stream
-            ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-            oos.writeObject(messages);
-            responses = (ArrayList<Object>) ois.readObject();
-            client.close();
-            return responses;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        responses.add("Unknown Error");
+        Socket client = new Socket(serverAddress, 12345);
+        // Input stream
+        ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
+        ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+        oos.writeObject(messages);
+        responses = (ArrayList<Object>) ois.readObject();
+        client.close();
         return responses;
     }
 
