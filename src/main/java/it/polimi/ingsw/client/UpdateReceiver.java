@@ -4,13 +4,13 @@ import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.Config;
 import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.threads.AFKTrigger;
 import it.polimi.ingsw.view.Cli;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class UpdateReceiver extends Thread {
-
+    public static final int AFK_TIMEOUT = 10;
     private int portNumber;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
@@ -26,20 +26,72 @@ public class UpdateReceiver extends Thread {
     private String userName;
     private String serverAddress;
     private boolean receiverOn;
+    private EriantysCLIClientThread EriantysClient;
+    private ServerSocket updateReceiver;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private Thread pingServer;
+    private AFKTrigger akfTrigger;
 
-    public UpdateReceiver(int portNumber,String userName,String serverAddress)
+    public UpdateReceiver(int portNumber,String userName,String serverAddress, EriantysCLIClientThread eriantysClient)
     {
         this.portNumber = portNumber;
         this.userName = userName;
         this.serverAddress =serverAddress;
         this.receiverOn = true;
+        this.EriantysClient = eriantysClient;
+        /**
+         * TODO YAN CLIENT PING SERVER TIMEOUT
+         * */
+        pingServer = new Thread(){
+            boolean threadOn = true;
+            @Override
+            public void run() {
+                try
+                {
+                    while (threadOn)
+                    {
+                        sleep(5000);
+                        ArrayList<Object> messages = new ArrayList<>();
+                        messages.add(Config.CLIENT_PING_SERVER);
+                        messages.add(userName);
+                        ArrayList<Object> responses = responseFromServer(messages);
+                        if(!responses.get(0).equals(Config.SERVER_IS_ON))
+                        {
+                            receiverOn = false;
+                            update.close();
+                            threadOn = false;
+                        }
+                    }
+                } catch (Exception e) {
+                    if(e instanceof SocketException)
+                    {
+                        System.out.println("Something went wrong with server");
+                        receiverOn = false;
+                    }
+                    else if(e instanceof ConnectException)
+                    {
+                        System.out.println("Cannot create connection with server");
+                        receiverOn = false;
+                    }
+                    else
+                        e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void interrupt() {
+                threadOn = false;
+            }
+        };
+
+        akfTrigger = new AFKTrigger(AFK_TIMEOUT,serverAddress,userName,this);
     }
 
     public void run()
     {
+        pingServer.start();
         try {
-            ServerSocket updateReceiver = new ServerSocket(portNumber);
+            updateReceiver = new ServerSocket(portNumber);
             while(receiverOn)
             {
                 update = updateReceiver.accept();
@@ -50,46 +102,107 @@ public class UpdateReceiver extends Thread {
                 if(updates.get(0).equals(Config.GAME_OVER))
                 {
                     receiverOn = false;
-                    System.out.println("Game is closing.");
+                    System.out.println("Game Over");
+                    EriantysClient.clone().start();
+
+                }
+                else if(updates.get(0).equals(Config.SERVER_CLOSE))
+                {
+                    receiverOn = false;
+                    System.out.println("Server shut down.");
+                    new EriantysCLIClientThread().start();
                 }
                 else
-                    updateReceived(updates);
+                {
+                    new Thread(() -> {
+                        try {
+                            updateReceived(updates);
+                        } catch (EriantysExceptions e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                }
+
             }
             updateReceiver.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (EriantysExceptions e) {
-            e.printStackTrace();
+            pingServer.interrupt();
+            akfTrigger.isInterrupt();
+        } catch (Exception e) {
+            if(e instanceof SocketException)
+            {
+                System.out.println("Something went wrong with server");
+                EriantysClient.clone().start();
+            }
+            else if(e instanceof SocketTimeoutException)
+            {
+                System.out.println("One player is in AFK, return to menu page.\n" +
+                        "you can reload this game in the future.");
+                EriantysClient.clone().start();
+            }
+            else if(e instanceof RuntimeException)
+            {
+                System.out.println("AKF triggered");
+                EriantysClient.clone().start();
+            }
+            else
+                e.printStackTrace();
+        }
+        finally {
+            if(!updateReceiver.isClosed()) {
+                try {
+                    updateReceiver.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(!pingServer.isInterrupted())
+                pingServer.interrupt();
+            if(!akfTrigger.isInterrupt())
+                akfTrigger.isInterrupt();
+
         }
     }
 
-    public void updateReceived(ArrayList<Object> messages) throws EriantysExceptions {
-         clearScreen();
+    public void updateReceived(ArrayList<Object> messages) throws EriantysExceptions, IOException, ClassNotFoundException {
+        clearScreen();
         String msg = (String) messages.get(0);
+        Game g = (Game) messages.get(1);
         System.out.println(dateFormat.format(new Date()));
         switch (msg)
         {
             case Config.UPDATE_CREATOR_WAITING_ROOM :
-                updateCreatorGameRoom((Game) messages.get(1));
+                updateCreatorGameRoom(g);
                 break;
             case Config.UPDATE_OTHER_WAITING_ROOM:
-                updateOtherPlayerGameRoom((Game) messages.get(1));
+                updateOtherPlayerGameRoom(g);
                 break;
             case Config.UPDATE_CREATOR_WAITING_ROOM_FOR_OLD_GAME:
-                updateCreatorOldGameRoom((Game) messages.get(1));
+                updateCreatorOldGameRoom(g);
                 break;
             case Config.UPDATE_OTHER_WAITING_ROOM_FOR_OLD_GAME:
-                updateOtherPlayerOldGameRoom((Game) messages.get(1));
+                updateOtherPlayerOldGameRoom(g);
                 break;
             case Config.GAME_UPDATED:
-               gameUpdate((Game) messages.get(1));
+                /**
+                 * if within 60s receiver don't get update, someone is in afk
+                 * close receiver
+                 * */
+                if(g.getPlayers().get(0).getName().equals(userName))
+                {
+                    if(akfTrigger.isAlive() ) {
+                        akfTrigger.reset();// reset akf time
+                    } else
+                        akfTrigger.start();
+                }
+                gameUpdate(g);
                 break;
         }
     }
-    private void updateCreatorOldGameRoom(Game game)
-    {
+    private void updateCreatorOldGameRoom(Game game) throws IOException, ClassNotFoundException {
         clearScreen();
         System.out.println(String.format("%s's %s game for %d, started in %s with player: %s, %s .",
                 game.getTurnList().get(0).getName(),
@@ -118,7 +231,7 @@ public class UpdateReceiver extends Thread {
                 {
                     ArrayList<Object> messages = new ArrayList<>();
                     messages.add(Config.GAME_OLD_START);
-                    messages.add(userName);
+                    messages.add(game.getGameStartingTime()); // using game starting time to identify uniquely a game
                     ArrayList<Object> responses = responseFromServer(messages);
                     String msg = (String) responses.get(0);
                     if(msg.equals(Config.GAME_OLD_START_SUC))
@@ -151,7 +264,7 @@ public class UpdateReceiver extends Thread {
         System.out.println("Please wait for game to be started");
     }
 
-    private void updateCreatorGameRoom(Game game) {
+    private void updateCreatorGameRoom(Game game) throws IOException, ClassNotFoundException {
         System.out.println(String.format("%s, this is your game, waiting for other %d\n",
                 game.getPlayers().get(0).getName(),
                 game.getN_Player() - game.getPlayers().size()
@@ -200,7 +313,7 @@ public class UpdateReceiver extends Thread {
                     game.getPlayers().get(i).getName()
             ));
     }
-    private void gameUpdate(Game game) throws EriantysExceptions {
+    private void gameUpdate(Game game) throws EriantysExceptions, IOException, ClassNotFoundException {
         System.out.println("Game has been updated");
         new Cli().show_game(game);
         Command c = game.getExecutedCommand();
@@ -210,16 +323,19 @@ public class UpdateReceiver extends Thread {
         {
             Command command = game.getLastCommand();
             command.getData();
-            ArrayList<Object> messages = new ArrayList<>();
-            ArrayList<Object> responses = new ArrayList<>();
-            messages.add(Config.COMMAND_EXECUTE);
-            messages.add(userName);
-            messages.add(command);
-            responses = responseFromServer(messages);
-            if(responses.get(0).equals(Config.COMMAND_EXECUTE_SUC))
-                System.out.println("Command executed");
-            else
-                System.out.println(responses.get(0));
+            if(receiverOn) // false -> closed by afkTrigger, user is stacked with getData
+            {
+                ArrayList<Object> messages = new ArrayList<>();
+                ArrayList<Object> responses = new ArrayList<>();
+                messages.add(Config.COMMAND_EXECUTE);
+                messages.add(userName);
+                messages.add(command);
+                responses = responseFromServer(messages);
+                if(responses.get(0).equals(Config.COMMAND_EXECUTE_SUC))
+                    System.out.println("Command executed");
+                else
+                    System.out.println(responses.get(0));
+            }
         }
         else if (game.getLastCommand().getUsername().equals("endgame")){
             Command command = game.getLastCommand();
@@ -233,26 +349,18 @@ public class UpdateReceiver extends Thread {
             System.out.println("\b") ;
         }
     }
-    private  ArrayList<Object> responseFromServer(ArrayList<Object> messages)
-    {
+    private  ArrayList<Object> responseFromServer(ArrayList<Object> messages) throws IOException, ClassNotFoundException {
         ArrayList<Object> responses = new ArrayList<>();
-        try
-        {
-            Socket client = new Socket(serverAddress, 12345);
-            // Input stream
-            ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-            oos.writeObject(messages);
-            responses = (ArrayList<Object>) ois.readObject();
-            client.close();
-            return responses;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        responses.add("Unknown Error");
+
+        Socket client = new Socket(serverAddress, 12345);
+        // Input stream
+        ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
+        ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+        oos.writeObject(messages);
+        responses = (ArrayList<Object>) ois.readObject();
+        client.close();
         return responses;
+
     }
 
     public boolean isReceiverOn() {
@@ -262,4 +370,6 @@ public class UpdateReceiver extends Thread {
     public synchronized void setReceiverOn(boolean receiverOn) {
         this.receiverOn = receiverOn;
     }
+
+
 }

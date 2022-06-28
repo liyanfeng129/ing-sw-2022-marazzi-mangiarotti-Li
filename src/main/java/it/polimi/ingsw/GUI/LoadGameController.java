@@ -1,19 +1,17 @@
 package it.polimi.ingsw.GUI;
 
-import it.polimi.ingsw.model.Config;
 import it.polimi.ingsw.model.Game;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import it.polimi.ingsw.model.*;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -44,12 +42,7 @@ public class LoadGameController extends AASceneParent implements Initializable {
 
     @FXML
     protected void back(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass(). getResource("start_load.fxml"));
-        stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        System.out.println("back");
+        switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(),FxmlNames.START_LOAD);
     }
 
 
@@ -81,9 +74,10 @@ public class LoadGameController extends AASceneParent implements Initializable {
             for(Game g : gameList)
             {
                 roomName.add(g.getPlayers().get(0).getName());
-                games.getItems().add(String.format("%d. %s's game for %d, waiting for other %d.",
+                games.getItems().add(String.format("%d. %s's %s game for %d, waiting for other %d.",
                         i+1,
                         g.getPlayers().get(0).getName(),
+                        (g.isExpertMode()? "expert" : "normal"),
                         g.getN_Player(),
                         g.getN_Player()-g.getPlayers().size()
                 ));

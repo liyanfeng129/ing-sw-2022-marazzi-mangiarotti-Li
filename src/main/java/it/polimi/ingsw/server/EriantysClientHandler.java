@@ -1,16 +1,16 @@
 package it.polimi.ingsw.server;
-
 import com.google.gson.Gson;
 import it.polimi.ingsw.client.Users;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;
 
-
 import java.io.*;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 
 public class EriantysClientHandler extends Thread{
     BufferedReader in;
@@ -37,10 +37,8 @@ public class EriantysClientHandler extends Thread{
     public void run()
     {
         try {
-            //out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-            //in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-             oos = new ObjectOutputStream(client.getOutputStream());
-             ois=new ObjectInputStream(client.getInputStream());
+            oos = new ObjectOutputStream(client.getOutputStream());
+            ois=new ObjectInputStream(client.getInputStream());
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -62,19 +60,31 @@ public class EriantysClientHandler extends Thread{
             System.out.println(dateFormat.format(new Date()));
             switch (request)
             {
-                case "Test_show all threads":
-                    Set<Thread> threads = Thread.getAllStackTraces().keySet();
-                    System.out.printf("%-15s \t %-15s \t %-15s \t %s\n", "Name", "State", "Priority", "isDaemon");
-                    for (Thread t : threads) {
-                        System.out.printf("%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());
-                    }
-                    oos.writeObject(responses);
-                    break;
                 case "Test_all_game_status":
                     responses.add(games);
                     responses.add(oldGames);
                     responses.add(subs);
                     oos.writeObject(responses);
+                    break;
+
+                case Config.CLIENT_PING_SERVER:
+                    //System.out.println(client+"send a ping signal to server");
+                    userName = (String) messages.get(1);
+                    Subscriber sub = findSubByName(userName);
+                    if(sub!=null)
+                    {
+                        sub.setCountToTimeOut(0);
+                        responses.add(Config.SERVER_IS_ON);
+                        oos.writeObject(responses);
+                    }
+                    break;
+                case Config.CLIENT_AFK_NOTIFYING:
+                    System.out.println("Someone is in afk.");
+                    userName = (String) messages.get(1);
+                    game = findGameForPlayer(userName);
+                    responses.add(Config.CLIENT_AFK_NOTIFYING_SUC);
+                    oos.writeObject(responses);
+                    notifySubs_GameOver(game);
                     break;
                 case Config.GET_NEWEST_GAME:
                     System.out.println(client+"tries to get a updated game");
@@ -163,6 +173,17 @@ public class EriantysClientHandler extends Thread{
                     oos.writeObject(responses);
                     break;
 
+                case Config.CREATE_EXPERT_GAME_FOR_3:
+                    System.out.println(client+"tries to create a expert game for three");
+                    userName = (String) messages.get(1);
+                    cliClient = (boolean) messages.get(2);
+                    msg = createExpertGameFor3(userName,cliClient);
+                    game = findGameForPlayer((String) messages.get(1));
+                    responses.add(msg);
+                    responses.add(game);
+                    oos.writeObject(responses);
+                    break;
+
                 case Config.SHOW_EXISTING_GAMES:
                     System.out.println(client+"wants a list of games");
                     ArrayList<Game> gameList = showGames();
@@ -243,31 +264,24 @@ public class EriantysClientHandler extends Thread{
                     oos.writeObject(responses);
                     break;
                 case Config.GAME_START:
-                        System.out.println(client+" wants to start a game");
-                        findGameForPlayer((String) messages.get(1)).startGame();
-                        game = findGameForPlayer((String) messages.get(1));
-                        responses.add(Config.GAME_START_SUC);
-                        oos.writeObject(responses);
-                        gameUpdate(game);
+                    System.out.println(client+" wants to start a game");
+                    findGameForPlayer((String) messages.get(1)).startGame();
+                    game = findGameForPlayer((String) messages.get(1));
+                    responses.add(Config.GAME_START_SUC);
+                    oos.writeObject(responses);
+                    gameUpdate(game);
                     break;
                 case Config.GAME_OLD_START:
                     System.out.println(client+" wants to start an old game");
-                    userName = (String) messages.get(1);
+                    String gameStartingTime = (String) messages.get(1);
                     allOldGames = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
-                    Game oldGame = null;
-                    for(Game g : oldGames)
-                        if(g.getPlayers().get(0).getName().equals(userName))
-                            oldGame = g;
                     for(Game g : allOldGames)
-                        if(g.getPlayers().get(0).getName().equals(userName) && g.getGameStartingTime().equals(oldGame.getGameStartingTime()))
+                        if(g.getGameStartingTime().equals(gameStartingTime))
                             game = g;
-                    allOldGames.remove(game);
-                    Object2fileBin("gameRecord.bin",allOldGames);
                     responses.add(Config.GAME_OLD_START_SUC);
                     oos.writeObject(responses);
                     games.add(game);
                     gameUpdate(game);
-                    
                     break;
                 case Config.COMMAND_EXECUTE:
                     System.out.println(client+"tries to execute a command");
@@ -279,37 +293,6 @@ public class EriantysClientHandler extends Thread{
 
                     oos.writeObject(responses);
                     gameUpdate(game);
-                    break;
-                case Config.LISTENING_FOR_UPDATE:
-                    System.out.println(client+" is listening for update");
-                    String name = (String) messages.get(1);
-                    player = findPlayerByName(name);
-                    while(!player.isUpdate())
-                    {
-                        sleep(1000);
-                    }
-                    responses = new ArrayList<>();
-                    if(!findGameForPlayer(name).isGameStarted()) // game hasn't started yet
-                    {
-                        if(findGameForPlayer(name).getPlayers().get(0).getName().equals(name))// this player is creator
-                        {
-                            System.out.println(player.getName()+"'s game room has been changed");
-                            responses.add(Config.UPDATE_CREATOR_WAITING_ROOM);
-                        }
-                        else
-                        {
-                            System.out.println(player.getName()+", the room he is in has been changed");
-                            responses.add(Config.UPDATE_OTHER_WAITING_ROOM);
-                        }
-                    }
-                    else // Game started
-                    {
-                        System.out.println(player.getName()+"'s game has been updated");
-                        responses.add(Config.GAME_UPDATED);
-                    }
-                    responses.add(findGameForPlayer(player.getName()));
-                    oos.writeObject(responses);
-                    player.setUpdate(false);
                     break;
                 default:
                     out.println("not ok, no option valid for this");
@@ -326,11 +309,13 @@ public class EriantysClientHandler extends Thread{
 
 
     private void gameUpdate(Game game) throws InterruptedException, IOException {
-        /*
-        for(Player p : game.getPlayers())
-            p.setUpdate(true);
-
-         */
+        if(game.isGameStarted())
+        {
+            saveGame(game);
+            /**
+            game.setCountToTimeOut(0);
+             */
+        }
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
@@ -382,6 +367,34 @@ public class EriantysClientHandler extends Thread{
             }
     }
     /**
+     * steps:
+     *      1. file -> object
+     *      2. find previous version of this game
+     *      3. replace it with newest version
+     *      4. object -> file
+     * */
+    private void saveGame(Game game)
+    {
+        ArrayList<Game> games = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
+        if(games == null) {
+            games = new ArrayList<>();
+        } else
+        {
+            for(Iterator<Game> ite = games.iterator(); ite.hasNext();)
+            {
+                Game g = ite.next();
+                if(g.getGameStartingTime().equals(game.getGameStartingTime()))
+                {
+                    games.remove(g);
+                    break;
+                }
+            }
+
+        }
+        games.add(game);
+        Object2fileBin("gameRecord.bin",games);
+    }
+    /**
      * TODO
      *
      * */
@@ -405,24 +418,20 @@ public class EriantysClientHandler extends Thread{
             return "Cannot join a started game";
         if(game.getPlayers().size() == game.getN_Player())
             return "Cannot join a game where is full";
-        if(game.getN_Player() == 2 && !game.isExpertMode())
+        if(game.getN_Player() == 2 )
         {
             game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,cliClient));
         }
-        if(game.getN_Player() == 3 && !game.isExpertMode() && game.getPlayers().size() == 1)
+        if(game.getN_Player() == 3 &&  game.getPlayers().size() == 1) // second player in a game for three
         {
             game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,3,cliClient));
         }
-        else if(game.getN_Player() == 3 && !game.isExpertMode() && game.getPlayers().size() == 2)
+        else if(game.getN_Player() == 3 && game.getPlayers().size() == 2) // third player in a game for three
         {
             game.addPlayers(new Player(player,Mage.MAGE3,TowerColor.GREY,3,cliClient));
         }
 
-        if(game.getN_Player() == 2 && game.isExpertMode())
-        {
-            game.addPlayers(new Player(player,Mage.MAGE2,TowerColor.WHITE,2,cliClient));
-        }
-            return Config.JOIN_ONE_GAME_SUC;
+        return Config.JOIN_ONE_GAME_SUC;
     }
 
     private synchronized String createGameFor2(String userName, boolean cliClient) throws EriantysExceptions {
@@ -441,6 +450,11 @@ public class EriantysClientHandler extends Thread{
         games.add(game);
         return Config.CREATE_EXPERT_GAME_FOR_2_SUC;
     }
+    private String createExpertGameFor3(String userName, boolean cliClient) throws EriantysExceptions {
+        Game game = new Game(3, true, new Player(userName,Mage.MAGE1,TowerColor.BLACK,3,cliClient));
+        games.add(game);
+        return Config.CREATE_EXPERT_GAME_FOR_3_SUC;
+    }
 
     private synchronized ArrayList<Game> showGames()
     {
@@ -458,7 +472,7 @@ public class EriantysClientHandler extends Thread{
         try
         {
             Game g = findGameForPlayer(userName);
-            removeSubs(g);
+            notifySubs_closingServer_removeSubs(g);
             games.remove(g);
         }
         catch (InnerExceptions.NoSuchUserException e)
@@ -470,10 +484,6 @@ public class EriantysClientHandler extends Thread{
                     ite.remove();
             }
         }
-        /**TODO
-         * Save the game to server
-         * */
-
         return Config.LOG_OUT_SUC;
     }
 
@@ -603,11 +613,10 @@ public class EriantysClientHandler extends Thread{
         throw new InnerExceptions.NoSuchUserException("This player is not in any game.");
     }
 
-    private void removeSubs(Game game) throws IOException {
+    private void notifySubs_GameOver(Game game) throws IOException {
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
-
                 for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
                 {
                     Subscriber sub = ite.next();
@@ -618,12 +627,41 @@ public class EriantysClientHandler extends Thread{
                         ArrayList<Object> msg = new ArrayList<>();
                         msg.add(Config.GAME_OVER);
                         oos.writeObject(msg);
+                    }
+                }
+
+            }
+        synchronized (games)
+        {
+            games.remove(game);
+        }
+    }
+
+    private void notifySubs_closingServer_removeSubs(Game game) throws IOException {
+        for(Player p : game.getPlayers())
+            synchronized (subs)
+            {
+                for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
+                {
+                    Subscriber sub = ite.next();
+                    if(sub.getUserName().equals(p.getName()))
+                    {
+                        Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                        ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
+                        ArrayList<Object> msg = new ArrayList<>();
+                        msg.add(Config.SERVER_CLOSE);
+                        oos.writeObject(msg);
                         ite.remove();
                     }
                 }
 
             }
     }
+    /**
+     * reduce started game content to just what's essential to identify its self
+     * without data for game playing
+     * lightning weight
+     * */
     private ArrayList<Game> buildGamesInfoForAPLayer(ArrayList<Game> games, String name) throws EriantysExceptions {
         ArrayList<Game> gameInfos = new ArrayList<>();
         for(Game game : games)
@@ -635,11 +673,22 @@ public class EriantysClientHandler extends Thread{
                     lightGame.addPlayers(new Player(game.getPlayers().get(0).getName()));
                     for(Player p1 : game.getPlayers())
                         lightGame.addPlayerToTurnList(new Player(p1.getName()));
-                   lightGame.setExpertMode(game.isExpertMode());
-                   lightGame.setGameStarted(false);
-                   lightGame.setGameStartingTime(game.getGameStartingTime());
-                   gameInfos.add(lightGame);
+                    lightGame.setExpertMode(game.isExpertMode());
+                    lightGame.setGameStarted(false);
+                    lightGame.setGameStartingTime(game.getGameStartingTime());
+                    gameInfos.add(lightGame);
                 }
         return gameInfos;
+    }
+
+    private Subscriber findSubByName(String name)
+    {
+        for(Subscriber sub : subs)
+        {
+            if(sub.getUserName().equals(name))
+                return sub;
+        }
+
+        return null;
     }
 }

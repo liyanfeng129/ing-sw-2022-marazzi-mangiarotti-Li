@@ -1,17 +1,6 @@
 package it.polimi.ingsw.client;
 
 
-import it.polimi.ingsw.model.*;
-import it.polimi.ingsw.server.Subscriber;
-
-
-import java.io.*;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import static java.lang.Thread.sleep;
-
 public class EriantysCLIClient {
 
     public boolean needUpdate = false;
@@ -38,9 +27,6 @@ public class EriantysCLIClient {
             {
                 try
                 {
-
-
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

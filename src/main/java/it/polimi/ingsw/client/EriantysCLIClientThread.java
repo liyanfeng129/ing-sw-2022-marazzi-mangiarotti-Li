@@ -3,7 +3,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.*;
 
-
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -12,13 +11,24 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
-import static java.lang.Thread.sleep;
-
 public class EriantysCLIClientThread extends Thread {
     private  String serverAddress = "localhost";
     private  String userName = "";
     private  int listeningPortNumber;
     private UpdateReceiver ur = null;
+    private boolean logged = false;
+
+    public EriantysCLIClientThread(String serverAddress, String userName, int listeningPortNumber, boolean logged) {
+        this.serverAddress = serverAddress;
+        this.userName = userName;
+        this.listeningPortNumber = listeningPortNumber;
+        this.logged = logged;
+    }
+
+    public EriantysCLIClientThread() {
+
+    }
+
     private  void loggingMenu() throws InterruptedException, UnknownHostException {
         clearScreen();
         String response;
@@ -48,12 +58,13 @@ public class EriantysCLIClientThread extends Thread {
 
             }
             while(response.equals(Config.USER_ALREADY_LOGGED));
-            ur = new UpdateReceiver(listeningPortNumber,userName,serverAddress);
-            ur.start();
+            logged = true;
             lobbyMenu();
         }
     }
-    private void lobbyMenu() throws InterruptedException, UnknownHostException {
+    public void lobbyMenu() throws InterruptedException, UnknownHostException {
+        ur = new UpdateReceiver(listeningPortNumber,userName,serverAddress,this);
+        ur.start();
         /**
          * 1. Create a new game for 2 players
          * 2. Create a new game for 3 players
@@ -103,7 +114,12 @@ public class EriantysCLIClientThread extends Thread {
                         System.out.println(msg);
                     break;
                 case 4: //Create a new expert game for 3 players
-
+                    responses = createExpertGameFor3();
+                    msg = (String) responses.get(0);
+                    if (msg.equals(Config.CREATE_EXPERT_GAME_FOR_3_SUC))
+                        exit = true;
+                    else
+                        System.out.println(msg);
                     break;
                 case 5: //Resume an old game
                     messages.add(Config.RESUME_OLD_GAMES);
@@ -172,6 +188,8 @@ public class EriantysCLIClientThread extends Thread {
         }
     }
 
+
+
     private void showResuableGames(ArrayList<Game> games) throws UnknownHostException, InterruptedException {
         clearScreen();
         int i = 0;
@@ -179,11 +197,14 @@ public class EriantysCLIClientThread extends Thread {
         for(Game g : games)
         {
             roomName.add(g.getPlayers().get(0).getName());
-            System.out.println(String.format("%d. %s's game for %d, waiting for other %d.",
+            System.out.println(String.format("%d. %s's %s game for %d, started in %s with player: %s, %s .",
                     i+1,
-                    g.getPlayers().get(0).getName(),
+                    g.getTurnList().get(0).getName(),
+                    (g.isExpertMode()? "expert" : "normal"),
                     g.getN_Player(),
-                    g.getN_Player()-g.getPlayers().size()
+                    g.getGameStartingTime(),
+                    (g.getN_Player() > 1 ? g.getTurnList().get(1).getName() : " " ),
+                    (g.getN_Player() > 2 ? g.getTurnList().get(2).getName() : " " )
             ));
             i++;
         }
@@ -245,17 +266,21 @@ public class EriantysCLIClientThread extends Thread {
 
     public void run() {
         // TODO Auto-generated method stub
+        System.out.println("EriantysCliClientThread starts running");
         try
         {
             onClientClose();
             //connectTOServer();
-            loggingMenu();
-            //lobbyMenu();
+            if(!logged)
+                loggingMenu();
+            else
+                lobbyMenu();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+        System.out.println("EriantysCliClientThread stops running");
     }
 
     private ArrayList<Object> createNormalGameFor2()
@@ -292,6 +317,16 @@ public class EriantysCLIClientThread extends Thread {
         return responses;
     }
 
+    private ArrayList<Object> createExpertGameFor3() {
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.CREATE_EXPERT_GAME_FOR_3);
+        messages.add(userName);
+        messages.add(true); //this is CLI
+        ArrayList<Object> responses = responseFromServer(messages);
+
+        return responses;
+    }
+
     private ArrayList<Object> getExistingGames()
     {
         ArrayList<Object> messages = new ArrayList<>();
@@ -305,7 +340,7 @@ public class EriantysCLIClientThread extends Thread {
         clearScreen();
         System.out.println("This is creator's game room, only he can start the game.\n");
         System.out.println(String.format("Game mode: %s\n" +
-                "needs %d participant\n" +
+                        "needs %d participant\n" +
                         "waiting for %d",
                 (game.isExpertMode()? "expert" : "normal"),
                 game.getN_Player(),
@@ -318,8 +353,9 @@ public class EriantysCLIClientThread extends Thread {
     private void showOtherPlayerGameRoom(Game game)
     {
         clearScreen();
-        System.out.println(String.format("you are in %s's game, waiting for other %d\n",
+        System.out.println(String.format("you are in %s's %s game, waiting for other %d\n",
                 game.getPlayers().get(0).getName(),
+                (game.isExpertMode()? "expert" : "normal"),
                 game.getN_Player()-game.getPlayers().size()
         ));
         System.out.println("Participants:\n");
@@ -328,8 +364,8 @@ public class EriantysCLIClientThread extends Thread {
             System.out.println(String.format("%d: %s",
                     i+1,
                     game.getPlayers().get(i).getName()
-                    ));
-      //  new UpdateListener(this,serverAddress,userName).start();
+            ));
+        //  new UpdateListener(this,serverAddress,userName).start();
     }
 
     private void showExistingGames(ArrayList<Game> games) throws InterruptedException, UnknownHostException {
@@ -339,9 +375,10 @@ public class EriantysCLIClientThread extends Thread {
         for(Game g : games)
         {
             roomName.add(g.getPlayers().get(0).getName());
-            System.out.println(String.format("%d. %s's game for %d, waiting for other %d.",
+            System.out.println(String.format("%d. %s's %s game for %d, waiting for other %d.",
                     i+1,
                     g.getPlayers().get(0).getName(),
+                    (g.isExpertMode()? "expert" : "normal"),
                     g.getN_Player(),
                     g.getN_Player()-g.getPlayers().size()
             ));
@@ -587,4 +624,8 @@ public class EriantysCLIClientThread extends Thread {
         });
     }
 
+
+    protected EriantysCLIClientThread clone()  {
+        return new EriantysCLIClientThread(serverAddress,userName,listeningPortNumber,logged);
+    }
 }

@@ -1,16 +1,15 @@
 package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.command.Command;
-import it.polimi.ingsw.model.Config;
-import javafx.application.Platform;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import it.polimi.ingsw.model.*;
+
 
 public class GuiMessageSender {
     private AASceneParent caller;
@@ -31,7 +30,7 @@ public class GuiMessageSender {
         try
         {
             ArrayList<Object> messages = new ArrayList<>();
-             responses = new ArrayList<>();
+            responses = new ArrayList<>();
             switch (option)
             {
                 case Config.USER_LOGGING:
@@ -40,6 +39,10 @@ public class GuiMessageSender {
                     break;
                 case Config.CREATE_NORMAL_GAME_FOR_2:
                     responses = createNormalGameFor2();
+                    caller.responsesFromSender(responses);
+                    break;
+                case Config.CREATE_NORMAL_GAME_FOR_3:
+                    responses = createNormalGameFor3();
                     caller.responsesFromSender(responses);
                     break;
                 case Config.CREATE_EXPERT_GAME_FOR_2:
@@ -123,6 +126,7 @@ public class GuiMessageSender {
 
         return responses;
     }
+
 
     private ArrayList<Object> getExistingGames()
     {
