@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
 
+/**
+ * this class implement the bag of the game and its functionalities
+ */
 public class Bag implements Serializable {
     private  int[] students;
     private int N_students;
@@ -21,16 +24,8 @@ public class Bag implements Serializable {
         this.N_students = 130;
     }
 
-    public int[] getStudents() {
-        return students;
-    }
-
     public void setStudents(int[] students) {
         this.students = students;
-    }
-
-    public int getN_students() {
-        return N_students;
     }
 
     public void setN_students(int n_students) {
@@ -43,19 +38,6 @@ public class Bag implements Serializable {
      */
     public int[] getBag() {
         return students;
-    }
-
-
-    public void setBag_test(){
-        students[0]=1;
-    }
-    public void setBag2_test(){
-        students[0]=1;
-        students[1]=1;
-        students[2]=1;
-        students[3]=-1;
-        students[4]=1;
-
     }
 
     /**

@@ -177,7 +177,7 @@ public class PlayerBoard implements Serializable {
      */
     public void removeStudentFromWaitingRoom(int students[]) throws EriantysExceptions{
         for(int i = 0; i < 5; i++){
-            if(this.waitingRoom[i]==0)
+            if(this.waitingRoom[i]-students[i]<0)
                 throw new InnerExceptions.NegativeValue("Not Enought student");
             this.waitingRoom[i] -= students[i];
             }
@@ -190,7 +190,7 @@ public class PlayerBoard implements Serializable {
      */
     public void removeStudentFromDiningRoom(int students[]) throws EriantysExceptions{
         for(int i = 0; i < 5; i++) {
-            if (this.diningRoom[i] == 0)
+            if (this.diningRoom[i] -students[i]<0)
                 throw new InnerExceptions.NegativeValue("Not Enought student");
             this.diningRoom[i] -= students[i];
         }

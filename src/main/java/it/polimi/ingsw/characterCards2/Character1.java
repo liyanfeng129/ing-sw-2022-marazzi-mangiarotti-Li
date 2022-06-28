@@ -13,6 +13,11 @@ public class Character1 extends CharacterCard implements Serializable {
     private int students[] = new int[5];
     int student_color = -1;
     int island_pos = -1;
+
+    /**
+     * costructor for character1
+     * @param students teh student placed on this card at the start of the game
+     */
     public Character1(int [] students) {
         super();
         setN_card(1);

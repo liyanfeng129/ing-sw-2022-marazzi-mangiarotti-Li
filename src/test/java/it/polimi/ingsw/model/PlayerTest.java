@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,17 @@ class PlayerTest {
          player1=new Player("Alessio");
          pb=new PlayerBoard(8,TowerColor.BLACK,7);
     }
+    @AfterEach
+    public void tearDown(){
+        player=null;
+        player1= null;
+        pb=null;
+    }
+
+    /**
+     * test for constructors of player
+     * test for getter & setter in player
+     */
     @Test
     public void test_player(){
         assertTrue(player.isCliClient());

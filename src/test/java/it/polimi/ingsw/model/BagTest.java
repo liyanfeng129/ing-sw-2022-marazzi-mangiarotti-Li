@@ -21,6 +21,10 @@ class BagTest {
     public void teardown(){
         bag=null;
     }
+
+    /**
+     * test for method which initialize students in bag
+     */
     @Test
     public void test_bagSet(){
         assertEquals(130, Arrays.stream(bag.getBag()).sum());
@@ -36,15 +40,23 @@ class BagTest {
         assertArrayEquals(finalBag, bag.getBag());
         assertArrayEquals(islandStudent, temp1);
     }
+
+    /**
+     * test if there are not enough students in bag
+     */
     @Test
     public void test_bag_NegativeValue_Exceptions() {
         try {
-            bag.setBag_test();
+            bag.setStudents(new int[]{0, 1, 0, 0, 0});
             bag.bagSet1();
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * test for method draw
+     */
     @Test
     public void test_draw(){
         assertEquals(130, Arrays.stream(bag.getBag()).sum());
@@ -57,42 +69,27 @@ class BagTest {
         }
         assertEquals(60, Arrays.stream(temp).sum());
         assertEquals(70, Arrays.stream(bag.getBag()).sum());
-        int temp2[]= bag.getBag();
-        System.out.println(temp2);
         try {
-            temp1=bag.draw(35);
+            temp1=bag.draw(3);
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
-        //assertEquals(64, Arrays.stream(temp1).sum());
-        assertEquals(35, Arrays.stream(bag.getBag()).sum());
+        assertEquals(3, Arrays.stream(temp1).sum());
+        assertEquals(67, Arrays.stream(bag.getBag()).sum());
     }
 
+    /**
+     * test if there are not enough students in bag
+     */
     @Test
-    public void test_draw_EmptyBag_exception(){
+    public void test_draw_NotEnoughStudentInBag_exception(){
         int temp[] = new int[5];
-            bag.setBag_test();
+            bag.setStudents(new int[]{0, 1, 0, 0, 0});
         try {
             temp= bag.draw(2);
         } catch (EriantysExceptions e) {
             e.printStackTrace();
         }
-
-    }
-    @Test
-    public void test_draw_NegativeValue_exception(){
-        int temp[] = new int[5];
-        bag.setBag2_test();
-        try {
-            temp= bag.draw(3);
-        } catch (InnerExceptions.EmptyBag e) {
-            e.printStackTrace();
-        } catch (InnerExceptions.NegativeValue e) {
-            e.printStackTrace();
-        } catch (EriantysExceptions e) {
-            e.printStackTrace();
-        }
-
     }
 
 

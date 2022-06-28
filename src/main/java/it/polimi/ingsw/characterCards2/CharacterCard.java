@@ -14,13 +14,39 @@ public abstract class CharacterCard implements Serializable {
     private boolean dataGathered;
     private int N_card;
 
+    /**
+     * constructor of abstracrt class CharacterCard
+     */
     public CharacterCard() {
         firstUse = true;
         dataGathered = false;
     }
+
+    /**
+     * this method is used by each card to compute their effect
+     * @param game
+     * @param player which player used the card
+     * @return true after effect is computed
+     * @throws EriantysExceptions
+     */
     public abstract boolean useCard(Game game, Player player) throws EriantysExceptions;
     public abstract boolean undoEffect(Game game, Player player) throws EriantysExceptions;
+
+    /**
+     * this method is used by each card to acquire inputs from the player
+     * @param game
+     * @param isCliClient true if it is a game played on cli
+     * @return true after inputs are acquired
+     * @throws EriantysExceptions
+     */
     public abstract boolean getData(Game game, boolean isCliClient)throws EriantysExceptions;
+
+    /**
+     * this method is used by each card to acquire inputs in GUI game from the player
+     * @param inputs ArrayList with the inputs from player
+     * @return
+     * @throws EriantysExceptions
+     */
     public abstract String GUIGetData(ArrayList<Object> inputs) throws EriantysExceptions;
     public abstract String name();
 
@@ -64,6 +90,12 @@ public abstract class CharacterCard implements Serializable {
         N_card = n_card;
     }
 
+    /**
+     * this method compute if player p has reached 3,6 or 9 students of the same color in his playerboard
+     * for the first time.
+     * In this case 1 coin is added to this player's saving
+     * @param p player to check
+     */
     public void addCoin(Player p){
         for (int i=0;i<5;i++) {
             if (p.getPb().getDiningRoom()[i] >= 3 && p.getPb().getCoin3()[i] == false) {

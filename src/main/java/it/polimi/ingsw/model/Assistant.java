@@ -3,6 +3,9 @@ package it.polimi.ingsw.model;
 
 import java.io.Serializable;
 
+/**
+ * this class is used to create the assistant card of each mage
+ */
 public class Assistant implements Serializable {
     private AssistantType type;
     private Mage mage;

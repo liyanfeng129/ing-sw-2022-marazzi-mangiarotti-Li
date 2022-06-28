@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +33,18 @@ class ProfessorsTest {
         game=new Game(2,false,p1);
         game.addPlayers(p2);
     }
+    @AfterEach
+    public void tearDown(){
+
+        prof=null;
+        p1=null;
+        p2=null;
+        game=null;
+    }
+
+    /**
+     * test for method assignProfessor
+     */
     @Test
     public void test_assignProfessor(){
         prof.assignProfessor(game.getPlayers());

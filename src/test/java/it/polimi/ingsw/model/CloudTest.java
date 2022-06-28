@@ -16,15 +16,10 @@ class CloudTest {
     public void teardown(){
         cloud=null;
     }
-    @Test
-    public void test_setCloud(){
-        try {
-            cloud.setCloud(3);
-        } catch (EriantysExceptions e) {
-            fail();
-        }
-        assertEquals(3,cloud.getSize());
-    }
+
+    /**
+     * test NotValidSizeCloud exception
+     */
     @Test
     public void test_setCloud_NotValidSizeCloudException(){
         try {
@@ -33,17 +28,10 @@ class CloudTest {
             e.printStackTrace();
         }
     }
-    //probabilmente e inutile visto che la get la testo dopo
-    @Test
-    public void test_getCloud(){
-        int temp[]={0,0,0,0,0};
-        try {
-            cloud.setCloud(3);
-        } catch (EriantysExceptions e) {
-            fail();
-        }
-        assertArrayEquals(temp, cloud.getStudents());
-    }
+
+    /**
+     * test getter & setter for cloud & cloud students
+     */
     @Test
     public void test_student(){
         try {
@@ -61,6 +49,10 @@ class CloudTest {
         cloud.emptyCloud();
         assertArrayEquals(new int[]{0, 0, 0, 0, 0}, cloud.getStudents());
     }
+
+    /**
+     * test for NotValidStudentSizeException
+     */
     @Test
     public void test_NotValidStudentSizeException(){
         try {

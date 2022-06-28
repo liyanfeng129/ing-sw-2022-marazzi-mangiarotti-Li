@@ -44,7 +44,15 @@ class GameTest {
         p2=null;
         p3=null;
         game=null;
+        Egame=null;
+        game3=null;
+        Egame3=null;
+        gameServer=null;
     }
+
+    /**
+     * test for constructor of game
+     */
     @Test
     public void test_game(){
         ArrayList<Player> temp = new ArrayList<Player>();
@@ -61,6 +69,10 @@ class GameTest {
         assertEquals(temp.get(0).getName(),game.getPlayers().get(0).getName());
         assertEquals(temp.get(1).getName(),game.getPlayers().get(1).getName());
     }
+
+    /**
+     * test for method startGame
+     */
     @Test
     public void test_startGame(){
         try {
@@ -84,10 +96,11 @@ class GameTest {
         assertEquals(3,game3.getTable().getClouds().size());
         assertEquals(3, Arrays.stream(game.getTable().getClouds().get(0).getStudents()).sum());
         assertEquals(4, Arrays.stream(game3.getTable().getClouds().get(0).getStudents()).sum());
-        // secondo me manca una get cloud in table
-        // assertEquals(3,game.getTable().getcloud(0).getsize();
     }
 
+    /**
+     * test for method findPlayerName
+     */
     @Test
     public void test_findPlayerByName(){
         try {
@@ -97,6 +110,9 @@ class GameTest {
         }
     }
 
+    /**
+     * test for PlayerNotFound exception
+     */
     @Test
     public void test_playerNotFound(){
         try {
@@ -105,6 +121,10 @@ class GameTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * test for methods about command in game
+     */
     @Test
     public void test_command(){
         MoveMotherNatureCommand c1 = new MoveMotherNatureCommand(true, game, "Alessio", 2, false, false);
@@ -118,6 +138,9 @@ class GameTest {
         game.removeCommand();
         assertEquals(1,game.getCommands().size());
     }
+    /**
+     * test for methods about states in game
+     */
     @Test
     public void test_State(){
         MoveMotherNatureState s1 = new MoveMotherNatureState(game, 0, false, false);
@@ -134,6 +157,9 @@ class GameTest {
         }
     }
 
+    /**
+     * test for incorrectNumberOfPlayer exception
+     */
     @Test
     public void test_incorrectNumberOfPlayer() {
         try {
@@ -143,6 +169,10 @@ class GameTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * test for incorrectNumberOfPlayer exception
+     */
     @Test
     public void test_incorrectNumberOfPlayerInTurnList() {
         try {
@@ -153,13 +183,21 @@ class GameTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * test for startingTime in game
+     */
     @Test
     public void test_gameStartingTime() {
         game.setGameStartingTime("12.07");
         assertEquals("12.07",game.getGameStartingTime());
     }
+
+    /**
+     * test for constructor game()
+     */
     @Test
-    public void test_serverGame() throws EriantysExceptions {
+    public void test_serverGame() {
         Table table = new Table();
         gameServer.setN_Player(2);
         gameServer.setExpertMode(false);

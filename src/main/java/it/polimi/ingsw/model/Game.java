@@ -156,9 +156,6 @@ public class Game implements Serializable {
                         cloud.setCloud(3);
                         clouds.add(cloud);
                     }
-                    /** TODO
-                     * I character devono essere genereali
-                     */
                     table.initCharacter();
                     characterCards.add(table.getCharacters().get(0));
                     characterCards.add(table.getCharacters().get(1));

@@ -7,10 +7,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TableTest {
     private Table table;
+
+    /**
+     * set up for class TableTest
+     */
     @BeforeEach
     public void setup(){
         table=new Table();
     }
+
+    /**
+     * test for method merge island
+     */
     @Test
     public void test_mergeIsland(){
         int temp[]=table.getIsland(0).getStudents();
@@ -31,6 +39,10 @@ class TableTest {
         assertArrayEquals(temp,table.getIsland(0).getStudents());
 
     }
+
+    /**
+     * test for moving MotherNature
+     */
     @Test
     public void test_moveMn(){
         try {
@@ -42,6 +54,10 @@ class TableTest {
         assertFalse(table.getIsland(0).getMotherNature());
     }
 
+    /**
+     * test for MN_index_exception
+     * if Mother Nature is not in any island
+     */
     @Test
     public void test_getMN_index_exception(){
         table.getIsland(0).setMotherNature(false);
@@ -51,6 +67,11 @@ class TableTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * test for method getInfluence && getMaxPlayerInfluence
+     * @throws EriantysExceptions
+     */
     @Test
     public void test_influence() throws EriantysExceptions {
 
@@ -69,6 +90,11 @@ class TableTest {
         assertArrayEquals(new int[]{3, 1,0}, game.getTable().getInfluence(game,prof));
         assertEquals(p1,game.getTable().getPlayerMaxInfluence(game));
     }
+
+    /**
+     * test for method getInfluence && getMaxPlayerInfluence when charcter8 is used
+     * @throws EriantysExceptions
+     */
     @Test
     public void test_influenceCard8() throws EriantysExceptions {
         Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,true);
@@ -90,6 +116,11 @@ class TableTest {
         assertEquals(8,p1.getPb().getN_tower());
         assertEquals(7,p2.getPb().getN_tower());
     }
+
+    /**
+     * test for method getInfluence && getMaxPlayerInfluence when charcter6 is used
+     * @throws EriantysExceptions
+     */
     @Test
     public void test_influenceCard6() throws EriantysExceptions {
         Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,true);
@@ -106,6 +137,10 @@ class TableTest {
         game.getTable().getIsland(0).addStudent(2);
         assertArrayEquals(new int[]{1, 1,0}, game.getTable().getInfluence(game,prof));
     }
+    /**
+     * test for method getInfluence && getMaxPlayerInfluence when charcter9 is used
+     * @throws EriantysExceptions
+     */
     @Test
     public void test_influenceCard9() throws EriantysExceptions {
         Player p1=new Player("ale", Mage.MAGE1,TowerColor.WHITE,2,true);

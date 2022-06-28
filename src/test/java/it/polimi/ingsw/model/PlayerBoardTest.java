@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,13 @@ class PlayerBoardTest {
     public void setup(){
         pb=new PlayerBoard(8, TowerColor.BLACK,7);
     }
+    @AfterEach
+    public void tearDown(){
+            pb=null;
+    }
+    /**
+     * test for getter & setter of student in playerBoard
+     */
     @Test
     public void test_pbStudent(){
         try {
@@ -41,6 +49,10 @@ class PlayerBoardTest {
         pb.setMaxStudentsInWaiting(7);
         assertEquals(7,pb.getMaxStudentsInWaiting());
     }
+
+    /**
+     * test for invalid number of student
+     */
     @Test
     public void test_pbNotValidStudentException(){
         try {
@@ -74,6 +86,10 @@ class PlayerBoardTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * test for getter & setter of attribute tower
+     */
     @Test
     public void test_pbTower(){
         try {
@@ -85,6 +101,10 @@ class PlayerBoardTest {
             pb.moveTower(-2);
         assertEquals(6,pb.getN_tower());
     }
+
+    /**
+     * test for exception InvalidTowerNumberException
+     */
     @Test
     public void test_InvalidTowerNumberException(){
         try {
@@ -99,11 +119,20 @@ class PlayerBoardTest {
         }
             pb.moveTower(+1);
     }
+
+    /**
+     * test for method addCloudToWaiting
+     */
     @Test
-    public void test_addCloudToWaiting() throws EriantysExceptions {
+    public void test_addCloudToWaiting() {
         pb.addCloudToWaitingRoom(new int[]{0, 1, 2, 0, 0});
         assertArrayEquals(new int[]{0, 1, 2, 0, 0},pb.getWaitingRoom());
     }
+
+    /**
+     * test for methods in playerBoard called by character cards
+     * @throws EriantysExceptions if not enough students in playerboard
+     */
     @Test
     public void test_CharacterCard() throws EriantysExceptions {
         pb.addStudentsToDiningRoom(new int[]{0, 1, 2, 0, 0});
@@ -132,14 +161,5 @@ class PlayerBoardTest {
         assertTrue(pb.getCoin9()[4]);
 
     }
-    /*
-    secondo me non serve
-    @Test
-    public void test_pbProfessor(){
-        prof=new Professors();
-        prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE});
-
-    }
-    */
 
 }

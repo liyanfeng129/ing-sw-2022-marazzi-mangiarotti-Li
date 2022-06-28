@@ -4,6 +4,9 @@ package it.polimi.ingsw.model;
 import java.io.Serializable;
 import java.util.Arrays;
 
+/**
+ * this class implement the clouds of the game and their functionalities
+ */
 public class Cloud implements Serializable {
     private int size;
     private int[] students;

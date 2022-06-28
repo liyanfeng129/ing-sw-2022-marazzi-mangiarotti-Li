@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.Assistant;
 import it.polimi.ingsw.model.AssistantType;
 import it.polimi.ingsw.model.Mage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,10 @@ class AssistantTest {
     @BeforeEach
     public void setup(){
         assistant=new Assistant(AssistantType.Card_1, Mage.MAGE1);
+    }
+    @AfterEach
+    public void tearDown(){
+        assistant=null;
     }
     @Test
     public void test_getNum(){

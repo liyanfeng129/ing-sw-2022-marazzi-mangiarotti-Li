@@ -19,26 +19,40 @@ class HandTest {
     @AfterEach
     public void teardown(){
         hand=null;
+        a1=null;
+        a2=null;
     }
+
+    /**
+     * test for getter & setter of List_cards
+     */
     @Test
-    public void test_setList_cards(){
+    public void test_List_cards(){
         hand.setList_cards(Mage.MAGE1);
         assertEquals(a2.getNum(),hand.getList_cards().get(6).getNum());
-        }
+    }
+
+    /**
+     * test for getter of N_Cards
+     */
     @Test
     public void test_getN_cards(){
         assertEquals(10,hand.getN_cards());
     }
+
+    /**
+     * test for method useCard
+     */
     @Test
     public void test_useCard(){
-        //Assistant a=new Assistant(AssistantType.Card_1,Mage.MAGE1);
         hand.use_cards(AssistantType.Card_1);
-        System.out.println(hand.getList_cards());
         assertEquals(9,hand.getN_cards());
-        assertEquals(9,hand.getList_cards().size());
-        //assertEquals(a.getNum()+1,hand.getList_cards().get(0).getNum());
 
     }
+
+    /**
+     * test for getter & setter of the last played card(steps and value)
+     */
     @Test
     public void test_lastPlayedCard(){
         hand.setLastStepsAssistant(a1.getSteps());
