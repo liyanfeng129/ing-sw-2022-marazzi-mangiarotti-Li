@@ -69,4 +69,9 @@ public class GameSetUpController extends AASceneParent{
         }
     }
 
+    @Override
+    public void errorCommunicate(Exception e) {
+
+    }
+
 }

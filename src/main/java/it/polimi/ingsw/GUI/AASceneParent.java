@@ -1,8 +1,6 @@
 package it.polimi.ingsw.GUI;
 
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -53,5 +51,7 @@ public abstract class AASceneParent {
     public abstract void listenerCallBack(ArrayList<Object> responses) throws IOException;
 
     public abstract void responsesFromSender(ArrayList<Object> responses) throws IOException;
+
+    public abstract void errorCommunicate(Exception e);
 
 }

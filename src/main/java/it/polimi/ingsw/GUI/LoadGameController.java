@@ -97,4 +97,9 @@ public class LoadGameController extends AASceneParent implements Initializable {
             // open a window to display message
         }
     }
+
+    @Override
+    public void errorCommunicate(Exception e) {
+
+    }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -83,14 +84,6 @@ public class EriantysClientHandler extends Thread{
                         responses.add(Config.SERVER_IS_ON);
                         oos.writeObject(responses);
                     }
-                    break;
-                case Config.CLIENT_AFK_NOTIFYING:
-                    System.out.println("Someone is in afk.");
-                    userName = (String) messages.get(1);
-                    game = findGameForPlayer(userName);
-                    responses.add(Config.CLIENT_AFK_NOTIFYING_SUC);
-                    oos.writeObject(responses);
-                    notifySubs_GameOver(game);
                     break;
                 case Config.GET_NEWEST_GAME:
                     System.out.println(client+"tries to get a updated game");
@@ -453,20 +446,11 @@ public class EriantysClientHandler extends Thread{
         Users userList = (Users) fileJason2Object("users.json", Users.class);
         userList.logOutUser(userName);
         object2FileJason("users.json", userList);
-        try
-        {
-            Game g = findGameForPlayer(userName);
-            notifySubs_closingServer_removeSubs(g);
-            games.remove(g);
-        }
-        catch (InnerExceptions.NoSuchUserException e)
-        {
-            System.out.println(String.format("%s has no game associated logout success",userName));
-            for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();) {
-                Subscriber sub = ite.next();
-                if (sub.getUserName().equals(userName))
-                    ite.remove();
-            }
+        System.out.println(String.format("%s has no game associated logout success",userName));
+        for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();) {
+            Subscriber sub = ite.next();
+            if (sub.getUserName().equals(userName))
+                ite.remove();
         }
         return Config.LOG_OUT_SUC;
     }
@@ -597,7 +581,7 @@ public class EriantysClientHandler extends Thread{
         throw new InnerExceptions.NoSuchUserException("This player is not in any game.");
     }
 
-    private void notifySubs_GameOver(Game game) throws IOException {
+    private  void notifySubs_GameOver(Game game, String message) {
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
@@ -606,19 +590,30 @@ public class EriantysClientHandler extends Thread{
                     Subscriber sub = ite.next();
                     if(sub.getUserName().equals(p.getName()))
                     {
-                        Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
-                        ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
-                        ArrayList<Object> msg = new ArrayList<>();
-                        msg.add(Config.GAME_OVER);
-                        oos.writeObject(msg);
+                        new Thread(()->{
+                            try {
+                                Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                                ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
+                                ArrayList<Object> msg = new ArrayList<>();
+                                msg.add(Config.GAME_OVER);
+                                msg.add(message);
+                                oos.writeObject(msg);
+                            }
+                            catch (Exception e)
+                            {
+                                if(e instanceof ConnectException)
+                                {
+                                    System.out.println(sub.getUserName()+" is out of reach");
+
+                                }
+                                else
+                                    e.printStackTrace();
+                            }
+                        }).start();
                     }
                 }
 
             }
-        synchronized (games)
-        {
-            games.remove(game);
-        }
     }
 
     private void notifySubs_closingServer_removeSubs(Game game) throws IOException {

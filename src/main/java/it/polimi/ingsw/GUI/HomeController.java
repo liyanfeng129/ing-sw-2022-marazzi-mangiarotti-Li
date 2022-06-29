@@ -4,14 +4,12 @@ import it.polimi.ingsw.model.Config;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class HomeController extends AASceneParent {
@@ -34,7 +32,7 @@ public class HomeController extends AASceneParent {
         /**TODO YAN
          * qui devi aggiungere nelle condizioni il caso in cui il server non è valido
          */
-        String Server = ServerId.getText();
+        String serverAddress = ServerId.getText();
 
         try {
             currentEvent = event;
@@ -48,8 +46,9 @@ public class HomeController extends AASceneParent {
                 // recezione input
                 setInfo(new GUIInfo()); // first creation of GUIInfo
                 getInfo().setUserName(name);
+                getInfo().setServerAddress(serverAddress);
                 //new GuiMessageSender(this,Config.USER_LOGGING).run();
-                Platform.runLater(()-> new GuiMessageSender(this,Config.USER_LOGGING).run());
+                Platform.runLater(()-> new GuiMessageSender(this,Config.TRY_TO_CONNECT).run());
 
             }
 
@@ -75,12 +74,25 @@ public class HomeController extends AASceneParent {
             //switchScene((Stage) ((Node)currentEvent.getSource()).getScene().getWindow(), FxmlNames.START_LOAD);
             System.out.println(getUsername());
         }
+        else if(responses.get(0).equals(Config.TRY_TO_CONNECT_SUC))
+        {
+            Platform.runLater(()-> new GuiMessageSender(this,Config.USER_LOGGING).run());
+        }
         else
         {
             // pop up a small window to communicate the reason why user did not log or display error
             System.out.println(responses.get(0));
             myLabel.setText((String) responses.get(0));
         }
+    }
+
+    @Override
+    public void errorCommunicate(Exception e) {
+        e.printStackTrace();
+        if(e instanceof UnknownHostException)
+            myLabel.setText("Wrong server address, please make sure it is valid.");
+        else
+            myLabel.setText(e.getClass().toString());
     }
 
     public String getMyLabel() {

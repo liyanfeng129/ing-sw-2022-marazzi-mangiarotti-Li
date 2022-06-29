@@ -2,8 +2,10 @@ package it.polimi.ingsw.GUI;
 
 import it.polimi.ingsw.command.Command;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -33,6 +35,14 @@ public class GuiMessageSender {
             responses = new ArrayList<>();
             switch (option)
             {
+                case Config.LOG_OUT:
+                    responses = logOut();
+                    caller.responsesFromSender(responses);
+                    break;
+                case Config.TRY_TO_CONNECT:
+                    responses = connectToServer();
+                    caller.responsesFromSender(responses);
+                    break;
                 case Config.USER_LOGGING:
                     responses = loggingWithUserName();
                     caller.responsesFromSender(responses);
@@ -70,11 +80,18 @@ public class GuiMessageSender {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            caller.errorCommunicate(e);
         }
     }
 
-    private ArrayList<Object> commandExecute(String userName, Command command) {
+    private ArrayList<Object> connectToServer() throws IOException, ClassNotFoundException {
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.TRY_TO_CONNECT);
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
+    }
+
+    private ArrayList<Object> commandExecute(String userName, Command command) throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         ArrayList<Object> responses = new ArrayList<>();
         messages.add(Config.COMMAND_EXECUTE);
@@ -84,7 +101,7 @@ public class GuiMessageSender {
         return responses;
     }
 
-    private ArrayList<Object> startGame(String userName) {
+    private ArrayList<Object> startGame(String userName) throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.GAME_START);
         messages.add(userName);
@@ -93,8 +110,7 @@ public class GuiMessageSender {
     }
 
 
-    private ArrayList<Object> createNormalGameFor2()
-    {
+    private ArrayList<Object> createNormalGameFor2() throws IOException, ClassNotFoundException {
 
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_NORMAL_GAME_FOR_2);
@@ -105,8 +121,7 @@ public class GuiMessageSender {
         return responses;
     }
 
-    private ArrayList<Object> createNormalGameFor3()
-    {
+    private ArrayList<Object> createNormalGameFor3() throws IOException, ClassNotFoundException {
 
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_NORMAL_GAME_FOR_3);
@@ -117,7 +132,7 @@ public class GuiMessageSender {
         return responses;
     }
 
-    private ArrayList<Object> createExpertGameFor2() {
+    private ArrayList<Object> createExpertGameFor2() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.CREATE_EXPERT_GAME_FOR_2);
         messages.add(userName);
@@ -128,16 +143,14 @@ public class GuiMessageSender {
     }
 
 
-    private ArrayList<Object> getExistingGames()
-    {
+    private ArrayList<Object> getExistingGames() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.SHOW_EXISTING_GAMES);
         ArrayList<Object> responses = responseFromServer(messages);
         return responses;
     }
 
-    private ArrayList<Object> resumeAnOldGame(String gameStartedDate, String name)
-    {
+    private ArrayList<Object> resumeAnOldGame(String gameStartedDate, String name) throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.RELOAD_AN_OLD_GAME);
         messages.add(name);
@@ -145,8 +158,7 @@ public class GuiMessageSender {
         return responseFromServer(messages);
     }
 
-    private ArrayList<Object> joinOneGame(String creator, String player)
-    {
+    private ArrayList<Object> joinOneGame(String creator, String player) throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.JOIN_ONE_GAME);
         messages.add(creator);
@@ -157,39 +169,29 @@ public class GuiMessageSender {
     }
 
 
-    private String logOut()
-    {
+    private ArrayList<Object> logOut() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.LOG_OUT);
         messages.add(userName);
         ArrayList<Object> responses = responseFromServer(messages);
         //ur.setReceiverOn(false);
-        return (String) responses.get(0);
-    }
-
-    private ArrayList<Object> responseFromServer(ArrayList<Object> messages)
-    {
-        ArrayList<Object> responses = new ArrayList<>();
-        try
-        {
-            Socket client = new Socket(serverAddress, 12345);
-            // Input stream
-            ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
-            oos.writeObject(messages);
-            responses = (ArrayList<Object>) ois.readObject();
-            client.close();
-            return responses;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        responses.add("Unknown Error");
         return responses;
     }
 
-    private ArrayList<Object> loggingWithUserName() throws UnknownHostException {
+    private ArrayList<Object> responseFromServer(ArrayList<Object> messages) throws IOException, ClassNotFoundException {
+        ArrayList<Object> responses = new ArrayList<>();
+        Socket client = new Socket(serverAddress, 12345);
+        // Input stream
+        ObjectOutputStream oos = new ObjectOutputStream(client.getOutputStream());
+        ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+        oos.writeObject(messages);
+        responses = (ArrayList<Object>) ois.readObject();
+        client.close();
+        return responses;
+
+    }
+
+    private ArrayList<Object> loggingWithUserName() throws IOException, ClassNotFoundException {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.USER_LOGGING);
         messages.add(userName);

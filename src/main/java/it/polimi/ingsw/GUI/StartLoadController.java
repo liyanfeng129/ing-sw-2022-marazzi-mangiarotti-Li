@@ -1,6 +1,8 @@
 package it.polimi.ingsw.GUI;
 
 
+import it.polimi.ingsw.model.Config;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 
 public class StartLoadController extends AASceneParent {
 
+    ActionEvent currentEvent;
 
 
     @FXML
@@ -28,7 +31,8 @@ public class StartLoadController extends AASceneParent {
     }
     @FXML
     protected void back(ActionEvent event) throws IOException {
-        switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(), FxmlNames.HOME);
+        currentEvent = event;
+        Platform.runLater(()->new GuiMessageSender(this, Config.LOG_OUT).run());
         System.out.println("back");
     }
 
@@ -38,7 +42,16 @@ public class StartLoadController extends AASceneParent {
     }
 
     @Override
-    public void responsesFromSender(ArrayList<Object> responses) {
+    public void responsesFromSender(ArrayList<Object> responses) throws IOException {
+        if(responses.get(0).equals(Config.LOG_OUT_SUC))
+        {
+            setInfo(new GUIInfo());
+            switchScene((Stage) ((Node)currentEvent.getSource()).getScene().getWindow(), FxmlNames.HOME);
+        }
+    }
+
+    @Override
+    public void errorCommunicate(Exception e) {
 
     }
 }

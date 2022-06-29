@@ -34,4 +34,9 @@ public class GameStartedController extends AASceneParent {
     public void responsesFromSender(ArrayList<Object> responses) {
 
     }
+
+    @Override
+    public void errorCommunicate(Exception e) {
+
+    }
 }
