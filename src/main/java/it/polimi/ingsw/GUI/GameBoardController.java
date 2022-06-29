@@ -2114,7 +2114,7 @@ import java.util.stream.Collectors;
                 @Override public void handle(ActionEvent e) {
                     ArrayList<Object> inputs = new ArrayList<>();
                     if(Arrays.stream(characterCardExcange).sum()==Arrays.stream(characterRoomExcange).sum()){
-                        if (controllCard(StudentCard) && controllWaiting()&& Arrays.stream(characterRoomExcange).sum()<Card){
+                        if (controllCard(StudentCard) && controllWaiting()&& Arrays.stream(characterRoomExcange).sum()<=Card){
 
 
                             if (characterData==7){
