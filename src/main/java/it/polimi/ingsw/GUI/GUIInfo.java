@@ -14,6 +14,15 @@ public class GUIInfo
     private Game game;
     private GuiListener listener;
     private Command command;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public Command getCommand() {
         return command;

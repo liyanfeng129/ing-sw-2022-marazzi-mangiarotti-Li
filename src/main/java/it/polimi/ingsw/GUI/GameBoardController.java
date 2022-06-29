@@ -23,6 +23,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2325,6 +2326,12 @@ import java.util.stream.Collectors;
                 System.out.println(name+" command executed successfully");
             if(responses.get(0).equals(Config.GUI_GET_ASSISTANT_REPEATING))
                  messages.setText("This card is already used please select another one.");
+            if(responses.get(0).equals(Config.GAME_OVER))
+            {
+                String motivation = (String) responses.get(1);
+                getInfo().setMessage(motivation);
+                //switchScene((Stage) root.getScene().getWindow(), FxmlNames.START_LOAD);
+            }
         }
 
         @Override
