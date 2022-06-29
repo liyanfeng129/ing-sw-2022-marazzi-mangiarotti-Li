@@ -15,6 +15,7 @@ public class HomeApplication extends Application {
 
         stage.setTitle("Eryantis");
 
+        System.out.println(getClass(). getResource("home.fxml").getPath());
         stage.show();
 
     }
