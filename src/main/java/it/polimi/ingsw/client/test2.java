@@ -3,13 +3,13 @@ package it.polimi.ingsw.client;
 
 
 import it.polimi.ingsw.GUI.GameStarted;
+import it.polimi.ingsw.GUI.HomeApplication;
+import it.polimi.ingsw.GUI.LoadGame;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.view.Cli;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -33,7 +33,30 @@ public class test2 implements Serializable {
 
         System.out.println(absolutePathToProject);
 
-        System.out.println(test2.class.getClass().getResource("game_started.fxml").getPath());
+
+        URL resource = LoadGame.class.getResource("game_set_up.fxml");
+        URL resource1 = LoadGame.class.getResource("storage/welcome.txt");
+        File file = new File(resource1.getPath());
+        try
+        {
+            FileReader fr=new FileReader(file);   //reads the file
+            BufferedReader br=new BufferedReader(fr);  //creates a buffering character input stream
+            StringBuffer sb=new StringBuffer();    //constructs a string buffer with no characters
+            String line;
+            while((line=br.readLine())!=null)
+            {
+                sb.append(line);      //appends line to string buffer
+                sb.append("\n");     //end of line
+            }
+            fr.close();    //closes the stream and release the resources
+            System.out.println(sb.toString()+"\n");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        System.out.println(resource1.getPath());
+        //System.out.println(HomeApplication.class.getClass().getResource("game_started.fxml").getPath());
 
     }
 

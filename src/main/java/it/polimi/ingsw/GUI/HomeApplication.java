@@ -1,10 +1,13 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.client.test2;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.net.URL;
 
 public class HomeApplication extends Application {
     @Override
@@ -15,7 +18,8 @@ public class HomeApplication extends Application {
 
         stage.setTitle("Eryantis");
 
-        System.out.println(getClass(). getResource("home.fxml").getPath());
+        URL resource = LoadGame.class.getResource("game_started.fxml");
+        System.out.println(resource.toString());
         stage.show();
 
     }
