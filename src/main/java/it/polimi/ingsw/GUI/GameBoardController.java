@@ -270,7 +270,7 @@ import java.util.stream.Collectors;
             double pos_x_center =screenBounds.getMaxX()/2 -300; //650
             double pos_y_center =screenBounds.getMaxY()*1/3;
 
-            ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/game_over.png")));
+            ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("Image/game_over.png")));
             nodes.add(img_view);
             img_view.setFitWidth(screenBounds.getMaxY()*0.7);
             img_view.setPreserveRatio(true);
@@ -316,7 +316,7 @@ import java.util.stream.Collectors;
             double angle = 360/table.getIslands().size();
             double angle_;
             for(int i=0; i<table.getIslands().size();i++){
-                ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
+                ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream("Image/island1.png")));
                 nodes.add(img_view);
                 img_view.setFitWidth(screenBounds.getMaxY()/6);
                 img_view.setPreserveRatio(true);
@@ -338,7 +338,7 @@ import java.util.stream.Collectors;
                 bt.setStyle("-fx-border-color:transparent;");
                 bt.setStyle("-fx-background-color:transparent;");
 
-                ImageView imgDragDrop = new ImageView(new Image(getClass().getResourceAsStream("image/island1.png")));
+                ImageView imgDragDrop = new ImageView(new Image(getClass().getResourceAsStream("Image/island1.png")));
                 nodes.add(imgDragDrop);
                 imgDragDrop.setFitWidth(screenBounds.getMaxY()/6);
                 imgDragDrop.setPreserveRatio(true);
@@ -555,7 +555,7 @@ import java.util.stream.Collectors;
 
                 /** Adds mother nature*/
                 if (table.getIslands().get(i).getMotherNature()){
-                    ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("image/mother_nature.png")));
+                    ImageView MN_view = new ImageView(new Image(getClass().getResourceAsStream("Image/mother_nature.png")));
                     nodes.add(MN_view);
                     MN_view.setFitWidth(screenBounds.getMaxY()/18);
                     MN_view.setFitHeight(screenBounds.getMaxY()/18);
@@ -588,9 +588,9 @@ import java.util.stream.Collectors;
             for(int i=0; i<table.getClouds().size();i++){
                 Node node;
                 if (table.getClouds().size()==2)
-                    img = "image/cloud_card_1.png";
+                    img = "Image/cloud_card_1.png";
                 else
-                    img = "image/cloud_card.png";
+                    img = "Image/cloud_card.png";
                 ImageView img_view = new ImageView(new Image(getClass().getResourceAsStream(img)));
                 nodes.add(img_view);
                 img_view.setFitWidth(screenBounds.getMaxY()/6);
