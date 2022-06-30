@@ -21,7 +21,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class LoadGameController extends AASceneParent implements Initializable {
+public class LoadGameController extends AASceneParent {
     @FXML
     private ListView<String> games;
     private String CurrGame;
@@ -30,8 +30,21 @@ public class LoadGameController extends AASceneParent implements Initializable {
     @FXML
     private AnchorPane root;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    private void initialize(){
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                try {
+                    initConfig();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    protected void initConfig() {
         Platform.runLater(()->getInfo().getListener().setCaller(this));
         if(getInfo().getLoadGameOption() == GUIInfo.LOAD_GAME)
             Platform.runLater(()->new GuiMessageSender(this, Config.SHOW_EXISTING_GAMES).run());
@@ -50,6 +63,7 @@ public class LoadGameController extends AASceneParent implements Initializable {
             }
         });
     }
+
 
 
     @FXML
