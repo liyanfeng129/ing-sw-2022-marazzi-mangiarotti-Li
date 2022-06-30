@@ -1926,7 +1926,7 @@ import java.util.stream.Collectors;
                 root.getChildren().add(imgCard);
             }
 
-            chooseColor(posY*1.1,posX*0.8);
+            chooseColor(posY*1.3,posX*0.8);
 
         }
 
