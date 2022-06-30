@@ -10,8 +10,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Character10 extends CharacterCard implements Serializable {
-    private int dining_students[];
-    private int entrance_student[];
+    private int[] dining_students;
+    private int[] entrance_student;
     int take_student=0;
     public Character10() {
         super();
@@ -68,6 +68,7 @@ public class Character10 extends CharacterCard implements Serializable {
                         choice = getInput() - 1;
                     }while (player.getPb().getWaitingRoom()[choice]-entrance_student[choice] == 0);
                     entrance_student[choice]++;
+                    player.getPb().takeStudentFromWaitingRoom(choice);
                     do {
                         System.out.println("Which student do you want to exchange, make sure that you have this student on your dining room");
                         System.out.println("1: Red");
@@ -79,6 +80,7 @@ public class Character10 extends CharacterCard implements Serializable {
 
                     }while (player.getPb().getDiningRoom()[choice]-dining_students[choice] == 0);
                     dining_students[choice]++;
+                    player.getPb().takeStudentFromDiningRoom(choice);
                     take_student++;
                 }
                 else

@@ -15,7 +15,7 @@ public class Character7 extends CharacterCard implements Serializable {
     private int entrance_student[];
     private int waiting_room[];
     int take_student=0;
-    public Character7(int [] students) {
+    public Character7(int [] card_students) {
         super();
         setCoin(1);
         setN_card(7);
@@ -23,7 +23,7 @@ public class Character7 extends CharacterCard implements Serializable {
                 "and replace them with the same number of Students\n" +
                 "from your Entrance.";
         setMsg(msg);
-        this.card_students = students;
+        this.card_students = card_students;
         this.students= new int[]{0,0,0,0,0};
         this.entrance_student=new int[]{0,0,0,0,0};
     }
@@ -43,6 +43,8 @@ public class Character7 extends CharacterCard implements Serializable {
                 player.getName(),this.name(), this.getCoin() ,students));
         if(card.isFirstUse())
             card.setFirstUse(false);
+        this.entrance_student=new int[]{0,0,0,0,0};
+        this.students= new int[]{0,0,0,0,0};
         return true;
     }
 
@@ -118,7 +120,7 @@ public class Character7 extends CharacterCard implements Serializable {
     public String toString() {
         return "Character7{" +
                 "dataGathered=" + isDataGathered() +
-                ", students=" + Arrays.toString(students) +
+                ", students=" + Arrays.toString(card_students) +
                 '}';
     }
 
@@ -138,9 +140,9 @@ public class Character7 extends CharacterCard implements Serializable {
     public void addStudent(int[] students)
     {
         for(int i = 0; i < 5; i++)
-            this.students[i] += students[i];
+            this.card_students[i] += students[i];
     }
-    public void removeStudent(int student[]){
+    public void removeStudent(int students[]){
         for(int i = 0; i < 5; i++)
             this.card_students[i] -= students[i];;
     }
