@@ -6,14 +6,34 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 public class GameSetUpController extends AASceneParent{
     private ActionEvent currentEvent;
+
+    @FXML
+    private void initialize(){
+        Platform.runLater(() -> {
+            try {
+                initConfig();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    protected void initConfig() {
+        getInfo().getListener().setCaller(this);
+    }
+    @FXML
+    AnchorPane root;
     @FXML
     protected void startEasy2(ActionEvent event) {
         System.out.println("Easy mode for 2 people");
@@ -71,7 +91,23 @@ public class GameSetUpController extends AASceneParent{
 
     @Override
     public void errorCommunicate(Exception e) {
+        if(e instanceof SocketException)
+        {
+            System.out.println("ERROR communicate: Something went wrong with server");
+            getInfo().setMessage("Something went wrong with server");
 
+            Platform.runLater(()->{
+
+                try {
+                    switchScene((Stage) root.getScene().getWindow(),FxmlNames.END_GAME);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+        }
+        else
+            e.printStackTrace();
     }
 
 }

@@ -27,6 +27,7 @@ public class GuiListener extends Thread{
     private boolean receiverOn;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     private Thread pingServer;
+    ServerSocket updateReceiver;
     public GuiListener(int portNumber,String userName,String serverAddress)
     {
         this.portNumber = portNumber;
@@ -49,15 +50,26 @@ public class GuiListener extends Thread{
                         if(!responses.get(0).equals(Config.SERVER_IS_ON))
                         {
                             receiverOn = false;
-                            update.close();
+                            updateReceiver.close();
                             threadOn = false;
                         }
                     }
                 } catch (Exception e) {
                     if(e instanceof SocketException)
                     {
-                        System.out.println("Something went wrong with server");
+                        System.out.println("Something went wrong with server, stop ping signal");
+                        try
+                        {
+                            if(!updateReceiver.isClosed())
+                                updateReceiver.close();
+                        }
+                        catch (Exception ex)
+                        {
+                            System.out.println("Something went wrong with server, stop ping signal");
+                            ex.printStackTrace();
+                        }
                         receiverOn = false;
+
                     }
                     else if(e instanceof ConnectException)
                     {
@@ -78,7 +90,7 @@ public class GuiListener extends Thread{
     public void run()
     {
         try {
-            ServerSocket updateReceiver = new ServerSocket(portNumber);
+            updateReceiver = new ServerSocket(portNumber);
             pingServer.start();
             while(receiverOn)
             {
@@ -90,13 +102,20 @@ public class GuiListener extends Thread{
                 update.close();
                 if(updates.get(0).equals(Config.GAME_OVER))
                     receiverOn = false;
-                caller.listenerCallBack(updates);
+                synchronized (caller)
+                {
+                    caller.listenerCallBack(updates);
+                }
             }
             updateReceiver.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            System.out.println("something went wrong with server, closing GUIListener.");
+            synchronized (caller)
+            {
+                caller.errorCommunicate(e);
+            }
         }
     }
 
@@ -118,8 +137,11 @@ public class GuiListener extends Thread{
         return caller;
     }
 
-    public synchronized void setCaller(AASceneParent caller) {
-        this.caller = caller;
+    public  void setCaller(AASceneParent caller) {
+        synchronized (caller)
+        {
+            this.caller = caller;
+        }
     }
 
     public int getPortNumber() {

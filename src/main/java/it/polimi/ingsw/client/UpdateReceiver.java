@@ -53,15 +53,24 @@ public class UpdateReceiver extends Thread {
                         if(!responses.get(0).equals(Config.SERVER_IS_ON))
                         {
                             receiverOn = false;
-                            update.close();
+                            updateReceiver.close();
                             threadOn = false;
                         }
                     }
                 } catch (Exception e) {
                     if(e instanceof SocketException)
                     {
-                        System.out.println("Something went wrong with server");
+                        System.out.println("Something went wrong with server, stop ping signal");
                         receiverOn = false;
+                        try
+                        {
+                            if(!updateReceiver.isClosed())
+                                updateReceiver.close();
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
                     }
                     else if(e instanceof ConnectException || e instanceof EOFException)
                     {
@@ -128,8 +137,9 @@ public class UpdateReceiver extends Thread {
         } catch (Exception e) {
             if(e instanceof SocketException)
             {
-                System.out.println("Something went wrong with server");
-                EriantysClient.clone().start();
+                System.out.println("Something went wrong with server, stop UpdateReceiver");
+                System.out.println("if you were asked to give some input, please give this input to exit");
+                //EriantysClient.clone().start();
             }
             else if(e instanceof SocketTimeoutException)
             {
