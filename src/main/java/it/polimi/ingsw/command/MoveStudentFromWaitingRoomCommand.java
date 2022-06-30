@@ -53,20 +53,21 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                             c.show_character(card);
                             do {
                                 System.out.println("Choose form 1 to 3, 10 to quit");
-                                choice = input - 1;
+                                choice = getInput() - 1;
                                 if(choice==9) {
                                     quit=1;
                                     break;
                                 }
-                                else
-                                    if (!(choice<0 || choice>2)) {
+                                else {
+                                    if (!(choice < 0 || choice > 2)) {
                                         characterIndex = choice;
                                         if (getGame().getTable().getCharacters().get(characterIndex).getCoin() > coin) {
                                             System.out.println(getGame().getTable().getCharacters().get(characterIndex).getCoin());
                                             System.out.println("not enough money");
-                                            choice=-1;
+                                            choice = -1;
                                         }
                                     }
+                                }
                             } while (choice<0 || choice>2);
                         if(quit!=1)
                             characterCardUsed = true;

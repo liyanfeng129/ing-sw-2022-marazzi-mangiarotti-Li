@@ -57,12 +57,13 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
                                 quit=1;
                                 break;
                             }
-                            else
-                            if (!(choice<0 || choice>2)) {
-                                characterIndex = choice;
-                                if (getGame().getTable().getCharacters().get(characterIndex).getCoin() > coin) {
-                                    System.out.println("not enough money");
-                                    choice=-1;
+                            else {
+                                if (!(choice < 0 || choice > 2)) {
+                                    characterIndex = choice;
+                                    if (getGame().getTable().getCharacters().get(characterIndex).getCoin() > coin) {
+                                        System.out.println("not enough money");
+                                        choice = -1;
+                                    }
                                 }
                             }
                         } while (choice<0 || choice>2);

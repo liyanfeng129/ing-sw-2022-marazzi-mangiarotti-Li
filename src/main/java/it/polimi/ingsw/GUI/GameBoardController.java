@@ -68,6 +68,10 @@ import java.util.stream.Collectors;
         }
 
 
+        /**
+         * initialize() set the attributes name and board_name, while showing the game to the client
+         */
+
         @FXML
         private void initialize(){
             Platform.runLater(new Runnable() {
@@ -99,6 +103,11 @@ import java.util.stream.Collectors;
                 }
             });
         }
+
+        /**
+         * TODO Yan
+         * spiega cosa fa
+         */
         protected void initConfig() {
             getInfo().getListener().setCaller(this);
             Task task = new Task<Void>() {
@@ -111,7 +120,9 @@ import java.util.stream.Collectors;
             System.out.println(getInfo().getListener().toString());
             new Thread(task).start();
         }
-
+        /**
+         * update() get the message
+         */
         protected void update()throws EriantysExceptions {
             characterData=0;
             removeGame();

@@ -57,7 +57,7 @@ public class Character10 extends CharacterCard implements Serializable {
             do {
                 System.out.println("Do you want to exchange a student? 1 Yes");
                 int input = getInput();
-                if(getInput()==1){
+                if(input==1){
                     do {
                         System.out.println("Which student do you want to exchange, make sure that you have this student in your waiting room");
                         System.out.println("1: Red");
