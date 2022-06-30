@@ -1496,8 +1496,8 @@ import java.util.stream.Collectors;
             Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
             switch (card.getN_card()) {
                 case 1:
-                    showCharacter1((Character1)card,true);
                     characterData=1;
+                    showCharacter1((Character1)card,true);
                     showGameNoActionNoCharacter(false,false);
                     break;
                 case 2:
@@ -1518,15 +1518,20 @@ import java.util.stream.Collectors;
                     } else
                         messages.setText(msg);
                     break;
-                case 12:break;
+                case 12:
+                    characterData=12;
+                    showCharacter12((Character12)card,true);
+                    showGameNoActionNoCharacter(false,false);
+
+                    break;
                 case 3:
-                    showCharacter3((Character3)card,true);
                     characterData=3;
+                    showCharacter3((Character3)card,true);
                     showGameNoActionNoCharacter(true,false);
                     break;
                 case 5:
-                    showCharacter5((Character5)card,true);
                     characterData=5;
+                    showCharacter5((Character5)card,true);
                     showGameNoActionNoCharacter(true,false);
                     break;
                 case 7:
@@ -1902,6 +1907,27 @@ import java.util.stream.Collectors;
 
             }
             root.getChildren().add(grid);
+        }
+        public void showCharacter12(Character12 card,Boolean Action){
+
+            int pos = game.getTable().getCharacters().indexOf(card);
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
+            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front11.jpg")));
+            imgCard.setFitWidth(screenBounds.getMaxY()/8);
+            imgCard.setPreserveRatio(true);
+            double posY =imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150;
+            double posX =screenBounds.getMaxX()-screenBounds.getMaxY()/7.5;
+
+            imgCard.setLayoutX(posX);
+            imgCard.setLayoutY(posY);
+            if(Action){
+                nodes.add(imgCard);
+                root.getChildren().add(imgCard);
+            }
+
+            chooseColor(posY*1.1,posX*0.8);
+
         }
 
         public void waitingRoomToExchange(){
@@ -2291,22 +2317,46 @@ import java.util.stream.Collectors;
                     @Override public void handle(ActionEvent e) {
 
 
-                        ArrayList<Object> inputs = new ArrayList<>();
-                        inputs.add(studentFinal);
-                        /**TODO YANFENG input characte 9
-                         */
-                        Command command = game.getLastCommand();
-                        String msg = " ";
-                        try {
-                            msg = command.GUIGetData(inputs);
-                        } catch (EriantysExceptions ex) {
-                            ex.printStackTrace();
+
+                        if(characterData==9) {
+
+
+                            ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(studentFinal);
+                            /**TODO YANFENG input characte 9
+                             */
+                            Command command = game.getLastCommand();
+                            String msg = " ";
+                            try {
+                                msg = command.GUIGetData(inputs);
+                            } catch (EriantysExceptions ex) {
+                                ex.printStackTrace();
+                            }
+                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                getInfo().setCommand(command);
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            } else
+                                messages.setText(msg);
                         }
-                        if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
-                            getInfo().setCommand(command);
-                            Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                        } else
-                            messages.setText(msg);
+                        else{
+                            ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(studentFinal);
+                            /**TODO YANFENG input characte 12
+                             */
+                            Command command = game.getLastCommand();
+                            String msg = " ";
+                            try {
+                                msg = command.GUIGetData(inputs);
+                            } catch (EriantysExceptions ex) {
+                                ex.printStackTrace();
+                            }
+                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                getInfo().setCommand(command);
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            } else
+                                messages.setText(msg);
+
+                        }
                     }
 
 
