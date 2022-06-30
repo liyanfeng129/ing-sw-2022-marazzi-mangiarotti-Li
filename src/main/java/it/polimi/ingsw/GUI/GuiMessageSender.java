@@ -31,7 +31,6 @@ public class GuiMessageSender {
     {
         try
         {
-            ArrayList<Object> messages = new ArrayList<>();
             responses = new ArrayList<>();
             switch (option)
             {
