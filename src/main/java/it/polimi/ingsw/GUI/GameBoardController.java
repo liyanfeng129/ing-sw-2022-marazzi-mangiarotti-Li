@@ -1501,6 +1501,7 @@ import java.util.stream.Collectors;
 
         public void getCharacterInput(CharacterCard card) throws EriantysExceptions {
             tips.setText(card.getMsg());
+            Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
             switch (card.getN_card()) {
                 case 1:
                     showCharacter1((Character1)card,true);
@@ -1554,7 +1555,7 @@ import java.util.stream.Collectors;
                     showCharacter10((Character10)card,true);
                     waitingRoomToExchange();
                     cardToExchange();
-                    buttonToFinish(2,((Character7) card).getStudents());
+                    buttonToFinish(2,curr_player.getPb().getDiningRoom());
                     showGameNoActionNoCharacter(true,true);
                     break;
                 case 11:
