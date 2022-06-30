@@ -23,9 +23,7 @@ public class Character2 extends CharacterCard implements Serializable {
         if (!isDataGathered())
             throw new InnerExceptions.CharacterCardError("Cannot apply character effect because the lack of information.");
         Character2 card = (Character2) game.getTable().findCharacterCardByName(this.name());
-        for (int i = 0; i < 5; i++) {
-            player.getPb().addStudentToDiningRoom(i);
-        }
+        game.getProfessors().setCard2(true);
         //non so se ci voglia o no
         game.getProfessors().assignProfessor(game.getPlayers());
         player.getWallet().removeCoin(card.getCoin());
@@ -38,9 +36,7 @@ public class Character2 extends CharacterCard implements Serializable {
 
     @Override
     public boolean undoEffect(Game game, Player player) throws EriantysExceptions {
-        for (int i = 0; i < 5; i++) {
-            player.getPb().takeStudentFromDiningRoom(i);
-        }
+        game.getProfessors().setCard2(false);
         game.getProfessors().assignProfessor(game.getPlayers());
         return true;
     }

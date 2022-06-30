@@ -36,6 +36,8 @@ public class Character1 extends CharacterCard implements Serializable {
         Character1 card = (Character1) game.getTable().findCharacterCardByName(this.name());
         Bag bag  = game.getTable().getBag();
         game.getTable().getIsland(island_pos).addStudent(student_color);
+        if(Arrays.stream(game.getTable().getBag().getBag()).sum()==1)
+            game.setStudentFinished(true);
         int temp [] = bag.draw(1);
         card.takeStudent(student_color);
         card.addStudent(temp);

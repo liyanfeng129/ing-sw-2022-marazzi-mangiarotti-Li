@@ -20,7 +20,7 @@ public class Bag implements Serializable {
      */
     public Bag()
     {
-        this.students = new int[] {6, 6, 6, 6, 6};
+        this.students = new int[] {26, 26, 26, 26, 26};
         this.N_students = 130;
     }
 
