@@ -29,9 +29,8 @@ public class EndGameState extends State implements Serializable {
     @Override
     public Command generateCommand() throws EriantysExceptions {
         boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
-        System.out.println("end game");
         //if (getGame().getLastCommand().execute(getGame())) {
-        System.out.println("game ended");
+
         int[] players = new int[getGame().getN_Player()];
         //System.out.println(getGame().getPlayers().get(1).getName());
         ArrayList<String> winners = new ArrayList<>();
@@ -45,7 +44,7 @@ public class EndGameState extends State implements Serializable {
         }
 
 
-        System.out.println(" " + winners.size());
+        //System.out.println(" " + winners.size());
 
         //caso nessuno finisce torri,controllo chi ne ha di piu
         if (winners.size() == 0) {
@@ -76,17 +75,17 @@ public class EndGameState extends State implements Serializable {
                     if (getGame().findPlayerByName(winners.get(i)).getMage() == getGame().getProfessors().getList_professors()[4])
                         max_n_professor[i]++;
                 }
-                /*int max_prof=max_n_professor[0];
+                int max_prof=max_n_professor[0];
                 for (int i=0;i<winners.size();i++){
                     if(max_n_professor[i]>max_prof)
                         max_prof=max_n_professor[i];
                 }
-                */
 
+/*
                 //funzione figa ma non funzionante
                 List<Integer> max_number = Arrays.asList(max_n_professor);
                 int max_prof = max_number.indexOf(Collections.max(max_number));
-
+*/
                 for (int i = 0; i < winners.size(); i++) {
                     if (max_n_professor[i] < max_prof)
                         winners.remove(i);

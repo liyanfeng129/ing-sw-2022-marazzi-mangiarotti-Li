@@ -63,7 +63,6 @@ public class Table implements Serializable {
      * @throws EriantysExceptions if there are not enough students in bag
      */
     public void initCharacter() throws EriantysExceptions {
-        int dim=12;
         ArrayList<CharacterCard> AllCharacterCards = new ArrayList<>();
         AllCharacterCards.add(new Character1(getBag().draw(4)));
         AllCharacterCards.add(new Character2());
@@ -79,9 +78,9 @@ public class Table implements Serializable {
         AllCharacterCards.add(new Character12());
         Random rand = new Random();
         for(int i=0;i<3;i++) {
-            int random = rand.nextInt(dim);
+            int random = rand.nextInt(AllCharacterCards.size());
             characterCards.add(AllCharacterCards.get(random));
-            dim--;
+            AllCharacterCards.remove(random);
             System.out.println(random);
         }
 

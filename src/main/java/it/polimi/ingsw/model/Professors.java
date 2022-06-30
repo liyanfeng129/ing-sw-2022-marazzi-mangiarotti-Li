@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Professors implements Serializable {
     private Mage[] List_professors= new Mage[5];
-
+    private boolean card2=false;
     /**
      * constructor for class Professor
      * initialize List_Professors to NO_MAGE
@@ -29,7 +29,7 @@ public class Professors implements Serializable {
         for(int i=0;i<5;i++){
             for (int j=0;j<players.size();j++){
                 if(players.get(j).getPb().getDiningRoom()[i] >= max) {
-                    if(players.get(j).getPb().getDiningRoom()[i] == max)
+                    if(players.get(j).getPb().getDiningRoom()[i] == max && !isCard2())
                         tie=1;
                     else
                         tie=0;
@@ -55,4 +55,11 @@ public class Professors implements Serializable {
         List_professors = list_professors;
     }
 
+    public boolean isCard2() {
+        return card2;
+    }
+
+    public void setCard2(boolean card2) {
+        this.card2 = card2;
+    }
 }
