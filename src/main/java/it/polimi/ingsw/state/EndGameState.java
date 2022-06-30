@@ -29,9 +29,8 @@ public class EndGameState extends State implements Serializable {
     @Override
     public Command generateCommand() throws EriantysExceptions {
         boolean cliClient = getGame().getTurnList().get(getPhase()).isCliClient();
-        System.out.println("end game");
         //if (getGame().getLastCommand().execute(getGame())) {
-        System.out.println("game ended");
+
         int[] players = new int[getGame().getN_Player()];
         //System.out.println(getGame().getPlayers().get(1).getName());
         ArrayList<String> winners = new ArrayList<>();

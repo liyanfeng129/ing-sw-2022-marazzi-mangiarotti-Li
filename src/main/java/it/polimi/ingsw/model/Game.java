@@ -25,6 +25,7 @@ public class Game implements Serializable {
     private State gameState;
     private ArrayList<Player> turnList  = new ArrayList<Player>();
     private UseCharacterCommand usedCharacter = null;
+    private boolean studentFinished=false;
     private String gameStartingTime;
     LocalDateTime lastAccessTime;
 
@@ -342,6 +343,13 @@ public class Game implements Serializable {
 
     public void setGameStartingTime(String gameStartingTime) {
         this.gameStartingTime = gameStartingTime;
+    }
+
+    public boolean isStudentFinished() {
+        return studentFinished;
+    }
+    public void setStudentFinished(boolean set){
+        this.studentFinished=set;
     }
 }
 

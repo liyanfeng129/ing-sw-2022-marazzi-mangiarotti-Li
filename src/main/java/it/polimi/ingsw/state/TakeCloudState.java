@@ -54,18 +54,22 @@ public class TakeCloudState extends State implements Serializable {
                     getGame().getTable().initClouds();
                     if (getGame().getTurnList().get(0).getHand().getN_cards()==0) {
                         getGame().changeGameState(new EndGameState(getGame(), getPhase()));
-                        getGame().removeCommand();
-                        getGame().addCommand(getGame().getGameState().generateCommand());
                     }
                     else
                         getGame().changeGameState(new PlanningState(getGame(), 0));
-
                 }
                 catch (InnerExceptions.NotEnoughStudentsInBagException e)
                 {
-                    getGame().changeGameState(new PlanningState(getGame(),0));
+                    if(!getGame().isStudentFinished()){
+                        getGame().setStudentFinished(true);
+                        //System.out.println(getGame().isStudentFinished());
+                        getGame().changeGameState(new PlanningState(getGame(), 0));
+                    }
+                    else {
+                        //System.out.println(getGame().isStudentFinished());
+                        getGame().changeGameState(new EndGameState(getGame(), 0));
+                    }
                 }
-
             }
             else
                 getGame().changeGameState(new ActionState(getGame(),getPhase()+1));
@@ -91,4 +95,5 @@ public class TakeCloudState extends State implements Serializable {
     public void setCan(boolean can) {
         this.can = can;
     }
+
 }
