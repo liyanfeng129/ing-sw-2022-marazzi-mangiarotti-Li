@@ -79,4 +79,6 @@ public class Config {
     public static final String TRY_TO_CONNECT_SUC = "try to create connection successful";
     public static final String GUI_SENDER_ERROR = "GUIMessageSender error";
     public static final String CLIENT_SUB_NOT_EXISTING = "Subscriber doesn't exist";
+    public static final String CLIENT_RESUBSCRIBE = "trying to resubscribe";
+    public static final String CLIENT_RESUBSCRIBE_SUC = "resubscribed";
 }
