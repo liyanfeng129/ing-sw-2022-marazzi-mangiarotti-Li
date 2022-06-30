@@ -1510,7 +1510,7 @@ import java.util.stream.Collectors;
                 case 2:
                 case 4:
                 case 6:
-                case 8:
+                case 8:break;
                 case 12:
                     ArrayList<Object> inputs = new ArrayList<>();
                     Command command = game.getLastCommand();
@@ -1915,6 +1915,7 @@ import java.util.stream.Collectors;
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
             VBox vBox = new VBox();
+            nodes.add(vBox);
             vBox.getChildren().add(new Text("Students from waiting room"));
 
             StackPane stackPane = new StackPane();
@@ -2020,6 +2021,7 @@ import java.util.stream.Collectors;
         public void cardToExchange(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             VBox vBox = new VBox();
+            nodes.add(vBox);
             vBox.getChildren().add(new Text("Students from card"));
             StackPane stackPane = new StackPane();
             HBox hBox = new HBox();
