@@ -98,16 +98,17 @@ public class LoadGameController extends AASceneParent {
 
     @Override
     public void responsesFromSender(ArrayList<Object> responses) throws IOException {
+        System.out.println("LoadGame: sender call back");
         String option = (String) responses.get(0);
         switch (option)
         {
-            case Config.SHOW_RESUMABLE_GAMES:
+            case Config.SHOW_RESUMABLE_GAMES_SUC:
 
                 break;
-            case Config.RESUME_OLD_GAMES:
+            case Config.RESUME_OLD_GAMES_SUC:
 
                 break;
-            case Config.SHOW_EXISTING_GAMES:
+            case Config.SHOW_EXISTING_GAMES_SUC:
                 ArrayList<Game> gameList = (ArrayList<Game>) responses.get(1);
                 int i = 0;
                 roomName = new ArrayList<>();
