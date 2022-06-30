@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public abstract class CharacterCard implements Serializable {
     private int coin;
@@ -111,5 +112,16 @@ public abstract class CharacterCard implements Serializable {
                 p.getPb().setCoin9(i);
             }
         }
+    }
+    public int getInput(){
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        input = input.replaceAll("\\D+","");
+        while (input.length()==0){
+            System.out.println("Pleas input an integer");
+            input = scanner.nextLine();
+            input = input.replaceAll("\\D+","");
+        }
+        return Integer.parseInt(input);
     }
 }

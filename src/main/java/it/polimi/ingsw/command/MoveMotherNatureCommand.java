@@ -41,7 +41,8 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
                     int choice;
                     int quit=0;
                     System.out.println("Digit 10 if you want to use a character");
-                    if (new Scanner(System.in).nextInt() == 10) {
+                    int input = getInput();
+                    if (input == 10) {
                         /*
                         which character do you want to use
                         get this character
@@ -51,7 +52,7 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
                             c.show_character(card);
                         do {
                             System.out.println("Choose form 1 to 3, 10 to quit");
-                            choice = new Scanner(System.in).nextInt() - 1;
+                            choice = getInput() - 1;
                             if(choice==9) {
                                 quit=1;
                                 break;
@@ -92,7 +93,7 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
                 {
                     System.out.println("How many steps do you want to take?.\n"+
                             "You have "+maxSteps+" steps");
-                    choice = new Scanner(System.in).nextInt();
+                    choice = getInput();
                 }
                 while(choice < 1 || choice >   maxSteps);
                 steps = choice;

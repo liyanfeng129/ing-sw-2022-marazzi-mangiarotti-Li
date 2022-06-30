@@ -37,7 +37,7 @@ public class GetAssistantCommand extends Command implements Serializable {
             {
                 System.out.println("Please select a assistant, choose from your hand");
                 new Cli().show_Assistants(assistants);
-                choice = new Scanner(System.in).nextInt();
+                choice = getInput();
                 if(choice >= 1 && choice <= assistants.size())
                     for(Assistant as : playedCard)
                         if( as.getNum() == assistants.get(choice - 1).getNum())

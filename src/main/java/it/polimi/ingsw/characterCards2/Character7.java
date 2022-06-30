@@ -61,7 +61,8 @@ public class Character7 extends CharacterCard implements Serializable {
             System.out.println(getMsg() + "\n" +new Cli().show_students(card_students));
             do {
                 System.out.println("Do you want to take a student? 1 Yes");
-                if(new Scanner(System.in).nextInt()==1) {
+                int input = getInput();
+                if(input==1) {
                     do {
                         System.out.println("Which student do you want to exchange, make sure that you have this student in your waiting room");
                         System.out.println("1: Red");
@@ -69,7 +70,7 @@ public class Character7 extends CharacterCard implements Serializable {
                         System.out.println("3: Pink");
                         System.out.println("4: Blue");
                         System.out.println("5: Green");
-                        choice = new Scanner(System.in).nextInt() - 1;
+                        choice = getInput() - 1;
                     }
                     while (player.getPb().getWaitingRoom()[choice]-entrance_student[choice] == 0);
                     entrance_student[choice]++;
@@ -80,7 +81,7 @@ public class Character7 extends CharacterCard implements Serializable {
                         System.out.println("3: Pink");
                         System.out.println("4: Blue");
                         System.out.println("5: Green");
-                        choice = new Scanner(System.in).nextInt() - 1;
+                        choice = getInput() - 1;
                     }while (card_students[choice]-students[choice] == 0);
                     students[choice]++;
                     take_student++;
@@ -92,12 +93,7 @@ public class Character7 extends CharacterCard implements Serializable {
             setDataGathered(true);
             game.getLastCommand().setDataGathered(true);
         }
-        else
-        {
-            /**TODO
-             * GUI get data
-             * */
-        }
+
         return true;
     }
 

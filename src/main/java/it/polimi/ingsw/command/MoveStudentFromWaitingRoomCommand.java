@@ -42,7 +42,8 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                     int choice;
                     int quit=0;
                     System.out.println("Digit 10 if you want to use a character");
-                    if (new Scanner(System.in).nextInt() == 10) {
+                    int input = getInput();
+                    if (input == 10) {
                         /*
                         which character do you want to use
                         get this character
@@ -52,7 +53,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                             c.show_character(card);
                             do {
                                 System.out.println("Choose form 1 to 3, 10 to quit");
-                                choice = new Scanner(System.in).nextInt() - 1;
+                                choice = input - 1;
                                 if(choice==9) {
                                     quit=1;
                                     break;
@@ -95,7 +96,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                 System.out.println("3: Pink");
                 System.out.println("4: Blue");
                 System.out.println("5: Green");
-                choice = new Scanner(System.in).nextInt() - 1;
+                choice = getInput()- 1;
             }
             while (waitingRoom[choice] == 0);
             student = choice;
@@ -104,7 +105,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                 System.out.println("Select where do you want to move the student.");
                 System.out.println("1: to an island");
                 System.out.println("2: to your student holder");
-                choice = new Scanner(System.in).nextInt();
+                choice = getInput();
             }
             while (!(choice == 1 || choice == 2));
             moveToIsland = (choice == 1) ? true : false;
@@ -112,7 +113,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                 int islands_size = getGame().getTable().getIslands().size();
                 do {
                     System.out.println(String.format("Select one island from 1 to %d ", islands_size));
-                    choice = new Scanner(System.in).nextInt();
+                    choice = getInput();
                 }
                 while (choice < 1 || choice > islands_size);
                 island_pos = choice - 1;

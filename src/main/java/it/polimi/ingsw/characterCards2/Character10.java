@@ -56,7 +56,8 @@ public class Character10 extends CharacterCard implements Serializable {
             Player player=game.getTurnList().get(game.getGameState().getPhase());
             do {
                 System.out.println("Do you want to exchange a student? 1 Yes");
-                if(new Scanner(System.in).nextInt()==1){
+                int input = getInput();
+                if(getInput()==1){
                     do {
                         System.out.println("Which student do you want to exchange, make sure that you have this student in your waiting room");
                         System.out.println("1: Red");
@@ -64,7 +65,7 @@ public class Character10 extends CharacterCard implements Serializable {
                         System.out.println("3: Pink");
                         System.out.println("4: Blue");
                         System.out.println("5: Green");
-                        choice = new Scanner(System.in).nextInt() - 1;
+                        choice = getInput() - 1;
                     }while (player.getPb().getWaitingRoom()[choice]-entrance_student[choice] == 0);
                     entrance_student[choice]++;
                     do {
@@ -74,7 +75,7 @@ public class Character10 extends CharacterCard implements Serializable {
                         System.out.println("3: Pink");
                         System.out.println("4: Blue");
                         System.out.println("5: Green");
-                        choice = new Scanner(System.in).nextInt() - 1;
+                        choice = getInput() - 1;
 
                     }while (player.getPb().getDiningRoom()[choice]-dining_students[choice] == 0);
                     dining_students[choice]++;
@@ -86,12 +87,6 @@ public class Character10 extends CharacterCard implements Serializable {
             while (take_student<2);
             setDataGathered(true);
             game.getLastCommand().setDataGathered(true);
-        }
-        else
-        {
-            /**TODO
-             * GUI get data
-             * */
         }
         return true;
     }

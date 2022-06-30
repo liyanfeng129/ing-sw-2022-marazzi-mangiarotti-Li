@@ -71,16 +71,12 @@ public class Character3 extends CharacterCard implements Serializable {
             int islands_size = game.getTable().getIslands().size();
             do {
                 System.out.println(String.format("Select one island from 1 to %d ", islands_size));
-                choice = new Scanner(System.in).nextInt();
+                choice = getInput();
             }
             while (choice < 1 || choice > islands_size);
             island_pos = choice - 1;
             setDataGathered(true);
             game.getLastCommand().setDataGathered(true);
-        } else {
-            /**TODO
-             * GUI get data
-             * */
         }
         return true;
     }

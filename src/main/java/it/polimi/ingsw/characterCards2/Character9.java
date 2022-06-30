@@ -52,16 +52,10 @@ public class Character9 extends CharacterCard implements Serializable {
                 System.out.println("3: Pink");
                 System.out.println("4: Blue");
                 System.out.println("5: Green");
-                choice = new Scanner(System.in).nextInt() - 1;
+                choice = getInput() - 1;
             student_color = choice;
             setDataGathered(true);
             game.getLastCommand().setDataGathered(true);
-        }
-        else
-        {
-            /**TODO
-             * GUI get data
-             * */
         }
         return true;
     }

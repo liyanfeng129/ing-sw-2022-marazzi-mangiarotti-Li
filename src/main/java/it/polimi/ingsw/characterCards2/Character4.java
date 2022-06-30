@@ -45,10 +45,6 @@ public class Character4 extends CharacterCard implements Serializable {
         if (isCliClient) {
             setDataGathered(true);
             game.getLastCommand().setDataGathered(true);
-        } else {
-            /**TODO
-             * GUI get data
-             * */
         }
         return true;
     }

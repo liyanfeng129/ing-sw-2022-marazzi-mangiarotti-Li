@@ -3,12 +3,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="1000.0" prefWidth="1500.0" style="-fx-background-color: #87CEFA#87CEFA #87CEFA#87CEFA;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.StartLoadController">
     <children>
-        <Button fx:id="startGame" layoutX="356.0" layoutY="483.0" mnemonicParsing="false" onAction="#newGame" prefHeight="61.0" prefWidth="101.0" text="Start Game" />
-        <Button fx:id="loadGame" layoutX="1073.0" layoutY="490.0" mnemonicParsing="false" onAction="#loadGame" prefHeight="61.0" prefWidth="101.0" text="LOAD GAME" />
         <Label alignment="CENTER" layoutX="412.0" layoutY="179.0" text="PLEAS SELECT ONE OF THIS TWO OPTIONS">
             <font>
                 <Font size="36.0" />
@@ -20,5 +19,13 @@
                 <Font size="24.0" />
             </font>
         </Label>
+      <HBox layoutX="438.0" layoutY="437.0" prefHeight="138.0" prefWidth="588.0" spacing="50.0">
+         <children>
+              <Button fx:id="startGame" mnemonicParsing="false" onAction="#newGame" prefHeight="61.0" prefWidth="101.0" text="Start Game" />
+            <Button mnemonicParsing="false" onAction="#startOldGame" prefHeight="61.0" prefWidth="101.0" text="Start Old Game" />
+            <Button mnemonicParsing="false" onAction="#loadOldGame" prefHeight="61.0" prefWidth="101.0" text="Load OldGame" />
+              <Button fx:id="loadGame" mnemonicParsing="false" onAction="#loadGame" prefHeight="61.0" prefWidth="101.0" text="Load Game" />
+         </children>
+      </HBox>
     </children>
 </AnchorPane>

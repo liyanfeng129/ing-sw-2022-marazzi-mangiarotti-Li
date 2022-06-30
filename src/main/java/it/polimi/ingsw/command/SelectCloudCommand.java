@@ -33,7 +33,7 @@ public class SelectCloudCommand extends Command implements Serializable{
                 do
                 {
                     System.out.println(String.format("Select one cloud from 1 to %d ", n_clouds));
-                    choice = new Scanner(System.in).nextInt()-1;
+                    choice = getInput()-1;
                     if(Arrays.stream(getGame().getTable().getClouds().get(choice).getStudents()).sum() == 0)
                     {
                         System.out.println("Cloud is empty, please try again.");

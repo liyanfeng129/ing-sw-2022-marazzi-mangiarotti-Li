@@ -68,25 +68,19 @@ public class Character1 extends CharacterCard implements Serializable {
                 System.out.println("3: Pink");
                 System.out.println("4: Blue");
                 System.out.println("5: Green");
-                choice = new Scanner(System.in).nextInt() - 1;
+                choice = getInput() - 1;
             }
             while (students[choice] == 0);
             student_color = choice;
             int islands_size = game.getTable().getIslands().size();
             do {
                 System.out.println(String.format("Select one island from 1 to %d ", islands_size));
-                choice = new Scanner(System.in).nextInt();
+                choice = getInput();
             }
             while (choice < 1 || choice > islands_size);
             island_pos = choice - 1;
             setDataGathered(true);
             game.getLastCommand().setDataGathered(true);
-        }
-        else
-        {
-            /**TODO
-             * GUI get data
-             * */
         }
         return true;
     }

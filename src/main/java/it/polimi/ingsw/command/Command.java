@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public abstract class Command implements Serializable {
     private boolean dataGathered;
@@ -65,6 +66,18 @@ public abstract class Command implements Serializable {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public int getInput(){
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        input = input.replaceAll("\\D+","");
+        while (input.length()==0){
+            System.out.println("Pleas input an integer");
+            input = scanner.nextLine();
+            input = input.replaceAll("\\D+","");
+        }
+        return Integer.parseInt(input);
     }
 
     public void addCoin(Player p){

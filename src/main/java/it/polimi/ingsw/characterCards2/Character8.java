@@ -46,12 +46,6 @@ public class Character8 extends CharacterCard implements Serializable {
             setDataGathered(true);
             game.getLastCommand().setDataGathered(true);
         }
-        else
-        {
-            /**TODO
-             * GUI get data
-             * */
-        }
         return true;
     }
 

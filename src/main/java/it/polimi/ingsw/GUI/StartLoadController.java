@@ -36,6 +36,16 @@ public class StartLoadController extends AASceneParent {
         System.out.println("back");
     }
 
+    @FXML
+    protected void startOldGame(){
+
+    }
+
+    @FXML
+    protected void loadOldGame(){
+
+    }
+
     @Override
     public void listenerCallBack(ArrayList<Object> responses) {
 
