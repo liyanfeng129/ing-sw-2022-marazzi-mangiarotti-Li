@@ -19,7 +19,7 @@ import static java.lang.Thread.sleep;
 
 public class EriantysServer {
     static int AFKTimeOut = 600000;
-    static int pingNotResponseTimeOut = 10;
+    static int pingNotResponseTimeOut = 20;
     static ArrayList<Game> games = new ArrayList<>();
     static ArrayList<Game> oldGames = new ArrayList<>();
     static ArrayList<Subscriber> subs = new ArrayList<>();
@@ -48,7 +48,7 @@ public class EriantysServer {
                 while (true)
                 {
                     try {
-                        sleep(5000);
+                        sleep(10*1000);
                         afkCheck();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -60,7 +60,7 @@ public class EriantysServer {
                 while (true)
                 {
                     try {
-                        sleep(5000);
+                        sleep(10*1000);
                         checkSubs();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -92,11 +92,14 @@ public class EriantysServer {
     }
 
     private static void checkSubs() throws InterruptedException {
-        for(Subscriber sub : subs)
-            synchronized (sub)
-            {
-                if(timeDiff(sub.getLastAccessTime(),LocalDateTime.now())>pingNotResponseTimeOut) //
+        ArrayList<Integer> subsIndexToDelete = new ArrayList<>();
+        synchronized (subs)
+        {
+            for(Subscriber sub : subs)
+                if(timeDiff(sub.getLastAccessTime(),LocalDateTime.now()) > pingNotResponseTimeOut) //
                 {
+                    System.out.println(sub.getUserName()+" is out of reach");
+                    subsIndexToDelete.add(subs.indexOf(sub));
                     new Thread(()->{
                         try {
                             logOutUser(sub.getUserName());
@@ -105,7 +108,12 @@ public class EriantysServer {
                         }
                     }).start();
                 }
-            }
+        }
+        synchronized (subs)
+        {
+            for(int i : subsIndexToDelete)
+                subs.remove(i);
+        }
     }
 
     /**
@@ -182,89 +190,6 @@ public class EriantysServer {
         }
     }
 
-    private static void Object2fileBin(String fileName, Object ob)
-    {
-        String absolutePathToProject = new File("").getAbsolutePath();
-        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
-        try
-        {
-            FileOutputStream f = new FileOutputStream(new File(absolutePathToProject+pathFromContentRoot+fileName));
-            ObjectOutputStream o = new ObjectOutputStream(f);
-
-            // Write objects to file
-            o.writeObject(ob);
-
-            o.close();
-            f.close();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-
-        }
-    }
-    private static Object fileBin2Object(String fileName)
-    {
-        String absolutePathToProject = new File("").getAbsolutePath();
-        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
-        try
-        {
-            FileInputStream fi = new FileInputStream(new File(absolutePathToProject+pathFromContentRoot+fileName));
-            ObjectInputStream oi = new ObjectInputStream(fi);
-            return oi.readObject();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
-
-
-    private static void onServerClose() throws Exception{
-        Runtime.getRuntime().addShutdownHook(new Thread()
-        {
-            public void run()
-            {
-                System.out.println("Server on close.");
-                saveGames();
-                try
-                {
-                    for(Subscriber sub : subs)
-                    {
-                        System.out.println(String.format("closing %s's connection\n " +
-                                "ip address: %s      Port number: %d",sub.getUserName(), sub.getIpAddress(), sub.getPortNumber()));
-                        Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
-                        ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
-                        ArrayList<Object> msg = new ArrayList<>();
-                        msg.add(Config.SERVER_CLOSE);
-                        oos.writeObject(msg);
-                    }
-                    logOutAll();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * get gameRecord and turn it into an object then ad new games to it and then save to file
-     * */
-    private static void saveGames()
-    {
-        ArrayList<Game> oldGames = null;
-        oldGames = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
-        if(oldGames == null)
-            oldGames = new ArrayList<>();
-        for(Game g : games)
-            if(g.isGameStarted())
-                oldGames.add(g);
-        Object2fileBin("gameRecord.bin",oldGames);
-    }
 
     private static void notifySubs_GameOver(Game game, String message) {
         for(Player p : game.getPlayers())
@@ -277,7 +202,14 @@ public class EriantysServer {
                     {
                         new Thread(()->{
                             try {
-                                Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
+                                String ip;
+                                int port;
+                                synchronized (sub)
+                                {
+                                     ip = sub.getIpAddress();
+                                     port = sub.getPortNumber();
+                                }
+                                Socket notify = new Socket(ip,port);
                                 ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
                                 ArrayList<Object> msg = new ArrayList<>();
                                 msg.add(Config.GAME_OVER);
@@ -286,7 +218,7 @@ public class EriantysServer {
                             }
                             catch (Exception e)
                             {
-                                if(e instanceof ConnectException)
+                                if(e instanceof ConnectException) // client is down
                                 {
                                     System.out.println(sub.getUserName()+" is out of reach");
 
@@ -313,20 +245,5 @@ public class EriantysServer {
         Users userList = (Users) fileJason2Object("users.json", Users.class);
         userList.logOutUser(userName);
         object2FileJason("users.json", userList);
-        try
-        {
-            Game g = findGameForPlayer(userName);
-            notifySubs_GameOver(g, "Game is over, because one player is out of reach");
-            games.remove(g);
-        }
-        catch (InnerExceptions.NoSuchUserException e)
-        {
-            System.out.println(String.format("%s has no game associated logout success",userName));
-            for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();) {
-                Subscriber sub = ite.next();
-                if (sub.getUserName().equals(userName))
-                    ite.remove();
-            }
-        }
     }
 }

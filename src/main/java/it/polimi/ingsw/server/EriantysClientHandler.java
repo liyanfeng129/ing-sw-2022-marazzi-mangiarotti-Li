@@ -82,8 +82,10 @@ public class EriantysClientHandler extends Thread{
                             sub.updateLastAccessTime();
                         }
                         responses.add(Config.SERVER_IS_ON);
-                        oos.writeObject(responses);
                     }
+                    else
+                        responses.add(Config.CLIENT_SUB_NOT_EXISTING);
+                    oos.writeObject(responses);
                     break;
                 case Config.GET_NEWEST_GAME:
                     System.out.println(client+"tries to get a updated game");
@@ -465,15 +467,23 @@ public class EriantysClientHandler extends Thread{
                 users.logUser(userName);
                 object2FileJason("users.json", users);
                 boolean subDuplicate = false;
-                for(Subscriber sub : subs)
-                    if(sub.getUserName().equals(userName))
-                    {
-                        sub.setIpAddress(address);
-                        sub.setPortNumber(port);
-                        subDuplicate = true;
-                    }
+                synchronized (subs)
+                {
+                    for(Subscriber sub : subs)
+                        if(sub.getUserName().equals(userName))
+                        {
+                            sub.setIpAddress(address);
+                            sub.setPortNumber(port);
+                            subDuplicate = true;
+                        }
+                }
                 if(!subDuplicate)
-                    subs.add(new Subscriber(userName, address, port));
+                {
+                    synchronized (subs)
+                    {
+                        subs.add(new Subscriber(userName, address, port));
+                    }
+                }
                 return Config.USER_LOGGED;
             }
             else // this userName is already logged
@@ -580,62 +590,6 @@ public class EriantysClientHandler extends Thread{
                     return player;
         throw new InnerExceptions.NoSuchUserException("This player is not in any game.");
     }
-
-    private  void notifySubs_GameOver(Game game, String message) {
-        for(Player p : game.getPlayers())
-            synchronized (subs)
-            {
-                for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
-                {
-                    Subscriber sub = ite.next();
-                    if(sub.getUserName().equals(p.getName()))
-                    {
-                        new Thread(()->{
-                            try {
-                                Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
-                                ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
-                                ArrayList<Object> msg = new ArrayList<>();
-                                msg.add(Config.GAME_OVER);
-                                msg.add(message);
-                                oos.writeObject(msg);
-                            }
-                            catch (Exception e)
-                            {
-                                if(e instanceof ConnectException)
-                                {
-                                    System.out.println(sub.getUserName()+" is out of reach");
-
-                                }
-                                else
-                                    e.printStackTrace();
-                            }
-                        }).start();
-                    }
-                }
-
-            }
-    }
-
-    private void notifySubs_closingServer_removeSubs(Game game) throws IOException {
-        for(Player p : game.getPlayers())
-            synchronized (subs)
-            {
-                for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
-                {
-                    Subscriber sub = ite.next();
-                    if(sub.getUserName().equals(p.getName()))
-                    {
-                        Socket notify = new Socket(sub.getIpAddress(),sub.getPortNumber());
-                        ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
-                        ArrayList<Object> msg = new ArrayList<>();
-                        msg.add(Config.SERVER_CLOSE);
-                        oos.writeObject(msg);
-                        ite.remove();
-                    }
-                }
-
-            }
-    }
     /**
      * reduce started game content to just what's essential to identify its self
      * without data for game playing
@@ -662,12 +616,14 @@ public class EriantysClientHandler extends Thread{
 
     private Subscriber findSubByName(String name)
     {
-        for(Subscriber sub : subs)
+        synchronized (subs)
         {
-            if(sub.getUserName().equals(name))
-                return sub;
+            for(Subscriber sub : subs)
+            {
+                if(sub.getUserName().equals(name))
+                    return sub;
+            }
         }
-
         return null;
     }
 }
