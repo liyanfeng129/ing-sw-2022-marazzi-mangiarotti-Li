@@ -50,7 +50,10 @@ public class GuiListener extends Thread{
                             if(msg.equals(Config.CLIENT_SUB_NOT_EXISTING))
                             {
 
+                                System.out.println("you are not subscribed");
+                                /**
                                 messages = new ArrayList<>();
+                                messages.add(Config.CLIENT_RESUBSCRIBE);
                                 messages.add(userName);
                                 InetAddress iAddress = InetAddress.getLocalHost();
                                 String IP = iAddress.getHostAddress();
@@ -58,6 +61,7 @@ public class GuiListener extends Thread{
                                 messages.add(caller.getInfo().getListeningPortNumber());
                                 responses = responseFromServer(messages);
                                 System.out.println(responses.get(0));
+                                 */
                             }
                             else
                             {
