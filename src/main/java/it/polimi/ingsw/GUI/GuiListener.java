@@ -7,10 +7,7 @@ import it.polimi.ingsw.model.Game;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
+import java.net.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,11 +44,27 @@ public class GuiListener extends Thread{
                         messages.add(Config.CLIENT_PING_SERVER);
                         messages.add(userName);
                         ArrayList<Object> responses = responseFromServer(messages);
-                        if(!responses.get(0).equals(Config.SERVER_IS_ON))
+                        String msg = (String) responses.get(0);
+                        if(!msg.equals(Config.SERVER_IS_ON))
                         {
-                            receiverOn = false;
-                            updateReceiver.close();
-                            threadOn = false;
+                            if(msg.equals(Config.CLIENT_SUB_NOT_EXISTING))
+                            {
+
+                                messages = new ArrayList<>();
+                                messages.add(userName);
+                                InetAddress iAddress = InetAddress.getLocalHost();
+                                String IP = iAddress.getHostAddress();
+                                messages.add(IP);
+                                messages.add(caller.getInfo().getListeningPortNumber());
+                                responses = responseFromServer(messages);
+                                System.out.println(responses.get(0));
+                            }
+                            else
+                            {
+                                receiverOn = false;
+                                updateReceiver.close();
+                                threadOn = false;
+                            }
                         }
                     }
                 } catch (Exception e) {

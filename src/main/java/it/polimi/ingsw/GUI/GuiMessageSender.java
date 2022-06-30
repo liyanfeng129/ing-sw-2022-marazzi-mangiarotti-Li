@@ -74,7 +74,14 @@ public class GuiMessageSender {
                     responses = commandExecute(caller.getInfo().getUserName(), caller.getInfo().getCommand());
                     caller.responsesFromSender(responses);
                     break;
+                case Config.SHOW_RESUMABLE_GAMES:
+                   /**
+                    * TODO SHOW RESUMABLE GAMES
+                    * */
+
+                    break;
                 default:
+                    break;
             }
         }
         catch (Exception e)

@@ -56,6 +56,8 @@ public class EriantysClientHandler extends Thread{
             String userName;
             String msg;
             String gameStartedDate;
+            String address;
+            int port;
             ArrayList<Game> allOldGames;
             boolean cliClient;
             //System.out.println(dateFormat.format(new Date()));
@@ -85,6 +87,14 @@ public class EriantysClientHandler extends Thread{
                     }
                     else
                         responses.add(Config.CLIENT_SUB_NOT_EXISTING);
+                    oos.writeObject(responses);
+                    break;
+                case Config.CLIENT_RESUBSCRIBE:
+                    userName = (String) messages.get(1);
+                    address = (String) messages.get(2);
+                    port = (int) messages.get(3);
+                    subscribeUser(userName,address,port);
+                    responses.add(Config.CLIENT_RESUBSCRIBE_SUC);
                     oos.writeObject(responses);
                     break;
                 case Config.GET_NEWEST_GAME:
@@ -232,8 +242,8 @@ public class EriantysClientHandler extends Thread{
                 case Config.USER_LOGGING:
                     System.out.println(client+" asking for logging");
                     userName = (String) messages.get(1);
-                    String address = (String) messages.get(2);
-                    int port = (int) messages.get(3);
+                    address = (String) messages.get(2);
+                    port = (int) messages.get(3);
                     String res=logging(userName, address, port);
                     responses.add(res);
                     oos.writeObject(responses);
@@ -466,24 +476,7 @@ public class EriantysClientHandler extends Thread{
             {
                 users.logUser(userName);
                 object2FileJason("users.json", users);
-                boolean subDuplicate = false;
-                synchronized (subs)
-                {
-                    for(Subscriber sub : subs)
-                        if(sub.getUserName().equals(userName))
-                        {
-                            sub.setIpAddress(address);
-                            sub.setPortNumber(port);
-                            subDuplicate = true;
-                        }
-                }
-                if(!subDuplicate)
-                {
-                    synchronized (subs)
-                    {
-                        subs.add(new Subscriber(userName, address, port));
-                    }
-                }
+                subscribeUser(userName,address,port);
                 return Config.USER_LOGGED;
             }
             else // this userName is already logged
@@ -496,8 +489,31 @@ public class EriantysClientHandler extends Thread{
         {
             users.addUser(userName, true);
             object2FileJason("users.json", users);
+            subscribeUser(userName,address,port);
             //out.println(Config.USER_CREATED_AND_LOGGED);
             return Config.USER_CREATED_AND_LOGGED;
+        }
+    }
+
+    private void subscribeUser(String userName, String address, int port) {
+        boolean subDuplicate = false;
+        synchronized (subs)
+        {
+            for(Subscriber sub : subs)
+                if(sub.getUserName().equals(userName))
+                {
+                    sub.setIpAddress(address);
+                    sub.setPortNumber(port);
+                    subDuplicate = true;
+                    break;
+                }
+        }
+        if(!subDuplicate)
+        {
+            synchronized (subs)
+            {
+                subs.add(new Subscriber(userName, address, port));
+            }
         }
     }
 
