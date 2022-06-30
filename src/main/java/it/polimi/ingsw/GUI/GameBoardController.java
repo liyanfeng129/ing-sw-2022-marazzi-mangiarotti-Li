@@ -1503,8 +1503,7 @@ import java.util.stream.Collectors;
                 case 2:
                 case 4:
                 case 6:
-                case 8:break;
-                case 12:
+                case 8:
                     ArrayList<Object> inputs = new ArrayList<>();
                     Command command = game.getLastCommand();
                     String msg = " ";
@@ -1519,6 +1518,7 @@ import java.util.stream.Collectors;
                     } else
                         messages.setText(msg);
                     break;
+                case 12:break;
                 case 3:
                     showCharacter3((Character3)card,true);
                     characterData=3;
