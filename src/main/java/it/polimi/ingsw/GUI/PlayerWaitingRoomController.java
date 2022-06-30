@@ -15,6 +15,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
@@ -36,18 +38,8 @@ public class PlayerWaitingRoomController extends AASceneParent  {
         });
     }
 
-    protected void initConfig()
-    {
+    protected void initConfig() {
         getInfo().getListener().setCaller(this);
-        Task task = new Task<Void>() {
-            @Override public Void call() {
-                getInfo().getListener().start(); // running listener
-                System.out.println("Running: "+ getInfo().getListener().toString());
-                return null;
-            }
-        };
-        System.out.println(getInfo().getListener().toString());
-        new Thread(task).start();
     }
 
    @FXML
@@ -179,6 +171,22 @@ public class PlayerWaitingRoomController extends AASceneParent  {
 
     @Override
     public void errorCommunicate(Exception e) {
+        if(e instanceof SocketException)
+        {
+            System.out.println("ERROR communicate: Something went wrong with server");
+            getInfo().setMessage("Something went wrong with server");
 
+            Platform.runLater(()->{
+
+                try {
+                    switchScene((Stage) root.getScene().getWindow(),FxmlNames.END_GAME);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
+
+        }
+        else
+            e.printStackTrace();
     }
 }

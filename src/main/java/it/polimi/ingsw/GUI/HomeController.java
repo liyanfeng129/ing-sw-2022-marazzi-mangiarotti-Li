@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -88,11 +89,15 @@ public class HomeController extends AASceneParent {
 
     @Override
     public void errorCommunicate(Exception e) {
-        e.printStackTrace();
         if(e instanceof UnknownHostException)
             myLabel.setText("Wrong server address, please make sure it is valid.");
+        else if(e instanceof ConnectException)
+            myLabel.setText("Cannot connect to server.");
         else
-            myLabel.setText(e.getClass().toString());
+        {
+            e.printStackTrace();
+            myLabel.setText("Error 933");
+        }
     }
 
     public String getMyLabel() {

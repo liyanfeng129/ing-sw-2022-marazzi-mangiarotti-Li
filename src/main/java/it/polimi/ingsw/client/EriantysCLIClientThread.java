@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -281,7 +282,10 @@ public class EriantysCLIClientThread extends Thread {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            if(e instanceof ConnectException)
+                System.out.println("Cannot connect to server");
+            else
+                e.printStackTrace();
         }
         System.out.println("EriantysCliClientThread stops running");
     }
