@@ -8,4 +8,5 @@ public class FxmlNames
     public static final String LOAD_GAME = "load_game.fxml";
     public static final String PLAYER_WAITING_Room = "PlayerWaitingRoom.fxml";
     public static final String START_LOAD = "start_load.fxml";
+    public static final String END_GAME = "EndGame_.fxml";
 }

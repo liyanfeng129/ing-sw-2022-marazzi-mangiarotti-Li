@@ -26,6 +26,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,19 +79,6 @@ import java.util.stream.Collectors;
             Platform.runLater(new Runnable() {
                 @Override public void run() {
                     try {
-                        /**
-                        Player p = new Player("leo",Mage.MAGE1,TowerColor.BLACK,2,false);
-                        Game game_ = new Game(2,false,p);
-                        game_.addPlayers(new Player("fra",Mage.MAGE2,TowerColor.GREY,2,false));
-                        game = game_;
-                        board_name= "leo";
-                        name = "leo";
-                        waitingRoomToExchange(3);
-                        cardToExchange(3);
-                        buttonToFinish(3);
-                        showGameNoAction();
-                         */
-
                         initConfig();
                         name = getInfo().getUserName();
                         game = getInfo().getGame();
@@ -110,6 +99,8 @@ import java.util.stream.Collectors;
          */
         protected void initConfig() {
             getInfo().getListener().setCaller(this);
+
+            /*
             Task task = new Task<Void>() {
                 @Override public Void call() {
                     //getInfo().getListener().start(); // running listener
@@ -119,10 +110,11 @@ import java.util.stream.Collectors;
             };
             System.out.println(getInfo().getListener().toString());
             new Thread(task).start();
+            *
+             */
         }
-        /**
-         * update() get the message
-         */
+
+
         protected void update()throws EriantysExceptions {
             characterData=0;
             removeGame();
@@ -2369,6 +2361,22 @@ import java.util.stream.Collectors;
 
         @Override
         public void errorCommunicate(Exception e) {
+            if(e instanceof SocketException)
+            {
+                System.out.println("ERROR communicate: Something went wrong with server");
+                getInfo().setMessage("Something went wrong with server");
 
+                Platform.runLater(()->{
+
+                    try {
+                        switchScene((Stage) root.getScene().getWindow(),FxmlNames.END_GAME);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                });
+
+            }
+            else
+                e.printStackTrace();
         }
     }

@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<AnchorPane prefHeight="1000.0" prefWidth="1500.0" style="-fx-background-color: #87CEFA#87CEFA #87CEFA#87CEFA;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.GameSetUpController">
+<AnchorPane fx:id="root" prefHeight="1000.0" prefWidth="1500.0" style="-fx-background-color: #87CEFA#87CEFA #87CEFA#87CEFA;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.GameSetUpController">
     <children>
         <Button fx:id="easy_2p" layoutX="161.0" layoutY="257.0" mnemonicParsing="false" onAction="#startEasy2" prefHeight="85.0" prefWidth="226.0" text="TWO PLAYER" />
         <Button fx:id="hard_2p" layoutX="156.0" layoutY="477.0" mnemonicParsing="false" onAction="#startExp2" prefHeight="85.0" prefWidth="226.0" text="TWO PLAYER" />

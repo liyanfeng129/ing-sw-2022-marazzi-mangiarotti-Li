@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="1000.0" prefWidth="1500.0" style="-fx-background-color: #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.LoadGameController">
+<AnchorPane fx:id="root" prefHeight="1000.0" prefWidth="1500.0" style="-fx-background-color: #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.LoadGameController">
     <children>
         <Label alignment="CENTER" contentDisplay="CENTER" layoutY="90.0" prefHeight="44.0" prefWidth="1520.0" text="GAMES">
             <font>
