@@ -56,10 +56,6 @@ public class Cloud implements Serializable {
         return students;
     }
 
-    /** TODO
-     * non funnziona
-     *
-     */
 
     /**
      * set the students on the cloud

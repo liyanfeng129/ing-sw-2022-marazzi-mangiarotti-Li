@@ -46,8 +46,7 @@ public class Game implements Serializable {
     }
 
     /**
-     * TODO yan
-     * non so a cosa serva,spiegalo te
+     * constructor of Game used in server, it's a lither version that is then populated later
      */
     public Game()
     {

@@ -27,9 +27,6 @@ public class Player implements Serializable {
         this.name = name;
         this.mage = mage;
         this.cliClient = cliClient;
-        /**TODO YAN
-         * perché prima andava?
-         */
         this.wallet = new Wallet();
         if (n_Player ==2)
             this.pb = new PlayerBoard(8,towerColor,7);
@@ -40,11 +37,6 @@ public class Player implements Serializable {
         update = false;
     }
 
-    /**
-     * TODO
-     * non ho idea di cosa serva
-     * @param name
-     */
     public Player(String name)
     {
         this.name = name;

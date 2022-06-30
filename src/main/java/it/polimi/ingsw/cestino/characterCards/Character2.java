@@ -27,9 +27,6 @@ public class Character2 implements CharacterBehavior, Serializable {
 
     @Override
     public void useCharacter(Game game, Player user, Island island, int colore,int[] students) throws EriantysExceptions {
-        /**TODO
-         * add calcolo professor ogni turno del controller
-         **/
         if (!this.firstUse){
             this.firstUse = true;
         }
