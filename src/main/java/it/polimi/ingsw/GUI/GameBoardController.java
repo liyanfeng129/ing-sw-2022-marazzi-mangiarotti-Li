@@ -2322,6 +2322,7 @@ import java.util.stream.Collectors;
             }
 
             VBox vbox =new VBox();
+            nodes.add(vbox);
             vbox.setLayoutX(positionX);
             vbox.setLayoutY(positionY);
 
