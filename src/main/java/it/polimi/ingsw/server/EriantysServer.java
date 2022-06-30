@@ -18,7 +18,7 @@ import static java.lang.Thread.sleep;
 
 
 public class EriantysServer {
-    static int AFKTimeOut = 180;
+    static int AFKTimeOut = 600000;
     static int pingNotResponseTimeOut = 10;
     static ArrayList<Game> games = new ArrayList<>();
     static ArrayList<Game> oldGames = new ArrayList<>();
