@@ -334,7 +334,10 @@ public class UpdateReceiver extends Thread {
             Command command = game.getLastCommand();
             command.getData();
             System.out.println("Press 1 to start a new game");
-
+            int choice = getInput() - 1;
+            /**
+             * TODO yanfeng
+             */
             updateReceiver.close();
         }
     }
@@ -366,6 +369,16 @@ public class UpdateReceiver extends Thread {
     public synchronized void setReceiverOn(boolean receiverOn) {
         this.receiverOn = receiverOn;
     }
-
+    public int getInput(){
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        input = input.replaceAll("\\D+","");
+        while (input.length()==0){
+            System.out.println("Pleas input an integer");
+            input = scanner.nextLine();
+            input = input.replaceAll("\\D+","");
+        }
+        return Integer.parseInt(input);
+    }
 
 }

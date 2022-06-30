@@ -44,7 +44,7 @@ public class EndGameState extends State implements Serializable {
         }
 
 
-        System.out.println(" " + winners.size());
+        //System.out.println(" " + winners.size());
 
         //caso nessuno finisce torri,controllo chi ne ha di piu
         if (winners.size() == 0) {
@@ -75,17 +75,17 @@ public class EndGameState extends State implements Serializable {
                     if (getGame().findPlayerByName(winners.get(i)).getMage() == getGame().getProfessors().getList_professors()[4])
                         max_n_professor[i]++;
                 }
-                /*int max_prof=max_n_professor[0];
+                int max_prof=max_n_professor[0];
                 for (int i=0;i<winners.size();i++){
                     if(max_n_professor[i]>max_prof)
                         max_prof=max_n_professor[i];
                 }
-                */
 
+/*
                 //funzione figa ma non funzionante
                 List<Integer> max_number = Arrays.asList(max_n_professor);
                 int max_prof = max_number.indexOf(Collections.max(max_number));
-
+*/
                 for (int i = 0; i < winners.size(); i++) {
                     if (max_n_professor[i] < max_prof)
                         winners.remove(i);

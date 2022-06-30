@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static java.lang.Thread.sleep;
+
 public class SelectCloudCommand extends Command implements Serializable{
     private int cloud;
 
@@ -42,7 +44,13 @@ public class SelectCloudCommand extends Command implements Serializable{
                     cloud = choice;
                     setDataGathered(true);
                 }
-                else
+                else {
+                    try {
+                        sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                     setDataGathered(true);
             }
         }

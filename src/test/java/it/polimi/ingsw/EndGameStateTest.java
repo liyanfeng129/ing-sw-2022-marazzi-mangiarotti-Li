@@ -32,7 +32,7 @@ class EndGameStateTest {
             game.setTable(table);
             game.startGame();
             Professors prof = new Professors();
-            prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE, Mage.MAGE1});
+            prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.NO_MAGE, Mage.MAGE2, Mage.NO_MAGE, Mage.MAGE1});
             game.setProfessors(prof);
             game.getPlayers().get(0).getPb().moveTower(-6);
             game.getPlayers().get(1).getPb().moveTower(-6);
@@ -57,8 +57,8 @@ class EndGameStateTest {
             Professors prof = new Professors();
             prof.setList_professors(new Mage[]{Mage.MAGE1, Mage.MAGE2, Mage.MAGE2, Mage.NO_MAGE, Mage.MAGE1});
             game.setProfessors(prof);
-            game.getPlayers().get(0).getPb().moveTower(-6);
-            game.getPlayers().get(1).getPb().moveTower(-6);
+            //game.getPlayers().get(0).getPb().moveTower(-6);
+            //game.getPlayers().get(1).getPb().moveTower(-6);
             //System.out.println(game.getPlayers().get(1));
             //game.getPlayers().get(0).getPlayerBoard().moveTower(-6);
             state.executeCommand();
