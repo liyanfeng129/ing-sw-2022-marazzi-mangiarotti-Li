@@ -93,15 +93,18 @@ public class EriantysServer {
 
     private static void checkSubs() throws InterruptedException {
         for(Subscriber sub : subs)
-            if(timeDiff(sub.getLastAccessTime(),LocalDateTime.now())>pingNotResponseTimeOut) //
+            synchronized (sub)
             {
-                new Thread(()->{
-                    try {
-                        logOutUser(sub.getUserName());
-                    } catch (EriantysExceptions e) {
-                        e.printStackTrace();
-                    }
-                }).start();
+                if(timeDiff(sub.getLastAccessTime(),LocalDateTime.now())>pingNotResponseTimeOut) //
+                {
+                    new Thread(()->{
+                        try {
+                            logOutUser(sub.getUserName());
+                        } catch (EriantysExceptions e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                }
             }
     }
 
