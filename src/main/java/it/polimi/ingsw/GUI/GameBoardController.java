@@ -25,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +43,7 @@ import java.util.stream.Collectors;
         private int characterData = 0;
         private int[] characterRoomExcange=new int[]{0,0,0,0,0};
         private int[] characterCardExcange=new int[]{0,0,0,0,0};
+        private String EndGameMessage;
 
 
         @FXML
@@ -271,14 +273,31 @@ import java.util.stream.Collectors;
             img_view.setPreserveRatio(true);
             img_view.setLayoutX(pos_x_center);
             img_view.setLayoutY(pos_y_center-150);
+            Label label = new Label(EndGameMessage );//+ game.getPlayers().get(0).getName()
+            label.setFont(new Font("Arial", 27));
+            label.setLayoutX(pos_x_center);
+            label.setLayoutY(pos_y_center+100);
 
-            Label winner = new Label("The winner is: " );//+ game.getPlayers().get(0).getName()
-            winner.setFont(new Font("Arial", 27));
-            winner.setLayoutX(pos_x_center);
-            winner.setLayoutY(pos_y_center+100);
+            Button buttonExit = new Button("Exit");
+            buttonExit.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent e) {
+                    try {
+                        switchScene((Stage) root.getScene().getWindow(),FxmlNames.HOME);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
 
+                }
+            });
+
+            buttonExit.setPrefWidth(50);
+            buttonExit.setPrefHeight(30);
+            buttonExit.setLayoutX(screenBounds.getMaxX()/2);
+            buttonExit.setLayoutY(pos_y_center +200);
+
+            root.getChildren().add(buttonExit);
             root.getChildren().add(img_view);
-            root.getChildren().add(winner);
+            root.getChildren().add(label);
         }
 
         // tavolo gioco
