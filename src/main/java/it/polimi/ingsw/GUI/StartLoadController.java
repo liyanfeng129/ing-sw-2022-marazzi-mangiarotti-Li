@@ -2,26 +2,17 @@ package it.polimi.ingsw.GUI;
 
 
 import it.polimi.ingsw.model.Config;
-import it.polimi.ingsw.threads.PingSender;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class StartLoadController extends AASceneParent {
 
@@ -54,6 +45,7 @@ public class StartLoadController extends AASceneParent {
 
     @FXML
     protected void newGame(ActionEvent event) throws IOException {
+        getInfo().setLoadGameOption(GUIInfo.LOAD_GAME);
         switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(),FxmlNames.GAME_SET_UP);
         System.out.println("new game");
     }
@@ -72,7 +64,7 @@ public class StartLoadController extends AASceneParent {
 
     @FXML
     protected void startOldGame() throws IOException {
-        getInfo().setLoadGameOption(GUIInfo.START_OLD_GAME);
+        getInfo().setLoadGameOption(GUIInfo.RESUME_OLD_GAME);
         switchScene((Stage) root.getScene().getWindow(), FxmlNames.LOAD_GAME);
         System.out.println("start old game");
     }
