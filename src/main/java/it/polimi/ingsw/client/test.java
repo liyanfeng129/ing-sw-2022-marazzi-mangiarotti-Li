@@ -1,5 +1,10 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.model.Config;
+import it.polimi.ingsw.model.Game;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -17,9 +22,31 @@ public class test {
          */
         ArrayList<Object> messages = new ArrayList<>();
         messages.add("Test_all_game_status");
-        ArrayList<Object> responses = responseFromServer(messages);
+       // ArrayList<Object> responses = responseFromServer(messages);
+        ArrayList<Game> games = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
+        System.out.println(games.toString());
 
     }
+
+
+    public static Object fileBin2Object(String fileName)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
+        try
+        {
+            FileInputStream fi = new FileInputStream(new File(pathFromContentRoot+fileName));
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            return oi.readObject();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     private static ArrayList<Object>  responseFromServer(ArrayList<Object> messages)
     {
         ArrayList<Object> responses = new ArrayList<>();
