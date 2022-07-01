@@ -105,7 +105,9 @@ public class EriantysServer {
                             logOutUser(sub.getUserName());
                             Game g = findGameForPlayer(sub.getUserName());
                             if(g!=null)
+                            {
                                 notifySubs_GameOver(g,sub.getUserName() + "is off line, game over.");
+                            }
                         } catch (EriantysExceptions e) {
                             e.printStackTrace();
                         }
@@ -196,45 +198,49 @@ public class EriantysServer {
 
     private static void notifySubs_GameOver(Game game, String message) {
         System.out.println("closing game of "+game.getPlayers().get(0).getName());
-        for(Player p : game.getPlayers())
-            synchronized (subs)
-            {
-                for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
+        synchronized (games)
+        {
+            for(Player p : game.getPlayers())
+                synchronized (subs)
                 {
-                    Subscriber sub = ite.next();
-                    if(sub.getUserName().equals(p.getName()))
+                    for(Iterator<Subscriber> ite = subs.iterator(); ite.hasNext();)
                     {
-                        new Thread(()->{
-                            try {
-                                String ip;
-                                int port;
-                                synchronized (sub)
-                                {
-                                     ip = sub.getIpAddress();
-                                     port = sub.getPortNumber();
+                        Subscriber sub = ite.next();
+                        if(sub.getUserName().equals(p.getName()))
+                        {
+                            new Thread(()->{
+                                try {
+                                    String ip;
+                                    int port;
+                                    synchronized (sub)
+                                    {
+                                        ip = sub.getIpAddress();
+                                        port = sub.getPortNumber();
+                                    }
+                                    Socket notify = new Socket(ip,port);
+                                    ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
+                                    ArrayList<Object> msg = new ArrayList<>();
+                                    msg.add(Config.GAME_OVER);
+                                    msg.add(message);
+                                    oos.writeObject(msg);
                                 }
-                                Socket notify = new Socket(ip,port);
-                                ObjectOutputStream oos = new ObjectOutputStream(notify.getOutputStream());
-                                ArrayList<Object> msg = new ArrayList<>();
-                                msg.add(Config.GAME_OVER);
-                                msg.add(message);
-                                oos.writeObject(msg);
-                            }
-                            catch (Exception e)
-                            {
-                                if(e instanceof ConnectException) // client is down
+                                catch (Exception e)
                                 {
-                                    System.out.println(sub.getUserName()+" is out of reach");
+                                    if(e instanceof ConnectException) // client is down
+                                    {
+                                        System.out.println(sub.getUserName()+" is out of reach");
 
+                                    }
+                                    else
+                                        e.printStackTrace();
                                 }
-                                else
-                                    e.printStackTrace();
-                            }
-                        }).start();
+                            }).start();
+                        }
                     }
-                }
 
-            }
+                }
+            games.remove(game);
+        }
     }
     private static Game findGameForPlayer(String name)throws EriantysExceptions
     {
