@@ -34,7 +34,6 @@ public class EriantysServer {
 
             InetAddress iAddress = new Methods().getLocalHostLANAddress();
             String server_IP = iAddress.getHostAddress();
-            System.out.println(GUIInfo.class.getResource("EndGame_.fxml").getPath());
             System.out.println("Server IP address : " +server_IP);
             logOutAll();
 
