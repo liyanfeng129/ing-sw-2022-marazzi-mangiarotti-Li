@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 import com.google.gson.Gson;
+import it.polimi.ingsw.GUI.GUIInfo;
 import it.polimi.ingsw.client.Users;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;
@@ -535,6 +536,7 @@ public class EriantysClientHandler extends Thread{
     private synchronized Object fileJason2Object(String fileName, Class ob)
     {
         String absolutePathToProject = new File("").getAbsolutePath();
+        System.out.println(GUIInfo.class.getResource("EndGame_.fxml").getPath());
         String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
         Gson gson = new Gson();
         try (Reader reader = new FileReader(absolutePathToProject+pathFromContentRoot+fileName)) {
