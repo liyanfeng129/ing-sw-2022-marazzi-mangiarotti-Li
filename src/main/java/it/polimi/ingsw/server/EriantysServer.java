@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.GUI.GUIInfo;
 import it.polimi.ingsw.client.Users;
 import it.polimi.ingsw.model.*;
 
@@ -33,6 +34,7 @@ public class EriantysServer {
 
             InetAddress iAddress = new Methods().getLocalHostLANAddress();
             String server_IP = iAddress.getHostAddress();
+            System.out.println(GUIInfo.class.getResource("EndGame_.fxml").getPath());
             System.out.println("Server IP address : " +server_IP);
             logOutAll();
 

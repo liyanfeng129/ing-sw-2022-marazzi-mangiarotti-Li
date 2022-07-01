@@ -536,7 +536,6 @@ public class EriantysClientHandler extends Thread{
     private synchronized Object fileJason2Object(String fileName, Class ob)
     {
         String absolutePathToProject = new File("").getAbsolutePath();
-        System.out.println(GUIInfo.class.getResource("EndGame_.fxml").getPath());
         String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
         Gson gson = new Gson();
         try (Reader reader = new FileReader(absolutePathToProject+pathFromContentRoot+fileName)) {
