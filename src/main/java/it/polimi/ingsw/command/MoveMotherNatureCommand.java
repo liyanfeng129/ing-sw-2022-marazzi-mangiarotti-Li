@@ -133,13 +133,45 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
      * Config.GUI_COMMAND_GETDATA_SUC  if ok
      * Config.GUI_WRONG_STEPS if ko
      * */
+
+    /**
+     * @param inputs
+     * inputs.get(0) : useCharacter boolean
+     *      true -> inputs.get(1): characterIndex int
+     *
+     *      false -> inputs.get(1) steps: int (selected island position - island position where lands mother nature)
+     *
+     * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {
-        int steps = (int) inputs.get(0);
-        if(steps > maxSteps || steps < 1)
-            return Config.GUI_WRONG_STEPS;
-        this.steps = steps;
-        setDataGathered(true);
-        return Config.GUI_COMMAND_GETDATA_SUC;
+        boolean useCharacter = (boolean) inputs.get(0);
+        if(!useCharacter)
+        {
+            int steps = (int) inputs.get(1);
+            if(steps > maxSteps || steps < 1)
+                return Config.GUI_WRONG_STEPS;
+            this.steps = steps;
+            setDataGathered(true);
+            return Config.GUI_COMMAND_GETDATA_SUC;
+        }
+        else {
+            if(!characterCardUsed)
+            {
+                int characterIndex = (int) inputs.get(1);
+                int coin = getGame().getTurnList().get(getGame().getGameState().getPhase()).getWallet().getSaving();
+                if (getGame().getTable().getCharacters().get(characterIndex).getCoin() > coin) // cost higher than what you have
+                    return Config.GUI_NOT_ENOUGH_COIN;
+                else
+                {
+                    this.characterIndex = characterIndex;
+                    characterCardUsed = true;
+                    setDataGathered(true);
+                    return Config.GUI_COMMAND_GETDATA_SUC;
+                }
+            }
+            else
+                return Config.GUI_CHARACTER_ALREADY_USED;
+
+        }
     }
 }

@@ -343,6 +343,8 @@ public class UpdateReceiver extends Thread {
         else if (game.getLastCommand().getUsername().equals("endgame")){
             Command command = game.getLastCommand();
             command.getData();
+            command.execute(null);
+            System.out.println(command.getMsg());
             System.out.println("Press 1 to start a new game");
             int choice = getInput() - 1;
             /**

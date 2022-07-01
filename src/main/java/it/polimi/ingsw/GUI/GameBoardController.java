@@ -152,6 +152,14 @@ import java.util.stream.Collectors;
                 String tipsMsg = String.format("%s should %s", name, action);
                 tips.setText(tipsMsg);
             }
+            else if(game.getLastCommand().getUsername().equals("endgame"))
+            {
+                Command command = game.getLastCommand();
+                command.getData();
+                command.execute(null);
+                EndGameMessage = command.getMsg();
+                showGame("endgame");
+            }
             else
             {
                 showGame("updateGame");
@@ -377,6 +385,7 @@ import java.util.stream.Collectors;
                                         "island_index: %d\n" +
                                         "steps: %d", mn_pos, finalIsland_index1, steps));
                                 ArrayList<Object> inputs = new ArrayList<>();
+                                inputs.add(false); //no character card used
                                 inputs.add(steps);
                                 /**TODO YANFENG MOVE MN
                                  * in islandChoice trovi l'isola scelta pe muovere madre natura
