@@ -34,6 +34,9 @@ public class GameSetUpController extends AASceneParent{
     }
     @FXML
     AnchorPane root;
+    /**
+     * startEasy2 starts and easy game for 2
+     */
     @FXML
     protected void startEasy2(ActionEvent event) {
         System.out.println("Easy mode for 2 people");
@@ -42,15 +45,20 @@ public class GameSetUpController extends AASceneParent{
         //new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_2).run();
         // lobby Scene where is displayed player in waiting and eventually to start game
     }
-    @FXML
 
+    /**
+     * startEasy3 starts and easy game for 3
+     */
+    @FXML
     protected void startEasy3(ActionEvent event) throws IOException, EriantysExceptions {
         System.out.println("Easy mode for 3 people");
         currentEvent = event;
         Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_3).run());
 
     }
-
+    /**
+     * startExp2 starts and expert game for 2
+     */
     @FXML
     protected void startExp2(ActionEvent event) throws IOException, EriantysExceptions {
         System.out.println("Expert mode for 2 people");
@@ -58,12 +66,18 @@ public class GameSetUpController extends AASceneParent{
         Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_EXPERT_GAME_FOR_2).run());
 
     }
+    /**
+     * startExp3 starts and expert game for 2
+     */
     @FXML
     protected void startExp3(ActionEvent event) {
         System.out.println("Expert mode for 3 people");
         currentEvent = event;
         Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_EXPERT_GAME_FOR_3).run());
     }
+    /**
+     * goes to the previous page
+     */
     @FXML
     protected void back(ActionEvent event) throws IOException {
         switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(), FxmlNames.START_LOAD);

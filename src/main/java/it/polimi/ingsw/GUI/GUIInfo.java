@@ -52,6 +52,9 @@ public class GUIInfo
         this.listener = listener;
     }
 
+    /**
+     * GUIInfo constructor assigne a random port <=65353
+     */
     public GUIInfo() {
         listeningPortNumber = new Random().nextInt(65353);
     }

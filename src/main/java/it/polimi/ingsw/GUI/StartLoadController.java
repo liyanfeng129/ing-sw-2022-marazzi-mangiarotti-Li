@@ -52,17 +52,34 @@ public class StartLoadController extends AASceneParent {
         new Thread(task).start();
     }
 
+    /**
+     * shows page to create game
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void newGame(ActionEvent event) throws IOException {
         switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(),FxmlNames.GAME_SET_UP);
         System.out.println("new game");
     }
+
+    /**
+     * shows page to log in game
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void loadGame(ActionEvent event) throws IOException {
         getInfo().setLoadGameOption(GUIInfo.LOAD_GAME);
         switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(), FxmlNames.LOAD_GAME);
         System.out.println("loadGame");
     }
+
+    /**
+     * shows previous page
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void back(ActionEvent event) throws IOException {
         currentEvent = event;
@@ -70,13 +87,21 @@ public class StartLoadController extends AASceneParent {
         System.out.println("back");
     }
 
+    /**
+     * shows page to start old game
+     * @throws IOException
+     */
+
     @FXML
     protected void startOldGame() throws IOException {
         getInfo().setLoadGameOption(GUIInfo.START_OLD_GAME);
         switchScene((Stage) root.getScene().getWindow(), FxmlNames.LOAD_GAME);
         System.out.println("start old game");
     }
-
+    /**
+     * shows page to load old game
+     * @throws IOException
+     */
     @FXML
     protected void loadOldGame() throws IOException {
         getInfo().setLoadGameOption(GUIInfo.LOAD_OlD_GAME);

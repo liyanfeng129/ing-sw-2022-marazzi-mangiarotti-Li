@@ -45,9 +45,10 @@ public class PlayerWaitingRoomController extends AASceneParent  {
    @FXML
    private Label PlayerLabel;
 
+    /**
+     * set Label of Player in waiting room
+     */
    public void setPlayerLabel(){
-
-
        Game game = getInfo().getGame();
        String message = (game.getPlayers().get(0).getName().equals(getInfo().getUserName())? "This is creator's game room, only he can start the game.\n" : "" )
                +String.format("Game mode: %s\n" +
@@ -69,6 +70,9 @@ public class PlayerWaitingRoomController extends AASceneParent  {
 
    }
 
+    /**
+     * addButton shows button to start new game
+     */
     public void addButton(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
