@@ -87,9 +87,6 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
 
     private void getDataForMoveStudent() {
         int choice;
-        if (waitingRoom.length == 0)
-            ((ActionState) getGame().getGameState()).setEndGame(true);
-        else {
             do {
                 System.out.println("Which student do you want to move, make sure that you have this student in your waiting room.");
                 System.out.println("1: Red");
@@ -119,7 +116,6 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                 while (choice < 1 || choice > islands_size);
                 island_pos = choice - 1;
             }
-        }
     }
 
     @Override

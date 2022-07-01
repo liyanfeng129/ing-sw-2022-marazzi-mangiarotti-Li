@@ -128,7 +128,7 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
 
     /**
      * @param inputs
-     * inputs.get(0) steps: int (selected island position - island position where lands mother nature)
+     * inputs.get(1) steps: int (selected island position - island position where lands mother nature)
      * @return
      * Config.GUI_COMMAND_GETDATA_SUC  if ok
      * Config.GUI_WRONG_STEPS if ko

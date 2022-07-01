@@ -38,7 +38,6 @@ public class Character3 extends CharacterCard implements Serializable {
                     game.getTable().getIsland(game.getTable().getMotherNatureIndex()).setTowerColor(game.getPlayers().get(i).getTowerColor());
             }
             game.getTable().mergeIsland();
-            //dove si sposta madre natura in caso di merge?
             game.getTable().getIsland(MN_temp).setMotherNature(false);
             game.getTable().getIsland(MN_prec).setMotherNature(true);
         }

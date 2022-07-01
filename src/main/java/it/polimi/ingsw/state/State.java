@@ -36,4 +36,19 @@ public abstract class State implements Serializable {
     public abstract void executeCommand() throws EriantysExceptions;
     public abstract Command generateCommand() throws EriantysExceptions;
 
+    /**
+     * check if a card caused endGame
+     * @return if game is finished or not
+     */
+    public boolean checkCardEndGame(){
+        if (game.getTable().getIslands().size()<=3){
+            return true;
+        }
+        for (int i=0;i< game.getN_Player();i++){
+            if (game.getPlayers().get(i).getPb().getN_tower()<=0){
+                return true;
+            }
+        }
+        return false;
+    }
 }

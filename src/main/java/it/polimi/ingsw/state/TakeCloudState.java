@@ -37,56 +37,53 @@ public class TakeCloudState extends State implements Serializable {
 
     @Override
     public void executeCommand() throws EriantysExceptions {
-        if(getGame().getLastCommand().execute(getGame()))
-        {
-            if(!characterCardUsed || characterCardExecuted) // if character has not been used or character has been executed
-            {
-                setCan(true);
-            }
-            if (getGame().getLastCommand() instanceof UseCharacterCommand)  // command executed was useCharacterCommand
-            {
-                characterCardExecuted = true;
-                getGame().setUsedCharacter((UseCharacterCommand) getGame().getLastCommand());
-            }
-            /*
-             * if someone used a character card in previous turn
-             * undo the temporary effect caused by the card
-             * reset the card
-             * */
-            if(getGame().getUsedCharacter() != null)
-            {
-                getGame().getUsedCharacter().undo(getGame());
-                getGame().setUsedCharacter(null);
-            }
-        }
-        if(canChangeState())
-        {
-            if (getPhase()==getGame().getN_Player()-1)
-            {
-                try
+        if(getGame().getLastCommand().execute(getGame())) {
+            if (checkCardEndGame())
+                getGame().changeGameState(new EndGameState(getGame(), 0));
+            else {
+                if (!characterCardUsed || characterCardExecuted) // if character has not been used or character has been executed
                 {
-                    getGame().getTable().initClouds();
-                    if (getGame().getTurnList().get(0).getHand().getN_cards()==0) {
-                        getGame().changeGameState(new EndGameState(getGame(), getPhase()));
-                    }
-                    else
-                        getGame().changeGameState(new PlanningState(getGame(), 0));
+                    setCan(true);
                 }
-                catch (InnerExceptions.NotEnoughStudentsInBagException e)
+                if (getGame().getLastCommand() instanceof UseCharacterCommand)  // command executed was useCharacterCommand
                 {
-                    if(!getGame().isStudentFinished()){
-                        getGame().setStudentFinished(true);
-                        //System.out.println(getGame().isStudentFinished());
-                        getGame().changeGameState(new PlanningState(getGame(), 0));
-                    }
-                    else {
-                        //System.out.println(getGame().isStudentFinished());
-                        getGame().changeGameState(new EndGameState(getGame(), 0));
-                    }
+                    characterCardExecuted = true;
+                    getGame().setUsedCharacter((UseCharacterCommand) getGame().getLastCommand());
+                }
+                /*
+                 * if someone used a character card in previous turn
+                 * undo the temporary effect caused by the card
+                 * reset the card
+                 * */
+                if (getGame().getUsedCharacter() != null) {
+                    getGame().getUsedCharacter().undo(getGame());
+                    getGame().setUsedCharacter(null);
                 }
             }
-            else
-                getGame().changeGameState(new ActionState(getGame(),getPhase()+1));
+            if (canChangeState()) {
+                if (getPhase() == getGame().getN_Player() - 1)//if this is the last player in this turn
+                {
+                    try //try if there are enough student in bag
+                    {
+                        getGame().getTable().initClouds();
+                        if (getGame().getTurnList().get(0).getHand().getN_cards() == 0) {
+                            //if all assistant card had been used go to endgame
+                            getGame().changeGameState(new EndGameState(getGame(), getPhase()));
+                        } else //start a new turn
+                            getGame().changeGameState(new PlanningState(getGame(), 0));
+                    } catch (InnerExceptions.NotEnoughStudentsInBagException e) {
+                        //if student finished in bag play the last turn with empty before endgame
+                        if (!getGame().isStudentFinished()) {
+                            getGame().setStudentFinished(true);
+                            getGame().changeGameState(new PlanningState(getGame(), 0));
+                        } else {
+                            getGame().changeGameState(new EndGameState(getGame(), 0));
+                        }
+                    }
+                } else
+                    //another player start his phase in this turn
+                    getGame().changeGameState(new ActionState(getGame(), getPhase() + 1));
+            }
         }
         getGame().removeCommand();
         getGame().addCommand(getGame().getGameState().generateCommand());
