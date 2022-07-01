@@ -18,8 +18,8 @@ import static java.lang.Thread.sleep;
 
 
 public class EriantysServer {
-    static int AFKTimeOut = 600000;
-    static int pingNotResponseTimeOut = 20;
+    static int AFKTimeOut = 6000;
+    static int pingNotResponseTimeOut = 10;
     static ArrayList<Game> games = new ArrayList<>();
     static ArrayList<Game> oldGames = new ArrayList<>();
     static ArrayList<Subscriber> subs = new ArrayList<>();
@@ -50,7 +50,7 @@ public class EriantysServer {
                     try {
                         sleep(10*1000);
                         afkCheck();
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -62,7 +62,7 @@ public class EriantysServer {
                     try {
                         sleep(10*1000);
                         checkSubs();
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -91,18 +91,21 @@ public class EriantysServer {
         object2FileJason("users.json", userList);
     }
 
-    private static void checkSubs() throws InterruptedException {
+    private static void checkSubs() throws Exception {
         ArrayList<Integer> subsIndexToDelete = new ArrayList<>();
         synchronized (subs)
         {
             for(Subscriber sub : subs)
                 if(timeDiff(sub.getLastAccessTime(),LocalDateTime.now()) > pingNotResponseTimeOut) //
                 {
-                    System.out.println(sub.getUserName()+" is out of reach");
+                    System.out.println(sub.getUserName()+" is out of reach, check sub failed");
                     subsIndexToDelete.add(subs.indexOf(sub));
                     new Thread(()->{
                         try {
                             logOutUser(sub.getUserName());
+                            Game g = findGameForPlayer(sub.getUserName());
+                            if(g!=null)
+                                notifySubs_GameOver(g,sub.getUserName() + "is off line, game over.");
                         } catch (EriantysExceptions e) {
                             e.printStackTrace();
                         }
@@ -120,7 +123,7 @@ public class EriantysServer {
      * Whenever a game has been updated, the local time variable inside game will be renewed
      * so if a game has been to loong without modification means some player is away from keyboard
      * */
-    private static void afkCheck() throws InterruptedException {
+    private static void afkCheck() throws Exception {
         ArrayList<Integer> gamesIndexToDelete = new ArrayList<>();
         for(Game g : games)
         {
@@ -154,7 +157,7 @@ public class EriantysServer {
         }
     }
 
-    public static int timeDiff(LocalDateTime t1, LocalDateTime t2) throws InterruptedException {
+    public static int timeDiff(LocalDateTime t1, LocalDateTime t2) throws Exception {
         return (int) ChronoUnit.SECONDS.between(t1, t2);
     }
 
@@ -192,6 +195,7 @@ public class EriantysServer {
 
 
     private static void notifySubs_GameOver(Game game, String message) {
+        System.out.println("closing game of "+game.getPlayers().get(0).getName());
         for(Player p : game.getPlayers())
             synchronized (subs)
             {
@@ -242,6 +246,7 @@ public class EriantysServer {
     }
 
     private static void logOutUser(String userName) throws EriantysExceptions {
+        System.out.println("logout user: "+userName);
         Users userList = (Users) fileJason2Object("users.json", Users.class);
         userList.logOutUser(userName);
         object2FileJason("users.json", userList);

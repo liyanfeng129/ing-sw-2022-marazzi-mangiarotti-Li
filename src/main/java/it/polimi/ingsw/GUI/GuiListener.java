@@ -112,15 +112,17 @@ public class GuiListener extends Thread{
             while(receiverOn)
             {
                 update = updateReceiver.accept();
-                System.out.println(caller.getInfo().getUserName() + "listening");
+                System.out.println(caller.getInfo().getUserName() + " listening");
                 oos = new ObjectOutputStream(update.getOutputStream());
                 ois=new ObjectInputStream(update.getInputStream());
                 ArrayList<Object> updates = (ArrayList<Object>) ois.readObject();
                 update.close();
+                System.out.println(updates.get(0));
                 if(updates.get(0).equals(Config.GAME_OVER))
                     receiverOn = false;
                 synchronized (caller)
                 {
+                    System.out.println("caller is: "+caller.getClass().getName());
                     caller.listenerCallBack(updates);
                 }
             }
@@ -133,6 +135,9 @@ public class GuiListener extends Thread{
             {
                 caller.errorCommunicate(e);
             }
+        }
+        finally {
+            System.out.println("GUIListener closing.");
         }
     }
 
