@@ -1,42 +1,11 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.server;
 
-//This program is find your exact LAN(Local Machine on which your are       //runing this program) IP Address
-import java.net.*;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.UnknownHostException;
 import java.util.Enumeration;
 
-public class GetMyIPAddress {
-    public static void main(String gks[]) throws SocketException{
-
-        try {
-            System.out.println(getLocalHostLANAddress().getHostAddress());
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-    }
-    public static String metodo()
-    {
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface iface = interfaces.nextElement();
-                if (iface.isLoopback() || !iface.isUp() || iface.isVirtual() || iface.isPointToPoint())
-                    continue;
-
-                Enumeration<InetAddress> addresses = iface.getInetAddresses();
-                while(addresses.hasMoreElements()) {
-                    InetAddress addr = addresses.nextElement();
-
-                    final String ip = addr.getHostAddress();
-                    if(Inet4Address.class == addr.getClass()) return ip;
-                }
-            }
-        } catch (SocketException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
+public class Methods {
     /**
      * this method is used to replace the native method InetAddress.getLocalHostAddress();
      * The problem is that a host could have lots of network interfaces,
@@ -46,7 +15,7 @@ public class GetMyIPAddress {
      * and so on.
      * @throws UnknownHostException If the LAN address of the machine cannot be found.
      */
-    private static InetAddress getLocalHostLANAddress() throws UnknownHostException {
+    public   InetAddress getLocalHostLANAddress() throws UnknownHostException {
         try {
             InetAddress candidateAddress = null;
             // Iterate all NICs (network interface cards)...
@@ -92,5 +61,4 @@ public class GetMyIPAddress {
             throw unknownHostException;
         }
     }
-
 }

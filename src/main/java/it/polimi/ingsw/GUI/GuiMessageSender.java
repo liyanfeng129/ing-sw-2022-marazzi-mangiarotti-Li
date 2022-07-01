@@ -5,12 +5,12 @@ import it.polimi.ingsw.command.Command;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
+
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.server.Methods;
 
 
 public class GuiMessageSender {
@@ -60,6 +60,9 @@ public class GuiMessageSender {
                     responses = createExpertGameFor2();
                     caller.responsesFromSender(responses);
                     break;
+                case Config.CREATE_EXPERT_GAME_FOR_3:
+                    responses = createExpertGameFor3();
+
                 case Config.SHOW_EXISTING_GAMES:
                     responses = getExistingGames();
                     caller.responsesFromSender(responses);
@@ -107,6 +110,15 @@ public class GuiMessageSender {
         {
             caller.errorCommunicate(e);
         }
+    }
+
+    private ArrayList<Object> createExpertGameFor3() throws IOException, ClassNotFoundException {
+        ArrayList<Object> messages = new ArrayList<>();
+        messages.add(Config.CREATE_EXPERT_GAME_FOR_3);
+        messages.add(userName);
+        messages.add(true); //this is CLi
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
     }
 
     private ArrayList<Object> startOldGame(String gameStartedDate) throws IOException, ClassNotFoundException {
@@ -262,13 +274,12 @@ public class GuiMessageSender {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.USER_LOGGING);
         messages.add(userName);
-        InetAddress iAddress = InetAddress.getLocalHost();
+        InetAddress iAddress = new Methods().getLocalHostLANAddress();
         String IP = iAddress.getHostAddress();
         messages.add(IP);
         messages.add(caller.getInfo().getListeningPortNumber());
         ArrayList<Object> responses = responseFromServer(messages);
         return responses;
     }
-
 
 }

@@ -41,6 +41,7 @@ public class GameSetUpController extends AASceneParent{
     protected void startEasy2(ActionEvent event) {
         System.out.println("Easy mode for 2 people");
         currentEvent = event;
+        getInfo().setLoadGameOption(GUIInfo.LOAD_GAME);
         Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_2).run());
         //new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_2).run();
         // lobby Scene where is displayed player in waiting and eventually to start game
@@ -53,6 +54,7 @@ public class GameSetUpController extends AASceneParent{
     protected void startEasy3(ActionEvent event) throws IOException, EriantysExceptions {
         System.out.println("Easy mode for 3 people");
         currentEvent = event;
+        getInfo().setLoadGameOption(GUIInfo.LOAD_GAME);
         Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_NORMAL_GAME_FOR_3).run());
 
     }
@@ -63,6 +65,7 @@ public class GameSetUpController extends AASceneParent{
     protected void startExp2(ActionEvent event) throws IOException, EriantysExceptions {
         System.out.println("Expert mode for 2 people");
         currentEvent = event;
+        getInfo().setLoadGameOption(GUIInfo.LOAD_GAME);
         Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_EXPERT_GAME_FOR_2).run());
 
     }
@@ -73,6 +76,7 @@ public class GameSetUpController extends AASceneParent{
     protected void startExp3(ActionEvent event) {
         System.out.println("Expert mode for 3 people");
         currentEvent = event;
+        getInfo().setLoadGameOption(GUIInfo.LOAD_GAME);
         Platform.runLater(()-> new GuiMessageSender(this, Config.CREATE_EXPERT_GAME_FOR_3).run());
     }
     /**
@@ -96,6 +100,8 @@ public class GameSetUpController extends AASceneParent{
         {
             case Config.CREATE_NORMAL_GAME_FOR_2_SUC:
             case Config.CREATE_EXPERT_GAME_FOR_2_SUC:
+            case Config.CREATE_NORMAL_GAME_FOR_3_SUC:
+            case Config.CREATE_EXPERT_GAME_FOR_3_SUC:
                 Game game = (Game) responses.get(1);
                 getInfo().setGame(game);
                 switchScene((Stage) ((Node)currentEvent.getSource()).getScene().getWindow(),FxmlNames.PLAYER_WAITING_Room);

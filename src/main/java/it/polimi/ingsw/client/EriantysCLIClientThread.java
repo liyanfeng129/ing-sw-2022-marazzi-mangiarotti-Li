@@ -2,16 +2,11 @@ package it.polimi.ingsw.client;
 
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.server.Methods;
 
 import java.io.*;
-import java.net.ConnectException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Random;
-import java.util.Scanner;
+import java.net.*;
+import java.util.*;
 
 public class EriantysCLIClientThread extends Thread {
     private  String serverAddress = "localhost";
@@ -506,13 +501,14 @@ public class EriantysCLIClientThread extends Thread {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add(Config.USER_LOGGING);
         messages.add(userName);
-        InetAddress iAddress = InetAddress.getLocalHost();
+        InetAddress iAddress = new Methods().getLocalHostLANAddress();
         String IP = iAddress.getHostAddress();
         messages.add(IP);
         messages.add(listeningPortNumber);
         ArrayList<Object> responses = responseFromServer(messages);
         return (String) responses.get(0);
     }
+
 
     private void connectTOServer()
     {

@@ -31,7 +31,7 @@ public class EriantysServer {
             //Create socket server
             ServerSocket server = new ServerSocket(12345);
 
-            InetAddress iAddress = InetAddress.getLocalHost();
+            InetAddress iAddress = new Methods().getLocalHostLANAddress();
             String server_IP = iAddress.getHostAddress();
             System.out.println("Server IP address : " +server_IP);
             logOutAll();
