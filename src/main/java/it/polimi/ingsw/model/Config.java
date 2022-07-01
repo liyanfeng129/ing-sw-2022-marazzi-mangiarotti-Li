@@ -81,4 +81,7 @@ public class Config {
     public static final String CLIENT_SUB_NOT_EXISTING = "Subscriber doesn't exist";
     public static final String CLIENT_RESUBSCRIBE = "trying to resubscribe";
     public static final String CLIENT_RESUBSCRIBE_SUC = "resubscribed";
+    public static final String GAME_OVER_CAUSE_AFK = "Some one is in afk";
+    public static final String GAME_OVER_CAUSE_ONE_IS_OFFLINE = "some one lost connection";
+    public static final String SERVER_DOWN = "Something went wrong with server";
 }

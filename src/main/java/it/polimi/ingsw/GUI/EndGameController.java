@@ -1,5 +1,6 @@
 package it.polimi.ingsw.GUI;
 
+import it.polimi.ingsw.model.Config;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,6 +17,7 @@ public class EndGameController extends AASceneParent{
     @FXML
     AnchorPane root;
     @FXML
+
     private void initialize(){
         Platform.runLater(() -> {
             try {
@@ -32,11 +34,14 @@ public class EndGameController extends AASceneParent{
 
     @FXML
     public void back(){
-
-        setInfo(new GUIInfo());
         Platform.runLater(()->{
             try {
-                switchScene((Stage) root.getScene().getWindow(),FxmlNames.HOME);
+                if(label.getText().equals(Config.GAME_OVER_CAUSE_ONE_IS_OFFLINE) || label.getText().equals(Config.GAME_OVER_CAUSE_AFK))
+                    switchScene((Stage) root.getScene().getWindow(),FxmlNames.HOME);
+                else {
+                    setInfo(new GUIInfo());
+                    switchScene((Stage) root.getScene().getWindow(),FxmlNames.HOME);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -2621,7 +2621,7 @@ import java.util.stream.Collectors;
             if(e instanceof SocketException)
             {
                 System.out.println("ERROR communicate: Something went wrong with server");
-                getInfo().setMessage("Something went wrong with server");
+                getInfo().setMessage(Config.SERVER_DOWN);
 
                 Platform.runLater(()->{
                     try {

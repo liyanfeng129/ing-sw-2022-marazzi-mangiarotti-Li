@@ -106,7 +106,7 @@ public class EriantysServer {
                             Game g = findGameForPlayer(sub.getUserName());
                             if(g!=null)
                             {
-                                notifySubs_GameOver(g,sub.getUserName() + "is off line, game over.");
+                                notifySubs_GameOver(g,Config.GAME_OVER_CAUSE_ONE_IS_OFFLINE);
                             }
                         } catch (EriantysExceptions e) {
                             e.printStackTrace();
@@ -141,7 +141,7 @@ public class EriantysServer {
                     {
                         gamesIndexToDelete.add(games.indexOf(g));
                         new Thread(() -> {
-                            notifySubs_GameOver(g,"Game is over because someone is in AFK.");
+                            notifySubs_GameOver(g,Config.GAME_OVER_CAUSE_AFK);
                         }).start();
                     }
                 }
