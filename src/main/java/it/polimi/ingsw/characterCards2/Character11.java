@@ -30,15 +30,13 @@ public class Character11 extends CharacterCard implements Serializable {
         Character11 card = (Character11) game.getTable().findCharacterCardByName(this.name());
         Bag bag  = game.getTable().getBag();
         player.getPb().addStudentToDiningRoom(student_color);
-        //if there is only a student left means that this is the last turn because this card draw it
-        if(Arrays.stream(game.getTable().getBag().getBag()).sum()==1)
-            game.setStudentFinished(true);
         int temp [];
         try {
             temp = bag.draw(1);
         } catch (EriantysExceptions e) {
             /*if this card is played in last turn due to not enough student left in bag,
              don t draw a card and play this turn with less choiche*/
+            game.setStudentFinished(true);
             temp= new int[]{0, 0, 0, 0, 0};
         }
         card.takeStudent(student_color);
