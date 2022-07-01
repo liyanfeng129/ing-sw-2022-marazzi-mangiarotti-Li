@@ -76,7 +76,7 @@ public class MoveMotherNatureState extends State implements Serializable {
         }
         if (canChangeState()) {
             if (!isGameEnded()) {
-                getGame().changeGameState(new TakeCloudState(getGame(), getPhase()));
+                getGame().changeGameState(new TakeCloudState(getGame(), getPhase(),characterCardExecuted,characterCardUsed));
             }
             else{
                 getGame().changeGameState(new EndGameState(getGame(), getPhase()));
