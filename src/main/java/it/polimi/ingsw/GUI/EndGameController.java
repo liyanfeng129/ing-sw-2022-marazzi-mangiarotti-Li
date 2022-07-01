@@ -37,7 +37,7 @@ public class EndGameController extends AASceneParent{
         Platform.runLater(()->{
             try {
                 if(label.getText().equals(Config.GAME_OVER_CAUSE_ONE_IS_OFFLINE) || label.getText().equals(Config.GAME_OVER_CAUSE_AFK))
-                    switchScene((Stage) root.getScene().getWindow(),FxmlNames.HOME);
+                    switchScene((Stage) root.getScene().getWindow(),FxmlNames.START_LOAD);
                 else {
                     setInfo(new GUIInfo());
                     switchScene((Stage) root.getScene().getWindow(),FxmlNames.HOME);
