@@ -33,6 +33,7 @@ public class Character10 extends CharacterCard implements Serializable {
         player.getPb().removeStudentFromDiningRoom(dining_students);
         player.getPb().addStudentsToDiningRoom(entrance_student);
         player.getPb().addStudentsToWaitingRoom(dining_students);
+        game.getProfessors().assignProfessor(game.getPlayers());
         player.getWallet().removeCoin(card.getCoin());
         game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: playerboard had changed",
                 player.getName(),this.name(), this.getCoin()));

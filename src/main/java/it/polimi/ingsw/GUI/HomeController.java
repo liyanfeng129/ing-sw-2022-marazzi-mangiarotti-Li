@@ -28,6 +28,9 @@ public class HomeController extends AASceneParent {
 
     private String name;
 
+    /**
+     * submit send request to server for loggin in
+     */
     @FXML
     public void submit(ActionEvent event) {
         /**TODO YAN
@@ -58,6 +61,10 @@ public class HomeController extends AASceneParent {
         }
 
     }
+
+    /**TODO Yanfeng java doc
+     *
+     */
 
     @Override
     public void listenerCallBack(ArrayList<Object> responses) {

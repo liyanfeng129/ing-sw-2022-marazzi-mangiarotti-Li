@@ -26,6 +26,8 @@ public class GuiMessageSender {
         serverAddress = caller.getInfo().getServerAddress();
         this.option = option;
     }
+    /**TODO Yanfeng javadoc
+     */
 
     public void run()
     {

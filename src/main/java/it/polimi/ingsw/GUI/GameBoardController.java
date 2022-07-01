@@ -6,7 +6,6 @@ import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.command.*;
 import it.polimi.ingsw.model.*;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,7 +26,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,7 +97,6 @@ import java.util.stream.Collectors;
          */
         protected void initConfig() {
             getInfo().getListener().setCaller(this);
-
             /*
             Task task = new Task<Void>() {
                 @Override public Void call() {
@@ -114,7 +111,9 @@ import java.util.stream.Collectors;
              */
         }
 
-
+        /**
+         * updage() determines te fase on te game based on last the command  and calls showGame with the correct fase
+         */
         protected void update()throws EriantysExceptions {
             characterData=0;
             removeGame();
@@ -137,6 +136,12 @@ import java.util.stream.Collectors;
                     showGame("MoveStudents");
                     action = "Click and hold on a student in your waiting room and then drag it to an island or to your student holder";
                 }
+
+                if(game.getLastCommand() instanceof EndGameCommand)
+                {
+                    showGame("endgame");
+                }
+
                 if(game.getLastCommand() instanceof SelectCloudCommand)
                 {
                     showGame("SelectCloud");
@@ -152,6 +157,14 @@ import java.util.stream.Collectors;
                 String tipsMsg = String.format("%s should %s", name, action);
                 tips.setText(tipsMsg);
             }
+            else if(game.getLastCommand().getUsername().equals("endgame"))
+            {
+                Command command = game.getLastCommand();
+                command.getData();
+                command.execute(null);
+                EndGameMessage = command.getMsg();
+                showGame("endgame");
+            }
             else
             {
                 showGame("updateGame");
@@ -160,16 +173,16 @@ import java.util.stream.Collectors;
         }
 
         /**
+         * showGame update the gui interface based on the fase
          *
-         * @param fase può essese di 4 tipi:
-         *             1) Assistants: per far vedere gli assistenti
-         *             2) updateGame
-         *             3) MoveStudents
-         *             4) MoveMN
-         *             5) SelectCloud
+         * @param fase can be of 5 types:
+         *             1) showGameDragStudent
+         *             2) showAssistant
+         *             3) showGameNoAction
+         *             4) showGameMoveMN
+         *             5) showGamePickCloud
+         *             6) endGame
          */
-
-
         public void showGame(String fase) throws EriantysExceptions {
 
             switch (fase) {
@@ -195,6 +208,10 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         * showGameNoAction show the GUI to the client without the ability to send input to the server
+         * @throws EriantysExceptions
+         */
         public void showGameNoAction() throws EriantysExceptions {
             switcBoardController(false);
             showTowers();
@@ -209,6 +226,10 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         *showGameDragStudent show the GUI to the client asking to drag a student or to use a character
+         * @throws EriantysExceptions
+         */
         public void showGameDragStudent() throws EriantysExceptions {
 
 
@@ -229,6 +250,10 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         *showGameMoveMN show the GUI to the client asking to move mother nature
+         * @throws EriantysExceptions
+         */
         public void showGameMoveMN() throws EriantysExceptions {
 
 
@@ -247,6 +272,10 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         *showGamePickCloud show the GUI to the client asking to pick a cloud
+         * @throws EriantysExceptions
+         */
         public void showGamePickCloud() throws EriantysExceptions {
 
             switcBoardController(false);
@@ -265,6 +294,9 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         * endGame show the end of a game with the ability to go back to the menu
+         */
         public void endGame(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double pos_x_center =screenBounds.getMaxX()/2 -300; //650
@@ -285,7 +317,7 @@ import java.util.stream.Collectors;
             buttonExit.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
                     try {
-                        switchScene((Stage) root.getScene().getWindow(),FxmlNames.HOME);
+                        switchScene((Stage) root.getScene().getWindow(), FxmlNames.HOME);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -303,8 +335,15 @@ import java.util.stream.Collectors;
             root.getChildren().add(label);
         }
 
-        // tavolo gioco
-        public void showIslands(Boolean Action) throws EriantysExceptions {
+        // Game table
+
+        /**
+         * showIslands display the island on the screen based on the different stages of the game
+         * If clickable == True -> the islands are clickable to get user data
+         * @param clickable
+         * @throws EriantysExceptions
+         */
+        public void showIslands(Boolean clickable) throws EriantysExceptions {
             Table table = game.getTable();
 
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -357,7 +396,7 @@ import java.util.stream.Collectors;
                 Click.setStyle("-fx-background-color:transparent;");
 
                 int island_index = i;
-                if (Action){
+                if (clickable){
                     int finalIsland_index1 = island_index;
                     Click.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
@@ -377,6 +416,7 @@ import java.util.stream.Collectors;
                                         "island_index: %d\n" +
                                         "steps: %d", mn_pos, finalIsland_index1, steps));
                                 ArrayList<Object> inputs = new ArrayList<>();
+                                inputs.add(false); //no character card used
                                 inputs.add(steps);
                                 /**TODO YANFENG MOVE MN
                                  * in islandChoice trovi l'isola scelta pe muovere madre natura
@@ -566,7 +606,7 @@ import java.util.stream.Collectors;
                     root.getChildren().add(MN_view);
                 }
 
-                if (!Action){
+                if (!clickable){
                     root.getChildren().add(imgDragDrop);
                 }
                 else{
@@ -576,7 +616,13 @@ import java.util.stream.Collectors;
             }
 
         }
-        public void showClouds(Boolean Action){
+        /**
+         * showClouds display the clouds on the screen based on the different stages of the game
+         * If clickable == True -> the clouds are clickable to get user data
+         * @param clickable
+         * @throws EriantysExceptions
+         */
+        public void showClouds(Boolean clickable){
             Table table = game.getTable();
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double pos_x_center =screenBounds.getMaxX()*2/7 +20; //650
@@ -599,7 +645,7 @@ import java.util.stream.Collectors;
                 img_view.setLayoutY(pos_y);
                 node = img_view;
 
-                if(Action) {
+                if(clickable) {
                     Button bt = new Button();
                     nodes.add(bt);
                     bt.setGraphic(img_view);
@@ -641,6 +687,9 @@ import java.util.stream.Collectors;
                 pos_x +=screenBounds.getMaxY()/6;
             }
         }
+        /**
+         * showIslands display the island on the screen based on an different stages of the game
+         */
         public void showCharacter(){
 
             List<CharacterCard> cards = game.getTable().getCharacters();
@@ -740,6 +789,9 @@ import java.util.stream.Collectors;
             }
 
         }
+        /**
+         * addButtonCharacter display the button to use the character selected
+         */
         public void addButtonCharacter(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -788,6 +840,11 @@ import java.util.stream.Collectors;
         }
 
         // assistenti
+
+        /**
+         * showAssistant display the hand of the player on te sceen to select the Assistant to use
+         * @throws EriantysExceptions
+         */
         public void showAssistant() throws EriantysExceptions {
             showGameNoAction();
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -905,6 +962,13 @@ import java.util.stream.Collectors;
         }
 
         //player board
+
+        /**
+         * switcBoardController show the Playerboard with all it's component with the ability to switch between
+         * the Playerboards of all Players in Game
+         * If Action == True -> enable action (drag and drop studets)
+         * @param Action
+         */
         public void switcBoardController(Boolean Action){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             HBox bar = new HBox();
@@ -1010,6 +1074,12 @@ import java.util.stream.Collectors;
             bar.getChildren().add(vbox2);
             root.getChildren().add(bar);
         }
+
+        /**
+         * showWaitingRoom show student in the waiting room on the screen
+         * if Action == True -> studens are draggable
+         * @param Action
+         */
         public void showWaitingRoom(Boolean Action){
 
             String color;
@@ -1099,6 +1169,11 @@ import java.util.stream.Collectors;
                 }
             }
         }
+        /**
+         * showDiningRoom show student in the waiting room on the screen
+         * if Action == True -> dining room can accept drag and drop students
+         * @param Action
+         */
         public void showDiningRoom(Boolean Action){
             String red = "Image/student_red.png";
             String yellow = "Image/student_yellow.png";
@@ -1250,6 +1325,10 @@ import java.util.stream.Collectors;
 
 
         }
+
+        /**
+         * showTowers displays towers on screen
+         */
         public void showTowers(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
@@ -1294,6 +1373,10 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(gridPane);
         }
+
+        /**
+         * showProfessors displays professors on screen
+         */
         public void showProfessors(){
             String red = "Image/teacher_red.png";
             String yellow = "Image/teacher_yellow.png";
@@ -1349,6 +1432,13 @@ import java.util.stream.Collectors;
         }
 
         // di supporto
+
+        /**
+         * GridPane creates a vertical Grid of students on position pos_x,pos_y
+         * @param pos_x
+         * @param pos_y
+         * @param students
+         */
         protected  void GridPane(double pos_x,double pos_y,int[] students){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double dim = screenBounds.getMaxY()/(60);
@@ -1395,6 +1485,9 @@ import java.util.stream.Collectors;
             root.getChildren().add(gridPane);
         }
 
+        /**
+         * removeGame removes all nodes from the screen
+         */
         private void removeGame() {
             for(int i=0; i<nodes.size();i++){
                 Node img = nodes.get(i);
@@ -1403,6 +1496,10 @@ import java.util.stream.Collectors;
             nodes.clear();
 
         }
+
+        /**
+         * removeBoard removes only the Playerboard nodes from the screen
+         */
         private void removeBoard(){
             for(int i=0; i<board.size();i++){
                 Node img = board.get(i);
@@ -1411,6 +1508,13 @@ import java.util.stream.Collectors;
             board.clear();
         }
 
+        /**
+         * TowerGridPane creates a grid of Imageviews of towers to be positioned at pos_x, pos_y
+         * @param pos_x
+         * @param pos_y
+         * @param size
+         * @param color
+         */
         protected  void TowerGridPane(double pos_x,double pos_y,int size,TowerColor color){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double dim = screenBounds.getMaxY()/(30);
@@ -1453,6 +1557,11 @@ import java.util.stream.Collectors;
             root.getChildren().add(gridPane);
         }
 
+        /**
+         * noTileImg display a no entry tile image at position pos_x , pos_y
+         * @param pos_x
+         * @param pos_y
+         */
         public void noTileImg(double pos_x,double pos_y){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             ImageView noTile;
@@ -1466,6 +1575,9 @@ import java.util.stream.Collectors;
             root.getChildren().add(noTile);
         }
 
+        /**
+         * showWallet display wallet
+         */
         public void showWallet(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -1490,7 +1602,11 @@ import java.util.stream.Collectors;
             root.getChildren().add(gridPane);
         }
 
-
+        /**
+         * getCharacterInput set up the windows to get te user input based on the character cared selected
+         * @param card
+         * @throws EriantysExceptions
+         */
         public void getCharacterInput(CharacterCard card) throws EriantysExceptions {
             tips.setText(card.getMsg());
             Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
@@ -1539,7 +1655,7 @@ import java.util.stream.Collectors;
                     showCharacter7((Character7)card,true);
                     waitingRoomToExchange();
                     cardToExchange();
-                    buttonToFinish(3,((Character7) card).getStudents());
+                    buttonToExchange(3,((Character7) card).getStudents());
                     showGameNoActionNoCharacter(true,true);
                     break;
                 case 9:
@@ -1552,7 +1668,7 @@ import java.util.stream.Collectors;
                     showCharacter10((Character10)card,true);
                     waitingRoomToExchange();
                     cardToExchange();
-                    buttonToFinish(2,curr_player.getPb().getDiningRoom());
+                    buttonToExchange(2,curr_player.getPb().getDiningRoom());
                     showGameNoActionNoCharacter(true,true);
                     break;
                 case 11:
@@ -1566,8 +1682,12 @@ import java.util.stream.Collectors;
             }
         }
 
-
-        public void showCharacter1(Character1 card,Boolean Action){
+        /**
+         * showCharacter1 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
+        public void showCharacter1(Character1 card, Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1649,6 +1769,12 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
+
+        /**
+         *showCharacter3 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter3(Character3 card,Boolean Action){
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1662,7 +1788,13 @@ import java.util.stream.Collectors;
                 root.getChildren().add(imgCard);
             }
         }
-        public void showCharacter5(Character5 card,Boolean Action){
+
+        /**
+         *showCharacter5 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
+        public void showCharacter5(Character5 card, Boolean Action){
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -1690,7 +1822,13 @@ import java.util.stream.Collectors;
             nodes.add(grid);
             root.getChildren().add(grid);
         }
-        public void showCharacter7(Character7 card,Boolean Action){
+
+        /**
+         *showCharacter7 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
+        public void showCharacter7(Character7 card, Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1776,7 +1914,13 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
-        public void showCharacter9(Character9 card,Boolean Action){
+
+        /**
+         *showCharacter9 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
+        public void showCharacter9(Character9 card, Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1797,6 +1941,12 @@ import java.util.stream.Collectors;
             chooseColor(posY*1.1,posX*0.8);
 
         }
+
+        /**
+         *showCharacter10 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter10(Character10 card,Boolean Action){
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1814,6 +1964,12 @@ import java.util.stream.Collectors;
                 root.getChildren().add(imgCard);
             }
         }
+
+        /**
+         *showCharacter11 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter11(Character11 card,Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1908,6 +2064,12 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
+
+        /**
+         *showCharacter12 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter12(Character12 card,Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1930,6 +2092,104 @@ import java.util.stream.Collectors;
 
         }
 
+        /**
+         * chooseColor creates a longitudinal grid of button to select a student color
+         * @param positionY
+         * @param positionX
+         */
+        public void chooseColor(double positionY,double positionX){
+            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+            GridPane grid = new GridPane();
+            String color;
+
+
+            for (int i=0; i<5;i++){
+                Button student = new Button();
+                if (i==3)
+                    color = blue;
+                else if (i==2)
+                    color = pink;
+                else if (i==1)
+                    color = yellow;
+                else if (i==0)
+                    color = red;
+                else
+                    color = green;
+                ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
+                img.setFitWidth(screenBounds.getMaxY()/32);
+                img.setPreserveRatio(true);
+                student.setMaxWidth(screenBounds.getMaxY()/32);
+                student.setStyle("-fx-border-color:transparent;");
+                student.setStyle("-fx-background-color:transparent;");
+                student.setGraphic(img);
+                nodes.add(student);
+
+                final int studentFinal = i;
+                AASceneParent aaSceneParent = this;
+                student.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent e) {
+
+
+
+                        if(characterData==9) {
+
+
+                            ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(studentFinal);
+                            /**TODO YANFENG input characte 9
+                             */
+                            Command command = game.getLastCommand();
+                            String msg = " ";
+                            try {
+                                msg = command.GUIGetData(inputs);
+                            } catch (EriantysExceptions ex) {
+                                ex.printStackTrace();
+                            }
+                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                getInfo().setCommand(command);
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            } else
+                                messages.setText(msg);
+                        }
+                        else{
+                            ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(studentFinal);
+                            /**TODO YANFENG input characte 12
+                             */
+                            Command command = game.getLastCommand();
+                            String msg = " ";
+                            try {
+                                msg = command.GUIGetData(inputs);
+                            } catch (EriantysExceptions ex) {
+                                ex.printStackTrace();
+                            }
+                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
+                                getInfo().setCommand(command);
+                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
+                            } else
+                                messages.setText(msg);
+
+                        }
+                    }
+
+
+                });
+                grid.add(student,i,0);
+            }
+
+            VBox vbox =new VBox();
+            nodes.add(vbox);
+            vbox.setLayoutX(positionX);
+            vbox.setLayoutY(positionY);
+
+            vbox.getChildren().add(grid);
+            vbox.getChildren().add(new Text("click a student to select the student color"));
+            root.getChildren().add(vbox);
+        }
+
+        /**
+         * waitingRoomToExchange display a rectagle on witch studets can be draged from waiting room
+         */
         public void waitingRoomToExchange(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -2037,6 +2297,9 @@ import java.util.stream.Collectors;
             root.getChildren().add(vBox);
 
         }
+        /**
+         * cardToExchange display a rectagle on witch studets can be draged from card or dining room
+         */
         public void cardToExchange(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             VBox vBox = new VBox();
@@ -2151,7 +2414,13 @@ import java.util.stream.Collectors;
             root.getChildren().add(vBox);
 
         }
-        public void buttonToFinish(int Card,int[] StudentCard){
+
+        /**
+         * buttonToExchange show the button to excange the students selected
+         * @param Card
+         * @param StudentCard
+         */
+        public void buttonToExchange(int Card, int[] StudentCard){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
             Button bt = new Button();
@@ -2166,7 +2435,7 @@ import java.util.stream.Collectors;
                 @Override public void handle(ActionEvent e) {
                     ArrayList<Object> inputs = new ArrayList<>();
                     if(Arrays.stream(characterCardExcange).sum()==Arrays.stream(characterRoomExcange).sum()){
-                        if (controllCard(StudentCard) && controllWaiting()&& Arrays.stream(characterRoomExcange).sum()<=Card){
+                        if (controlCard(StudentCard) && controlWaiting()&& Arrays.stream(characterRoomExcange).sum()<=Card){
 
 
                             if (characterData==7){
@@ -2223,8 +2492,8 @@ import java.util.stream.Collectors;
 
                         }
                         else{
-                            System.out.println(controllCard(StudentCard));
-                            System.out.println(controllWaiting());
+                            System.out.println(controlCard(StudentCard));
+                            System.out.println(controlWaiting());
                             System.out.println(Arrays.stream(characterRoomExcange).sum()<Card);
                             messages.setText("the combination of student select" +"\n"+
                                     "is wrong please retry ");
@@ -2251,16 +2520,25 @@ import java.util.stream.Collectors;
         }
 
 
-
-        public boolean controllCard(int [] StudentCard) {
+        /**
+         * controllCard controls if students are >= of characterCardExcange
+         * @param studentsExchangeTo
+         * @return
+         */
+        public boolean controlCard(int [] studentsExchangeTo) {
             for (int i = 0; i < 5; i++) {
-                if (StudentCard[i] > characterCardExcange[i]) {
+                if (studentsExchangeTo[i] >= characterCardExcange[i]) {
                     return false;
                 }
             }
             return true;
         }
-        public boolean controllWaiting(){
+
+        /**
+         * controlWaiting controls if characterRoomExcange are <= getWaitingRoom of the current player
+         * @return
+         */
+        public boolean controlWaiting(){
             Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
             for(int i=0;i<5;i++){
                 if (curr_player.getPb().getWaitingRoom()[i] < characterRoomExcange[i]){
@@ -2270,6 +2548,15 @@ import java.util.stream.Collectors;
             return true;
         }
 
+
+        /**
+         * showGameNoActionNoCharacter displays the game whit the action not connected to character disabled
+         * if IsalndAction == True -> showIslands clickable == True
+         * if waitingroomAction == True -> showWaitingRoom == True
+         * @param IsalndAction
+         * @param waitingroomAction
+         * @throws EriantysExceptions
+         */
         public void showGameNoActionNoCharacter(Boolean IsalndAction, Boolean waitingroomAction) throws EriantysExceptions {
             switcBoardController(false);
             showTowers();
@@ -2284,95 +2571,6 @@ import java.util.stream.Collectors;
         }
 
 
-        public void chooseColor(double positionY,double positionX){
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-            GridPane grid = new GridPane();
-            String color;
-
-
-            for (int i=0; i<5;i++){
-                Button student = new Button();
-                if (i==3)
-                    color = blue;
-                else if (i==2)
-                    color = pink;
-                else if (i==1)
-                    color = yellow;
-                else if (i==0)
-                    color = red;
-                else
-                    color = green;
-                ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
-                img.setFitWidth(screenBounds.getMaxY()/32);
-                img.setPreserveRatio(true);
-                student.setMaxWidth(screenBounds.getMaxY()/32);
-                student.setStyle("-fx-border-color:transparent;");
-                student.setStyle("-fx-background-color:transparent;");
-                student.setGraphic(img);
-                nodes.add(student);
-
-                final int studentFinal = i;
-                AASceneParent aaSceneParent = this;
-                student.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
-
-
-
-                        if(characterData==9) {
-
-
-                            ArrayList<Object> inputs = new ArrayList<>();
-                            inputs.add(studentFinal);
-                            /**TODO YANFENG input characte 9
-                             */
-                            Command command = game.getLastCommand();
-                            String msg = " ";
-                            try {
-                                msg = command.GUIGetData(inputs);
-                            } catch (EriantysExceptions ex) {
-                                ex.printStackTrace();
-                            }
-                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
-                                getInfo().setCommand(command);
-                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                            } else
-                                messages.setText(msg);
-                        }
-                        else{
-                            ArrayList<Object> inputs = new ArrayList<>();
-                            inputs.add(studentFinal);
-                            /**TODO YANFENG input characte 12
-                             */
-                            Command command = game.getLastCommand();
-                            String msg = " ";
-                            try {
-                                msg = command.GUIGetData(inputs);
-                            } catch (EriantysExceptions ex) {
-                                ex.printStackTrace();
-                            }
-                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
-                                getInfo().setCommand(command);
-                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                            } else
-                                messages.setText(msg);
-
-                        }
-                    }
-
-
-                });
-                grid.add(student,i,0);
-            }
-
-            VBox vbox =new VBox();
-            nodes.add(vbox);
-            vbox.setLayoutX(positionX);
-            vbox.setLayoutY(positionY);
-
-            vbox.getChildren().add(grid);
-            vbox.getChildren().add(new Text("click a student to select the student color"));
-            root.getChildren().add(vbox);
-        }
 
 
 

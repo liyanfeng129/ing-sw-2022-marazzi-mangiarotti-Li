@@ -61,7 +61,11 @@ public class LoadGameController extends AASceneParent {
     }
 
 
-
+    /**
+     * back show previous page
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void back(ActionEvent event) throws IOException {
         switchScene((Stage) ((Node)event.getSource()).getScene().getWindow(),FxmlNames.START_LOAD);

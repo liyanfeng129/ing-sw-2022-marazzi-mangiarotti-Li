@@ -16,6 +16,9 @@ public class GameStartedController extends AASceneParent {
 
 
     @FXML
+    /**
+     * goes to the previous page
+     */
     protected void back(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass(). getResource("load_game.fxml"));
         stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
