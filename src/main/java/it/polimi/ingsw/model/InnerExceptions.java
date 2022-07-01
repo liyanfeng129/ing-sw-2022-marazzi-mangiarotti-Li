@@ -8,14 +8,6 @@ public class InnerExceptions {
         }
     }
 
-
-    public static class IncompactIslandsException extends EriantysExceptions
-    {
-        public IncompactIslandsException(String msg) {
-            super(msg);
-        }
-    }
-
     public static class NoMotherNatureException extends EriantysExceptions
     {
         public NoMotherNatureException(String msg) {
