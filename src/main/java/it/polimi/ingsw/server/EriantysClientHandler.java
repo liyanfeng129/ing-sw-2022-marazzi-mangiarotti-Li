@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 import com.google.gson.Gson;
+import it.polimi.ingsw.GUI.GUIInfo;
 import it.polimi.ingsw.client.Users;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;

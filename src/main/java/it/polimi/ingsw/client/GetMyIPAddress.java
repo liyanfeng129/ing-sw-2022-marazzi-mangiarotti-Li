@@ -1,11 +1,16 @@
 package it.polimi.ingsw.client;
 
 //This program is find your exact LAN(Local Machine on which your are       //runing this program) IP Address
+import it.polimi.ingsw.GUI.GUIInfo;
+import it.polimi.ingsw.server.Subscriber;
+
 import java.net.*;
 import java.util.Enumeration;
 
 public class GetMyIPAddress {
     public static void main(String gks[]) throws SocketException{
+        System.out.println(Subscriber.class.getResource("storage/users.json").getPath());
+
 
         try {
             System.out.println(getLocalHostLANAddress().getHostAddress());
