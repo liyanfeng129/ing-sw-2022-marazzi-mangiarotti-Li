@@ -6,7 +6,6 @@ import it.polimi.ingsw.characterCards2.CharacterCard;
 import it.polimi.ingsw.command.*;
 import it.polimi.ingsw.model.*;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,7 +26,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +44,7 @@ import java.util.stream.Collectors;
         private int[] characterRoomExcange=new int[]{0,0,0,0,0};
         private int[] characterCardExcange=new int[]{0,0,0,0,0};
         private String EndGameMessage;
+        private GuiCharacter guiCharacter;
 
 
         @FXML
@@ -99,7 +98,6 @@ import java.util.stream.Collectors;
          */
         protected void initConfig() {
             getInfo().getListener().setCaller(this);
-
             /*
             Task task = new Task<Void>() {
                 @Override public Void call() {
@@ -114,8 +112,11 @@ import java.util.stream.Collectors;
              */
         }
 
-
+        /**
+         * updage() determines te fase on te game based on last the command  and calls showGame with the correct fase
+         */
         protected void update()throws EriantysExceptions {
+            this.guiCharacter = new GuiCharacter(game,root, (ArrayList<Node>) nodes,this,getInfo(),messages,characterData);
             characterData=0;
             removeGame();
             messages.setText(game.getExecutedCommand().getMsg());// displaying the previous action done by player
@@ -137,6 +138,12 @@ import java.util.stream.Collectors;
                     showGame("MoveStudents");
                     action = "Click and hold on a student in your waiting room and then drag it to an island or to your student holder";
                 }
+
+                if(game.getLastCommand() instanceof EndGameCommand)
+                {
+                    showGame("endgame");
+                }
+
                 if(game.getLastCommand() instanceof SelectCloudCommand)
                 {
                     showGame("SelectCloud");
@@ -160,16 +167,16 @@ import java.util.stream.Collectors;
         }
 
         /**
+         * showGame update the gui interface based on the fase
          *
-         * @param fase può essese di 4 tipi:
-         *             1) Assistants: per far vedere gli assistenti
-         *             2) updateGame
-         *             3) MoveStudents
-         *             4) MoveMN
-         *             5) SelectCloud
+         * @param fase can be of 5 types:
+         *             1) showGameDragStudent
+         *             2) showAssistant
+         *             3) showGameNoAction
+         *             4) showGameMoveMN
+         *             5) showGamePickCloud
+         *             6) endGame
          */
-
-
         public void showGame(String fase) throws EriantysExceptions {
 
             switch (fase) {
@@ -195,6 +202,10 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         * showGameNoAction show the GUI to the client without the ability to send input to the server
+         * @throws EriantysExceptions
+         */
         public void showGameNoAction() throws EriantysExceptions {
             switcBoardController(false);
             showTowers();
@@ -209,6 +220,10 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         *showGameDragStudent show the GUI to the client asking to drag a student or to use a character
+         * @throws EriantysExceptions
+         */
         public void showGameDragStudent() throws EriantysExceptions {
 
 
@@ -229,6 +244,10 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         *showGameMoveMN show the GUI to the client asking to move mother nature
+         * @throws EriantysExceptions
+         */
         public void showGameMoveMN() throws EriantysExceptions {
 
 
@@ -247,6 +266,10 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         *showGamePickCloud show the GUI to the client asking to pick a cloud
+         * @throws EriantysExceptions
+         */
         public void showGamePickCloud() throws EriantysExceptions {
 
             switcBoardController(false);
@@ -265,6 +288,9 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         * endGame show the end of a game with the ability to go back to the menu
+         */
         public void endGame(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double pos_x_center =screenBounds.getMaxX()/2 -300; //650
@@ -285,7 +311,7 @@ import java.util.stream.Collectors;
             buttonExit.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent e) {
                     try {
-                        switchScene((Stage) root.getScene().getWindow(),FxmlNames.HOME);
+                        switchScene((Stage) root.getScene().getWindow(), FxmlNames.HOME);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -302,6 +328,13 @@ import java.util.stream.Collectors;
             root.getChildren().add(img_view);
             root.getChildren().add(label);
         }
+
+
+
+
+
+
+
 
         // tavolo gioco
         public void showIslands(Boolean Action) throws EriantysExceptions {
@@ -722,19 +755,19 @@ import java.util.stream.Collectors;
 
                 switch (card.getN_card()) {
                     case 1:
-                        showCharacter1((Character1)card,false);
+                        guiCharacter.showCharacter1((Character1)card,false);
                         break;
                     case 3:
-                        showCharacter3((Character3)card,false);
+                        guiCharacter.showCharacter3((Character3)card,false);
                         break;
                     case 5:
-                        showCharacter5((Character5)card,false);
+                        guiCharacter.showCharacter5((Character5)card,false);
                         break;
                     case 7:
-                        showCharacter7((Character7)card,false);
+                        guiCharacter.showCharacter7((Character7)card,false);
                         break;
                     case 11:
-                        showCharacter11((Character11) card,false);
+                        guiCharacter.showCharacter11((Character11) card,false);
                         break;
                 }
             }
@@ -1394,7 +1427,6 @@ import java.util.stream.Collectors;
             nodes.add(gridPane);
             root.getChildren().add(gridPane);
         }
-
         private void removeGame() {
             for(int i=0; i<nodes.size();i++){
                 Node img = nodes.get(i);
@@ -1410,7 +1442,6 @@ import java.util.stream.Collectors;
             }
             board.clear();
         }
-
         protected  void TowerGridPane(double pos_x,double pos_y,int size,TowerColor color){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double dim = screenBounds.getMaxY()/(30);
@@ -1452,7 +1483,6 @@ import java.util.stream.Collectors;
             nodes.add(gridPane);
             root.getChildren().add(gridPane);
         }
-
         public void noTileImg(double pos_x,double pos_y){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             ImageView noTile;
@@ -1465,7 +1495,6 @@ import java.util.stream.Collectors;
             nodes.add(noTile);
             root.getChildren().add(noTile);
         }
-
         public void showWallet(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -1497,7 +1526,7 @@ import java.util.stream.Collectors;
             switch (card.getN_card()) {
                 case 1:
                     characterData=1;
-                    showCharacter1((Character1)card,true);
+                    guiCharacter.showCharacter1((Character1)card,true);
                     showGameNoActionNoCharacter(false,false);
                     break;
                 case 2:
@@ -1520,23 +1549,23 @@ import java.util.stream.Collectors;
                     break;
                 case 12:
                     characterData=12;
-                    showCharacter12((Character12)card,true);
+                    guiCharacter.showCharacter12((Character12)card,true);
                     showGameNoActionNoCharacter(false,false);
 
                     break;
                 case 3:
                     characterData=3;
-                    showCharacter3((Character3)card,true);
+                    guiCharacter.showCharacter3((Character3)card,true);
                     showGameNoActionNoCharacter(true,false);
                     break;
                 case 5:
                     characterData=5;
-                    showCharacter5((Character5)card,true);
+                    guiCharacter.showCharacter5((Character5)card,true);
                     showGameNoActionNoCharacter(true,false);
                     break;
                 case 7:
                     characterData=7;
-                    showCharacter7((Character7)card,true);
+                    guiCharacter.showCharacter7((Character7)card,true);
                     waitingRoomToExchange();
                     cardToExchange();
                     buttonToFinish(3,((Character7) card).getStudents());
@@ -1544,12 +1573,12 @@ import java.util.stream.Collectors;
                     break;
                 case 9:
                     characterData=9;
-                    showCharacter9((Character9)card,true);
+                    guiCharacter.showCharacter9((Character9)card,true);
                     showGameNoActionNoCharacter(false, false);
                     break;
                 case 10:
                     characterData=10;
-                    showCharacter10((Character10)card,true);
+                    guiCharacter.showCharacter10((Character10)card,true);
                     waitingRoomToExchange();
                     cardToExchange();
                     buttonToFinish(2,curr_player.getPb().getDiningRoom());
@@ -1557,7 +1586,7 @@ import java.util.stream.Collectors;
                     break;
                 case 11:
                     characterData=11;
-                    showCharacter11((Character11)card,true);
+                    guiCharacter.showCharacter11((Character11)card,true);
                     showGameNoActionNoCharacter(false,false);
                     break;
                 default:
@@ -1567,368 +1596,6 @@ import java.util.stream.Collectors;
         }
 
 
-        public void showCharacter1(Character1 card,Boolean Action){
-
-            int pos = game.getTable().getCharacters().indexOf(card);
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
-
-            GridPane grid  = new GridPane();
-            nodes.add(grid);
-            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front1.jpg")));
-            imgCard.setFitWidth(screenBounds.getMaxY()/8);
-            imgCard.setPreserveRatio(true);
-            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
-            if(Action){
-                nodes.add(imgCard);
-                root.getChildren().add(imgCard);
-            }
-
-            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10);
-            int[] students = card.getStudents();
-            String color;
-            int itemPositioned=0;
-
-            for(int i=0;i<5;i++){
-                String student =""+i;
-
-                if (i==3)
-                    color = blue;
-                else if (i==2)
-                    color = pink;
-                else if (i==1)
-                    color = yellow;
-                else if (i==0)
-                    color = red;
-                else
-                    color = green;
-
-                for (int j =0;j<students[i];j++) {
-
-                    ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
-                    img.setFitWidth(screenBounds.getMaxY()/32);
-                    img.setPreserveRatio(true);
-                    nodes.add(img);
-                    if (Action)
-                    {
-                        img.setOnDragDetected(new EventHandler<MouseEvent>() {
-                            public void handle(MouseEvent event) {
-                                /* drag was detected, start drag-and-drop gesture*/
-                                /* allow any transfer mode */
-                                Dragboard db = img.startDragAndDrop(TransferMode.ANY);
-
-                                /* put a string on dragboard */
-                                ClipboardContent content = new ClipboardContent();
-
-                                content.putString(student);
-                                db.setContent(content);
-                                event.consume();
-                            }
-                        });
-                    }
-                    img.setOnDragDone(new EventHandler <DragEvent>() {
-                        public void handle(DragEvent event) {
-                            event.consume();
-                        }
-                    });
-
-                    if (itemPositioned==0)
-                        grid.add(img,0,0);
-                    else if (itemPositioned==1)
-                        grid.add(img,0,1);
-                    else if (itemPositioned==2)
-                        grid.add(img,1,0);
-                    else
-                        grid.add(img,1,1);
-
-                    itemPositioned++;
-                }
-
-            }
-            root.getChildren().add(grid);
-        }
-        public void showCharacter3(Character3 card,Boolean Action){
-            int pos = game.getTable().getCharacters().indexOf(card);
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front2.jpg")));
-            imgCard.setFitWidth(screenBounds.getMaxY()/8);
-            imgCard.setPreserveRatio(true);
-            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
-            if(Action){
-                nodes.add(imgCard);
-                root.getChildren().add(imgCard);
-            }
-        }
-        public void showCharacter5(Character5 card,Boolean Action){
-            int pos = game.getTable().getCharacters().indexOf(card);
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
-
-            GridPane grid  = new GridPane();
-            nodes.add(grid);
-            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front4.jpg")));
-            imgCard.setFitWidth(screenBounds.getMaxY()/8);
-            imgCard.setPreserveRatio(true);
-            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
-            if(Action){
-                nodes.add(imgCard);
-                root.getChildren().add(imgCard);
-            }
-
-            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10);
-
-            ImageView noEntryTyle = new ImageView(new Image(getClass().getResourceAsStream("Image/deny_island_icon.png")));
-            noEntryTyle.setFitWidth(screenBounds.getMaxY()/20);
-            noEntryTyle.setPreserveRatio(true);
-            grid.add(noEntryTyle,0,0);
-            grid.add(new Text(""+card.getNo_entry_tile()),1,0);
-            nodes.add(grid);
-            root.getChildren().add(grid);
-        }
-        public void showCharacter7(Character7 card,Boolean Action){
-
-            int pos = game.getTable().getCharacters().indexOf(card);
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
-
-            GridPane grid  = new GridPane();
-            nodes.add(grid);
-            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front6.jpg")));
-            imgCard.setFitWidth(screenBounds.getMaxY()/8);
-            imgCard.setPreserveRatio(true);
-            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
-            if(Action){
-                nodes.add(imgCard);
-                root.getChildren().add(imgCard);
-            }
-
-            grid.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            grid.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10);
-            int[] students = card.getStudents();
-            String color;
-            int itemPositioned=0;
-
-            for(int i=0;i<5;i++){
-                String student =""+i;
-
-                if (i==3)
-                    color = blue;
-                else if (i==2)
-                    color = pink;
-                else if (i==1)
-                    color = yellow;
-                else if (i==0)
-                    color = red;
-                else
-                    color = green;
-
-                for (int j =0;j<card.getCard_students()[i];j++) {
-
-                    ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
-                    img.setFitWidth(screenBounds.getMaxY()/32);
-                    img.setPreserveRatio(true);
-                    nodes.add(img);
-                    if (Action)
-                    {
-                        img.setOnDragDetected(new EventHandler<MouseEvent>() {
-                            public void handle(MouseEvent event) {
-                                /* drag was detected, start drag-and-drop gesture*/
-                                /* allow any transfer mode */
-                                Dragboard db = img.startDragAndDrop(TransferMode.ANY);
-
-                                /* put a string on dragboard */
-                                ClipboardContent content = new ClipboardContent();
-
-                                content.putString(student+"C");
-                                db.setContent(content);
-                                event.consume();
-                            }
-                        });
-                    }
-                    img.setOnDragDone(new EventHandler <DragEvent>() {
-                        public void handle(DragEvent event) {
-                            event.consume();
-                        }
-                    });
-
-                    if (itemPositioned==0)
-                        grid.add(img,0,0);
-                    else if (itemPositioned==1)
-                        grid.add(img,0,1);
-                    else if (itemPositioned==2)
-                        grid.add(img,1,0);
-                    else if(itemPositioned==3)
-                        grid.add(img,1,1);
-                    else if(itemPositioned==4)
-                        grid.add(img,2,0);
-                    else
-                        grid.add(img,2,1);
-
-                    itemPositioned++;
-                }
-
-            }
-            root.getChildren().add(grid);
-        }
-        public void showCharacter9(Character9 card,Boolean Action){
-
-            int pos = game.getTable().getCharacters().indexOf(card);
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
-            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front8.jpg")));
-            imgCard.setFitWidth(screenBounds.getMaxY()/8);
-            imgCard.setPreserveRatio(true);
-            double posY =imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150;
-            double posX =screenBounds.getMaxX()-screenBounds.getMaxY()/7.5;
-
-            imgCard.setLayoutX(posX);
-            imgCard.setLayoutY(posY);
-            if(Action){
-                nodes.add(imgCard);
-                root.getChildren().add(imgCard);
-            }
-
-            chooseColor(posY*1.1,posX*0.8);
-
-        }
-        public void showCharacter10(Character10 card,Boolean Action){
-            int pos = game.getTable().getCharacters().indexOf(card);
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
-            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front9.jpg")));
-            imgCard.setFitWidth(screenBounds.getMaxY()/8);
-            imgCard.setPreserveRatio(true);
-            double posY =imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150;
-            double posX =screenBounds.getMaxX()-screenBounds.getMaxY()/7.5;
-
-            imgCard.setLayoutX(posX);
-            imgCard.setLayoutY(posY);
-            if(Action){
-                nodes.add(imgCard);
-                root.getChildren().add(imgCard);
-            }
-        }
-        public void showCharacter11(Character11 card,Boolean Action){
-
-            int pos = game.getTable().getCharacters().indexOf(card);
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
-
-            GridPane grid  = new GridPane();
-            nodes.add(grid);
-            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front10.jpg")));
-            imgCard.setFitWidth(screenBounds.getMaxY()/8);
-            imgCard.setPreserveRatio(true);
-            imgCard.setLayoutX(screenBounds.getMaxX()-screenBounds.getMaxY()/7.5);
-            imgCard.setLayoutY(imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150);
-            if(Action){
-                nodes.add(imgCard);
-                root.getChildren().add(imgCard);
-            }
-            double posx = screenBounds.getMaxX()-screenBounds.getMaxY()/7.5;
-            double posy = imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150+screenBounds.getMaxY()/10;
-            grid.setLayoutX(posx);
-            grid.setLayoutY(posy);
-            int[] students = card.getStudents();
-            String color;
-            int itemPositioned=0;
-
-            for(int i=0;i<5;i++){
-                String student =""+i;
-
-                if (i==3)
-                    color = blue;
-                else if (i==2)
-                    color = pink;
-                else if (i==1)
-                    color = yellow;
-                else if (i==0)
-                    color = red;
-                else
-                    color = green;
-
-                for (int j =0;j<students[i];j++) {
-
-                    ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
-                    img.setFitWidth(screenBounds.getMaxY()/32);
-                    img.setPreserveRatio(true);
-                    Button button = new Button();
-                    button.setGraphic(img);
-                    button.setMaxWidth(screenBounds.getMaxY()/32);
-                    button.setStyle("-fx-border-color:transparent;");
-                    button.setStyle("-fx-background-color:transparent;");
-
-                    nodes.add(button);
-                    if (Action)
-                    {
-                        final int studentFinal = i;
-                        AASceneParent aaSceneParent = this;
-                        button.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override public void handle(ActionEvent e) {
-                                ArrayList<Object> inputs = new ArrayList<>();
-                                inputs.add(studentFinal);
-                                System.out.println(studentFinal);
-                                /**TODO YANFENG input characte 11
-                                 */
-                                Command command = game.getLastCommand();
-                                String msg = " ";
-                                try {
-                                    msg = command.GUIGetData(inputs);
-                                } catch (EriantysExceptions ex) {
-                                    ex.printStackTrace();
-                                }
-                                if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
-                                    getInfo().setCommand(command);
-                                    Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                                } else
-                                    messages.setText(msg);
-
-                            }
-                        });
-                    }
-
-                    if (itemPositioned==0)
-                        grid.add(button,0,0);
-                    else if (itemPositioned==1)
-                        grid.add(button,0,1);
-                    else if (itemPositioned==2)
-                        grid.add(button,1,0);
-                    else
-                        grid.add(button,1,1);
-
-                    itemPositioned++;
-                }
-
-            }
-            root.getChildren().add(grid);
-        }
-        public void showCharacter12(Character12 card,Boolean Action){
-
-            int pos = game.getTable().getCharacters().indexOf(card);
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-
-            ImageView imgCard = new ImageView(new Image(getClass().getResourceAsStream("Image/CarteTOT_front11.jpg")));
-            imgCard.setFitWidth(screenBounds.getMaxY()/8);
-            imgCard.setPreserveRatio(true);
-            double posY =imgCard.getLayoutBounds().getHeight()*pos+screenBounds.getMaxY()/150;
-            double posX =screenBounds.getMaxX()-screenBounds.getMaxY()/7.5;
-
-            imgCard.setLayoutX(posX);
-            imgCard.setLayoutY(posY);
-            if(Action){
-                nodes.add(imgCard);
-                root.getChildren().add(imgCard);
-            }
-
-            chooseColor(posY*1.3,posX*0.8);
-
-        }
 
         public void waitingRoomToExchange(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -2254,7 +1921,7 @@ import java.util.stream.Collectors;
 
         public boolean controllCard(int [] StudentCard) {
             for (int i = 0; i < 5; i++) {
-                if (StudentCard[i] > characterCardExcange[i]) {
+                if (StudentCard[i] >= characterCardExcange[i]) {
                     return false;
                 }
             }
@@ -2284,95 +1951,6 @@ import java.util.stream.Collectors;
         }
 
 
-        public void chooseColor(double positionY,double positionX){
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-            GridPane grid = new GridPane();
-            String color;
-
-
-            for (int i=0; i<5;i++){
-                Button student = new Button();
-                if (i==3)
-                    color = blue;
-                else if (i==2)
-                    color = pink;
-                else if (i==1)
-                    color = yellow;
-                else if (i==0)
-                    color = red;
-                else
-                    color = green;
-                ImageView img = new ImageView(new Image(getClass().getResourceAsStream(color)));
-                img.setFitWidth(screenBounds.getMaxY()/32);
-                img.setPreserveRatio(true);
-                student.setMaxWidth(screenBounds.getMaxY()/32);
-                student.setStyle("-fx-border-color:transparent;");
-                student.setStyle("-fx-background-color:transparent;");
-                student.setGraphic(img);
-                nodes.add(student);
-
-                final int studentFinal = i;
-                AASceneParent aaSceneParent = this;
-                student.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent e) {
-
-
-
-                        if(characterData==9) {
-
-
-                            ArrayList<Object> inputs = new ArrayList<>();
-                            inputs.add(studentFinal);
-                            /**TODO YANFENG input characte 9
-                             */
-                            Command command = game.getLastCommand();
-                            String msg = " ";
-                            try {
-                                msg = command.GUIGetData(inputs);
-                            } catch (EriantysExceptions ex) {
-                                ex.printStackTrace();
-                            }
-                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
-                                getInfo().setCommand(command);
-                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                            } else
-                                messages.setText(msg);
-                        }
-                        else{
-                            ArrayList<Object> inputs = new ArrayList<>();
-                            inputs.add(studentFinal);
-                            /**TODO YANFENG input characte 12
-                             */
-                            Command command = game.getLastCommand();
-                            String msg = " ";
-                            try {
-                                msg = command.GUIGetData(inputs);
-                            } catch (EriantysExceptions ex) {
-                                ex.printStackTrace();
-                            }
-                            if (msg.equals(Config.GUI_COMMAND_GETDATA_SUC)) {
-                                getInfo().setCommand(command);
-                                Platform.runLater(() -> new GuiMessageSender(aaSceneParent, Config.COMMAND_EXECUTE).run());
-                            } else
-                                messages.setText(msg);
-
-                        }
-                    }
-
-
-                });
-                grid.add(student,i,0);
-            }
-
-            VBox vbox =new VBox();
-            nodes.add(vbox);
-            vbox.setLayoutX(positionX);
-            vbox.setLayoutY(positionY);
-
-            vbox.getChildren().add(grid);
-            vbox.getChildren().add(new Text("click a student to select the student color"));
-            root.getChildren().add(vbox);
-        }
 
 
 
