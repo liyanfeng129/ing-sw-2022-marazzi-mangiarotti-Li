@@ -1,5 +1,9 @@
 package it.polimi.ingsw.server;
 
+import com.google.gson.Gson;
+import it.polimi.ingsw.model.Config;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
@@ -59,6 +63,79 @@ public class Methods {
             UnknownHostException unknownHostException = new UnknownHostException("Failed to determine LAN address: " + e);
             unknownHostException.initCause(e);
             throw unknownHostException;
+        }
+    }
+
+    public synchronized Object fileBin2Object(String fileName)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
+        try
+        {
+            FileInputStream fi = new FileInputStream(new File(absolutePathToProject+pathFromContentRoot+fileName));
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            return oi.readObject();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private static synchronized Object fileJason2Object(String fileName, Class ob)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
+        Gson gson = new Gson();
+        try (Reader reader = new FileReader(absolutePathToProject+pathFromContentRoot+fileName)) {
+
+            // Convert JSON File to Java Object
+            Object obb = gson.fromJson(reader, ob);
+            return obb;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
+
+    public synchronized void Object2fileBin(String fileName, Object ob)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
+        try
+        {
+            FileOutputStream f = new FileOutputStream(new File(absolutePathToProject+pathFromContentRoot+fileName));
+            ObjectOutputStream o = new ObjectOutputStream(f);
+
+            // Write objects to file
+            o.writeObject(ob);
+
+            o.close();
+            f.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+
+        }
+    }
+
+    private synchronized  void object2FileJason(String fileName, Object ob)
+    {
+        String absolutePathToProject = new File("").getAbsolutePath();
+        String pathFromContentRoot = Config.PATH_FROM_CONTENT_ROOT;
+        Gson gson = new Gson();
+        try
+        {
+            FileWriter writer = new FileWriter(absolutePathToProject+pathFromContentRoot+fileName);
+            gson.toJson(ob, writer);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 }
