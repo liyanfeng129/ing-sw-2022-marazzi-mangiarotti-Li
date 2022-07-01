@@ -70,6 +70,8 @@ public class SelectCloudCommand extends Command implements Serializable{
             c.emptyCloud();
             setMsg(String.format("Player %s took cloud %d", getUsername(), cloud + 1));
         }
+        else
+            setMsg("Last turn could result in take students from empty cloud");
         return true;
     }
 

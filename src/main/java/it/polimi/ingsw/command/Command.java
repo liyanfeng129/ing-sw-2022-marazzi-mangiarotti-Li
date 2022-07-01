@@ -25,8 +25,25 @@ public abstract class Command implements Serializable {
     }
 
     public abstract void undo(Game game) throws EriantysExceptions;
+
+    /**
+     * this method get the inputs for the action the current player has to make in cli
+     * @throws EriantysExceptions
+     */
     public abstract void  getData() throws EriantysExceptions;
+
+    /**
+     * this method execute the action depending on which state the game is in at the moment
+     * @param game
+     * @return true if action correctly executed
+     * @throws EriantysExceptions
+     */
     public abstract boolean execute(Game game) throws EriantysExceptions;
+
+    /**
+     * this method get the inputs for the action the current player has to make in gui
+     * @throws EriantysExceptions
+     */
     public abstract String GUIGetData(ArrayList<Object> inputs) throws EriantysExceptions;
     public boolean isDataGathered() {
         return dataGathered;
@@ -68,6 +85,11 @@ public abstract class Command implements Serializable {
         this.msg = msg;
     }
 
+    /**
+     * this method is used to get the inputs command line
+     * if an input is not an integer this method ask again for another input
+     * @return input from cli
+     */
     public int getInput(){
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
@@ -80,6 +102,12 @@ public abstract class Command implements Serializable {
         return Integer.parseInt(input);
     }
 
+    /**
+     * this method compute if player p has reached 3,6 or 9 students of the same color in his playerboard
+     * for the first time.
+     * In this case 1 coin is added to this player's saving
+     * @param p player to check
+     */
     public void addCoin(Player p){
         for (int i=0;i<5;i++) {
             if (p.getPb().getDiningRoom()[i] >= 3 && p.getPb().getCoin3()[i] == false) {
