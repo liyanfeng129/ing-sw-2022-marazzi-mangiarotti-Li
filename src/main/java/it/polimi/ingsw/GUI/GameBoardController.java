@@ -659,6 +659,7 @@ import java.util.stream.Collectors;
                         @Override
                         public void handle(ActionEvent e) {
                             ArrayList<Object> inputs = new ArrayList<>();
+                            inputs.add(false);
                             inputs.add(cloud_pos);
                             /**TODO YANFENG TAKE CLOUD
                              * in cloudIndex trovi la posizione dell'isola
@@ -1655,7 +1656,7 @@ import java.util.stream.Collectors;
                     showCharacter7((Character7)card,true);
                     waitingRoomToExchange();
                     cardToExchange();
-                    buttonToExchange(3,((Character7) card).getStudents());
+                    buttonToExchange(3,((Character7) card).getCard_students());
                     showGameNoActionNoCharacter(true,true);
                     break;
                 case 9:
@@ -2494,7 +2495,7 @@ import java.util.stream.Collectors;
                         else{
                             System.out.println(controlCard(StudentCard));
                             System.out.println(controlWaiting());
-                            System.out.println(Arrays.stream(characterRoomExcange).sum()<Card);
+                            System.out.println(Arrays.stream(characterRoomExcange).sum()<=Card);
                             messages.setText("the combination of student select" +"\n"+
                                     "is wrong please retry ");
                             characterCardExcange = new int[] {0,0,0,0,0};
@@ -2527,7 +2528,7 @@ import java.util.stream.Collectors;
          */
         public boolean controlCard(int [] studentsExchangeTo) {
             for (int i = 0; i < 5; i++) {
-                if (studentsExchangeTo[i] >= characterCardExcange[i]) {
+                if (studentsExchangeTo[i] < characterCardExcange[i]) {
                     return false;
                 }
             }

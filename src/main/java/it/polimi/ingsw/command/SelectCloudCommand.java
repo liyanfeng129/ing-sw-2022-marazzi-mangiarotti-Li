@@ -152,14 +152,36 @@ public class SelectCloudCommand extends Command implements Serializable{
      * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {
-        if (!getGame().isStudentFinished()) {
-            int cloud = (int) inputs.get(0);
-            if (Arrays.stream(getGame().getTable().getClouds().get(cloud).getStudents()).sum() == 0)
-                return Config.GUI_EMPTY_CLOUD;
-            this.cloud = cloud;
+        boolean useCharacter = (boolean) inputs.get(0);
+        if(!useCharacter) {
+            if (!getGame().isStudentFinished()) {
+                int cloud = (int) inputs.get(1);
+                if (Arrays.stream(getGame().getTable().getClouds().get(cloud).getStudents()).sum() == 0)
+                    return Config.GUI_EMPTY_CLOUD;
+                this.cloud = cloud;
+            }
+            setDataGathered(true);
+            return Config.GUI_COMMAND_GETDATA_SUC;
         }
-        setDataGathered(true);
-        return Config.GUI_COMMAND_GETDATA_SUC;
+        else {
+            if(!characterCardUsed)
+            {
+                int characterIndex = (int) inputs.get(1);
+                int coin = getGame().getTurnList().get(getGame().getGameState().getPhase()).getWallet().getSaving();
+                if (getGame().getTable().getCharacters().get(characterIndex).getCoin() > coin) // cost higher than what you have
+                    return Config.GUI_NOT_ENOUGH_COIN;
+                else
+                {
+                    this.characterIndex = characterIndex;
+                    characterCardUsed = true;
+                    setDataGathered(true);
+                    return Config.GUI_COMMAND_GETDATA_SUC;
+                }
+            }
+            else
+                return Config.GUI_CHARACTER_ALREADY_USED;
+
+        }
     }
 }
 

@@ -15,7 +15,6 @@ public class ActionState extends State implements Serializable {
     private boolean onIsland;
     private boolean expertMode;
     private boolean characterCardUsed;
-    private boolean endGame=false;
     private int characterIndex = -1;
     private boolean characterCardExecuted;
     public ActionState(Game game, int phase) {
@@ -43,10 +42,7 @@ public class ActionState extends State implements Serializable {
     @Override
     public void executeCommand() throws EriantysExceptions {
         if (getGame().getLastCommand().execute(getGame())) {
-            /**TODO ALE DOMANDA
-             * se il commando eseguito e' un useCharacterCommand, esiste una carta che dopo il suo utilizzo scatta il condizione di end game
-             * */
-            if (endGame)
+            if (checkCardEndGame())
                 getGame().changeGameState(new EndGameState(getGame(), 0));
             else {
                 if ((!characterCardUsed || characterCardExecuted) && !onIsland) {
@@ -57,9 +53,9 @@ public class ActionState extends State implements Serializable {
                     characterCardExecuted = true;
                     getGame().setUsedCharacter((UseCharacterCommand) getGame().getLastCommand());
                 }
-            }
-            if (canChangeState()) {
-                getGame().changeGameState(new MoveMotherNatureState(getGame(), getPhase(),characterCardExecuted,characterCardUsed));
+                if (canChangeState()) {
+                    getGame().changeGameState(new MoveMotherNatureState(getGame(), getPhase(),characterCardExecuted,characterCardUsed));
+                }
             }
             getGame().removeCommand();
             getGame().addCommand(getGame().getGameState().generateCommand());
@@ -110,12 +106,5 @@ public class ActionState extends State implements Serializable {
 
     public void setCharacterIndex(int characterIndex) {
         this.characterIndex = characterIndex;
-    }
-    public boolean isEndGame() {
-        return endGame;
-    }
-
-    public void setEndGame(boolean endGame) {
-        this.endGame = endGame;
     }
 }

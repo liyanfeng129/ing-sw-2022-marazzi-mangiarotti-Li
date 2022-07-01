@@ -42,44 +42,46 @@ public class MoveMotherNatureState extends State implements Serializable {
     public void executeCommand() throws EriantysExceptions {
         if(!getGame().getLastCommand().execute(getGame()))
             throw new InnerExceptions.NoMotherNatureException("Cannot execute command in moveMotherNatureState.");
-        int MN_pos=getGame().getTable().getMotherNatureIndex();
-        if(!characterCardUsed || characterCardExecuted) // if character has not been used or character has been executed
-        {
-            // means that command executed was moveMotherNatureCommand
-            if(!getGame().getTable().getIsland(MN_pos).isNoEntryTiles()) {
-                Player player = getGame().getTable().getPlayerMaxInfluence(getGame());
-                //condizione endGame finite torri in pb
-                if (player != null) {
-                    for (int i = 0; i < getGame().getN_Player(); i++) {
-                        if (getGame().getPlayers().get(i).getPb().getN_tower() <= 0) {
+        if (checkCardEndGame())
+            getGame().changeGameState(new EndGameState(getGame(), 0));
+        else {
+            int MN_pos = getGame().getTable().getMotherNatureIndex();
+            if (!characterCardUsed || characterCardExecuted) // if character has not been used or character has been executed
+            {
+                // means that command executed was moveMotherNatureCommand
+                if (!getGame().getTable().getIsland(MN_pos).isNoEntryTiles()) {
+                    Player player = getGame().getTable().getPlayerMaxInfluence(getGame());
+                    //condizione endGame finite torri in pb
+                    if (player != null) {
+                        for (int i = 0; i < getGame().getN_Player(); i++) {
+                            if (getGame().getPlayers().get(i).getPb().getN_tower() <= 0) {
+                                setGameEnded(true);
+                            }
+                        }
+                        getGame().getTable().mergeIsland();
+                        if (getGame().getTable().getIslands().size() <= 3) {
                             setGameEnded(true);
                         }
                     }
-                    getGame().getTable().mergeIsland();
-                    if (getGame().getTable().getIslands().size() <= 3) {
-                        setGameEnded(true);
-                    }
+                } else {
+                    getGame().getTable().getIsland(MN_pos).setNoEntryTiles(false);
+                    //devo aggiungere la no entrytiles alla carta 5
+                    Character5 card5 = (Character5) getGame().getTable().findCharacterCardByName("Character5");
+                    card5.takeEntryTile();
                 }
+                setCan(true);
             }
-            else{
-                getGame().getTable().getIsland(MN_pos).setNoEntryTiles(false);
-                //devo aggiungere la no entrytiles alla carta 5
-                Character5 card5 = (Character5) getGame().getTable().findCharacterCardByName("Character5");
-                card5.takeEntryTile();
+            if (getGame().getLastCommand() instanceof UseCharacterCommand)  // command executed was useCharacterCommand
+            {
+                characterCardExecuted = true;
+                getGame().setUsedCharacter((UseCharacterCommand) getGame().getLastCommand());
             }
-            setCan(true);
-        }
-        if (getGame().getLastCommand() instanceof UseCharacterCommand)  // command executed was useCharacterCommand
-        {
-            characterCardExecuted = true;
-            getGame().setUsedCharacter((UseCharacterCommand) getGame().getLastCommand());
-        }
-        if (canChangeState()) {
-            if (!isGameEnded()) {
-                getGame().changeGameState(new TakeCloudState(getGame(), getPhase(),characterCardExecuted,characterCardUsed));
-            }
-            else{
-                getGame().changeGameState(new EndGameState(getGame(), getPhase()));
+            if (canChangeState()) {
+                if (!isGameEnded()) {
+                    getGame().changeGameState(new TakeCloudState(getGame(), getPhase(), characterCardExecuted, characterCardUsed));
+                } else {
+                    getGame().changeGameState(new EndGameState(getGame(), getPhase()));
+                }
             }
         }
         getGame().removeCommand();
