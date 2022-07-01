@@ -81,7 +81,6 @@ public class Table implements Serializable {
             int random = rand.nextInt(AllCharacterCards.size());
             characterCards.add(AllCharacterCards.get(random));
             AllCharacterCards.remove(random);
-            System.out.println(random);
         }
 
     }
