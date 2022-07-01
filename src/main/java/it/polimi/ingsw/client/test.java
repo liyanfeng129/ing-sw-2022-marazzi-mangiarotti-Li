@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.model.Config;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.server.Methods;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -21,8 +22,10 @@ public class test {
         ArrayList<Object> messages = new ArrayList<>();
         messages.add("Test_all_game_status");
        // ArrayList<Object> responses = responseFromServer(messages);
-        ArrayList<Game> games = (ArrayList<Game>) fileBin2Object("gameRecord.bin");
-        System.out.println(games.toString());
+        Methods methods = new Methods();
+
+        //Users users = new Users();
+
 
     }
 

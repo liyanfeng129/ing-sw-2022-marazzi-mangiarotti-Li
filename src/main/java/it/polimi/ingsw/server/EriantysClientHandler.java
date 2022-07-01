@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 import com.google.gson.Gson;
 import it.polimi.ingsw.GUI.GUIInfo;
+import it.polimi.ingsw.client.User;
 import it.polimi.ingsw.client.Users;
 import it.polimi.ingsw.command.Command;
 import it.polimi.ingsw.model.*;
@@ -488,6 +489,7 @@ public class EriantysClientHandler extends Thread{
         }
         else // this user is just added in usersList and logged
         {
+
             users.addUser(userName, true);
             object2FileJason("users.json", users);
             subscribeUser(userName,address,port);
@@ -546,8 +548,9 @@ public class EriantysClientHandler extends Thread{
 
         } catch (IOException e) {
             e.printStackTrace();
+            return  null;
         }
-        return  null;
+
     }
 
     public synchronized Object fileBin2Object(String fileName)

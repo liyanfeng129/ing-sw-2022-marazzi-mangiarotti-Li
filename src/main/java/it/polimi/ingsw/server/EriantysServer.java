@@ -30,6 +30,11 @@ public class EriantysServer {
         {
             //onServerClose();
             //Create socket server
+            Users users = new Users();
+            Methods methods = new Methods();
+            object2FileJason("users.json",users);
+            ArrayList<Game> games1 = new ArrayList<>();
+            methods.Object2fileBin("gameRecord.bin",games1);
             ServerSocket server = new ServerSocket(12345);
 
             InetAddress iAddress = new Methods().getLocalHostLANAddress();
@@ -87,9 +92,16 @@ public class EriantysServer {
 
     private static void logOutAll()
     {
-        Users userList = (Users) fileJason2Object("users.json", Users.class);
-        userList.logOutAll();
-        object2FileJason("users.json", userList);
+        try
+        {
+            Users userList = (Users) fileJason2Object("users.json", Users.class);
+            userList.logOutAll();
+            object2FileJason("users.json", userList);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private static void checkSubs() throws Exception {
@@ -178,8 +190,8 @@ public class EriantysServer {
 
         } catch (IOException e) {
             e.printStackTrace();
+            return  null;
         }
-        return  null;
     }
     private static synchronized  void object2FileJason(String fileName, Object ob)
     {

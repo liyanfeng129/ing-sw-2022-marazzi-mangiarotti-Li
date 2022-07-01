@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.EriantysExceptions;
 import it.polimi.ingsw.model.InnerExceptions;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Users implements Serializable {
@@ -11,6 +12,11 @@ public class Users implements Serializable {
 
     public Users(List<User> users) {
         this.users = users;
+    }
+
+    public Users()
+    {
+        users = new ArrayList<>();
     }
 
     public List<User> getUsers() {
