@@ -61,7 +61,7 @@ public class Character5 extends CharacterCard implements Serializable {
                 System.out.println(String.format("Select one island from 1 to %d ", islands_size));
                 choice = getInput();
             }
-            while (choice < 1 || choice > islands_size);
+            while ((choice < 1 || choice > islands_size) && game.getTable().getIsland(choice-1).isNoEntryTiles());
             island_pos = choice - 1;
             setDataGathered(true);
             game.getLastCommand().setDataGathered(true);
@@ -107,18 +107,6 @@ public class Character5 extends CharacterCard implements Serializable {
 
     public int getNo_entry_tile() {
         return no_entry_tile;
-    }
-
-    public void setNo_entry_tile(int no_entry_tile) {
-        this.no_entry_tile = no_entry_tile;
-    }
-
-    public int getIsland_pos() {
-        return island_pos;
-    }
-
-    public void setIsland_pos(int island_pos) {
-        this.island_pos = island_pos;
     }
 }
 

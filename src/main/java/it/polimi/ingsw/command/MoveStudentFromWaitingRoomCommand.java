@@ -12,11 +12,10 @@ import java.util.Scanner;
 public class MoveStudentFromWaitingRoomCommand extends Command implements Serializable {
     private int student;
     private int island_pos;
-    private int[] waitingRoom;
+    private final int[] waitingRoom;
     private boolean moveToIsland;
     private boolean characterCardUsed;
     private boolean characterCardExecuted;
-    private boolean endGame=false;
     private int characterIndex = -1;
 
 
@@ -34,6 +33,10 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
 
     }
 
+    /**
+     * get data for this command
+     * take input for using character or go to
+     */
     public void getData() {
         if (!isDataGathered()) {
             if (isCliClient()) {

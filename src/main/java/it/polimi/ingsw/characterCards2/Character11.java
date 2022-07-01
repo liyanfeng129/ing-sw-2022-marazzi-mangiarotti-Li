@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Character11 extends CharacterCard implements Serializable {
-    private int students[] = new int[5];
+    private int[] students;
     int student_color = -1;
     public Character11(int [] students) {
         super();
@@ -129,12 +129,5 @@ public class Character11 extends CharacterCard implements Serializable {
         this.students[student_color] --;
     }
 
-    public int getStudent_color() {
-        return student_color;
-    }
-
-    public void setStudent_color(int student_color) {
-        this.student_color = student_color;
-    }
 }
 

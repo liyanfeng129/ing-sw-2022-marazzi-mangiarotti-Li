@@ -28,6 +28,7 @@ public class Character3 extends CharacterCard implements Serializable {
         Character3 card = (Character3) game.getTable().findCharacterCardByName(this.name());
         player.getWallet().removeCoin(card.getCoin());
         if(!game.getTable().getIsland(island_pos).isNoEntryTiles()) {
+            //swap current MN position with player choice, compute influence & merge and swap back
             int MN_prec = game.getTable().getMotherNatureIndex();
             game.getTable().getIsland(MN_prec).setMotherNature(false);
             Island island=game.getTable().getIsland(island_pos);
@@ -43,7 +44,7 @@ public class Character3 extends CharacterCard implements Serializable {
         }
         else{
             game.getTable().getIsland(island_pos).setNoEntryTiles(false);
-            //devo aggiungere la no entrytiles alla carta 5
+            //take away noEntryTile
             Character5 card5 = (Character5) game.getTable().findCharacterCardByName("Character5");
             card5.takeEntryTile();
 

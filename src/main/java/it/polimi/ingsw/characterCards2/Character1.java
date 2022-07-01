@@ -10,13 +10,13 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Character1 extends CharacterCard implements Serializable {
-    private int students[] = new int[5];
+    private int[] students;
     int student_color = -1;
     int island_pos = -1;
 
     /**
      * costructor for character1
-     * @param students teh student placed on this card at the start of the game
+     * @param students the student placed on this card at the start of the game
      */
     public Character1(int [] students) {
         super();
@@ -142,21 +142,5 @@ public class Character1 extends CharacterCard implements Serializable {
     }
     public void takeStudent(int student_color){
         this.students[student_color] --;
-    }
-
-    public int getStudent_color() {
-        return student_color;
-    }
-
-    public void setStudent_color(int student_color) {
-        this.student_color = student_color;
-    }
-
-    public int getIsland_pos() {
-        return island_pos;
-    }
-
-    public void setIsland_pos(int island_pos) {
-        this.island_pos = island_pos;
     }
 }

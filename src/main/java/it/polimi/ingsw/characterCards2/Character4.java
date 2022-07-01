@@ -34,7 +34,6 @@ public class Character4 extends CharacterCard implements Serializable {
 
     @Override
     public boolean undoEffect(Game game, Player player) throws EriantysExceptions {
-        //penso serva solo per la grafica,in teorian e inutile
         int max_steps = player.getHand().getLastStepsAssistant();
         player.getHand().setLastStepsAssistant(max_steps - 2);
         return true;

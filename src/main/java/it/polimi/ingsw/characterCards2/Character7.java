@@ -10,10 +10,10 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Character7 extends CharacterCard implements Serializable {
-    private int card_students[] = new int[5];
-    private int students[];
-    private int entrance_student[];
-    private int waiting_room[];
+    private int[] card_students;
+    private int[] students;
+    private int[] entrance_student;
+    private int[] waiting_room;
     int take_student=0;
     public Character7(int [] card_students) {
         super();

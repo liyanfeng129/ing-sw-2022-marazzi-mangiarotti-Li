@@ -24,7 +24,6 @@ public class Character2 extends CharacterCard implements Serializable {
             throw new InnerExceptions.CharacterCardError("Cannot apply character effect because the lack of information.");
         Character2 card = (Character2) game.getTable().findCharacterCardByName(this.name());
         game.getProfessors().setCard2(player.getName());
-        //non so se ci voglia o no
         game.getProfessors().assignProfessor(game.getPlayers());
         player.getWallet().removeCoin(card.getCoin());
         game.getLastCommand().setMsg(String.format("Player %s used %s, spending %d coin: professor assignment is changed",

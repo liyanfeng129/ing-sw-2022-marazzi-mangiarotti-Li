@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GetAssistantCommand extends Command implements Serializable {
-    private ArrayList<Assistant> assistants ; // pre_execute
+    private ArrayList<Assistant> assistants; // pre_execute
     private ArrayList<Assistant> playedCard;
     Assistant assistant; // post_execute
     public GetAssistantCommand(ArrayList<Assistant> assistants,ArrayList<Assistant> playedCard,boolean isCliClient,Game game, String username)

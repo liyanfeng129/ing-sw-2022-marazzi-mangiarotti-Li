@@ -101,13 +101,5 @@ public class Character12 extends CharacterCard implements Serializable {
     {
         return "Character12";
     }
-    public int getStudent_color() {
-        return student_color;
-    }
-
-    public void setStudent_color(int student_color) {
-        this.student_color = student_color;
-    }
-
 }
 
