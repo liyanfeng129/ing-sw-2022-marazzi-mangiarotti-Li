@@ -335,15 +335,15 @@ import java.util.stream.Collectors;
             root.getChildren().add(label);
         }
 
+        // Game table
 
-
-
-
-
-
-
-        // tavolo gioco
-        public void showIslands(Boolean Action) throws EriantysExceptions {
+        /**
+         * showIslands display the island on the screen based on the different stages of the game
+         * If clickable == True -> the islands are clickable to get user data
+         * @param clickable
+         * @throws EriantysExceptions
+         */
+        public void showIslands(Boolean clickable) throws EriantysExceptions {
             Table table = game.getTable();
 
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -396,7 +396,7 @@ import java.util.stream.Collectors;
                 Click.setStyle("-fx-background-color:transparent;");
 
                 int island_index = i;
-                if (Action){
+                if (clickable){
                     int finalIsland_index1 = island_index;
                     Click.setOnAction(new EventHandler<ActionEvent>() {
                         @Override public void handle(ActionEvent e) {
@@ -606,7 +606,7 @@ import java.util.stream.Collectors;
                     root.getChildren().add(MN_view);
                 }
 
-                if (!Action){
+                if (!clickable){
                     root.getChildren().add(imgDragDrop);
                 }
                 else{
@@ -616,7 +616,13 @@ import java.util.stream.Collectors;
             }
 
         }
-        public void showClouds(Boolean Action){
+        /**
+         * showClouds display the clouds on the screen based on the different stages of the game
+         * If clickable == True -> the clouds are clickable to get user data
+         * @param clickable
+         * @throws EriantysExceptions
+         */
+        public void showClouds(Boolean clickable){
             Table table = game.getTable();
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double pos_x_center =screenBounds.getMaxX()*2/7 +20; //650
@@ -639,7 +645,7 @@ import java.util.stream.Collectors;
                 img_view.setLayoutY(pos_y);
                 node = img_view;
 
-                if(Action) {
+                if(clickable) {
                     Button bt = new Button();
                     nodes.add(bt);
                     bt.setGraphic(img_view);
@@ -681,6 +687,9 @@ import java.util.stream.Collectors;
                 pos_x +=screenBounds.getMaxY()/6;
             }
         }
+        /**
+         * showIslands display the island on the screen based on an different stages of the game
+         */
         public void showCharacter(){
 
             List<CharacterCard> cards = game.getTable().getCharacters();
@@ -780,6 +789,9 @@ import java.util.stream.Collectors;
             }
 
         }
+        /**
+         * addButtonCharacter display the button to use the character selected
+         */
         public void addButtonCharacter(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -828,6 +840,11 @@ import java.util.stream.Collectors;
         }
 
         // assistenti
+
+        /**
+         * showAssistant display the hand of the player on te sceen to select the Assistant to use
+         * @throws EriantysExceptions
+         */
         public void showAssistant() throws EriantysExceptions {
             showGameNoAction();
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -945,6 +962,13 @@ import java.util.stream.Collectors;
         }
 
         //player board
+
+        /**
+         * switcBoardController show the Playerboard with all it's component with the ability to switch between
+         * the Playerboards of all Players in Game
+         * If Action == True -> enable action (drag and drop studets)
+         * @param Action
+         */
         public void switcBoardController(Boolean Action){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             HBox bar = new HBox();
@@ -1050,6 +1074,12 @@ import java.util.stream.Collectors;
             bar.getChildren().add(vbox2);
             root.getChildren().add(bar);
         }
+
+        /**
+         * showWaitingRoom show student in the waiting room on the screen
+         * if Action == True -> studens are draggable
+         * @param Action
+         */
         public void showWaitingRoom(Boolean Action){
 
             String color;
@@ -1139,6 +1169,11 @@ import java.util.stream.Collectors;
                 }
             }
         }
+        /**
+         * showDiningRoom show student in the waiting room on the screen
+         * if Action == True -> dining room can accept drag and drop students
+         * @param Action
+         */
         public void showDiningRoom(Boolean Action){
             String red = "Image/student_red.png";
             String yellow = "Image/student_yellow.png";
@@ -1290,6 +1325,10 @@ import java.util.stream.Collectors;
 
 
         }
+
+        /**
+         * showTowers displays towers on screen
+         */
         public void showTowers(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             Player player = game.getPlayers().stream().filter(p -> p.getName().equals(board_name)).collect(Collectors.toList()).get(0);
@@ -1334,6 +1373,10 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(gridPane);
         }
+
+        /**
+         * showProfessors displays professors on screen
+         */
         public void showProfessors(){
             String red = "Image/teacher_red.png";
             String yellow = "Image/teacher_yellow.png";
@@ -1389,6 +1432,13 @@ import java.util.stream.Collectors;
         }
 
         // di supporto
+
+        /**
+         * GridPane creates a vertical Grid of students on position pos_x,pos_y
+         * @param pos_x
+         * @param pos_y
+         * @param students
+         */
         protected  void GridPane(double pos_x,double pos_y,int[] students){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double dim = screenBounds.getMaxY()/(60);
@@ -1434,6 +1484,10 @@ import java.util.stream.Collectors;
             nodes.add(gridPane);
             root.getChildren().add(gridPane);
         }
+
+        /**
+         * removeGame removes all nodes from the screen
+         */
         private void removeGame() {
             for(int i=0; i<nodes.size();i++){
                 Node img = nodes.get(i);
@@ -1442,6 +1496,10 @@ import java.util.stream.Collectors;
             nodes.clear();
 
         }
+
+        /**
+         * removeBoard removes only the Playerboard nodes from the screen
+         */
         private void removeBoard(){
             for(int i=0; i<board.size();i++){
                 Node img = board.get(i);
@@ -1449,6 +1507,14 @@ import java.util.stream.Collectors;
             }
             board.clear();
         }
+
+        /**
+         * TowerGridPane creates a grid of Imageviews of towers to be positioned at pos_x, pos_y
+         * @param pos_x
+         * @param pos_y
+         * @param size
+         * @param color
+         */
         protected  void TowerGridPane(double pos_x,double pos_y,int size,TowerColor color){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             double dim = screenBounds.getMaxY()/(30);
@@ -1490,6 +1556,12 @@ import java.util.stream.Collectors;
             nodes.add(gridPane);
             root.getChildren().add(gridPane);
         }
+
+        /**
+         * noTileImg display a no entry tile image at position pos_x , pos_y
+         * @param pos_x
+         * @param pos_y
+         */
         public void noTileImg(double pos_x,double pos_y){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             ImageView noTile;
@@ -1502,6 +1574,10 @@ import java.util.stream.Collectors;
             nodes.add(noTile);
             root.getChildren().add(noTile);
         }
+
+        /**
+         * showWallet display wallet
+         */
         public void showWallet(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -1526,7 +1602,11 @@ import java.util.stream.Collectors;
             root.getChildren().add(gridPane);
         }
 
-
+        /**
+         * getCharacterInput set up the windows to get te user input based on the character cared selected
+         * @param card
+         * @throws EriantysExceptions
+         */
         public void getCharacterInput(CharacterCard card) throws EriantysExceptions {
             tips.setText(card.getMsg());
             Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
@@ -1575,7 +1655,7 @@ import java.util.stream.Collectors;
                     showCharacter7((Character7)card,true);
                     waitingRoomToExchange();
                     cardToExchange();
-                    buttonToFinish(3,((Character7) card).getStudents());
+                    buttonToExchange(3,((Character7) card).getStudents());
                     showGameNoActionNoCharacter(true,true);
                     break;
                 case 9:
@@ -1588,7 +1668,7 @@ import java.util.stream.Collectors;
                     showCharacter10((Character10)card,true);
                     waitingRoomToExchange();
                     cardToExchange();
-                    buttonToFinish(2,curr_player.getPb().getDiningRoom());
+                    buttonToExchange(2,curr_player.getPb().getDiningRoom());
                     showGameNoActionNoCharacter(true,true);
                     break;
                 case 11:
@@ -1602,6 +1682,11 @@ import java.util.stream.Collectors;
             }
         }
 
+        /**
+         * showCharacter1 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter1(Character1 card, Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1684,6 +1769,12 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
+
+        /**
+         *showCharacter3 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter3(Character3 card,Boolean Action){
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1697,6 +1788,12 @@ import java.util.stream.Collectors;
                 root.getChildren().add(imgCard);
             }
         }
+
+        /**
+         *showCharacter5 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter5(Character5 card, Boolean Action){
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1725,6 +1822,12 @@ import java.util.stream.Collectors;
             nodes.add(grid);
             root.getChildren().add(grid);
         }
+
+        /**
+         *showCharacter7 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter7(Character7 card, Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1811,6 +1914,12 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
+
+        /**
+         *showCharacter9 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter9(Character9 card, Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1832,6 +1941,12 @@ import java.util.stream.Collectors;
             chooseColor(posY*1.1,posX*0.8);
 
         }
+
+        /**
+         *showCharacter10 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter10(Character10 card,Boolean Action){
             int pos = game.getTable().getCharacters().indexOf(card);
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
@@ -1849,6 +1964,12 @@ import java.util.stream.Collectors;
                 root.getChildren().add(imgCard);
             }
         }
+
+        /**
+         *showCharacter11 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter11(Character11 card,Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1943,6 +2064,12 @@ import java.util.stream.Collectors;
             }
             root.getChildren().add(grid);
         }
+
+        /**
+         *showCharacter12 set windows input for the input of showCharacter1
+         * @param card
+         * @param Action
+         */
         public void showCharacter12(Character12 card,Boolean Action){
 
             int pos = game.getTable().getCharacters().indexOf(card);
@@ -1965,6 +2092,11 @@ import java.util.stream.Collectors;
 
         }
 
+        /**
+         * chooseColor creates a longitudinal grid of button to select a student color
+         * @param positionY
+         * @param positionX
+         */
         public void chooseColor(double positionY,double positionX){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             GridPane grid = new GridPane();
@@ -2055,6 +2187,9 @@ import java.util.stream.Collectors;
             root.getChildren().add(vbox);
         }
 
+        /**
+         * waitingRoomToExchange display a rectagle on witch studets can be draged from waiting room
+         */
         public void waitingRoomToExchange(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -2162,6 +2297,9 @@ import java.util.stream.Collectors;
             root.getChildren().add(vBox);
 
         }
+        /**
+         * cardToExchange display a rectagle on witch studets can be draged from card or dining room
+         */
         public void cardToExchange(){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
             VBox vBox = new VBox();
@@ -2276,7 +2414,13 @@ import java.util.stream.Collectors;
             root.getChildren().add(vBox);
 
         }
-        public void buttonToFinish(int Card,int[] StudentCard){
+
+        /**
+         * buttonToExchange show the button to excange the students selected
+         * @param Card
+         * @param StudentCard
+         */
+        public void buttonToExchange(int Card, int[] StudentCard){
             Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
             Button bt = new Button();
@@ -2291,7 +2435,7 @@ import java.util.stream.Collectors;
                 @Override public void handle(ActionEvent e) {
                     ArrayList<Object> inputs = new ArrayList<>();
                     if(Arrays.stream(characterCardExcange).sum()==Arrays.stream(characterRoomExcange).sum()){
-                        if (controllCard(StudentCard) && controllWaiting()&& Arrays.stream(characterRoomExcange).sum()<=Card){
+                        if (controlCard(StudentCard) && controlWaiting()&& Arrays.stream(characterRoomExcange).sum()<=Card){
 
 
                             if (characterData==7){
@@ -2348,8 +2492,8 @@ import java.util.stream.Collectors;
 
                         }
                         else{
-                            System.out.println(controllCard(StudentCard));
-                            System.out.println(controllWaiting());
+                            System.out.println(controlCard(StudentCard));
+                            System.out.println(controlWaiting());
                             System.out.println(Arrays.stream(characterRoomExcange).sum()<Card);
                             messages.setText("the combination of student select" +"\n"+
                                     "is wrong please retry ");
@@ -2376,16 +2520,25 @@ import java.util.stream.Collectors;
         }
 
 
-
-        public boolean controllCard(int [] StudentCard) {
+        /**
+         * controllCard controls if students are >= of characterCardExcange
+         * @param studentsExchangeTo
+         * @return
+         */
+        public boolean controlCard(int [] studentsExchangeTo) {
             for (int i = 0; i < 5; i++) {
-                if (StudentCard[i] >= characterCardExcange[i]) {
+                if (studentsExchangeTo[i] >= characterCardExcange[i]) {
                     return false;
                 }
             }
             return true;
         }
-        public boolean controllWaiting(){
+
+        /**
+         * controlWaiting controls if characterRoomExcange are <= getWaitingRoom of the current player
+         * @return
+         */
+        public boolean controlWaiting(){
             Player curr_player = game.getPlayers().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList()).get(0);
             for(int i=0;i<5;i++){
                 if (curr_player.getPb().getWaitingRoom()[i] < characterRoomExcange[i]){
@@ -2395,6 +2548,15 @@ import java.util.stream.Collectors;
             return true;
         }
 
+
+        /**
+         * showGameNoActionNoCharacter displays the game whit the action not connected to character disabled
+         * if IsalndAction == True -> showIslands clickable == True
+         * if waitingroomAction == True -> showWaitingRoom == True
+         * @param IsalndAction
+         * @param waitingroomAction
+         * @throws EriantysExceptions
+         */
         public void showGameNoActionNoCharacter(Boolean IsalndAction, Boolean waitingroomAction) throws EriantysExceptions {
             switcBoardController(false);
             showTowers();
