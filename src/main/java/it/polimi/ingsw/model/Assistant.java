@@ -44,15 +44,6 @@ public class Assistant implements Serializable {
         return type;
     }
 
-    /* non li usiamo mai
-    public void setType(AssistantType type) {
-        this.type = type;
-    }
-
-    public void setMage(Mage mage) {
-        this.mage = mage;
-    }
-*/
     /**
      * get the mage of this assistant
      * @return the mage who this card belong to

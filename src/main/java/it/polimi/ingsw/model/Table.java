@@ -35,7 +35,6 @@ public class Table implements Serializable {
         card6=false;
         card8=null;
         card9=-1;
-        //initIslands();
     }
 
     /**

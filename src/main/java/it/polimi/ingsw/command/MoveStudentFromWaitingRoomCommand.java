@@ -34,8 +34,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
     }
 
     /**
-     * get data for this command
-     * take input for using character or go to
+     * get eventual character inputs for this command
      */
     public void getData() {
         if (!isDataGathered()) {
@@ -88,6 +87,9 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
         setDataGathered(true);
     }
 
+    /**
+     * get which student the player wants to move and where
+     */
     private void getDataForMoveStudent() {
         int choice;
             do {
@@ -177,6 +179,12 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
 
     }
 
+    /**
+     * this is te execute for moving students from playerboard
+     * @param game
+     * @return true if command executed
+     * @throws EriantysExceptions
+     */
     private boolean normalExecute(Game game) throws EriantysExceptions {
         if(game.getGameState() instanceof ActionState)
         {
@@ -195,7 +203,7 @@ public class MoveStudentFromWaitingRoomCommand extends Command implements Serial
                     setMsg(String.format("Player %s moved a %s student on his dining room.",getUsername(),SType.values()[student].name().toString()));
                 }
 
-                //aggiungo coin
+                //add coin
                 if(getGame().isExpertMode()) {
                     addCoin(p);
                 }

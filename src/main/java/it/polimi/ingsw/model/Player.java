@@ -14,7 +14,7 @@ public class Player implements Serializable {
 
 
     /**
-     * constructo of class Player
+     * constructor of class Player
      * initialize wallet of the player
      * initialize the correct playerBoard of the player based on the number of player in game
      * @param name initialize name of the player
@@ -37,6 +37,10 @@ public class Player implements Serializable {
         update = false;
     }
 
+    /**
+     * constructor of Player used in server, it's a lither version that is then populated later
+     * @param name
+     */
     public Player(String name)
     {
         this.name = name;

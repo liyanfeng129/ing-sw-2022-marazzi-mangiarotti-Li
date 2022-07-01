@@ -33,6 +33,10 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
     public void undo(Game game) {
 
     }
+
+    /**
+     * get eventual character inputs for this command
+     */
     public void getData() {
         if (!isDataGathered()) {
             if (isCliClient()) {
@@ -82,7 +86,9 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
         }
         setDataGathered(true);
     }
-
+    /**
+     * get where the player wants to move Mother Nature
+     */
     public void  getDataForMoveMotherNature()
     {
         if(!isDataGathered())
@@ -115,6 +121,12 @@ public class MoveMotherNatureCommand extends Command implements Serializable {
         return true;
     }
 
+    /**
+     * this is te execute for moving Mother Nature
+     * @param game
+     * @return true if command executed
+     * @throws EriantysExceptions
+     */
     public boolean normalExecute(Game game) throws EriantysExceptions {
         if(isDataGathered())
         {

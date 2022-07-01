@@ -25,10 +25,6 @@ public class ActionState extends State implements Serializable {
         expertMode = getGame().isExpertMode();
     }
 
-    @Override
-    public void nextState() throws EriantysExceptions {
-
-    }
 
     @Override
     public boolean canChangeState() throws EriantysExceptions {

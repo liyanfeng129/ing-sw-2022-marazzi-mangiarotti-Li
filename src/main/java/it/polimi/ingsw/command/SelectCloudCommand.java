@@ -31,7 +31,9 @@ public class SelectCloudCommand extends Command implements Serializable{
     public void undo(Game game) {
 
     }
-
+    /**
+     * get eventual character inputs for this command
+     */
     public void getData() {
         if (!isDataGathered()) {
             if (isCliClient()) {
@@ -81,6 +83,9 @@ public class SelectCloudCommand extends Command implements Serializable{
         }
         setDataGathered(true);
     }
+    /**
+     * get which cloud the player wants to take, if it is last turn do not take anything
+     */
     public void  getDataForSelectCloud()
     {
         if(!isDataGathered())
@@ -126,6 +131,13 @@ public class SelectCloudCommand extends Command implements Serializable{
         }
         return true;
     }
+
+    /**
+     * this is te execute for taking a cloud
+     * @param game
+     * @return true if command executed
+     * @throws EriantysExceptions
+     */
     public boolean normalExecute(Game game) throws EriantysExceptions {
         if(!isDataGathered())
             return false;
@@ -145,10 +157,12 @@ public class SelectCloudCommand extends Command implements Serializable{
 
     /**
      * @param inputs
-     * inputs.get(0) cloud_index : int
-     * @return
-     * Config.GUI_COMMAND_GETDATA_SUC: if ok
-     * Config.GUI_COMMAND_GETDATA_SUC: if cloud chosen is an empty cloud
+     * inputs.get(0) : useCharacter boolean
+     *      true -> inputs.get(1): characterIndex int
+     *
+     *      false -> inputs.get(1) : cloud_index
+     *               inputs.get(2) : moveToIsland boolean
+     *               inputs.get(3) : island_pos int
      * */
     @Override
     public String GUIGetData(ArrayList<Object> inputs) {

@@ -13,7 +13,6 @@ import it.polimi.ingsw.model.Player;
 import java.io.Serializable;
 
 public class MoveMotherNatureState extends State implements Serializable {
-    private int maxSteps;
     private boolean can=false;
     private boolean GameEnded=false;
     private int characterIndex = -1;
@@ -23,11 +22,6 @@ public class MoveMotherNatureState extends State implements Serializable {
         super(game, phase);
         this.characterCardUsed = characterCardUsed;
         this.characterCardExecuted = characterCardExecuted;
-    }
-
-    @Override
-    public void nextState() throws EriantysExceptions {
-
     }
 
     @Override
@@ -51,7 +45,7 @@ public class MoveMotherNatureState extends State implements Serializable {
                 // means that command executed was moveMotherNatureCommand
                 if (!getGame().getTable().getIsland(MN_pos).isNoEntryTiles()) {
                     Player player = getGame().getTable().getPlayerMaxInfluence(getGame());
-                    //condizione endGame finite torri in pb
+                    //end game condition
                     if (player != null) {
                         for (int i = 0; i < getGame().getN_Player(); i++) {
                             if (getGame().getPlayers().get(i).getPb().getN_tower() <= 0) {
@@ -65,7 +59,7 @@ public class MoveMotherNatureState extends State implements Serializable {
                     }
                 } else {
                     getGame().getTable().getIsland(MN_pos).setNoEntryTiles(false);
-                    //devo aggiungere la no entrytiles alla carta 5
+                    //take away noEntryTile
                     Character5 card5 = (Character5) getGame().getTable().findCharacterCardByName("Character5");
                     card5.takeEntryTile();
                 }

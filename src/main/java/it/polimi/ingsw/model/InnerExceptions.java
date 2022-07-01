@@ -34,12 +34,6 @@ public class InnerExceptions {
             super(msg);
         }
     }
-    public static class BagMax26 extends EriantysExceptions
-    {
-        public BagMax26(String msg) {
-            super(msg);
-        }
-    }
     public static class NotEnoughStudentsInBagException extends EriantysExceptions
     {
         public NotEnoughStudentsInBagException(String msg) {
@@ -75,22 +69,9 @@ public class InnerExceptions {
             super(msg);
         }
     }
-    public static class InvalidCardNumberException extends EriantysExceptions
-    {
-        public InvalidCardNumberException(String msg) {
-            super(msg);
-        }
-    }
     public static class PlanningStateError extends EriantysExceptions
     {
         public PlanningStateError(String msg) {
-            super(msg);
-        }
-    }
-
-    public static class ActionStateError extends EriantysExceptions
-    {
-        public ActionStateError(String msg) {
             super(msg);
         }
     }

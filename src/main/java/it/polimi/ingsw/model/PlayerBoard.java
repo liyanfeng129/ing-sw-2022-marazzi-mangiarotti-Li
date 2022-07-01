@@ -81,7 +81,7 @@ public class PlayerBoard implements Serializable {
     public int getN_tower() {
         return n_tower;
     }
-//secondo me si puo eliminare sto metodo
+
     /**
      * set number of tower
      * @param n_tower
@@ -93,20 +93,6 @@ public class PlayerBoard implements Serializable {
 
         this.n_tower = n_tower;
     }
-
-
-    //secondo me non servono, ho un array a parte che mi dice chi ha i professori
-    /*
-    public Boolean[] getProfHolder() {
-        return profHolder;
-    }
-    public void setProfHolder(Boolean[] profHolder) {
-        this.profHolder = profHolder;
-    }
-    public void setProf(int prof, boolean occupy)
-    {
-        this.profHolder[prof] = occupy;
-    }*/
 
     /**
      * add or remove tower from playerBoard

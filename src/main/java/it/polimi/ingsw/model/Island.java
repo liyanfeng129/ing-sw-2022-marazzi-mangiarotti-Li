@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 public class Island implements Serializable {
     private final int[] students;
-   // private Island inext_island;
     private boolean mother_nature;
     private int size;
     private TowerColor towerColor;

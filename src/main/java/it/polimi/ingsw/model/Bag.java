@@ -76,20 +76,6 @@ public class Bag implements Serializable {
             throw new InnerExceptions.NegativeValue("NegativeValue");
         for(int i = 0 ; i < n; i++)
         {
-
-            /** old draw algorithm
-
-            Random rand = new Random();
-            // Obtain a number between [0 - 4].
-            int random = rand.nextInt(5);
-
-            while (this.students[random] == 0)
-                random = rand.nextInt(5);
-            this.students[random] = this.students[random]-1;
-            drawn_students[random] = drawn_students[random] +1;
-
-             */
-
             /**
              * new draw algorithm with balanced probability
              * now the probability of extraction of one student is based on their quantity

@@ -304,10 +304,6 @@ public class Game implements Serializable {
         return super.clone();
     }
 
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
     public void setExpertMode(boolean expertMode) {
         this.expertMode = expertMode;
     }
@@ -319,14 +315,6 @@ public class Game implements Serializable {
     public ArrayList<Command> getCommands() {
         return commands;
     }
-
-    public void setCommands(ArrayList<Command> commands) {
-        this.commands = commands;
-    }
-
-    /*public void setGameState(State gameState) {
-        this.gameState = gameState;
-    }*/
 
     public UseCharacterCommand getUsedCharacter() {
         return usedCharacter;
@@ -347,6 +335,7 @@ public class Game implements Serializable {
     public boolean isStudentFinished() {
         return studentFinished;
     }
+
     public void setStudentFinished(boolean set){
         this.studentFinished=set;
     }

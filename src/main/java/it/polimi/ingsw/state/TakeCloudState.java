@@ -23,11 +23,6 @@ public class TakeCloudState extends State implements Serializable {
     }
 
     @Override
-    public void nextState() throws EriantysExceptions {
-
-    }
-
-    @Override
     public boolean canChangeState() throws EriantysExceptions {
         if(isCan())
             return true;
