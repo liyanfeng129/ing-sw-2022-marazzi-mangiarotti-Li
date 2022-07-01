@@ -26,6 +26,8 @@ public class GuiMessageSender {
         serverAddress = caller.getInfo().getServerAddress();
         this.option = option;
     }
+    /**TODO Yanfeng javadoc
+     */
 
     public void run()
     {
@@ -75,19 +77,78 @@ public class GuiMessageSender {
                     caller.responsesFromSender(responses);
                     break;
                 case Config.SHOW_RESUMABLE_GAMES:
-                   /**
-                    * TODO SHOW RESUMABLE GAMES
-                    * */
+                   responses = show_resumable_games(caller.getInfo().getUserName());
+                   caller.responsesFromSender(responses);
+                    break;
 
+                case Config.RESUME_OLD_GAMES:
+                    responses = resumeOldGames(caller.getInfo().getUserName());
+                    caller.responsesFromSender(responses);
+                    break;
+                case Config.RELOAD_AN_OLD_GAME:
+                    responses = reloadAnOldGame(caller.getInfo().getUserName(),caller.getInfo().getGameStartedDate());
+                    caller.responsesFromSender(responses);
+                    break;
+                case Config.JOIN_RESUMABLE_GAME:
+                    responses = joinResumableGame(caller.getInfo().getGameCreatorName(),caller.getInfo().getUserName());
+                    caller.responsesFromSender(responses);
+                    break;
+                case Config.GAME_OLD_START:
+                    responses = startOldGame(caller.getInfo().getGameStartedDate());
+                    caller.responsesFromSender(responses);
                     break;
                 default:
                     break;
+
+
             }
         }
         catch (Exception e)
         {
             caller.errorCommunicate(e);
         }
+    }
+
+    private ArrayList<Object> startOldGame(String gameStartedDate) throws IOException, ClassNotFoundException {
+        ArrayList messages = new ArrayList<>();
+        messages.add(Config.GAME_OLD_START);
+        messages.add(gameStartedDate);
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
+    }
+
+    private ArrayList<Object> joinResumableGame(String gameCreatorName, String userName) throws IOException, ClassNotFoundException {
+        ArrayList messages = new ArrayList<>();
+        messages.add(Config.JOIN_RESUMABLE_GAME);
+        messages.add(gameCreatorName);
+        messages.add(userName);
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
+    }
+
+    private ArrayList<Object> reloadAnOldGame(String userName, String gameStartedDate) throws IOException, ClassNotFoundException {
+        ArrayList messages = new ArrayList<>();
+        messages.add(Config.RELOAD_AN_OLD_GAME);
+        messages.add(userName);
+        messages.add(gameStartedDate);
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
+    }
+
+    private ArrayList<Object> show_resumable_games(String userName) throws IOException, ClassNotFoundException {
+        ArrayList messages = new ArrayList<>();
+        messages.add(Config.SHOW_RESUMABLE_GAMES);
+        messages.add(userName);
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
+    }
+
+    private ArrayList<Object> resumeOldGames(String userName) throws IOException, ClassNotFoundException {
+        ArrayList messages = new ArrayList<>();
+        messages.add(Config.RESUME_OLD_GAMES);
+        messages.add(userName);
+        ArrayList<Object> responses = responseFromServer(messages);
+        return responses;
     }
 
     private ArrayList<Object> connectToServer() throws IOException, ClassNotFoundException {

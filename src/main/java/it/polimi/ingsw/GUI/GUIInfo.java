@@ -8,7 +8,7 @@ import java.util.Random;
 public class GUIInfo
 {
     public static final int LOAD_GAME  = 1998;
-    public static final int START_OLD_GAME  = 12;
+    public static final int RESUME_OLD_GAME = 12;
     public static final int LOAD_OlD_GAME = 9;
     private  String serverAddress = "localhost";
     private  String userName = "";
@@ -19,6 +19,15 @@ public class GUIInfo
     private Command command;
     private String message;
     private int loadGameOption;
+    private String gameStartedDate;
+
+    public String getGameStartedDate() {
+        return gameStartedDate;
+    }
+
+    public void setGameStartedDate(String gameStartedDate) {
+        this.gameStartedDate = gameStartedDate;
+    }
 
     public int getLoadGameOption() {
         return loadGameOption;
@@ -52,6 +61,9 @@ public class GUIInfo
         this.listener = listener;
     }
 
+    /**
+     * GUIInfo constructor assigne a random port <=65353
+     */
     public GUIInfo() {
         listeningPortNumber = new Random().nextInt(65353);
     }

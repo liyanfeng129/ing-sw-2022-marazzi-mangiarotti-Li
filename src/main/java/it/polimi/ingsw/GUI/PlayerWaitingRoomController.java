@@ -31,8 +31,9 @@ public class PlayerWaitingRoomController extends AASceneParent  {
         Platform.runLater(new Runnable() {
             @Override public void run() {
                 initConfig();
-                setPlayerLabel();
-                if (getInfo().getGame().getPlayers().get(0).getName().equals(getInfo().getUserName()))
+                Game game = getInfo().getGame();
+                setPlayerLabel(game);
+                if (game.getPlayers().get(0).getName().equals(getInfo().getUserName()))
                     addButton();
             }
         });
@@ -45,26 +46,46 @@ public class PlayerWaitingRoomController extends AASceneParent  {
    @FXML
    private Label PlayerLabel;
 
-   public void setPlayerLabel(){
+   public void setPlayerLabel(Game game){
 
-
-       Game game = getInfo().getGame();
-       String message = (game.getPlayers().get(0).getName().equals(getInfo().getUserName())? "This is creator's game room, only he can start the game.\n" : "" )
-               +String.format("Game mode: %s\n" +
-                       "needs %d participant\n" +
-                       "waiting for %d",
-               (game.isExpertMode()? "expert" : "normal"),
-               game.getN_Player(),
-               game.getN_Player()-game.getPlayers().size()
-       );
-       message = message + "Participants:\n";
-
-       for (int i = 0 ; i < game.getPlayers().size(); i++)
-           message = message + String.format("%d: %s\n",
-                   i + 1,
-                   game.getPlayers().get(i).getName()
+       String message;
+       if(getInfo().getLoadGameOption() == GUIInfo.LOAD_GAME)
+       {
+           message = (game.getPlayers().get(0).getName().equals(getInfo().getUserName())? "This is creator's game room, only he can start the game.\n" : "" )
+                   +String.format("Game mode: %s\n" +
+                           "needs %d participant\n" +
+                           "waiting for %d",
+                   (game.isExpertMode()? "expert" : "normal"),
+                   game.getN_Player(),
+                   game.getN_Player()-game.getPlayers().size()
            );
-        System.out.println(message);
+           message = message + " Participants:\n";
+
+           for (int i = 0 ; i < game.getPlayers().size(); i++)
+               message = message + String.format("%d: %s\n",
+                       i + 1,
+                       game.getPlayers().get(i).getName()
+               );
+       }
+       else
+       {
+           message=String.format("%s's %s game for %d, started in %s with player: %s, %s .",
+                   game.getTurnList().get(0).getName(),
+                   (game.isExpertMode()? "expert" : "normal"),
+                   game.getN_Player(),
+                   game.getGameStartingTime(),
+                   (game.getN_Player() > 1 ? game.getTurnList().get(1).getName() : " " ),
+                   (game.getN_Player() > 2 ? game.getTurnList().get(2).getName() : " " )
+           );
+           message = message + " Participants:\n";
+           for (; i < game.getPlayers().size(); i++)
+               message = message+String.format("%d: %s",
+                       i + 1,
+                       game.getPlayers().get(i).getName()
+               );
+
+       }
+       System.out.println(message);
        PlayerLabel.setText(message);
 
    }
@@ -83,7 +104,10 @@ public class PlayerWaitingRoomController extends AASceneParent  {
                 if(getInfo().getGame().getN_Player() == getInfo().getGame().getPlayers().size())
                 {
                     System.out.println("condition true");
-                    Platform.runLater( ()-> new GuiMessageSender(caller, Config.GAME_START).run());
+                    if(getInfo().getLoadGameOption() == GUIInfo.LOAD_GAME)
+                        Platform.runLater( ()-> new GuiMessageSender(caller, Config.GAME_START).run());
+                    else
+                        Platform.runLater( ()-> new GuiMessageSender(caller, Config.GAME_OLD_START).run());
                 }
             }
         });
@@ -140,6 +164,15 @@ public class PlayerWaitingRoomController extends AASceneParent  {
                         PlayerLabel.setText(finalLabelMessage);
                         getInfo().setGame(game);
                     }
+                });
+                break;
+
+            case Config.UPDATE_CREATOR_WAITING_ROOM_FOR_OLD_GAME:
+            case Config.UPDATE_OTHER_WAITING_ROOM_FOR_OLD_GAME:
+                game = (Game) responses.get(1);
+                Platform.runLater(() -> {
+                    setPlayerLabel(game);
+                    getInfo().setGame(game);
                 });
                 break;
             case Config.GAME_UPDATED:

@@ -2593,6 +2593,20 @@ import java.util.stream.Collectors;
                     }
                 });
             }
+            if(responses.get(0).equals(Config.GAME_OVER))
+            {
+                System.out.println("GAME_OVER triggered");
+                String motivation = (String) responses.get(1);
+                getInfo().setMessage(motivation);
+                Platform.runLater(()-> {
+                    try {
+                        switchScene((Stage) root.getScene().getWindow(), FxmlNames.END_GAME);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+            }
         }
 
         @Override
@@ -2601,12 +2615,6 @@ import java.util.stream.Collectors;
                 System.out.println(name+" command executed successfully");
             if(responses.get(0).equals(Config.GUI_GET_ASSISTANT_REPEATING))
                  messages.setText("This card is already used please select another one.");
-            if(responses.get(0).equals(Config.GAME_OVER))
-            {
-                String motivation = (String) responses.get(1);
-                getInfo().setMessage(motivation);
-                //switchScene((Stage) root.getScene().getWindow(), FxmlNames.START_LOAD);
-            }
         }
 
         @Override
@@ -2617,7 +2625,6 @@ import java.util.stream.Collectors;
                 getInfo().setMessage("Something went wrong with server");
 
                 Platform.runLater(()->{
-
                     try {
                         switchScene((Stage) root.getScene().getWindow(),FxmlNames.END_GAME);
                     } catch (IOException ex) {
