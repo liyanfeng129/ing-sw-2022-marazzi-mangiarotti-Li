@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="root" prefHeight="1000.0" prefWidth="1500.0" style="-fx-background-color: #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA #87CEFA#87CEFA;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.GameStartedController">
+    <children>
+        <Button layoutX="715.0" layoutY="425.0" mnemonicParsing="false" onAction="#back" prefHeight="156.0" prefWidth="166.0" text="BACK" />
+    </children>
+</AnchorPane>

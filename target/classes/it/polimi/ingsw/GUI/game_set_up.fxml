@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="root" prefHeight="1000.0" prefWidth="1500.0" style="-fx-background-color: #87CEFA#87CEFA #87CEFA#87CEFA;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.GUI.GameSetUpController">
+    <children>
+        <Button fx:id="easy_2p" layoutX="161.0" layoutY="257.0" mnemonicParsing="false" onAction="#startEasy2" prefHeight="85.0" prefWidth="226.0" text="TWO PLAYER" />
+        <Button fx:id="hard_2p" layoutX="156.0" layoutY="477.0" mnemonicParsing="false" onAction="#startExp2" prefHeight="85.0" prefWidth="226.0" text="TWO PLAYER" />
+        <Button fx:id="easy_3p" layoutX="889.0" layoutY="261.0" mnemonicParsing="false" onAction="#startEasy3" prefHeight="85.0" prefWidth="226.0" text="THREE PLAYER" />
+        <Button fx:id="hard_3p" layoutX="889.0" layoutY="477.0" mnemonicParsing="false" onAction="#startExp3" prefHeight="85.0" prefWidth="226.0" text="THREE PLAYER" />
+        <Label fx:id="EasyMode" layoutX="192.0" layoutY="157.0" text="EASY MODE">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Label fx:id="ExpertModeMode" layoutX="192.0" layoutY="392.0" text="EXPERT MODE">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="Back" layoutX="97.0" layoutY="641.0" mnemonicParsing="false" onAction="#back" prefHeight="56.0" prefWidth="81.0" text="BACK" />
+    </children>
+</AnchorPane>
